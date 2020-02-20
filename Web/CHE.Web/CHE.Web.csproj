@@ -17,4 +17,10 @@
     </PackageReference>
   </ItemGroup>
 
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Data\CHE.Data.Models\CHE.Data.Models.csproj" />
+    <ProjectReference Include="..\..\Data\CHE.Data\CHE.Data.csproj" />
+  </ItemGroup>
+
 </Project>
