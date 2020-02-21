@@ -1,16 +1,16 @@
 ﻿namespace CHE.Data.Models
 {
-    using Common.Models;
     using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations.Schema;
 
     public class Grade
     {
         public Grade()
         {
             this.Cooperatives = new HashSet<Cooperative>();
-            this.vCards = new HashSet<VCardGrade>();
         }
 
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public string Id { get; set; }
 
         public string Value { get; set; }
