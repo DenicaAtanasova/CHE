@@ -1,0 +1,37 @@
+﻿namespace CHE.Data.Models
+{
+    using Common.Models;
+    using System.Collections.Generic;
+
+    public class Cooperative : BaseDeletableModel<string>
+    {
+        public Cooperative()
+        {
+            this.ReceivedJoinRequests = new HashSet<JoinRequest>();
+            this.SentJoinRequests = new HashSet<JoinRequest>();
+            this.Members = new HashSet<CheUserCooperative>();
+        }
+
+        public string Name { get; set; }
+
+        public string Info { get; set; }
+
+        public string AddressId { get; set; }
+
+        public Address Address { get; set; }
+
+        public string GradeId { get; set; }
+
+        public Grade Grade { get; set; }
+
+        public string CreatorId { get; set; }
+
+        public CheUser Creator { get; set; }
+
+        public ICollection<CheUserCooperative> Members { get; set; }
+
+        public ICollection<JoinRequest> ReceivedJoinRequests { get; set; }
+
+        public ICollection<JoinRequest> SentJoinRequests { get; set; }
+    }
+}
