@@ -13,6 +13,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using CHE.Data.Models;
 using CHE.Data;
+using CHE.Data.Seedeing;
 
 namespace CHE.Web
 {
@@ -56,6 +57,20 @@ namespace CHE.Web
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            // Seed data
+            using (var serviceScope = app.ApplicationServices.CreateScope())
+            {
+                var serviceProvider = serviceScope.ServiceProvider;
+                var dbContext = serviceProvider.GetRequiredService<CheDbContext>();
+
+                if (env.IsDevelopment())
+                {
+                    dbContext.Database.Migrate();
+                }
+
+                new CheDbContextSeeder().SeedAsync(dbContext, serviceProvider).GetAwaiter().GetResult();
+            }
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
