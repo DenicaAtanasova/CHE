@@ -29,6 +29,11 @@
         {
             var creator = await this._userManager.FindByNameAsync(creatorName);
             var grade = await this._gradesService.GetByValue(gradeValue);
+            //TODO: Validate
+            if (grade == null)
+            {
+
+            }
             var cooperative = new Cooperative
             {
                 Name = name,
