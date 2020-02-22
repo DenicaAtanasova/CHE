@@ -4,4 +4,8 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\Data\CHE.Data.Models\CHE.Data.Models.csproj" />
+  </ItemGroup>
+
 </Project>

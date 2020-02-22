@@ -8,6 +8,7 @@
         public Grade()
         {
             this.Cooperatives = new HashSet<Cooperative>();
+            this.vCards = new HashSet<VCardGrade>();
         }
 
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]

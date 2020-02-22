@@ -7,7 +7,7 @@
 
     public class CheDbContext : IdentityDbContext<CheUser, CheRole, string>
     {
-        public CheDbContext(DbContextOptions<CheDbContext> options) 
+        public CheDbContext(DbContextOptions<CheDbContext> options)
             : base(options)
         {
         }
@@ -34,7 +34,7 @@
                 .HasKey(uc => new { uc.CheUserId, uc.CooperativeId });
 
             builder.Entity<VCardGrade>()
-                .HasKey(vcg => new { vcg.VCardId, vcg.GradeId});
+                .HasKey(vcg => new { vcg.VCardId, vcg.GradeId });
 
             builder.Entity<Review>()
                 .HasOne(r => r.Receiver)
