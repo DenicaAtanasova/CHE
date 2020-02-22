@@ -1,6 +1,7 @@
 ﻿namespace CHE.Services.Data
 {
     using CHE.Data.Models;
+
     using System.Collections.Generic;
     using System.Threading.Tasks;
 
@@ -8,6 +9,6 @@
     {
         Task<Grade> GetByValue(string value);
 
-        Task<IEnumerable<TEntity>> GetAllAsync<TEntity>();
+        Task<IEnumerable<string>> GetAllAsync();
     }
 }

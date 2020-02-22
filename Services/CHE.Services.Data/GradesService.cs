@@ -7,6 +7,7 @@
     using System.Threading.Tasks;
 
     using Microsoft.EntityFrameworkCore;
+    using System.Linq;
 
     public class GradesService : IGradesService
     {
@@ -22,18 +23,16 @@
             var gradeFromDb = await this._dbContext.Grades
                 .FirstOrDefaultAsync(x => x.Value == value);
 
-            //TODO Validate
-            if (gradeFromDb == null)
-            {
-
-            }
-
             return gradeFromDb;
         }
 
-        public Task<IEnumerable<TEntity>> GetAllAsync<TEntity>()
+        public async Task<IEnumerable<string>> GetAllAsync()
         {
-            throw new System.NotImplementedException();
+            var gradesFromDb = await this._dbContext.Grades
+                .Select(x => x.Value)
+                .ToListAsync();
+
+            return gradesFromDb;
         }
     }
 }
