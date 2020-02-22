@@ -5,7 +5,7 @@
 
     public interface ICooperativesService
     {
-        Task CreateAsync(string name, string info, string grade, string creatorName, string city, string neighbourhood, string street = null);
+        Task CreateAsync(string name, string info, string gradeValue, string creatorName);
 
         Task DeleteAsync(string id);
 

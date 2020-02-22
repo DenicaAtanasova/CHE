@@ -22,6 +22,8 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Data\CHE.Data.Models\CHE.Data.Models.csproj" />
     <ProjectReference Include="..\..\Data\CHE.Data\CHE.Data.csproj" />
+    <ProjectReference Include="..\..\Services\CHE.Services.Data\CHE.Services.Data.csproj" />
+    <ProjectReference Include="..\CHE.Web.InputModels\CHE.Web.InputModels.csproj" />
   </ItemGroup>
 
 </Project>

@@ -1,12 +1,12 @@
 ﻿namespace CHE.Services.Data
 {
     using CHE.Data;
+    using CHE.Data.Models;
 
     using System.Collections.Generic;
     using System.Threading.Tasks;
 
     using Microsoft.EntityFrameworkCore;
-    using CHE.Data.Models;
 
     public class GradesService : IGradesService
     {
@@ -21,6 +21,12 @@
         {
             var gradeFromDb = await this._dbContext.Grades
                 .FirstOrDefaultAsync(x => x.Value == value);
+
+            //TODO Validate
+            if (gradeFromDb == null)
+            {
+
+            }
 
             return gradeFromDb;
         }

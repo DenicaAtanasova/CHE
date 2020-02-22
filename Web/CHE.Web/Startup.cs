@@ -14,6 +14,7 @@ using Microsoft.Extensions.Hosting;
 using CHE.Data.Models;
 using CHE.Data;
 using CHE.Data.Seedeing;
+using CHE.Services.Data;
 
 namespace CHE.Web
 {
@@ -52,6 +53,10 @@ namespace CHE.Web
             services.AddRazorPages();
 
             services.AddSingleton(this.configuration);
+
+            // Application services
+            services.AddTransient<ICooperativesService, CooperativesService>();
+            services.AddTransient<IGradesService, GradesService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
