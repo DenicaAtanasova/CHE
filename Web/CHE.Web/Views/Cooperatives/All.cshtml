@@ -1,0 +1,14 @@
+﻿@model CHE.Web.ViewModels.Cooperatives.CooperativeAllListViewModel
+
+    <section class="cooperative-list">
+        <div class="list-group list-group-horizontal-sm">
+            @foreach (var cooperative in Model.Cooperatives)
+            {
+                <a class="list-group-item list-group-item-action" asp-controller="" asp-action="">
+                    <div><strong>Name: </strong>@cooperative.Name</div>
+                    <div><strong>Info: </strong>@cooperative.Info</div>
+                    <div><strong>Grade: </strong>@cooperative.Grade</div>
+                </a>
+            }
+        </div>
+    </section>

@@ -7,6 +7,7 @@
 
 
   <ItemGroup>
+    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="7.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="3.1.2" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="3.1.2" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="3.1.2" />
@@ -23,7 +24,9 @@
     <ProjectReference Include="..\..\Data\CHE.Data.Models\CHE.Data.Models.csproj" />
     <ProjectReference Include="..\..\Data\CHE.Data\CHE.Data.csproj" />
     <ProjectReference Include="..\..\Services\CHE.Services.Data\CHE.Services.Data.csproj" />
+    <ProjectReference Include="..\..\Services\CHE.Services.Mapping\CHE.Services.Mapping.csproj" />
     <ProjectReference Include="..\CHE.Web.InputModels\CHE.Web.InputModels.csproj" />
+    <ProjectReference Include="..\CHE.Web.ViewModels\CHE.Web.ViewModels.csproj" />
   </ItemGroup>
 
 </Project>

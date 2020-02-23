@@ -1,13 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using CHE.Services.Data;
-using CHE.Web.InputModels.Cooperatives;
-using Microsoft.AspNetCore.Mvc;
-
-namespace CHE.Web.Controllers
+﻿namespace CHE.Web.Controllers
 {
+    using System.Threading.Tasks;
+
+    using Microsoft.AspNetCore.Mvc;
+
+    using CHE.Services.Data;
+    using CHE.Web.InputModels.Cooperatives;
+    using CHE.Web.ViewModels.Cooperatives;
+
     public class CooperativesController : Controller
     {
         private readonly ICooperativesService _cooperativesService;
@@ -33,6 +33,16 @@ namespace CHE.Web.Controllers
             var username = this.User.Identity.Name;
             await this._cooperativesService.CreateAsync(model.Name, model.Info, model.Grade, username);
             return this.Redirect("/");
+        }
+
+        public async Task<IActionResult> All()
+        {
+            var cooperativesList = new CooperativeAllListViewModel
+            {
+                Cooperatives = await this._cooperativesService.GetAllAsync<CooperativeAllViewModel>()
+            };
+
+            return this.View(cooperativesList);
         }
     }
 }

@@ -1,9 +1,12 @@
 ﻿namespace CHE.Services.Data
 {
+    using AutoMapper;
+    using AutoMapper.QueryableExtensions;
     using CHE.Data;
     using CHE.Data.Models;
 
     using Microsoft.AspNetCore.Identity;
+    using Microsoft.EntityFrameworkCore;
     using System;
     using System.Collections.Generic;
     using System.Threading.Tasks;
@@ -12,15 +15,18 @@
     {
         private readonly CheDbContext _dbContext;
         private readonly UserManager<CheUser> _userManager;
+        private readonly IMapper _mapper;
         private readonly IGradesService _gradesService;
 
         public CooperativesService(
             CheDbContext dbContext, 
             UserManager<CheUser> userManager,
+            IMapper mapper,
             IGradesService gradesService)
         {
             this._dbContext = dbContext;
             this._userManager = userManager;
+            this._mapper = mapper;
             this._gradesService = gradesService;
         }
 
@@ -62,9 +68,14 @@
             throw new NotImplementedException();
         }
 
-        public Task<IEnumerable<TEntity>> GetAllAsync<TEntity>()
+        public async Task<IEnumerable<TEntity>> GetAllAsync<TEntity>()
         {
-            throw new NotImplementedException();
+            var cooperativeFromDb = await this._dbContext
+                .Cooperatives
+                .ProjectTo<TEntity>(_mapper.ConfigurationProvider)
+                .ToListAsync();
+
+            return cooperativeFromDb;
         }
         #endregion
 

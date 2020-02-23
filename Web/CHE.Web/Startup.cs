@@ -15,6 +15,9 @@ using CHE.Data.Models;
 using CHE.Data;
 using CHE.Data.Seedeing;
 using CHE.Services.Data;
+using AutoMapper;
+using CHE.Web.ViewModels;
+using CHE.Services.Mapping;
 
 namespace CHE.Web
 {
@@ -57,6 +60,9 @@ namespace CHE.Web
             // Application services
             services.AddTransient<ICooperativesService, CooperativesService>();
             services.AddTransient<IGradesService, GradesService>();
+
+            // AutoMapper
+            services.AddAutoMapper(typeof(CooperativeProfile));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
