@@ -1,0 +1,18 @@
+﻿@model CHE.Web.ViewModels.Cooperatives.CooeprativeDetailsViewModel
+
+    <div class="jumbotron">
+        <h1 class="display-4">@Model.Name</h1>
+        <p class="lead">@Model.Info</p>
+        <hr class="my-4">
+        <p>
+            <div>@Model.Grade</div>
+            <div>@Model.MembersCount</div>
+        </p>
+        <div class="d-flex justify-content-lg-between">
+            <div></div>
+            <div>
+                <a class="btn btn-primary btn-lg" href="#" role="button">Edit</a>
+                <a class="btn btn-primary btn-lg" href="#" role="button">Delete</a>
+            </div>
+        </div>
+    </div>

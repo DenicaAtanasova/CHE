@@ -44,5 +44,13 @@
 
             return this.View(cooperativesList);
         }
+
+        public async Task<IActionResult> Details(string id)
+        {
+            var cooperative = await this._cooperativesService
+                .GetByIdAsync<CooeprativeDetailsViewModel>(id);
+
+            return this.View(cooperative);
+        }
     }
 }

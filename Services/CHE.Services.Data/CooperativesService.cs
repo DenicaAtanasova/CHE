@@ -9,6 +9,7 @@
     using Microsoft.EntityFrameworkCore;
     using System;
     using System.Collections.Generic;
+    using System.Linq;
     using System.Threading.Tasks;
 
     public class CooperativesService : ICooperativesService
@@ -63,9 +64,15 @@
             throw new NotImplementedException();
         }
 
-        public Task<TEntity> GetByIdAsync<TEntity>(string id)
+        public async Task<TEntity> GetByIdAsync<TEntity>(string id)
         {
-            throw new NotImplementedException();
+            var cooperativeFromDb = await this._dbContext
+                .Cooperatives
+                .Where(x => x.Id == id)
+                .ProjectTo<TEntity>(_mapper.ConfigurationProvider)
+                .FirstOrDefaultAsync();
+
+            return cooperativeFromDb;
         }
 
         public async Task<IEnumerable<TEntity>> GetAllAsync<TEntity>()

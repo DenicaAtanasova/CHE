@@ -10,6 +10,10 @@
         {
             this.CreateMap<Cooperative, CooperativeAllViewModel>()
                 .ForMember(dest => dest.Grade, opt => opt.MapFrom(src => src.Grade.Value));
+
+            this.CreateMap<Cooperative, CooeprativeDetailsViewModel>()
+                .ForMember(dest => dest.Grade, opt => opt.MapFrom(src => src.Grade.Value))
+                .ForMember(dest => dest.MembersCount, opt => opt.MapFrom(src => src.Members.Count));
         }
     }
 }
