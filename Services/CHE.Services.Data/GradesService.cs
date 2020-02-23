@@ -21,7 +21,7 @@
         public async Task<Grade> GetByValue(string value)
         {
             var gradeFromDb = await this._dbContext.Grades
-                .FirstOrDefaultAsync(x => x.Value == value);
+                .SingleOrDefaultAsync(x => x.Value == value);
 
             return gradeFromDb;
         }

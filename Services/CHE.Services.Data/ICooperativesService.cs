@@ -5,9 +5,9 @@
 
     public interface ICooperativesService
     {
-        Task CreateAsync(string name, string info, string gradeValue, string creatorName);
+        Task<bool> CreateAsync(string name, string info, string gradeValue, string creatorName);
 
-        Task DeleteAsync(string id);
+        Task<bool> DeleteAsync(string id);
 
         Task UpdateAsync<TEntity>(string id, TEntity entity);
 

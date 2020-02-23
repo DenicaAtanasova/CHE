@@ -1,18 +1,42 @@
 ﻿@model CHE.Web.ViewModels.Cooperatives.CooeprativeDetailsViewModel
 
-    <div class="jumbotron">
-        <h1 class="display-4">@Model.Name</h1>
-        <p class="lead">@Model.Info</p>
-        <hr class="my-4">
-        <p>
-            <div>@Model.Grade</div>
-            <div>@Model.MembersCount</div>
-        </p>
-        <div class="d-flex justify-content-lg-between">
-            <div></div>
-            <div>
-                <a class="btn btn-primary btn-lg" href="#" role="button">Edit</a>
-                <a class="btn btn-primary btn-lg" href="#" role="button">Delete</a>
+<div class="jumbotron">
+    <h1 class="display-4">@Model.Name</h1>
+    <p class="lead">@Model.Info</p>
+    <hr class="my-4">
+    <p>
+        <div>@Model.Grade</div>
+        <div>@Model.MembersCount</div>
+    </p>
+    <div class="d-flex justify-content-lg-between">
+        <div></div>
+        <div>
+            <a class="btn btn-primary btn-lg" href="#" role="button">Edit</a>
+            <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#deleteConfirm">
+                Delete
+            </button>
+        </div>
+    </div>
+</div>
+
+
+<!-- Modal -->
+<div class="modal fade" id="deleteConfirm" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" >Delete cooperative</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <h5>Name: <strong>@Model.Name</strong></h5>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                <a class="btn btn-primary" asp-controller="Cooperatives" asp-action="Delete" asp-route-id="@Model.Id">Delete</a>
             </div>
         </div>
     </div>
+</div>

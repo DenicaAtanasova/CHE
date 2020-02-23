@@ -31,7 +31,12 @@
             }
 
             var username = this.User.Identity.Name;
-            await this._cooperativesService.CreateAsync(model.Name, model.Info, model.Grade, username);
+            var createSucceeded = await this._cooperativesService.CreateAsync(model.Name, model.Info, model.Grade, username);
+            if (!createSucceeded)
+            {
+                return this.BadRequest();
+            }
+
             return this.Redirect("/");
         }
 
@@ -45,12 +50,34 @@
             return this.View(cooperativesList);
         }
 
-        public async Task<IActionResult> Details(string id)
+        public async Task<IActionResult> Details(string? id)
         {
+            if (id == null)
+            {
+                return this.NotFound();
+            }
+
             var cooperative = await this._cooperativesService
                 .GetByIdAsync<CooeprativeDetailsViewModel>(id);
 
             return this.View(cooperative);
+        }
+
+        public async Task<IActionResult> Delete(string? id)
+        {
+            if (id == null)
+            {
+                return this.NotFound();
+            }
+
+            var deleteSucceeded = await this._cooperativesService.DeleteAsync(id);
+
+            if (!deleteSucceeded)
+            {
+                return this.BadRequest();
+            }
+
+            return this.RedirectToAction(nameof(All));
         }
     }
 }
