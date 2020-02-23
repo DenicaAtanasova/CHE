@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace CHE.Web.ViewModels.Cooperatives
+﻿namespace CHE.Web.ViewModels.Cooperatives
 {
     public class CooeprativeDetailsViewModel
     {
@@ -15,5 +11,7 @@ namespace CHE.Web.ViewModels.Cooperatives
         public string Grade { get; set; }
 
         public int MembersCount { get; set; }
+
+        public CooperativeAddressViewModel Address { get; set; }
     }
 }

@@ -67,7 +67,6 @@
             cooperativeToUpdate.Name = name;
             cooperativeToUpdate.Info = info;
             cooperativeToUpdate.Grade = await this._gradesService.GetByValueAsync(gradeValue);
-            //this._dbContext.Entry(cooperativeToUpdate).State = EntityState.Modified;
 
             var address = new Address
             {

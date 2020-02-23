@@ -1,46 +1,59 @@
 ﻿@model CHE.Web.InputModels.Cooperatives.CooperativeEditInputModel
 
 <div class="row">
-    <div class="col-md-4">
+    <div class="col-md-10">
         <form method="post" asp-controller="Cooperatives" asp-action="Edit">
-            <h4>Edit cooperative</h4>
-            <hr />
-            <div class="form-group">
-                <label asp-for="Name"></label>
-                <input asp-for="Name" class="form-control" />
-                <span asp-validation-for="Name" class="text-danger"></span>
+            <div class="d-flex justify-content-around">
+                <div class="p-2 flex-fill">
+                    <h4>Edit cooperative</h4>
+                    <hr />
+                    <div class="form-group">
+                        <label asp-for="Name"></label>
+                        <input asp-for="Name" class="form-control" />
+                        <span asp-validation-for="Name" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Info"></label>
+                        <input asp-for="Info" class="form-control" />
+                        <span asp-validation-for="Info" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Grade"></label>
+                        <select asp-for="Grade" class="form-control">
+                            <option>@Model.Grade</option>
+                            <vc:grades-list current-grade="@Model.Grade"></vc:grades-list>
+                        </select>
+                        <span asp-validation-for="Grade" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="p-2 flex-fill">
+                    <h4>Add Address</h4>
+                    <hr />
+                    <div class="form-group">
+                        <label asp-for="Address.City"></label>
+                        <input asp-for="Address.City" class="form-control" />
+                        <span asp-validation-for="Address.City" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Address.Neighbourhood"></label>
+                        <input asp-for="Address.Neighbourhood" class="form-control" />
+                        <span asp-validation-for="Address.Neighbourhood" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Address.Street"></label>
+                        <input asp-for="Address.Street" class="form-control" />
+                        <span asp-validation-for="Address.Street" class="text-danger"></span>
+                    </div>
+                </div>
             </div>
-            <div class="form-group">
-                <label asp-for="Info"></label>
-                <input asp-for="Info" class="form-control" />
-                <span asp-validation-for="Info" class="text-danger"></span>
+            <div class="d-flex justify-content-between">
+                <div class="p-2">
+                    <button type="submit" class="btn btn-primary  btn-lg">Edit</button>
+                </div>
+                <div class="p-2">
+                    <a class="btn btn-primary btn-lg" asp-controller="Cooperatives" asp-action="Details" asp-route-id="@Model.Id">Cancel</a>
+                </div>
             </div>
-            <div class="form-group">
-                <label asp-for="Grade"></label>
-                <select asp-for="Grade" class="form-control">
-                    <option>@Model.Grade</option>
-                    <vc:grades-list current-grade="@Model.Grade"></vc:grades-list>
-                </select>
-                <span asp-validation-for="Grade" class="text-danger"></span>
-            </div>
-            <hr />
-            <h5>Address</h5>
-            <div class="form-group">
-                <label asp-for="Address.City"></label>
-                <input asp-for="Address.City" class="form-control" />
-                <span asp-validation-for="Address.City" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Address.Neighbourhood"></label>
-                <input asp-for="Address.Neighbourhood" class="form-control" />
-                <span asp-validation-for="Address.Neighbourhood" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Address.Street"></label>
-                <input asp-for="Address.Street" class="form-control" />
-                <span asp-validation-for="Address.Street" class="text-danger"></span>
-            </div>
-            <button type="submit" class="btn btn-primary">Edit</button>
         </form>
     </div>
 </div>

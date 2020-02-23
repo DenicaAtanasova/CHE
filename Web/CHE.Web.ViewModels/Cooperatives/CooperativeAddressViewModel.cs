@@ -1,6 +1,6 @@
-﻿namespace CHE.Web.InputModels.Cooperatives
+﻿namespace CHE.Web.ViewModels.Cooperatives
 {
-    public class CooperativeAddressInputModel
+    public class CooperativeAddressViewModel
     {
         public string City { get; set; }
 
