@@ -37,7 +37,7 @@
         public async Task<bool> CreateAsync(string name, string info, string gradeValue, string creatorName)
         {
             var creator = await this._userManager.FindByNameAsync(creatorName);
-            var grade = await this._gradesService.GetByValue(gradeValue);
+            var grade = await this._gradesService.GetByValueAsync(gradeValue);
 
             if (grade == null)
             {
@@ -59,6 +59,29 @@
             return result;
         }
 
+        public async Task<bool> UpdateAsync(string id, string name, string info, string gradeValue, string city, string neighbourhood, string street = null)
+        {
+            var cooperativeToUpdate = await this._dbContext.Cooperatives
+                .SingleOrDefaultAsync(x => x.Id == id);
+
+            cooperativeToUpdate.Name = name;
+            cooperativeToUpdate.Info = info;
+            cooperativeToUpdate.Grade = await this._gradesService.GetByValueAsync(gradeValue);
+            //this._dbContext.Entry(cooperativeToUpdate).State = EntityState.Modified;
+
+            var address = new Address
+            {
+                City = city,
+                Neighbourhood = neighbourhood,
+                Street = street,
+                Cooperative = cooperativeToUpdate
+            };
+            await this._dbContext.Addresses.AddAsync(address);
+            var result = await this._dbContext.SaveChangesAsync() > 0;
+
+            return result;
+        }
+
         public async Task<bool> DeleteAsync(string? id)
         {
             var cooperativeToDelete = await this._dbContext.Cooperatives
@@ -70,11 +93,6 @@
             var result = await this._dbContext.SaveChangesAsync() > 0;
 
             return result;
-        }
-
-        public Task UpdateAsync<TEntity>(string id, TEntity entity)
-        {
-            throw new NotImplementedException();
         }
 
         public async Task<TEntity> GetByIdAsync<TEntity>(string id)

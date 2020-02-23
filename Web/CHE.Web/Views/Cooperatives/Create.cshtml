@@ -19,7 +19,7 @@
                 <label asp-for="Grade"></label>
                 <select asp-for="Grade" class="form-control">
                     <option selected disabled>-- Choose grade --</option>
-                    <vc:grades-list></vc:grades-list>
+                    <vc:grades-list current-grade=""></vc:grades-list>
                 </select>
                 <span asp-validation-for="Grade" class="text-danger"></span>
             </div>

@@ -1,8 +1,8 @@
 ﻿namespace CHE.Web.ViewComponents
 {
-    using CHE.Services.Data;
     using Microsoft.AspNetCore.Mvc;
     using System.Threading.Tasks;
+    using CHE.Services.Data;
 
     public class GradesListViewComponent : ViewComponent
     {
@@ -13,9 +13,9 @@
             _gradesService = gradesService;
         }
 
-        public async Task<IViewComponentResult> InvokeAsync()
+        public async Task<IViewComponentResult> InvokeAsync(string currentGrade = null)
         {
-            var gradesList = await _gradesService.GetAllAsync();
+            var gradesList = await _gradesService.GetAllAsync(currentGrade);
 
             return View(gradesList);
         }

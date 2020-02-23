@@ -7,8 +7,8 @@
 
     public interface IGradesService
     {
-        Task<Grade> GetByValue(string value);
+        Task<Grade> GetByValueAsync(string value);
 
-        Task<IEnumerable<string>> GetAllAsync();
+        Task<IEnumerable<string>> GetAllAsync(string currentGrade = null);
     }
 }

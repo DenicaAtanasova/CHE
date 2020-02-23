@@ -1,7 +1,10 @@
 ﻿namespace CHE.Data.Models
 {
+    using System.ComponentModel.DataAnnotations.Schema;
+
     public class Address
     {
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public string Id { get; set; }
 
         public string City { get; set; }

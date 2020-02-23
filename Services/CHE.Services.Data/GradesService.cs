@@ -18,7 +18,7 @@
             this._dbContext = dbContext;
         }
 
-        public async Task<Grade> GetByValue(string value)
+        public async Task<Grade> GetByValueAsync(string value)
         {
             var gradeFromDb = await this._dbContext.Grades
                 .SingleOrDefaultAsync(x => x.Value == value);
@@ -26,9 +26,10 @@
             return gradeFromDb;
         }
 
-        public async Task<IEnumerable<string>> GetAllAsync()
+        public async Task<IEnumerable<string>> GetAllAsync(string currentGrade = null)
         {
             var gradesFromDb = await this._dbContext.Grades
+                .Where(x => x.Value != currentGrade)
                 .Select(x => x.Value)
                 .ToListAsync();
 

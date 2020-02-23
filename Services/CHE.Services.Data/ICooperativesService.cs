@@ -7,9 +7,9 @@
     {
         Task<bool> CreateAsync(string name, string info, string gradeValue, string creatorName);
 
-        Task<bool> DeleteAsync(string id);
+        Task<bool> UpdateAsync(string id, string name, string info, string gradeValue, string city, string neighbourhood, string street = null);
 
-        Task UpdateAsync<TEntity>(string id, TEntity entity);
+        Task<bool> DeleteAsync(string id);
 
         Task<TEntity> GetByIdAsync<TEntity>(string id);
 

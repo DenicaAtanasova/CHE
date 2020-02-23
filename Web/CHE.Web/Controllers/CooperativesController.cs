@@ -37,7 +37,7 @@
                 return this.BadRequest();
             }
 
-            return this.Redirect("/");
+            return this.RedirectToAction(nameof(All));
         }
 
         public async Task<IActionResult> All()
@@ -50,17 +50,34 @@
             return this.View(cooperativesList);
         }
 
-        public async Task<IActionResult> Details(string? id)
+        public async Task<IActionResult> Edit(string? id)
         {
             if (id == null)
             {
                 return this.NotFound();
             }
 
-            var cooperative = await this._cooperativesService
-                .GetByIdAsync<CooeprativeDetailsViewModel>(id);
+            var cooperativeToEdit = await this._cooperativesService.GetByIdAsync<CooperativeEditInputModel>(id);
 
-            return this.View(cooperative);
+            return this.View(cooperativeToEdit);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Edit(CooperativeEditInputModel model)
+        {
+            if (!this.ModelState.IsValid)
+            {
+                return this.View(model.Id);
+            }
+
+            var updateSucceeded = await this._cooperativesService
+                .UpdateAsync(model.Id, model.Name, model.Info, model.Grade, model.Address.City, model.Address.Neighbourhood, model.Address.Street);
+            if (!updateSucceeded)
+            {
+                return this.BadRequest();
+            }
+
+            return this.RedirectToAction(nameof(Details), new { id = model.Id });
         }
 
         public async Task<IActionResult> Delete(string? id)
@@ -78,6 +95,19 @@
             }
 
             return this.RedirectToAction(nameof(All));
+        }
+
+        public async Task<IActionResult> Details(string? id)
+        {
+            if (id == null)
+            {
+                return this.NotFound();
+            }
+
+            var cooperative = await this._cooperativesService
+                .GetByIdAsync<CooeprativeDetailsViewModel>(id);
+
+            return this.View(cooperative);
         }
     }
 }

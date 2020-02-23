@@ -9,12 +9,14 @@
         <div>@Model.MembersCount</div>
     </p>
     <div class="d-flex justify-content-lg-between">
-        <div></div>
         <div>
-            <a class="btn btn-primary btn-lg" href="#" role="button">Edit</a>
+            <a class="btn btn-primary btn-lg" asp-controller="Cooperatives" asp-action="Edit" asp-route-id="@Model.Id">Edit</a>
             <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#deleteConfirm">
                 Delete
             </button>
+        </div>
+        <div>
+            <a class="btn btn-primary btn-lg" asp-controller="Cooperatives" asp-action="All">Back</a>
         </div>
     </div>
 </div>
