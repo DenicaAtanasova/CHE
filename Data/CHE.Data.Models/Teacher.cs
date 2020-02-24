@@ -6,16 +6,13 @@
     {
         public Teacher()
         {
-            this.ReceivedJoinRequests = new HashSet<JoinRequest>();
-            this.ReceivedReviews = new HashSet<Review>();
+            this.ReviewsReceived = new HashSet<Review>();
         }
 
         public string VCardId { get; set; }
 
         public VCard VCard { get; set; }
 
-        public ICollection<JoinRequest> ReceivedJoinRequests { get; }
-
-        public ICollection<Review> ReceivedReviews { get; set; }
+        public ICollection<Review> ReviewsReceived { get; set; }
     }
 }

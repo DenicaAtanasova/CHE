@@ -6,20 +6,16 @@
     {
         public string Content { get; set; }
 
-        public string ParentSenderId { get; set; }
+        public string SenderId { get; set; }
 
-        public Parent ParentSender { get; set; }
+        public CheUser Sender { get; set; }
 
-        public string TeacherReceiverId { get; set; }
+        public string ReceiverId { get; set; }
 
-        public Teacher TeacherReceiver { get; set; }
+        public CheUser Receiver { get; set; }
 
-        public string CoopSenderId { get; set; }
+        public string CooperativeId { get; set; }
 
-        public Cooperative CoopSender { get; set; }
-
-        public string CoopReceiverId { get; set; }
-
-        public Cooperative CoopReceiver { get; set; }
+        public Cooperative Cooperative { get; set; }
     }
 }

@@ -5,12 +5,9 @@
     {
         public Parent()
         {
-            this.SentReviews = new HashSet<Review>();
-            this.SentJoinRequests = new HashSet<JoinRequest>();
+            this.ReviewsSent = new HashSet<Review>();
         }
 
-        public ICollection<Review> SentReviews { get; set; }
-
-        public ICollection<JoinRequest> SentJoinRequests { get; set; }
+        public ICollection<Review> ReviewsSent { get; set; }
     }
 }

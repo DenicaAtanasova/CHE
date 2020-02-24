@@ -7,8 +7,7 @@
     {
         public Cooperative()
         {
-            this.ReceivedJoinRequests = new HashSet<JoinRequest>();
-            this.SentJoinRequests = new HashSet<JoinRequest>();
+            this.JoinRequestsReceived = new HashSet<JoinRequest>();
             this.Members = new HashSet<CheUserCooperative>();
         }
 
@@ -30,8 +29,6 @@
 
         public ICollection<CheUserCooperative> Members { get; set; }
 
-        public ICollection<JoinRequest> ReceivedJoinRequests { get; set; }
-
-        public ICollection<JoinRequest> SentJoinRequests { get; set; }
+        public ICollection<JoinRequest> JoinRequestsReceived { get; set; }
     }
 }

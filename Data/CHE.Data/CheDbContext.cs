@@ -38,38 +38,26 @@
 
             builder.Entity<Review>()
                 .HasOne(r => r.Receiver)
-                .WithMany(rc => rc.ReceivedReviews)
+                .WithMany(rc => rc.ReviewsReceived)
                 .HasForeignKey(r => r.RecieverId)
                 .OnDelete(DeleteBehavior.Restrict);
 
             builder.Entity<Review>()
                 .HasOne(r => r.Sender)
-                .WithMany(s => s.SentReviews)
+                .WithMany(s => s.ReviewsSent)
                 .HasForeignKey(r => r.SenderId)
                 .OnDelete(DeleteBehavior.Restrict);
 
             builder.Entity<JoinRequest>()
-                .HasOne(jr => jr.CoopReceiver)
-                .WithMany(r => r.ReceivedJoinRequests)
-                .HasForeignKey(jr => jr.CoopReceiverId)
+                .HasOne(jr => jr.Receiver)
+                .WithMany(r => r.JoinRequestsReceived)
+                .HasForeignKey(jr => jr.ReceiverId)
                 .OnDelete(DeleteBehavior.Restrict);
 
             builder.Entity<JoinRequest>()
-                .HasOne(jr => jr.CoopSender)
-                .WithMany(s => s.SentJoinRequests)
-                .HasForeignKey(jr => jr.CoopSenderId)
-                .OnDelete(DeleteBehavior.Restrict);
-
-            builder.Entity<JoinRequest>()
-                .HasOne(jr => jr.TeacherReceiver)
-                .WithMany(r => r.ReceivedJoinRequests)
-                .HasForeignKey(jr => jr.TeacherReceiverId)
-                .OnDelete(DeleteBehavior.Restrict);
-
-            builder.Entity<JoinRequest>()
-                .HasOne(jr => jr.ParentSender)
-                .WithMany(p => p.SentJoinRequests)
-                .HasForeignKey(jr => jr.ParentSenderId)
+                .HasOne(jr => jr.Sender)
+                .WithMany(s => s.JoinRequestsSent)
+                .HasForeignKey(jr => jr.SenderId)
                 .OnDelete(DeleteBehavior.Restrict);
 
             base.OnModelCreating(builder);
