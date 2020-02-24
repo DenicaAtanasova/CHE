@@ -2,25 +2,31 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
     using System.Threading.Tasks;
-
+    using AutoMapper;
+    using AutoMapper.QueryableExtensions;
     using CHE.Data;
     using CHE.Data.Models;
     using Microsoft.AspNetCore.Identity;
+    using Microsoft.EntityFrameworkCore;
 
     public class JoinRequestsService : IJoinRequestsService
     {
         private readonly CheDbContext _dbContext;
         private readonly UserManager<CheUser> _userManager;
+        private readonly IMapper _mapper;
         private readonly ICooperativesService _cooperativesService;
 
         public JoinRequestsService(
             CheDbContext dbContext,
             UserManager<CheUser> userManager,
+            IMapper mapper,
             ICooperativesService cooperativesService)
         {
             this._dbContext = dbContext;
             this._userManager = userManager;
+            this._mapper = mapper;
             this._cooperativesService = cooperativesService;
         }
 
@@ -30,6 +36,7 @@
             var receiver = await this._userManager.FindByNameAsync(cooperative.Creator.UserName);
             var sender = await this._userManager.FindByNameAsync(senderName);
 
+            //TODO: check if request from the sender already exists
             var request = new JoinRequest
             {
                 Content = content,
@@ -51,16 +58,6 @@
         }
 
         public Task<TEntity> GetByIdAsync<TEntity>(string id)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<IEnumerable<TEntity>> GetCooperativeAllAsync<TEntity>(string cooperativeId)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<IEnumerable<TEntity>> GetTeacherAllAsync<TEntity>(string teacherId)
         {
             throw new NotImplementedException();
         }

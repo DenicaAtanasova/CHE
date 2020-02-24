@@ -40,16 +40,6 @@
             return this.RedirectToAction(nameof(All));
         }
 
-        public async Task<IActionResult> All()
-        {
-            var cooperativesList = new CooperativeAllListViewModel
-            {
-                Cooperatives = await this._cooperativesService.GetAllAsync<CooperativeAllViewModel>()
-            };
-
-            return this.View(cooperativesList);
-        }
-
         public async Task<IActionResult> Edit(string? id)
         {
             if (id == null)
@@ -108,6 +98,16 @@
                 .GetByIdAsync<CooeprativeDetailsViewModel>(id);
 
             return this.View(cooperative);
+        }
+
+        public async Task<IActionResult> All()
+        {
+            var cooperativesList = new CooperativeAllListViewModel
+            {
+                Cooperatives = await this._cooperativesService.GetAllAsync<CooperativeAllViewModel>()
+            };
+
+            return this.View(cooperativesList);
         }
     }
 }

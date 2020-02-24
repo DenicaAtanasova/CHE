@@ -28,6 +28,7 @@
             }
 
             var senderName = this.User.Identity.Name;
+
             var sendRequestSucceeded = await this._joinRequestsService.CreateAsync(model.Content, model.CooperativeId, senderName);
             if (!sendRequestSucceeded)
             {

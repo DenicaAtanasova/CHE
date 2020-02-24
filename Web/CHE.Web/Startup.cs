@@ -60,6 +60,7 @@ namespace CHE.Web
             // Application services
             services.AddTransient<ICooperativesService, CooperativesService>();
             services.AddTransient<IGradesService, GradesService>();
+            services.AddTransient<IJoinRequestsService, JoinRequestsService>();
 
             // AutoMapper
             services.AddAutoMapper(typeof(CooperativeProfile));

@@ -81,7 +81,7 @@
             return result;
         }
 
-        public async Task<bool> DeleteAsync(string? id)
+        public async Task<bool> DeleteAsync(string id)
         {
             var cooperativeToDelete = await this._dbContext.Cooperatives
                 .SingleOrDefaultAsync(x => x.Id == id);
@@ -98,6 +98,7 @@
         {
             var cooperativeFromDb = await this._dbContext.Cooperatives
                 .Where(x => x.Id == id)
+                .Include(x => x.JoinRequestsReceived)
                 .ProjectTo<TEntity>(_mapper.ConfigurationProvider)
                 .SingleOrDefaultAsync();
 
@@ -116,6 +117,7 @@
         }
         #endregion
 
+        //TODO: Move to users service
         #region Actions with requests
         public Task AcceptRequest(string cooperativeId, string requestId)
         {
@@ -140,6 +142,7 @@
         }
         #endregion
 
+        //TODO: Move to users service
         #region Actions with teachers
         public Task SendTeacherRequest(string cooperativeId, string teacherId)
         {

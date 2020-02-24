@@ -1,4 +1,6 @@
-﻿namespace CHE.Web.ViewModels.Cooperatives
+﻿using System.Collections.Generic;
+
+namespace CHE.Web.ViewModels.Cooperatives
 {
     public class CooeprativeDetailsViewModel
     {
@@ -12,6 +14,10 @@
 
         public int MembersCount { get; set; }
 
+        public string CreatorUserName { get; set; }
+
         public CooperativeAddressViewModel Address { get; set; }
+
+        public ICollection<CooperativeJoinRequestViewModel> JoinRequestsReceived { get; set; }
     }
 }

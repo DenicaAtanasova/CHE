@@ -10,6 +10,8 @@
     {
         public CooperativeProfile()
         {
+            this.CreateMap<Cooperative, Cooperative>();
+
             this.CreateMap<Cooperative, CooperativeAllViewModel>()
                 .ForMember(dest => dest.Grade, opt => opt.MapFrom(src => src.Grade.Value));
 

@@ -5,14 +5,10 @@
 
     public interface IJoinRequestsService
     {
-        Task CreateAsync(string content, string senderId, string receiverId);
+        Task<bool> CreateAsync(string content, string cooperativeId, string senderName);
 
-        Task DeleteAsync(string id);
+        Task<bool> DeleteAsync(string id);
 
         Task<TEntity> GetByIdAsync<TEntity>(string id);
-
-        Task<IEnumerable<TEntity>> GetCooperativeAllAsync<TEntity>(string cooperativeId);
-
-        Task<IEnumerable<TEntity>> GetTeacherAllAsync<TEntity>(string teacherId);
     }
 }
