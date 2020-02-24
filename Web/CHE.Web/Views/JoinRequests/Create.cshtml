@@ -1,0 +1,25 @@
+﻿@model CHE.Web.InputModels.JoinRequests.JoinRequestCreateInputModel
+
+<div class="row">
+    <div class="col-md-4">
+        <form method="post" asp-controller="JoinRequests" asp-action="Create">
+            <h4>Send request to join</h4>
+            <hr />
+            <div class="form-group">
+                <label asp-for="Content"></label>
+                <textarea asp-for="Content" class="form-control" ></textarea>
+                <span asp-validation-for="Content" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input asp-for="CooperativeId" type="hidden" />
+            </div>
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary">Send</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts{
+    <partial name="_ValidationScriptsPartial" />
+}
