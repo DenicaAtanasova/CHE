@@ -4,12 +4,15 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
-    using AutoMapper;
-    using AutoMapper.QueryableExtensions;
-    using CHE.Data;
-    using CHE.Data.Models;
+
     using Microsoft.AspNetCore.Identity;
     using Microsoft.EntityFrameworkCore;
+
+    using AutoMapper;
+    using AutoMapper.QueryableExtensions;
+
+    using CHE.Data;
+    using CHE.Data.Models;
 
     public class JoinRequestsService : IJoinRequestsService
     {
@@ -58,7 +61,7 @@
                 .SingleOrDefaultAsync(x => x.Id == id);
 
             requestToDelete.IsDeleted = true;
-            requestToDelete.ModifiedOn = DateTime.UtcNow;
+            requestToDelete.DeletedOn = DateTime.UtcNow;
 
             var result = await this._dbContext.SaveChangesAsync() > 0;
 
@@ -74,6 +77,16 @@
                 .SingleOrDefaultAsync();
 
             return requestFromDb;
+        }
+
+        public async Task<ICollection<TEntity>> GetAllByCooperativeId<TEntity>(string cooperativeId)
+        {
+            var cooperativeRequests = await this._dbContext.JoinRequests
+                .Where(x => x.CooperativeId == cooperativeId && x.IsDeleted == false)
+                .ProjectTo<TEntity>(this._mapper.ConfigurationProvider)
+                .ToArrayAsync();
+
+            return cooperativeRequests;
         }
     }
 }

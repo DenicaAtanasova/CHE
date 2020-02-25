@@ -76,6 +76,7 @@
                 Cooperative = cooperativeToUpdate
             };
             await this._dbContext.Addresses.AddAsync(address);
+
             var result = await this._dbContext.SaveChangesAsync() > 0;
 
             return result;
@@ -96,9 +97,9 @@
 
         public async Task<TEntity> GetByIdAsync<TEntity>(string id)
         {
+            //TODO: Load only undeleted join reqquests
             var cooperativeFromDb = await this._dbContext.Cooperatives
                 .Where(x => x.Id == id)
-                .Include(x => x.JoinRequestsReceived)
                 .ProjectTo<TEntity>(_mapper.ConfigurationProvider)
                 .SingleOrDefaultAsync();
 
@@ -111,7 +112,7 @@
                 .Cooperatives
                 .Where(x => !x.IsDeleted)
                 .ProjectTo<TEntity>(_mapper.ConfigurationProvider)
-                .ToListAsync();
+                .ToArrayAsync();
 
             return cooperativeFromDb;
         }

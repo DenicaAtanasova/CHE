@@ -10,5 +10,7 @@
         Task<bool> DeleteAsync(string id);
 
         Task<TEntity> GetByIdAsync<TEntity>(string id);
+
+        Task<ICollection<TEntity>> GetAllByCooperativeId<TEntity>(string cooperativeId);
     }
 }

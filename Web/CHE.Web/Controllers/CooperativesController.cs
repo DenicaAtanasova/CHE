@@ -8,15 +8,18 @@
     using CHE.Services.Data;
     using CHE.Web.InputModels.Cooperatives;
     using CHE.Web.ViewModels.Cooperatives;
+    using System.Collections.Generic;
 
     public class CooperativesController : Controller
     {
         private readonly ICooperativesService _cooperativesService;
+        private readonly IJoinRequestsService _joinRequestsService;
         private readonly IUsersService _usersService;
 
-        public CooperativesController(ICooperativesService cooperativesService, IUsersService usersService)
+        public CooperativesController(ICooperativesService cooperativesService, IJoinRequestsService joinRequestsService, IUsersService usersService)
         {
             this._cooperativesService = cooperativesService;
+            this._joinRequestsService = joinRequestsService;
             this._usersService = usersService;
         }
 
@@ -104,6 +107,7 @@
 
             var cooperative = await this._cooperativesService
                 .GetByIdAsync<CooeprativeDetailsViewModel>(id);
+            cooperative.JoinRequestsReceived = await this._joinRequestsService.GetAllByCooperativeId<CooperativeJoinRequestViewModel>(id);
 
             if (this.User.Identity.Name == cooperative.CreatorUserName)
             {
@@ -123,6 +127,7 @@
             return this.View(cooperativesList);
         }
 
+        [Authorize]
         public async Task<IActionResult> RejectRequest(string cooperativeId, string requestId)
         {
             var rejectRequestSucceeded = await this._usersService.RejectRequest(requestId);
