@@ -99,6 +99,7 @@
         {
             //TODO: Load only undeleted join reqquests
             var cooperativeFromDb = await this._dbContext.Cooperatives
+                .Include(x => x.Members)
                 .Where(x => x.Id == id)
                 .ProjectTo<TEntity>(_mapper.ConfigurationProvider)
                 .SingleOrDefaultAsync();

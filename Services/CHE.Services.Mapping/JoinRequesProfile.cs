@@ -10,7 +10,9 @@
     {
         public JoinRequesProfile()
         {
-            this.CreateMap<JoinRequest, CooperativeJoinRequestViewModel>();
+            this.CreateMap<JoinRequest, JoinRequest>();
+
+            this.CreateMap<JoinRequest, CooperativeJoinRequestDetailsViewModel>();
 
             this.CreateMap<JoinRequest, JoinRequestDetailsViewModel>();
         }

@@ -3,8 +3,7 @@
     var data = new Dictionary<string, string>
     {
         { "cooperativeId", Model.CooperativeId },
-        { "requestId", Model.Id },
-        { "senderUsername", Model.SenderUserName}
+        { "requestId", Model.Id }
     };
 }
 
@@ -16,7 +15,7 @@
     <hr class="my-4">
     <div class="d-flex justify-content-lg-between">
         <div>
-            <a class="btn btn-primary btn-lg" >Accept</a>
+            <a class="btn btn-primary btn-lg" asp-controller="Cooperatives" asp-action="AcceptRequest" asp-all-route-data="@data">Accept</a>
         </div>
         <div>
             <a class="btn btn-primary btn-lg" asp-controller="Cooperatives" asp-action="RejectRequest" asp-all-route-data="@data" >Reject</a>

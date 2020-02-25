@@ -1,6 +1,6 @@
 ﻿namespace CHE.Web.ViewModels.Cooperatives
 {
-    public class CooperativeJoinRequestViewModel
+    public class CooperativeJoinRequestDetailsViewModel
     {
         public string Id { get; set; }
 

@@ -107,7 +107,7 @@
 
             var cooperative = await this._cooperativesService
                 .GetByIdAsync<CooeprativeDetailsViewModel>(id);
-            cooperative.JoinRequestsReceived = await this._joinRequestsService.GetAllByCooperativeId<CooperativeJoinRequestViewModel>(id);
+            cooperative.JoinRequestsReceived = await this._joinRequestsService.GetAllByCooperativeId<CooperativeJoinRequestDetailsViewModel>(id);
 
             if (this.User.Identity.Name == cooperative.CreatorUserName)
             {
@@ -135,6 +135,15 @@
             {
                 return this.BadRequest();
             }
+
+            return this.RedirectToAction(nameof(Details), new { id = cooperativeId });
+        }
+
+
+        [Authorize]
+        public async Task<IActionResult> AcceptRequest(string cooperativeId, string requestId)
+        {
+            await this._usersService.AcceptRequest(requestId);
 
             return this.RedirectToAction(nameof(Details), new { id = cooperativeId });
         }

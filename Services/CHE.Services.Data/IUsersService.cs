@@ -1,5 +1,6 @@
 ﻿namespace CHE.Services.Data
 {
+    using CHE.Data.Models;
     using System.Threading.Tasks;
 
     public interface IUsersService
