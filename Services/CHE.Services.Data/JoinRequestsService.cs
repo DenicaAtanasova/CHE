@@ -57,9 +57,15 @@
             throw new NotImplementedException();
         }
 
-        public Task<TEntity> GetByIdAsync<TEntity>(string id)
+        public async Task<TEntity> GetByIdAsync<TEntity>(string id)
         {
-            throw new NotImplementedException();
+            var requestFromDb = await this._dbContext
+                .JoinRequests
+                .Where(x => x.Id == id)
+                .ProjectTo<TEntity>(this._mapper.ConfigurationProvider)
+                .SingleOrDefaultAsync();
+
+            return requestFromDb;
         }
     }
 }

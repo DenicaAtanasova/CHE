@@ -1,11 +1,13 @@
 ﻿namespace CHE.Web.Controllers
 {
+    using System.Threading.Tasks;
+
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
-    using System.Threading.Tasks;
 
     using CHE.Services.Data;
     using CHE.Web.InputModels.JoinRequests;
+    using CHE.Web.ViewModels.JoinRequests;
 
     public class JoinRequestsController : Controller
     {
@@ -42,9 +44,16 @@
             return RedirectToAction("All", "Cooperatives");
         }
 
-        public async Task<IActionResult> Details(string id)
+        public async Task<IActionResult> Details(string? id)
         {
-            return this.View();
+            if (id == null)
+            {
+                return this.NotFound();
+            }
+
+            var request = await this._joinRequestsService.GetByIdAsync<JoinRequestDetailsViewModel>(id);
+
+            return this.View(request);
         }
     }
 }
