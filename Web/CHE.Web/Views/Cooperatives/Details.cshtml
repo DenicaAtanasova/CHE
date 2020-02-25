@@ -1,15 +1,85 @@
 ﻿@model CHE.Web.ViewModels.Cooperatives.CooeprativeDetailsViewModel
-@{
-    ViewData["Title"] = "Details";
-}
 
-<h1>Details</h1>
-
-@if (this.User.Identity.Name == Model.CreatorUserName)
-{
-    <partial name="_DetailsCreatorPartial" model="@Model" />
-}
-else
-{
-    <partial name="_DetailsAllPartial" model="@Model" />
-}
+<div class="jumbotron">
+    <h1 class="display-4">@Model.Name</h1>
+    <hr class="my-4">
+    <div class="row" style="height: 250px">
+        <div class="col-4">
+            <div class="list-group" id="list-tab" role="tablist">
+                <a class="list-group-item list-group-item-action active" id="list-home-list" data-toggle="list" href="#list-home" role="tab" aria-controls="home">Home</a>
+                <a class="list-group-item list-group-item-action" id="list-profile-list" data-toggle="list" href="#list-profile" role="tab" aria-controls="profile">Members</a>
+            </div>
+        </div>
+        <div class="col-8">
+            <div class="tab-content" id="nav-tabContent">
+                <div class="tab-pane fade show active" id="list-home" role="tabpanel" aria-labelledby="list-home-list">
+                    <div class="tab-pane fade show active" id="home-list" role="tabpanel" aria-labelledby="home">
+                        <div class="d-flex">
+                            <div class="p-2 flex-fill">
+                                <h5>Info</h5>
+                                <hr />
+                                <div><strong>About: </strong>@Model.Info</div>
+                                <div><strong>Grade: </strong>@Model.Grade</div>
+                                <div><strong>Members count: </strong>@Model.MembersCount</div>
+                            </div>
+                            <div class="p-2 flex-fill">
+                                <h5>Address</h5>
+                                <hr />
+                                <div><strong>City: </strong>@Model.Address?.City</div>
+                                <div><strong>Neighbourhood: </strong>@Model.Address?.Neighbourhood</div>
+                                <div><strong>Street: </strong>@Model.Address?.Street</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane fade overflow-auto" id="list-profile" role="tabpanel" aria-labelledby="list-profile-list" style="height: 250px">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">Username</th>
+                                <th scope="col" colspan="2">Handle</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <th scope="row">3</th>
+                                <td colspan="2">Larry the Bird</td>
+                                <td>Thornton</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">3</th>
+                                <td colspan="2">Larry the Bird</td>
+                                <td>Thornton</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">3</th>
+                                <td colspan="2">Larry the Bird</td>
+                                <td>Thornton</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">3</th>
+                                <td colspan="2">Larry the Bird</td>
+                                <td>Thornton</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">3</th>
+                                <td colspan="2">Larry the Bird</td>
+                                <td>Thornton</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <hr class="my-4">
+    <div class="d-flex justify-content-lg-between">
+        <div>
+            <a class="btn btn-primary btn-lg" asp-controller="JoinRequests" asp-action="Create" asp-route-CooperativeId="@Model.Id">Join</a>
+        </div>
+        <div>
+            <a class="btn btn-primary btn-lg" asp-controller="Cooperatives" asp-action="All">Back</a>
+        </div>
+    </div>
+</div>

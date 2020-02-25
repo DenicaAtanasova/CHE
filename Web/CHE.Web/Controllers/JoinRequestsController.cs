@@ -41,5 +41,10 @@
 
             return RedirectToAction("All", "Cooperatives");
         }
+
+        public async Task<IActionResult> Details(string id)
+        {
+            return this.View();
+        }
     }
 }

@@ -93,7 +93,6 @@
             return this.RedirectToAction(nameof(All));
         }
 
-        [Authorize]
         public async Task<IActionResult> Details(string? id)
         {
             if (id == null)
@@ -103,6 +102,11 @@
 
             var cooperative = await this._cooperativesService
                 .GetByIdAsync<CooeprativeDetailsViewModel>(id);
+
+            if (this.User.Identity.Name == cooperative.CreatorUserName)
+            {
+                return this.View("DetailsCreator", cooperative);
+            }
 
             return this.View(cooperative);
         }
