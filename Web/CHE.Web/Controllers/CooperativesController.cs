@@ -3,6 +3,7 @@
     using System.Threading.Tasks;
 
     using Microsoft.AspNetCore.Mvc;
+    using Microsoft.AspNetCore.Authorization;
 
     using CHE.Services.Data;
     using CHE.Web.InputModels.Cooperatives;
@@ -17,11 +18,13 @@
             this._cooperativesService = cooperativesService;
         }
 
+        [Authorize]
         public IActionResult Create()
         {
             return View();
         }
 
+        [Authorize]
         [HttpPost]
         public async Task<IActionResult> Create(CooperativeCreateInputModel model)
         {
@@ -40,6 +43,7 @@
             return this.RedirectToAction(nameof(All));
         }
 
+        [Authorize]
         public async Task<IActionResult> Edit(string? id)
         {
             if (id == null)
@@ -52,6 +56,7 @@
             return this.View(cooperativeToEdit);
         }
 
+        [Authorize]
         [HttpPost]
         public async Task<IActionResult> Edit(CooperativeEditInputModel model)
         {
@@ -70,6 +75,7 @@
             return this.RedirectToAction(nameof(Details), new { id = model.Id });
         }
 
+        [Authorize]
         public async Task<IActionResult> Delete(string? id)
         {
             if (id == null)
@@ -87,6 +93,7 @@
             return this.RedirectToAction(nameof(All));
         }
 
+        [Authorize]
         public async Task<IActionResult> Details(string? id)
         {
             if (id == null)

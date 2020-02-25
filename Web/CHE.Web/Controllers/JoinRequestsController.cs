@@ -1,9 +1,11 @@
 ﻿namespace CHE.Web.Controllers
 {
-    using CHE.Services.Data;
-    using CHE.Web.InputModels.JoinRequests;
+    using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
     using System.Threading.Tasks;
+
+    using CHE.Services.Data;
+    using CHE.Web.InputModels.JoinRequests;
 
     public class JoinRequestsController : Controller
     {
@@ -14,11 +16,13 @@
             this._joinRequestsService = joinRequestsService;
         }
 
+        [Authorize]
         public IActionResult Create(string cooperativeId)
         {
             return View(new JoinRequestCreateInputModel { CooperativeId = cooperativeId});
         }
 
+        [Authorize]
         [HttpPost]
         public async Task<IActionResult> Create(JoinRequestCreateInputModel model)
         {
