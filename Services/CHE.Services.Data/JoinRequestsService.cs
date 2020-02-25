@@ -52,9 +52,17 @@
             return result;
         }
 
-        public Task<bool> DeleteAsync(string id)
+        public async Task<bool> DeleteAsync(string id)
         {
-            throw new NotImplementedException();
+            var requestToDelete = await this._dbContext.JoinRequests
+                .SingleOrDefaultAsync(x => x.Id == id);
+
+            requestToDelete.IsDeleted = true;
+            requestToDelete.ModifiedOn = DateTime.UtcNow;
+
+            var result = await this._dbContext.SaveChangesAsync() > 0;
+
+            return result;
         }
 
         public async Task<TEntity> GetByIdAsync<TEntity>(string id)

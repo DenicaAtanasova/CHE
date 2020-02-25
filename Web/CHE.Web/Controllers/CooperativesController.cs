@@ -12,10 +12,12 @@
     public class CooperativesController : Controller
     {
         private readonly ICooperativesService _cooperativesService;
+        private readonly IUsersService _usersService;
 
-        public CooperativesController(ICooperativesService cooperativesService)
+        public CooperativesController(ICooperativesService cooperativesService, IUsersService usersService)
         {
             this._cooperativesService = cooperativesService;
+            this._usersService = usersService;
         }
 
         [Authorize]
@@ -119,6 +121,17 @@
             };
 
             return this.View(cooperativesList);
+        }
+
+        public async Task<IActionResult> RejectRequest(string cooperativeId, string requestId)
+        {
+            var rejectRequestSucceeded = await this._usersService.RejectRequest(requestId);
+            if (!rejectRequestSucceeded)
+            {
+                return this.BadRequest();
+            }
+
+            return this.RedirectToAction(nameof(Details), new { id = cooperativeId });
         }
     }
 }

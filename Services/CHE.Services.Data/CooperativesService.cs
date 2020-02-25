@@ -117,23 +117,20 @@
         }
         #endregion
 
-        //TODO: Move to users service
-        #region Actions with requests
-        public Task AcceptRequest(string cooperativeId, string requestId)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task RejectRequest(string cooperativeId, string requestId)
-        {
-            throw new NotImplementedException();
-        }
-        #endregion
-
         #region Actions with members
-        public Task AddMemberAsync(string cooperativeId, string memberId)
+        public async Task<bool> AddMemberAsync(string cooperativeId, string memberUsername)
         {
-            throw new NotImplementedException();
+            var member = await this._userManager.FindByNameAsync(memberUsername);
+            member.Cooperatives.Add(
+                new CheUserCooperative
+                {
+                    CooperativeId = cooperativeId
+                }
+            );
+
+            var result = await this._dbContext.SaveChangesAsync() > 0;
+
+            return result;
         }
 
         public Task RemoveMemberAsync(string cooperativeId, string memberId)

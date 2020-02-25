@@ -1,4 +1,12 @@
 ﻿@model CHE.Web.ViewModels.JoinRequests.JoinRequestDetailsViewModel
+@{ 
+    var data = new Dictionary<string, string>
+    {
+        { "cooperativeId", Model.CooperativeId },
+        { "requestId", Model.Id },
+        { "senderUsername", Model.SenderUserName}
+    };
+}
 
 <div class="jumbotron">
     <h3 class="display-4">Request to join</h3>
@@ -11,7 +19,7 @@
             <a class="btn btn-primary btn-lg" >Accept</a>
         </div>
         <div>
-            <a class="btn btn-primary btn-lg" >Reject</a>
+            <a class="btn btn-primary btn-lg" asp-controller="Cooperatives" asp-action="RejectRequest" asp-all-route-data="@data" >Reject</a>
         </div>
     </div>
 </div>
