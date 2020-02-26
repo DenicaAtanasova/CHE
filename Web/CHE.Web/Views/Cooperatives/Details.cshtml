@@ -1,4 +1,7 @@
 ﻿@model CHE.Web.ViewModels.Cooperatives.CooeprativeDetailsViewModel
+@{
+    var membersCount = 1;
+}
 
 <div class="jumbotron">
     <h1 class="display-4">@Model.Name</h1>
@@ -45,9 +48,9 @@
                             @foreach (var member in Model.Members)
                             {
                                 <tr>
-                                    <th scope="row">3</th>
+                                    <th scope="row">@(membersCount++)</th>
                                     <td colspan="2">@member.UserName</td>
-                                    <td>Thornton</td>
+                                    <td><a class="btn btn-primary btn-sm" asp-controller="JoinRequests" asp-action="Details" asp-route-id="@member.Id">Remove</a></td>
                                 </tr>
                             }
                         </tbody>
@@ -59,7 +62,7 @@
     <hr class="my-4">
     <div class="d-flex justify-content-lg-between">
         <div>
-            <a class="btn btn-primary btn-lg" asp-controller="JoinRequests" asp-action="Create" asp-route-CooperativeId="@Model.Id">Join</a>
+            <a class="btn btn-primary btn-lg" asp-controller="JoinRequests" asp-action="Send" asp-route-CooperativeId="@Model.Id">Join</a>
         </div>
         <div>
             <a class="btn btn-primary btn-lg" asp-controller="Cooperatives" asp-action="All">Back</a>

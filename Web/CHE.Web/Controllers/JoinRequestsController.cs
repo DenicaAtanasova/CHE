@@ -19,14 +19,14 @@
         }
 
         [Authorize]
-        public IActionResult Create(string cooperativeId)
+        public IActionResult Send(string cooperativeId)
         {
             return View(new JoinRequestCreateInputModel { CooperativeId = cooperativeId});
         }
 
         [Authorize]
         [HttpPost]
-        public async Task<IActionResult> Create(JoinRequestCreateInputModel model)
+        public async Task<IActionResult> Send(JoinRequestCreateInputModel model)
         {
             if (!this.ModelState.IsValid)
             {
