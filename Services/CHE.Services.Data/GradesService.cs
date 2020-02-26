@@ -28,9 +28,9 @@
 
         public async Task<IEnumerable<string>> GetAllAsync(string currentGrade = null)
         {
-            //TODO: Sort the collection
             var gradesFromDb = await this._dbContext.Grades
                 .Where(x => x.Value != currentGrade)
+                .OrderBy(x => x.NumValue)
                 .Select(x => x.Value)
                 .ToListAsync();
 
