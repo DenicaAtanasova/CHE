@@ -129,27 +129,5 @@
 
             return this.View(cooperativesList);
         }
-
-
-        //TODO: Move to users controller
-        [Authorize]
-        public async Task<IActionResult> RejectRequest(string cooperativeId, string requestId)
-        {
-            var rejectRequestSucceeded = await this._usersService.RejectRequest(requestId);
-            if (!rejectRequestSucceeded)
-            {
-                return this.BadRequest();
-            }
-
-            return this.RedirectToAction(nameof(Details), new { id = cooperativeId });
-        }
-
-        [Authorize]
-        public async Task<IActionResult> AcceptRequest(string cooperativeId, string requestId)
-        {
-            await this._usersService.AcceptRequest(requestId);
-
-            return this.RedirectToAction(nameof(Details), new { id = cooperativeId });
-        }
     }
 }
