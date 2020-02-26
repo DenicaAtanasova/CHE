@@ -35,7 +35,7 @@
             var senderName = this.User.Identity.Name;
 
             var sendRequestSucceeded = await this._usersService
-                .SendJoinRequest(model.Content, model.CooperativeId, model.ReceiverId, senderName);
+                .SendJoinRequestAsync(model.Content, model.CooperativeId, model.ReceiverId, senderName);
             if (!sendRequestSucceeded)
             {
                 //TODO: Make error view
@@ -48,7 +48,7 @@
         [Authorize]
         public async Task<IActionResult> RejectRequest(string cooperativeId, string requestId)
         {
-            var rejectRequestSucceeded = await this._usersService.RejectRequest(requestId);
+            var rejectRequestSucceeded = await this._usersService.RejectRequestAsync(requestId);
             if (!rejectRequestSucceeded)
             {
                 return this.BadRequest();
@@ -60,7 +60,23 @@
         [Authorize]
         public async Task<IActionResult> AcceptRequest(string cooperativeId, string requestId)
         {
-            await this._usersService.AcceptRequest(requestId);
+            var acceptRequestSucceeded = await this._usersService.AcceptRequestAsync(requestId);
+            if (!acceptRequestSucceeded)
+            {
+                return this.BadRequest();
+            }
+
+            return this.RedirectToAction("Details", "Cooperatives", new { id = cooperativeId });
+        }
+
+        [Authorize]
+        public async Task<IActionResult> RemoveMember(string memberId, string cooperativeId)
+        {
+            var removeMemberSucceeded = await this._usersService.RemoveMemberFromCooperativeAsync(memberId, cooperativeId);
+            if (!removeMemberSucceeded)
+            {
+                return this.BadRequest();
+            }
 
             return this.RedirectToAction("Details", "Cooperatives", new { id = cooperativeId });
         }

@@ -2,8 +2,10 @@
 {
     public class CooperativeUserDetailsViewModel
     {
-        public string Id { get; set; }
+        public string UserId { get; set; }
 
         public string UserName { get; set; }
+
+        public string CooperativeId { get; set; }
     }
 }

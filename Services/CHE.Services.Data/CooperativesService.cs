@@ -97,7 +97,6 @@
 
         public async Task<TEntity> GetByIdAsync<TEntity>(string id)
         {
-            //TODO: Load only undeleted join requests
             var cooperativeFromDb = await this._dbContext.Cooperatives
                 .Include(x => x.Members)
                 .Where(x => x.Id == id)
@@ -117,30 +116,6 @@
 
             return cooperativeFromDb;
         }
-        #endregion
-
-
-        #region Actions with members
-        public async Task<bool> AddMemberAsync(string cooperativeId, string senderId)
-        {
-            var cooperative = await this.GetByIdAsync<Cooperative>(cooperativeId);
-
-            cooperative.Members.Add(
-                new CheUserCooperative
-                {
-                    CheUserId = senderId
-                }
-            );
-            var isModified = this._dbContext.Update(cooperative).State == EntityState.Modified;
-
-            return isModified;
-        }
-
-        public Task RemoveMemberAsync(string cooperativeId, string memberId)
-        {
-            throw new NotImplementedException();
-        }
-
         #endregion
 
         //TODO: Move to users service

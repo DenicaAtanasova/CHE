@@ -4,10 +4,12 @@
 
     public interface IUsersService
     {
-        Task<bool> SendJoinRequest(string requestContent, string cooperativeId, string receiverId, string senderName);
+        Task<bool> SendJoinRequestAsync(string requestContent, string cooperativeId, string receiverId, string senderName);
 
-        Task<bool> AcceptRequest(string requestId);
+        Task<bool> AcceptRequestAsync(string requestId);
 
-        Task<bool> RejectRequest(string requestId);
+        Task<bool> RejectRequestAsync(string requestId);
+
+        Task<bool> RemoveMemberFromCooperativeAsync(string memberId, string cooperativeId);
     }
 }

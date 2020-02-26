@@ -13,16 +13,13 @@
     {
         private readonly ICooperativesService _cooperativesService;
         private readonly IJoinRequestsService _joinRequestsService;
-        private readonly IUsersService _usersService;
 
         public CooperativesController(
             ICooperativesService cooperativesService, 
-            IJoinRequestsService joinRequestsService, 
-            IUsersService usersService)
+            IJoinRequestsService joinRequestsService)
         {
             this._cooperativesService = cooperativesService;
             this._joinRequestsService = joinRequestsService;
-            this._usersService = usersService;
         }
 
         [Authorize]

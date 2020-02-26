@@ -41,7 +41,6 @@
                             <tr>
                                 <th scope="col">#</th>
                                 <th scope="col">Username</th>
-                                <th scope="col" colspan="2">Handle</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -50,7 +49,6 @@
                                 <tr>
                                     <th scope="row">@(membersCount++)</th>
                                     <td colspan="2">@member.UserName</td>
-                                    <td><a class="btn btn-primary btn-sm" asp-controller="JoinRequests" asp-action="Details" asp-route-id="@member.Id">Remove</a></td>
                                 </tr>
                             }
                         </tbody>

@@ -6,7 +6,6 @@
     using Microsoft.AspNetCore.Mvc;
 
     using CHE.Services.Data;
-    using CHE.Web.InputModels.JoinRequests;
     using CHE.Web.ViewModels.JoinRequests;
 
     public class JoinRequestsController : Controller
@@ -19,6 +18,7 @@
             this._joinRequestsService = joinRequestsService;
         }
 
+        [Authorize]
         public async Task<IActionResult> Details(string? id)
         {
             if (id == null)

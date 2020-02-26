@@ -52,7 +52,7 @@
                                 <tr>
                                     <th scope="row">@(membersCount++)</th>
                                     <td colspan="2">@member.UserName</td>
-                                    <td><a class="btn btn-primary btn-sm" asp-controller="JoinRequests" asp-action="Details" asp-route-id="@member.Id">Remove</a></td>
+                                    <td><a class="btn btn-primary btn-sm" asp-controller="Users" asp-action="RemoveMember" asp-route-cooperativeId="@member.CooperativeId" asp-route-memberId="@member.UserId" >Remove</a></td>
                                 </tr>
                             }
                         </tbody>
