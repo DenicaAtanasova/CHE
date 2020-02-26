@@ -15,8 +15,6 @@
 
         Task<IEnumerable<TEntity>> GetAllAsync<TEntity>();
 
-        Task<IEnumerable<TEntity>> GetJoinRequestsByCooperativeId<TEntity>(string id);
-
         Task<bool> AddMemberAsync(string cooperativeId, string senderId);
 
         Task RemoveMemberAsync(string cooperativeId, string userId);

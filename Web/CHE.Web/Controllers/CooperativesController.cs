@@ -15,7 +15,10 @@
         private readonly IJoinRequestsService _joinRequestsService;
         private readonly IUsersService _usersService;
 
-        public CooperativesController(ICooperativesService cooperativesService, IJoinRequestsService joinRequestsService, IUsersService usersService)
+        public CooperativesController(
+            ICooperativesService cooperativesService, 
+            IJoinRequestsService joinRequestsService, 
+            IUsersService usersService)
         {
             this._cooperativesService = cooperativesService;
             this._joinRequestsService = joinRequestsService;
@@ -106,7 +109,8 @@
 
             var cooperative = await this._cooperativesService
                 .GetByIdAsync<CooeprativeDetailsViewModel>(id);
-            cooperative.JoinRequestsReceived = await this._joinRequestsService.GetAllUnDeletedByCooperativeId<CooperativeJoinRequestDetailsViewModel>(id);
+            cooperative.JoinRequestsReceived = await this._joinRequestsService
+                .GetAllUnDeletedByCooperativeIdAsync<CooperativeJoinRequestDetailsViewModel>(id);
 
             if (this.User.Identity.Name == cooperative.CreatorUserName)
             {
@@ -126,6 +130,8 @@
             return this.View(cooperativesList);
         }
 
+
+        //TODO: Move to users controller
         [Authorize]
         public async Task<IActionResult> RejectRequest(string cooperativeId, string requestId)
         {
@@ -137,7 +143,6 @@
 
             return this.RedirectToAction(nameof(Details), new { id = cooperativeId });
         }
-
 
         [Authorize]
         public async Task<IActionResult> AcceptRequest(string cooperativeId, string requestId)

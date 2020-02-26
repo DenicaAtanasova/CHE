@@ -77,7 +77,7 @@
             return requestFromDb;
         }
 
-        public async Task<ICollection<TEntity>> GetAllUnDeletedByCooperativeId<TEntity>(string cooperativeId)
+        public async Task<ICollection<TEntity>> GetAllUnDeletedByCooperativeIdAsync<TEntity>(string cooperativeId)
         {
             var cooperativeRequests = await this._dbContext.JoinRequests
                 .Where(x => x.CooperativeId == cooperativeId && x.IsDeleted == false)

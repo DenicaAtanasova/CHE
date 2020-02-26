@@ -4,14 +4,16 @@ using CHE.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace CHE.Data.Migrations
 {
     [DbContext(typeof(CheDbContext))]
-    partial class CheDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200226090140_AddedGradesNumValue")]
+    partial class AddedGradesNumValue
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

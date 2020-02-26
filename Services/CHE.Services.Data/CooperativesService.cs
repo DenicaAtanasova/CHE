@@ -97,7 +97,7 @@
 
         public async Task<TEntity> GetByIdAsync<TEntity>(string id)
         {
-            //TODO: Load only undeleted join reqquests
+            //TODO: Load only undeleted join requests
             var cooperativeFromDb = await this._dbContext.Cooperatives
                 .Include(x => x.Members)
                 .Where(x => x.Id == id)
@@ -119,10 +119,6 @@
         }
         #endregion
 
-        public Task<IEnumerable<TEntity>> GetJoinRequestsByCooperativeId<TEntity>(string id)
-        {
-            throw new NotImplementedException();
-        }
 
         #region Actions with members
         public async Task<bool> AddMemberAsync(string cooperativeId, string senderId)

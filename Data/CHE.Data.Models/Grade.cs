@@ -16,6 +16,8 @@
 
         public string Value { get; set; }
 
+        public int NumValue { get; set; }
+
         public ICollection<Cooperative> Cooperatives { get; set; }
 
         public ICollection<VCardGrade> vCards { get; set; }

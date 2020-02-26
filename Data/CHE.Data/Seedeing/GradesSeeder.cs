@@ -1,10 +1,11 @@
 ﻿namespace CHE.Data.Seedeing
 {
-    using Models;
     using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
+
+    using Models;
 
     public class GradesSeeder : ISeeder
     {
@@ -19,11 +20,17 @@
             }
 
             var gradesForDb = new List<Grade>();
+            var gradeNumValue = 1;
             foreach (var currentGrade in this.GRADES)
             {
-                var grade = new Grade { Value = currentGrade };
+                var grade = new Grade 
+                { 
+                    Value = currentGrade, 
+                    NumValue = gradeNumValue
+                };
 
                 gradesForDb.Add(grade);
+                gradeNumValue++;
             }
 
             await dbContext.Grades.AddRangeAsync(gradesForDb);
