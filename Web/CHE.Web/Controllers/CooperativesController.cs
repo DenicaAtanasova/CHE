@@ -8,7 +8,6 @@
     using CHE.Services.Data;
     using CHE.Web.InputModels.Cooperatives;
     using CHE.Web.ViewModels.Cooperatives;
-    using System.Collections.Generic;
 
     public class CooperativesController : Controller
     {
@@ -107,7 +106,7 @@
 
             var cooperative = await this._cooperativesService
                 .GetByIdAsync<CooeprativeDetailsViewModel>(id);
-            cooperative.JoinRequestsReceived = await this._joinRequestsService.GetAllByCooperativeId<CooperativeJoinRequestDetailsViewModel>(id);
+            cooperative.JoinRequestsReceived = await this._joinRequestsService.GetAllUnDeletedByCooperativeId<CooperativeJoinRequestDetailsViewModel>(id);
 
             if (this.User.Identity.Name == cooperative.CreatorUserName)
             {

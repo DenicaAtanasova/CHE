@@ -12,10 +12,14 @@
     public class JoinRequestsController : Controller
     {
         private readonly IJoinRequestsService _joinRequestsService;
+        private readonly IUsersService _usersService;
 
-        public JoinRequestsController(IJoinRequestsService joinRequestsService)
+        public JoinRequestsController(
+            IJoinRequestsService joinRequestsService,
+            IUsersService usersService)
         {
             this._joinRequestsService = joinRequestsService;
+            this._usersService = usersService;
         }
 
         [Authorize]
@@ -35,9 +39,11 @@
 
             var senderName = this.User.Identity.Name;
 
-            var sendRequestSucceeded = await this._joinRequestsService.CreateAsync(model.Content, model.CooperativeId, senderName);
+            var sendRequestSucceeded = await this._usersService
+                .SendJoinRequest(model.Content, model.CooperativeId, model.ReceiverId, senderName);
             if (!sendRequestSucceeded)
             {
+                //TODO: Make error view
                 return this.BadRequest();
             }
 

@@ -17,34 +17,32 @@
     public class JoinRequestsService : IJoinRequestsService
     {
         private readonly CheDbContext _dbContext;
-        private readonly UserManager<CheUser> _userManager;
         private readonly IMapper _mapper;
-        private readonly ICooperativesService _cooperativesService;
 
         public JoinRequestsService(
             CheDbContext dbContext,
-            UserManager<CheUser> userManager,
-            IMapper mapper,
-            ICooperativesService cooperativesService)
+            IMapper mapper)
         {
             this._dbContext = dbContext;
-            this._userManager = userManager;
             this._mapper = mapper;
-            this._cooperativesService = cooperativesService;
         }
 
-        public async Task<bool> CreateAsync(string content, string cooperativeId, string senderName)
-        {
-            var cooperative = await this._cooperativesService.GetByIdAsync<Cooperative>(cooperativeId);
-            var receiver = await this._userManager.FindByNameAsync(cooperative.Creator.UserName);
-            var sender = await this._userManager.FindByNameAsync(senderName);
+        public async Task<bool> CreateAsync(string content, string cooperativeId, string senderId, string receiverId)
+        { 
+            var memberExists = this._dbContext.Cooperatives
+                .Where(x => x.Id == cooperativeId)
+                .Any(x => x.Members.Any(m => m.CheUserId == senderId));
 
-            //TODO: check if request from the sender already exists
+            if (memberExists)
+            {
+                return false;
+            }
+            
             var request = new JoinRequest
             {
                 Content = content,
-                Sender = sender,
-                Receiver = receiver,
+                SenderId = senderId,
+                ReceiverId = receiverId,
                 CooperativeId = cooperativeId,
                 CreatedOn = DateTime.UtcNow
             };
@@ -79,7 +77,7 @@
             return requestFromDb;
         }
 
-        public async Task<ICollection<TEntity>> GetAllByCooperativeId<TEntity>(string cooperativeId)
+        public async Task<ICollection<TEntity>> GetAllUnDeletedByCooperativeId<TEntity>(string cooperativeId)
         {
             var cooperativeRequests = await this._dbContext.JoinRequests
                 .Where(x => x.CooperativeId == cooperativeId && x.IsDeleted == false)

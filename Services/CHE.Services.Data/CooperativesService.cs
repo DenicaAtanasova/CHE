@@ -119,26 +119,32 @@
         }
         #endregion
 
-        #region Actions with members
-        public async Task<bool> AddMemberAsync(string cooperativeId, string memberUsername)
+        public Task<IEnumerable<TEntity>> GetJoinRequestsByCooperativeId<TEntity>(string id)
         {
-            var member = await this._userManager.FindByNameAsync(memberUsername);
-            member.Cooperatives.Add(
+            throw new NotImplementedException();
+        }
+
+        #region Actions with members
+        public async Task<bool> AddMemberAsync(string cooperativeId, string senderId)
+        {
+            var cooperative = await this.GetByIdAsync<Cooperative>(cooperativeId);
+
+            cooperative.Members.Add(
                 new CheUserCooperative
                 {
-                    CooperativeId = cooperativeId
+                    CheUserId = senderId
                 }
             );
+            var isModified = this._dbContext.Update(cooperative).State == EntityState.Modified;
 
-            var result = await this._dbContext.SaveChangesAsync() > 0;
-
-            return result;
+            return isModified;
         }
 
         public Task RemoveMemberAsync(string cooperativeId, string memberId)
         {
             throw new NotImplementedException();
         }
+
         #endregion
 
         //TODO: Move to users service

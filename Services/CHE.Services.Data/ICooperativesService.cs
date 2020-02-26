@@ -15,9 +15,11 @@
 
         Task<IEnumerable<TEntity>> GetAllAsync<TEntity>();
 
-        Task<bool> AddMemberAsync(string cooperativeId, string memberUsername);
+        Task<IEnumerable<TEntity>> GetJoinRequestsByCooperativeId<TEntity>(string id);
 
-        Task RemoveMemberAsync(string cooperativeId, string memberUsername);
+        Task<bool> AddMemberAsync(string cooperativeId, string senderId);
+
+        Task RemoveMemberAsync(string cooperativeId, string userId);
 
         Task SendTeacherRequest(string cooperativeId, string teacherId);
 
