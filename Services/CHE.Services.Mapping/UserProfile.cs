@@ -10,9 +10,9 @@
         public UserProfile()
         {
             CreateMap<CheUserCooperative, CooperativeUserDetailsViewModel>()
-                .ForMember(dest => dest.UserName, opt => opt.MapFrom(dest => dest.CheUser.UserName))
-                .ForMember(dest => dest.UserId, opt => opt.MapFrom(dest => dest.CheUserId))
-                .ForMember(dest => dest.Role, opt => opt.MapFrom(dest => dest.CheUser.RoleName));
+                .ForMember(dest => dest.UserName, opt => opt.MapFrom(src => src.CheUser.UserName))
+                .ForMember(dest => dest.UserId, opt => opt.MapFrom(src => src.CheUserId))
+                .ForMember(dest => dest.Role, opt => opt.MapFrom(src => src.CheUser.RoleName));
         }
     }
 }
