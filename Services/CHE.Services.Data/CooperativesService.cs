@@ -13,9 +13,12 @@
 
     using CHE.Data;
     using CHE.Data.Models;
+    using System.Linq.Expressions;
 
     public class CooperativesService : ICooperativesService
     {
+        private const string PARENT_ROLE = "PARENT";
+
         private readonly CheDbContext _dbContext;
         private readonly UserManager<CheUser> _userManager;
         private readonly IMapper _mapper;
@@ -98,8 +101,8 @@
         public async Task<TEntity> GetByIdAsync<TEntity>(string id)
         {
             var cooperativeFromDb = await this._dbContext.Cooperatives
-                .Include(x => x.Members)
                 .Where(x => x.Id == id)
+                .Include(x => x.Members)
                 .ProjectTo<TEntity>(_mapper.ConfigurationProvider)
                 .SingleOrDefaultAsync();
 
@@ -115,6 +118,16 @@
                 .ToArrayAsync();
 
             return cooperativeFromDb;
+        }
+
+        public async Task<ICollection<TEntity>> GetJoinRequestsAsync<TEntity>(string cooperativeId)
+        {
+            var requests = await this._dbContext.JoinRequests
+                .Where(x => x.CooperativeId == cooperativeId && x.IsDeleted == false)
+                .ProjectTo<TEntity>(_mapper.ConfigurationProvider)
+                .ToArrayAsync();
+
+            return requests;
         }
         #endregion
 

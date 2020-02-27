@@ -83,7 +83,7 @@ namespace CHE.Web.Areas.Identity.Pages.Account
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             if (ModelState.IsValid)
             {
-                var user = new CheUser { UserName = Input.Username, Email = Input.Email };
+                var user = new CheUser { UserName = Input.Username, Email = Input.Email, RoleName = Input.Role };
                 var result = await _userManager.CreateAsync(user, Input.Password);
                 if (result.Succeeded)
                 {

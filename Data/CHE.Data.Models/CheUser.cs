@@ -12,6 +12,8 @@
             this.JoinRequestsReceived = new HashSet<JoinRequest>();
         }
 
+        public string RoleName { get; set; }
+
         public ICollection<CheUserCooperative> Cooperatives { get; set; }
 
         public ICollection<JoinRequest> JoinRequestsSent { get; set; }

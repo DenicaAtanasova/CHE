@@ -11,7 +11,8 @@
         {
             CreateMap<CheUserCooperative, CooperativeUserDetailsViewModel>()
                 .ForMember(dest => dest.UserName, opt => opt.MapFrom(dest => dest.CheUser.UserName))
-                .ForMember(dest => dest.UserId, opt => opt.MapFrom(dest => dest.CheUserId));
+                .ForMember(dest => dest.UserId, opt => opt.MapFrom(dest => dest.CheUserId))
+                .ForMember(dest => dest.Role, opt => opt.MapFrom(dest => dest.CheUser.RoleName));
         }
     }
 }

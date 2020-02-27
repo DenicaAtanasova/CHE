@@ -76,15 +76,5 @@
 
             return requestFromDb;
         }
-
-        public async Task<ICollection<TEntity>> GetAllUnDeletedByCooperativeIdAsync<TEntity>(string cooperativeId)
-        {
-            var cooperativeRequests = await this._dbContext.JoinRequests
-                .Where(x => x.CooperativeId == cooperativeId && x.IsDeleted == false)
-                .ProjectTo<TEntity>(this._mapper.ConfigurationProvider)
-                .ToArrayAsync();
-
-            return cooperativeRequests;
-        }
     }
 }

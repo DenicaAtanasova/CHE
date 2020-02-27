@@ -12,14 +12,11 @@
     public class CooperativesController : Controller
     {
         private readonly ICooperativesService _cooperativesService;
-        private readonly IJoinRequestsService _joinRequestsService;
 
         public CooperativesController(
-            ICooperativesService cooperativesService, 
-            IJoinRequestsService joinRequestsService)
+            ICooperativesService cooperativesService)
         {
             this._cooperativesService = cooperativesService;
-            this._joinRequestsService = joinRequestsService;
         }
 
         [Authorize]
@@ -106,8 +103,8 @@
 
             var cooperative = await this._cooperativesService
                 .GetByIdAsync<CooeprativeDetailsViewModel>(id);
-            cooperative.JoinRequestsReceived = await this._joinRequestsService
-                .GetAllUnDeletedByCooperativeIdAsync<CooperativeJoinRequestDetailsViewModel>(id);
+            cooperative.JoinRequestsReceived = await this._cooperativesService
+                .GetJoinRequestsAsync<CooperativeJoinRequestDetailsViewModel>(id);
 
             if (this.User.Identity.Name == cooperative.CreatorUserName)
             {

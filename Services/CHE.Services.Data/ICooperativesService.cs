@@ -15,6 +15,8 @@
 
         Task<IEnumerable<TEntity>> GetAllAsync<TEntity>();
 
+        Task<ICollection<TEntity>> GetJoinRequestsAsync<TEntity>(string cooperativeId);
+
         Task SendTeacherRequest(string cooperativeId, string teacherId);
 
         Task RemoveTeacherRequest(string cooperativeId, string teacherId);

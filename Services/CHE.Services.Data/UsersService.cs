@@ -66,18 +66,17 @@
 
         private async Task<bool> AddMemberToCooperativeAsync(string senderId, string cooperativeId)
         {
-            var cooperative = await this._dbContext.Cooperatives
-                .SingleOrDefaultAsync(x => x.Id == cooperativeId);
+            var memeber = new CheUserCooperative
+            {
+                CooperativeId = cooperativeId,
+                CheUserId = senderId
+            };
 
-            cooperative.Members.Add(
-                new CheUserCooperative
-                {
-                    CheUserId = senderId
-                }
-            );
-            var isModified = this._dbContext.Update(cooperative).State == EntityState.Modified;
+            var memberAdded = await this._dbContext.UserCooperatives.AddAsync(memeber);
 
-            return isModified;
+            var result = memberAdded.State == EntityState.Added;
+
+            return result;
         }
     }
 }
