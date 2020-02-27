@@ -65,11 +65,11 @@
             <div>
                 @if (Model.Members.Any(x => x.UserName == this.User.Identity.Name))
                 {
-                    <a class="btn btn-primary btn-lg" asp-controller="Users" asp-action="LeaveCooperative" asp-route-CooperativeId="@Model.Id">Leave</a>
+                    <a class="btn btn-primary btn-lg" asp-controller="Cooperatives" asp-action="Leave" asp-route-CooperativeId="@Model.Id">Leave</a>
                 }
                 else
                 {
-                    <a class="btn btn-primary btn-lg" asp-controller="Users" asp-action="SendRequest" asp-route-CooperativeId="@Model.Id">Join</a>
+                    <a class="btn btn-primary btn-lg" asp-controller="JoinRequests" asp-action="Send" asp-route-CooperativeId="@Model.Id">Join</a>
                 }
             </div>
             <div>

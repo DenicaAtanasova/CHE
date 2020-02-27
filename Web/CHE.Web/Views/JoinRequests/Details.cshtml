@@ -15,8 +15,8 @@
     <hr class="my-4">
     <div class="d-flex justify-content-lg-between">
         <div>
-            <a class="btn btn-primary btn-lg" asp-controller="Users" asp-action="AcceptRequest" asp-all-route-data="@data">Accept</a>
-            <a class="btn btn-primary btn-lg" asp-controller="Users" asp-action="RejectRequest" asp-all-route-data="@data">Reject</a>
+            <a class="btn btn-primary btn-lg" asp-controller="JoinRequests" asp-action="Accept" asp-all-route-data="@data">Accept</a>
+            <a class="btn btn-primary btn-lg" asp-controller="JoinRequests" asp-action="Reject" asp-all-route-data="@data">Reject</a>
         </div>
         <div>
             <a class="btn btn-primary btn-lg" asp-controller="Cooperatives" asp-action="Details" asp-route-id="@Model.CooperativeId">Back</a>

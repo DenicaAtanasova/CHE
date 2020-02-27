@@ -35,8 +35,8 @@
             }
 
             var username = this.User.Identity.Name;
-            var createSucceeded = await this._cooperativesService.CreateAsync(model.Name, model.Info, model.Grade, username);
-            if (!createSucceeded)
+            var createSuccessful = await this._cooperativesService.CreateAsync(model.Name, model.Info, model.Grade, username);
+            if (!createSuccessful)
             {
                 return this.BadRequest();
             }
@@ -66,9 +66,9 @@
                 return this.View(model.Id);
             }
 
-            var updateSucceeded = await this._cooperativesService
+            var updateSuccessful = await this._cooperativesService
                 .UpdateAsync(model.Id, model.Name, model.Info, model.Grade, model.Address.City, model.Address.Neighbourhood, model.Address.Street);
-            if (!updateSucceeded)
+            if (!updateSuccessful)
             {
                 return this.BadRequest();
             }
@@ -84,9 +84,9 @@
                 return this.NotFound();
             }
 
-            var deleteSucceeded = await this._cooperativesService.DeleteAsync(id);
+            var deleteSuccessful = await this._cooperativesService.DeleteAsync(id);
 
-            if (!deleteSucceeded)
+            if (!deleteSuccessful)
             {
                 return this.BadRequest();
             }
@@ -122,6 +122,31 @@
             };
 
             return this.View(cooperativesList);
+        }
+
+        [Authorize]
+        public async Task<IActionResult> RemoveMember(string memberId, string cooperativeId)
+        {
+            var removeMemberSuccessful = await this._cooperativesService.RemoveMemberAsync(memberId, cooperativeId);
+            if (!removeMemberSuccessful)
+            {
+                return this.BadRequest();
+            }
+
+            return this.RedirectToAction(nameof(Details), new { id = cooperativeId });
+        }
+
+        [Authorize]
+        public async Task<IActionResult> Leave(string cooperativeId)
+        {
+            var leaveSuccessful = await this._cooperativesService
+                .LeaveAsync(cooperativeId, this.User.Identity.Name);
+            if (!leaveSuccessful)
+            {
+                return this.BadRequest();
+            }
+
+            return this.RedirectToAction(nameof(Details), new { id = cooperativeId });
         }
     }
 }

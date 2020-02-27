@@ -33,7 +33,6 @@
             this._gradesService = gradesService;
         }
 
-        #region Actions on cooperatives
         public async Task<bool> CreateAsync(string name, string info, string gradeValue, string creatorName)
         {
             var creator = await this._userManager.FindByNameAsync(creatorName);
@@ -126,19 +125,44 @@
 
             return requests;
         }
-        #endregion
 
-        //TODO: Move to users service
-        #region Actions with teachers
-        public Task SendTeacherRequest(string cooperativeId, string teacherId)
+        public async Task<bool> AddMemberAsync(string senderId, string cooperativeId)
         {
-            throw new NotImplementedException();
+            var memeber = new CheUserCooperative
+            {
+                CooperativeId = cooperativeId,
+                CheUserId = senderId
+            };
+
+            var memberAdded = await this._dbContext.UserCooperatives.AddAsync(memeber);
+
+            var result = memberAdded.State == EntityState.Added;
+
+            return result;
         }
 
-        public Task RemoveTeacherRequest(string cooperativeId, string teacherId)
+        public async Task<bool> RemoveMemberAsync(string memberId, string cooperativeId)
         {
-            throw new NotImplementedException();
+            var cooperativeMember = await this._dbContext.UserCooperatives
+                .SingleOrDefaultAsync(x => x.CheUserId == memberId && x.CooperativeId == cooperativeId);
+
+            this._dbContext.UserCooperatives.Remove(cooperativeMember);
+
+            var result = await this._dbContext.SaveChangesAsync() > 0;
+
+            return result;
         }
-        #endregion
+
+        public async Task<bool> LeaveAsync(string cooperativeId, string username)
+        {
+            var currentUser = await this._userManager.FindByNameAsync(username);
+            var memberToDelete = await this._dbContext.UserCooperatives
+                .SingleOrDefaultAsync(x => x.CooperativeId == cooperativeId & x.CheUser.UserName == username);
+
+            this._dbContext.Remove(memberToDelete);
+            var result = await this._dbContext.SaveChangesAsync() > 0;
+
+            return result;
+        }
     }
 }
