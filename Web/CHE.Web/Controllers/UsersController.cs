@@ -80,5 +80,18 @@
 
             return this.RedirectToAction("Details", "Cooperatives", new { id = cooperativeId });
         }
+
+        [Authorize]
+        public async Task<IActionResult> LeaveCooperative(string cooperativeId)
+        {
+            var leaveSucceeded = await this._usersService
+                .LeaveCooperativeAsync(cooperativeId, this.User.Identity.Name);
+            if (!leaveSucceeded)
+            {
+                return this.BadRequest();
+            }
+
+            return this.RedirectToAction("Details", "Cooperatives", new { id = cooperativeId });
+        }
     }
 }

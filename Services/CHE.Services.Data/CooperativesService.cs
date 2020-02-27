@@ -91,7 +91,7 @@
                 .SingleOrDefaultAsync(x => x.Id == id);
 
             cooperativeToDelete.IsDeleted = true;
-            cooperativeToDelete.ModifiedOn = DateTime.UtcNow;
+            cooperativeToDelete.DeletedOn = DateTime.UtcNow;
 
             var result = await this._dbContext.SaveChangesAsync() > 0;
 

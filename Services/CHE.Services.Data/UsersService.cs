@@ -64,6 +64,18 @@
             return result;
         }
 
+        public async Task<bool> LeaveCooperativeAsync(string cooperativeId, string username)
+        {
+            var currentUser = await this._userManager.FindByNameAsync(username);
+            var memberToDelete = await this._dbContext.UserCooperatives
+                .SingleOrDefaultAsync(x => x.CooperativeId == cooperativeId & x.CheUser.UserName == username);
+
+            this._dbContext.Remove(memberToDelete);
+            var result = await this._dbContext.SaveChangesAsync() > 0;
+
+            return result;
+        }
+
         private async Task<bool> AddMemberToCooperativeAsync(string senderId, string cooperativeId)
         {
             var memeber = new CheUserCooperative

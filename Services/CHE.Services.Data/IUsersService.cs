@@ -11,5 +11,7 @@
         Task<bool> RejectRequestAsync(string requestId);
 
         Task<bool> RemoveMemberFromCooperativeAsync(string memberId, string cooperativeId);
+
+        Task<bool> LeaveCooperativeAsync(string cooperativeId, string username);
     }
 }

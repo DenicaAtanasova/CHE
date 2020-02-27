@@ -63,7 +63,14 @@
         <hr class="my-4">
         <div class="d-flex justify-content-lg-between">
             <div>
-                <a class="btn btn-primary btn-lg" asp-controller="Users" asp-action="SendRequest" asp-route-CooperativeId="@Model.Id">Join</a>
+                @if (Model.Members.Any(x => x.UserName == this.User.Identity.Name))
+                {
+                    <a class="btn btn-primary btn-lg" asp-controller="Users" asp-action="LeaveCooperative" asp-route-CooperativeId="@Model.Id">Leave</a>
+                }
+                else
+                {
+                    <a class="btn btn-primary btn-lg" asp-controller="Users" asp-action="SendRequest" asp-route-CooperativeId="@Model.Id">Join</a>
+                }
             </div>
             <div>
                 <a class="btn btn-primary btn-lg" asp-controller="Cooperatives" asp-action="All">Back</a>
