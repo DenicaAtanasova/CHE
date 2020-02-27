@@ -18,8 +18,8 @@ namespace CHE.Web.ViewModels.Cooperatives
 
         public CooperativeAddressViewModel Address { get; set; }
 
-        public ICollection<CooperativeJoinRequestDetailsViewModel> JoinRequestsReceived { get; set; }
+        public IEnumerable<CooperativeJoinRequestDetailsViewModel> JoinRequestsReceived { get; set; }
 
-        public ICollection<CooperativeUserDetailsViewModel> Members { get; set; }
+        public IEnumerable<CooperativeUserDetailsViewModel> Members { get; set; }
     }
 }

@@ -13,12 +13,9 @@
 
     using CHE.Data;
     using CHE.Data.Models;
-    using System.Linq.Expressions;
 
     public class CooperativesService : ICooperativesService
     {
-        private const string PARENT_ROLE = "PARENT";
-
         private readonly CheDbContext _dbContext;
         private readonly UserManager<CheUser> _userManager;
         private readonly IMapper _mapper;
@@ -120,7 +117,7 @@
             return cooperativeFromDb;
         }
 
-        public async Task<ICollection<TEntity>> GetJoinRequestsAsync<TEntity>(string cooperativeId)
+        public async Task<IEnumerable<TEntity>> GetJoinRequestsAsync<TEntity>(string cooperativeId)
         {
             var requests = await this._dbContext.JoinRequests
                 .Where(x => x.CooperativeId == cooperativeId && x.IsDeleted == false)
