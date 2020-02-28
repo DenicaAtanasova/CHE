@@ -20,6 +20,8 @@ namespace CHE.Web.Areas.Identity.Pages.Account
     [AllowAnonymous]
     public class RegisterModel : PageModel
     {
+        private const string TEACHER_ROLE = "Teacher";
+
         private readonly SignInManager<CheUser> _signInManager;
         private readonly UserManager<CheUser> _userManager;
         private readonly ILogger<RegisterModel> _logger;
@@ -84,10 +86,14 @@ namespace CHE.Web.Areas.Identity.Pages.Account
             if (ModelState.IsValid)
             {
                 var user = new CheUser { UserName = Input.Username, Email = Input.Email, RoleName = Input.Role };
+                if (Input.Role == TEACHER_ROLE)
+                {
+                    user.Portfolio = new Portfolio { CreatedOn = DateTime.UtcNow };
+                }
                 var result = await _userManager.CreateAsync(user, Input.Password);
                 if (result.Succeeded)
                 {
-                    var assignRole = await _userManager.AddToRoleAsync(user, Input.Role.ToUpper());
+                    var assignRole = await _userManager.AddToRoleAsync(user, Input.Role);
                     if (!assignRole.Succeeded)
                     {
                         return Page();

@@ -12,8 +12,8 @@
     public class RolesSeeder : ISeeder
     {
         //TODO: Check if role names have to be global constants
-        private const string TEACHER_ROLE = "TEACHER";
-        private const string PARENT_ROLE = "PARENT";
+        private const string TEACHER_ROLE = "Teacher";
+        private const string PARENT_ROLE = "Parent";
 
         public async Task SeedAsync(CheDbContext dbContext, IServiceProvider serviceProvider)
         {
