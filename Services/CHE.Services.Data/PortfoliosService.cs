@@ -9,6 +9,8 @@
     using AutoMapper.QueryableExtensions;
 
     using CHE.Data;
+    using CHE.Data.Models;
+    using System;
 
     public class PortfoliosService : IPortfoliosService
     {
@@ -31,6 +33,26 @@
                 .SingleOrDefaultAsync();
 
             return portfolio;
+        }
+
+        public async Task<bool> UpdateAsync<TEntity>(string teacherId, TEntity portfolio)
+        {
+            var updatedPortfolio = this._mapper.Map<TEntity, Portfolio>(portfolio);
+            var portfolioToUpdate = await this._dbContext.Portfolios
+                .SingleOrDefaultAsync(x => x.OwnerId == teacherId);
+
+            portfolioToUpdate.ModifiedOn = DateTime.UtcNow;
+            portfolioToUpdate.FirstName = updatedPortfolio.FirstName;
+            portfolioToUpdate.LastName = updatedPortfolio.LastName;
+            portfolioToUpdate.Education = updatedPortfolio.Education;
+            portfolioToUpdate.Skills = updatedPortfolio.Skills;
+            portfolioToUpdate.Experience = updatedPortfolio.Experience;
+            portfolioToUpdate.Interests = updatedPortfolio.Interests;
+
+            this._dbContext.Update(portfolioToUpdate);
+            var result = await this._dbContext.SaveChangesAsync() > 0;
+
+            return result;
         }
     }
 }
