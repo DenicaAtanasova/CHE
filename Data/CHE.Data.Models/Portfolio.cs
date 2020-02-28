@@ -3,11 +3,11 @@
     using Common.Models;
     using System.Collections.Generic;
 
-    public class VCard : BaseDeletableModel<string>
+    public class Portfolio : BaseDeletableModel<string>
     {
-        public VCard()
+        public Portfolio()
         {
-            this.Grades = new HashSet<VCardGrade>();
+            this.Grades = new HashSet<PortfolioGrade>();
         }
 
         public string FirstName { get; set; }
@@ -26,6 +26,6 @@
 
         public CheUser Owner { get; set; }
 
-        public ICollection<VCardGrade> Grades { get; set; }
+        public ICollection<PortfolioGrade> Grades { get; set; }
     }
 }

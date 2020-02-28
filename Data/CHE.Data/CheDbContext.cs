@@ -20,9 +20,9 @@
 
         public DbSet<Grade> Grades { get; set; }
 
-        public DbSet<VCard> VCards { get; set; }
+        public DbSet<Portfolio> Portfolios { get; set; }
 
-        public DbSet<VCardGrade> VCardGrades { get; set; }
+        public DbSet<PortfolioGrade> PortfolioGrades { get; set; }
 
         public DbSet<JoinRequest> JoinRequests { get; set; }
 
@@ -33,8 +33,8 @@
             builder.Entity<CheUserCooperative>()
                 .HasKey(uc => new { uc.CheUserId, uc.CooperativeId });
 
-            builder.Entity<VCardGrade>()
-                .HasKey(vcg => new { vcg.VCardId, vcg.GradeId });
+            builder.Entity<PortfolioGrade>()
+                .HasKey(pg => new { pg.PortfolioId, pg.GradeId });
 
             builder.Entity<Review>()
                 .HasOne(r => r.Receiver)

@@ -8,7 +8,7 @@
         public Grade()
         {
             this.Cooperatives = new HashSet<Cooperative>();
-            this.vCards = new HashSet<VCardGrade>();
+            this.Portfolios = new HashSet<PortfolioGrade>();
         }
 
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
@@ -20,6 +20,6 @@
 
         public ICollection<Cooperative> Cooperatives { get; set; }
 
-        public ICollection<VCardGrade> vCards { get; set; }
+        public ICollection<PortfolioGrade> Portfolios { get; set; }
     }
 }

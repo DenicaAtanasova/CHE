@@ -16,7 +16,7 @@
 
         public string RoleName { get; set; }
 
-        public VCard VCard { get; set; }
+        public Portfolio Portfolio { get; set; }
 
         public ICollection<CheUserCooperative> Cooperatives { get; set; }
 
