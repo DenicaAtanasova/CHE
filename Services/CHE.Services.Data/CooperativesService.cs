@@ -1,6 +1,5 @@
 ﻿namespace CHE.Services.Data
 {
-    using Microsoft.AspNetCore.Identity;
     using Microsoft.EntityFrameworkCore;
 
     using System;
@@ -17,25 +16,21 @@
     public class CooperativesService : ICooperativesService
     {
         private readonly CheDbContext _dbContext;
-        private readonly UserManager<CheUser> _userManager;
         private readonly IMapper _mapper;
         private readonly IGradesService _gradesService;
 
         public CooperativesService(
-            CheDbContext dbContext, 
-            UserManager<CheUser> userManager,
+            CheDbContext dbContext,
             IMapper mapper,
             IGradesService gradesService)
         {
             this._dbContext = dbContext;
-            this._userManager = userManager;
             this._mapper = mapper;
             this._gradesService = gradesService;
         }
 
-        public async Task<bool> CreateAsync(string name, string info, string gradeValue, string creatorName)
+        public async Task<bool> CreateAsync(string name, string info, string gradeValue, string creatorId)
         {
-            var creator = await this._userManager.FindByNameAsync(creatorName);
             var grade = await this._gradesService.GetByValueAsync(gradeValue);
 
             if (grade == null)
@@ -47,7 +42,7 @@
             {
                 Name = name,
                 Info = info,
-                Creator = creator,
+                CreatorId = creatorId,
                 CreatedOn = DateTime.UtcNow,
                 Grade = grade
             };
@@ -155,7 +150,6 @@
 
         public async Task<bool> LeaveAsync(string cooperativeId, string username)
         {
-            var currentUser = await this._userManager.FindByNameAsync(username);
             var memberToDelete = await this._dbContext.UserCooperatives
                 .SingleOrDefaultAsync(x => x.CooperativeId == cooperativeId & x.CheUser.UserName == username);
 

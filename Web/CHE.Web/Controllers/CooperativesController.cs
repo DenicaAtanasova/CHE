@@ -4,18 +4,23 @@
 
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Authorization;
+    using Microsoft.AspNetCore.Identity;
 
     using CHE.Services.Data;
     using CHE.Web.InputModels.Cooperatives;
     using CHE.Web.ViewModels.Cooperatives;
+    using CHE.Data.Models;
 
     public class CooperativesController : Controller
     {
+        private readonly UserManager<CheUser> _userManager;
         private readonly ICooperativesService _cooperativesService;
 
         public CooperativesController(
+            UserManager<CheUser> userManager,
             ICooperativesService cooperativesService)
         {
+            this._userManager = userManager;
             this._cooperativesService = cooperativesService;
         }
 
@@ -34,8 +39,8 @@
                 return this.View();
             }
 
-            var username = this.User.Identity.Name;
-            var createSuccessful = await this._cooperativesService.CreateAsync(model.Name, model.Info, model.Grade, username);
+            var userId = this._userManager.GetUserId(this.User);
+            var createSuccessful = await this._cooperativesService.CreateAsync(model.Name, model.Info, model.Grade, userId);
             if (!createSuccessful)
             {
                 return this.BadRequest();

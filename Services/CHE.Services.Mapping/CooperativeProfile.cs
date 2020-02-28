@@ -10,8 +10,6 @@
     {
         public CooperativeProfile()
         {
-            this.CreateMap<Cooperative, Cooperative>();
-
             this.CreateMap<Cooperative, CooperativeAllViewModel>()
                 .ForMember(dest => dest.Grade, opt => opt.MapFrom(src => src.Grade.Value));
 
@@ -20,7 +18,8 @@
                 .ForMember(dest => dest.MembersCount, opt => opt.MapFrom(src => src.Members.Count));
 
             this.CreateMap<Cooperative, CooperativeEditInputModel>()
-                .ForMember(dest => dest.Grade, opt => opt.MapFrom(src => src.Grade.Value));
+                .ForMember(dest => dest.Grade, opt => opt.MapFrom(src => src.Grade.Value))
+                .ReverseMap();
         }
     }
 }
