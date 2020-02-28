@@ -22,7 +22,9 @@
 
         public string Interests { get; set; }
 
-        public Teacher Owner { get; set; }
+        public string OwnerId { get; set; }
+
+        public CheUser Owner { get; set; }
 
         public ICollection<VCardGrade> Grades { get; set; }
     }

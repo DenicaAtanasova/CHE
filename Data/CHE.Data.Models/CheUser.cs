@@ -10,14 +10,22 @@
             this.Cooperatives = new HashSet<CheUserCooperative>();
             this.JoinRequestsSent = new HashSet<JoinRequest>();
             this.JoinRequestsReceived = new HashSet<JoinRequest>();
+            this.ReviewsSent = new HashSet<Review>();
+            this.ReviewsReceived = new HashSet<Review>();
         }
 
         public string RoleName { get; set; }
+
+        public VCard VCard { get; set; }
 
         public ICollection<CheUserCooperative> Cooperatives { get; set; }
 
         public ICollection<JoinRequest> JoinRequestsSent { get; set; }
 
         public ICollection<JoinRequest> JoinRequestsReceived { get; }
+
+        public ICollection<Review> ReviewsSent { get; set; }
+
+        public ICollection<Review> ReviewsReceived { get; set; }
     }
 }
