@@ -8,7 +8,6 @@
         public Grade()
         {
             this.Cooperatives = new HashSet<Cooperative>();
-            this.Portfolios = new HashSet<PortfolioGrade>();
         }
 
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
@@ -19,7 +18,5 @@
         public int NumValue { get; set; }
 
         public ICollection<Cooperative> Cooperatives { get; set; }
-
-        public ICollection<PortfolioGrade> Portfolios { get; set; }
     }
 }

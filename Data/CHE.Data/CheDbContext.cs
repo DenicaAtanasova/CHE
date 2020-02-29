@@ -22,8 +22,6 @@
 
         public DbSet<Portfolio> Portfolios { get; set; }
 
-        public DbSet<PortfolioGrade> PortfolioGrades { get; set; }
-
         public DbSet<JoinRequest> JoinRequests { get; set; }
 
         public DbSet<Review> Reviews { get; set; }
@@ -32,9 +30,6 @@
         {
             builder.Entity<CheUserCooperative>()
                 .HasKey(uc => new { uc.CheUserId, uc.CooperativeId });
-
-            builder.Entity<PortfolioGrade>()
-                .HasKey(pg => new { pg.PortfolioId, pg.GradeId });
 
             builder.Entity<Review>()
                 .HasOne(r => r.Receiver)
