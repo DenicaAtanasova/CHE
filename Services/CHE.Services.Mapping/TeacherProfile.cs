@@ -10,6 +10,8 @@
         public TeacherProfile()
         {
             this.CreateMap<CheUser, TeacherAllViewModel>();
+
+            this.CreateMap<CheUser, TeacherDetailsViewModel>();
         }
     }
 }

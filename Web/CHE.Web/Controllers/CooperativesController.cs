@@ -106,17 +106,17 @@
                 return this.NotFound();
             }
 
-            var cooperative = await this._cooperativesService
+            var currentCooperative = await this._cooperativesService
                 .GetByIdAsync<CooeprativeDetailsViewModel>(id);
-            cooperative.JoinRequestsReceived = await this._cooperativesService
+            currentCooperative.JoinRequestsReceived = await this._cooperativesService
                 .GetJoinRequestsAsync<CooperativeJoinRequestDetailsViewModel>(id);
 
-            if (this.User.Identity.Name == cooperative.CreatorUserName)
+            if (this.User.Identity.Name == currentCooperative.CreatorUserName)
             {
-                return this.View("DetailsCreator", cooperative);
+                return this.View("DetailsCreator", currentCooperative);
             }
 
-            return this.View(cooperative);
+            return this.View(currentCooperative);
         }
 
         public async Task<IActionResult> All()

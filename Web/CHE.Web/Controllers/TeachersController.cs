@@ -25,5 +25,13 @@
 
             return View(teachers);
         }
+
+        public async Task<IActionResult> Details(string id)
+        {
+            var currentTeacher = await this._teachersService
+                .GetByIdAsync<TeacherDetailsViewModel>(id);
+
+            return this.View(currentTeacher);
+        }
     }
 }

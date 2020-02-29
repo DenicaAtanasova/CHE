@@ -35,5 +35,15 @@
 
             return teachers;
         }
+
+        public async Task<TEntity> GetByIdAsync<TEntity>(string id)
+        {
+            var teacher = await this._dbContext.Users
+                .Where(x => x.Id == id)
+                .ProjectTo<TEntity>(this._mapper.ConfigurationProvider)
+                .SingleOrDefaultAsync();
+
+            return teacher;
+        }
     }
 }

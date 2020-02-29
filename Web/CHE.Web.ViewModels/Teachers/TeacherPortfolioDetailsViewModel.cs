@@ -1,6 +1,6 @@
-﻿namespace CHE.Web.InputModels.Portfolios
+﻿namespace CHE.Web.ViewModels.Teachers
 {
-    public class PortfolioInputModel
+    public class TeacherPortfolioDetailsViewModel
     {
         public string FirstName { get; set; }
 

@@ -27,17 +27,17 @@
             </div>
             <div class="form-group">
                 <label asp-for="Input.Experience"></label>
-                <input asp-for="Input.Experience" class="form-control" />
+                <textarea asp-for="Input.Experience" class="form-control" ></textarea>
                 <span asp-validation-for="Input.Experience" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Input.Skills"></label>
-                <input asp-for="Input.Skills" class="form-control" />
+                <textarea asp-for="Input.Skills" class="form-control"></textarea>
                 <span asp-validation-for="Input.Skills" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Input.Interests"></label>
-                <input asp-for="Input.Interests" class="form-control" />
+                <textarea asp-for="Input.Interests" class="form-control"></textarea>
                 <span asp-validation-for="Input.Interests" class="text-danger"></span>
             </div>
             <button id="update-profile-button" type="submit" class="btn btn-primary">Save</button>
