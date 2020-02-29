@@ -1,5 +1,6 @@
 ﻿namespace CHE.Services.Data
 {
+    using System;
     using System.Linq;
     using System.Threading.Tasks;
 
@@ -10,7 +11,6 @@
 
     using CHE.Data;
     using CHE.Data.Models;
-    using System;
 
     public class PortfoliosService : IPortfoliosService
     {
@@ -38,18 +38,17 @@
         public async Task<bool> UpdateAsync<TEntity>(string teacherId, TEntity portfolio)
         {
             var updatedPortfolio = this._mapper.Map<TEntity, Portfolio>(portfolio);
-            var portfolioToUpdate = await this._dbContext.Portfolios
+            var portfolioFromDb = await this._dbContext.Portfolios
                 .SingleOrDefaultAsync(x => x.OwnerId == teacherId);
 
-            portfolioToUpdate.ModifiedOn = DateTime.UtcNow;
-            portfolioToUpdate.FirstName = updatedPortfolio.FirstName;
-            portfolioToUpdate.LastName = updatedPortfolio.LastName;
-            portfolioToUpdate.Education = updatedPortfolio.Education;
-            portfolioToUpdate.Skills = updatedPortfolio.Skills;
-            portfolioToUpdate.Experience = updatedPortfolio.Experience;
-            portfolioToUpdate.Interests = updatedPortfolio.Interests;
+            this._dbContext.Entry(portfolioFromDb).State = EntityState.Detached;
 
-            this._dbContext.Update(portfolioToUpdate);
+            updatedPortfolio.Id = portfolioFromDb.Id;
+            updatedPortfolio.CreatedOn = portfolioFromDb.CreatedOn;
+            updatedPortfolio.OwnerId = portfolioFromDb.OwnerId;
+            updatedPortfolio.ModifiedOn = DateTime.UtcNow;
+
+            this._dbContext.Update(updatedPortfolio);
             var result = await this._dbContext.SaveChangesAsync() > 0;
 
             return result;
