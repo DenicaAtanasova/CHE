@@ -1,0 +1,18 @@
+﻿@model CHE.Web.InputModels.JoinRequests.JoinRequestCreateInputModel
+
+<div class="form-group">
+    <select asp-for="CooperativeId" class="form-control">
+        <option selected disabled>-- Choose cooperative --</option>
+        <vc:cooperatives-list creator-username="@User.Identity.Name"></vc:cooperatives-list>
+    </select>
+    <span asp-validation-for="CooperativeId" class="text-danger"></span>
+</div>
+
+<div class="form-group d-flex justify-content-lg-between">
+    <div>
+        <button type="submit" class="btn btn-primary">Send</button>
+    </div>
+    <div>
+        <a class="btn btn-primary" asp-controller="Teachers" asp-action="Details" asp-route-id="@Model.ReceiverId">Back</a>
+    </div>
+</div>

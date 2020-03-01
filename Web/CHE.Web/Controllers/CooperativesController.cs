@@ -50,7 +50,7 @@
         }
 
         [Authorize]
-        public async Task<IActionResult> Edit(string? id)
+        public async Task<IActionResult> Edit(string id)
         {
             if (id == null)
             {
@@ -82,7 +82,7 @@
         }
 
         [Authorize]
-        public async Task<IActionResult> Delete(string? id)
+        public async Task<IActionResult> Delete(string id)
         {
             if (id == null)
             {
@@ -99,7 +99,7 @@
             return this.RedirectToAction(nameof(All));
         }
 
-        public async Task<IActionResult> Details(string? id)
+        public async Task<IActionResult> Details(string id)
         {
             if (id == null)
             {

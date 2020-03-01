@@ -13,5 +13,7 @@
         public string Skills { get; set; }
 
         public string Interests { get; set; }
+
+        public string EducationLevel { get; set; }
     }
 }

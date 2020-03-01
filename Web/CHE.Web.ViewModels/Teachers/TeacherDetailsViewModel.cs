@@ -2,7 +2,7 @@
 {
     public class TeacherDetailsViewModel
     {
-        //public string UserName { get; set; }
+        public string Id { get; set; }
 
         public TeacherPortfolioDetailsViewModel Portfolio { get; set; }
     }

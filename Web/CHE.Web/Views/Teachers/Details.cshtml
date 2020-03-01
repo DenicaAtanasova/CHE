@@ -1,13 +1,44 @@
 ﻿@model CHE.Web.ViewModels.Teachers.TeacherDetailsViewModel
 
 <h1>Teacher portfolio</h1>
-<div class="row">
-    <div class="col-md-6">
-        <h2>Info</h2>
-        <button id="update-profile-button" type="submit" class="btn btn-primary">Ask to join</button>
+<div class="jumbotron">
+    <hr class="my-4">
+    <div class="row" style="height: 400px">
+        <div class="col-4">
+            <div class="list-group" id="list-tab" role="tablist">
+                <a class="list-group-item list-group-item-action active" id="list-home-list" data-toggle="list" href="#list-home" role="tab" aria-controls="home">Home</a>
+                <a class="list-group-item list-group-item-action" id="list-profile-list" data-toggle="list" href="#list-profile" role="tab" aria-controls="profile">Reviews</a>
+            </div>
+        </div>
+        <div class="col-8">
+            <div class="tab-content" id="nav-tabContent">
+                <div class="tab-pane fade show active" id="list-home" role="tabpanel" aria-labelledby="list-home-list">
+                    <div class="tab-pane fade show active" id="home-list" role="tabpanel" aria-labelledby="home">
+                        <h5>Info</h5>
+                        <hr />
+                        <div><strong>First name: </strong>@Model.Portfolio.FirstName</div>
+                        <div><strong>Last name: </strong>@Model.Portfolio.LastName</div>
+                        <div><strong>Education: </strong>@Model.Portfolio.Education</div>
+                        <div><strong>Experience: </strong>@Model.Portfolio.Experience</div>
+                        <div><strong>Skills: </strong>@Model.Portfolio.Skills</div>
+                        <div><strong>Interests: </strong>@Model.Portfolio.Interests</div>
+                        <div><strong>Education level: </strong>@Model.Portfolio.EducationLevel</div>
+                    </div>
+                </div>
+                <div class="tab-pane fade overflow-auto" id="list-profile" role="tabpanel" aria-labelledby="list-profile-list" style="height: 300px">
+
+                </div>
+            </div>
+        </div>
     </div>
-    <div class="col-md-6">
-        <h2>Reviews</h2>
-        <button id="update-profile-button" type="submit" class="btn btn-primary">Review</button>
+    <hr class="my-4">
+    <div class="d-flex justify-content-lg-between">
+        <div>
+            <a class="btn btn-primary btn-lg" asp-controller="JoinRequests" asp-action="Send" asp-route-receiverId="@Model.Id">Ask to join</a>
+            <a class="btn btn-primary btn-lg" asp-controller="" asp-action="" asp-route-CooperativeId="">Send review</a>
+        </div>
+        <div>
+            <a class="btn btn-primary btn-lg" asp-controller="Teachers" asp-action="All">Back</a>
+        </div>
     </div>
 </div>

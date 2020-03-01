@@ -5,6 +5,7 @@
     using CHE.Data.Models;
     using CHE.Web.InputModels.Cooperatives;
     using CHE.Web.ViewModels.Cooperatives;
+    using CHE.Web.ViewModels.JoinRequests;
 
     public class CooperativeProfile : Profile
     {
@@ -22,6 +23,8 @@
             this.CreateMap<Cooperative, CooperativeEditInputModel>()
                 .ForMember(dest => dest.Grade, opt => opt.MapFrom(src => src.Grade.Value))
                 .ReverseMap();
+
+            this.CreateMap<Cooperative, JoinRequestCooperativeSendViewModel>();
         }
     }
 }

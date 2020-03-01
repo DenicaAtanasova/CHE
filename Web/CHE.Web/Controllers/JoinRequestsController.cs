@@ -8,19 +8,24 @@
     using CHE.Services.Data;
     using CHE.Web.ViewModels.JoinRequests;
     using CHE.Web.InputModels.JoinRequests;
+    using CHE.Data.Models;
+    using Microsoft.AspNetCore.Identity;
 
     public class JoinRequestsController : Controller
     {
+        private readonly UserManager<CheUser> _userManager;
         private readonly IJoinRequestsService _joinRequestsService;
 
         public JoinRequestsController(
+            UserManager<CheUser> userManager,
             IJoinRequestsService joinRequestsService)
         {
+            this._userManager = userManager;
             this._joinRequestsService = joinRequestsService;
         }
 
         [Authorize]
-        public async Task<IActionResult> Details(string? id)
+        public async Task<IActionResult> Details(string id)
         {
             if (id == null)
             {
@@ -33,9 +38,13 @@
         }
 
         [Authorize]
-        public IActionResult Send(string cooperativeId)
+        public IActionResult Send(string cooperativeId, string receiverId)
         {
-            return View(new JoinRequestCreateInputModel { CooperativeId = cooperativeId });
+            return View(new JoinRequestCreateInputModel 
+            { 
+                CooperativeId = cooperativeId ,
+                ReceiverId = receiverId
+            });
         }
 
         [Authorize]
@@ -47,10 +56,10 @@
                 return this.View();
             }
 
-            var senderName = this.User.Identity.Name;
+            var senderId = this._userManager.GetUserId(this.User);
 
             var sendRequestSuccessful = await this._joinRequestsService
-                .SendAsync(model.Content, model.CooperativeId, model.ReceiverId, senderName);
+                .SendAsync(model.Content, model.CooperativeId, model.ReceiverId, senderId);
             if (!sendRequestSuccessful)
             {
                 return this.BadRequest();
