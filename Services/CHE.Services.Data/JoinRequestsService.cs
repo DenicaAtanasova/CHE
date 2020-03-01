@@ -11,6 +11,7 @@
 
     using CHE.Data;
     using CHE.Data.Models;
+    using System.Collections.Generic;
 
     public class JoinRequestsService : IJoinRequestsService
     {
@@ -38,6 +39,16 @@
             return requestFromDb;
         }
 
+        public async Task<IEnumerable<TEntity>> GetTeacherAllAsync<TEntity>(string teacherId)
+        {
+            var requests = await this._dbContext.JoinRequests
+                 .Where(x => x.ReceiverId == teacherId && !x.IsDeleted)
+                 .ProjectTo<TEntity>(this._mapper.ConfigurationProvider)
+                 .ToArrayAsync();
+
+            return requests;
+        }
+
         public async Task<bool> SendAsync(string requestContent, string cooperativeId, string receiverId, string senderId)
         {
             var result = await this.CreateAsync(requestContent, cooperativeId, senderId, receiverId);
@@ -50,8 +61,18 @@
             var request = await this._dbContext.JoinRequests
                 .SingleOrDefaultAsync(x => x.Id == requestId);
 
-            await this._cooperativesService
-                .AddMemberAsync(request.SenderId, request.CooperativeId);
+            // request is send from parent to cooperative
+            if (request.ReceiverId == null)
+            {
+                await this._cooperativesService
+                    .AddMemberAsync(request.SenderId, request.CooperativeId);
+            }
+            // request is send from cooperative to teacher 
+            else
+            {
+                await this._cooperativesService
+                       .AddMemberAsync(request.ReceiverId, request.CooperativeId);
+            }
 
             this.Delete(request);
 

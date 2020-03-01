@@ -1,0 +1,25 @@
+﻿@page
+@model CHE.Web.Areas.Identity.Pages.Account.Manage.JoinRequestModel
+@{
+    var requestsCount = 1;
+}
+<h1>Join requests</h1>
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Cooperative</th>
+            <th scope="col" colspan="2">Handle</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var request in Model.Input)
+        {
+            <tr>
+                <th scope="row">@(requestsCount++)</th>
+                <td colspan="2">@request.CooperativeName</td>
+                <td><a class="btn btn-primary btn-sm" asp-controller="JoinRequests" asp-action="Details" asp-route-id="@request.Id">Details</a></td>
+            </tr>
+        }
+    </tbody>
+</table>

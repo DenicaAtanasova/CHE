@@ -8,6 +8,10 @@
 
         public string SenderUserName { get; set; }
 
+        public string ReceiverId { get; set; }
+
         public string CooperativeId { get; set; }
+
+        public string CooperativeName { get; set; }
     }
 }

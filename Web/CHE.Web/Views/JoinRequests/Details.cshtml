@@ -8,7 +8,7 @@
 }
 
 <div class="jumbotron">
-    <h3 class="display-4">Request to join</h3>
+    <h3 class="display-4">Request to join @Model.CooperativeName</h3>
     <p class="lead">From: <strong>@Model.SenderUserName</strong></p>
     <hr class="my-4">
     <p>@Model.Content</p>
@@ -19,7 +19,14 @@
             <a class="btn btn-primary btn-lg" asp-controller="JoinRequests" asp-action="Reject" asp-all-route-data="@data">Reject</a>
         </div>
         <div>
-            <a class="btn btn-primary btn-lg" asp-controller="Cooperatives" asp-action="Details" asp-route-id="@Model.CooperativeId">Back</a>
+            @if (Model.ReceiverId == null)
+            {
+                <a class="btn btn-primary btn-lg" asp-controller="Cooperatives" asp-action="Details" asp-route-id="@Model.CooperativeId">Back</a>
+            }
+            else
+            {
+                <a class="btn btn-primary btn-lg" asp-area="Identity" asp-page="/Account/Manage/JoinRequest" title="Manage">Back</a>
+            }
         </div>
     </div>
 </div>
