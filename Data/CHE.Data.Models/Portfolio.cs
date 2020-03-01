@@ -16,6 +16,8 @@
 
         public string Interests { get; set; }
 
+        public EducationLevel EducationLevel { get; set; }
+
         public string OwnerId { get; set; }
 
         public CheUser Owner { get; set; }
