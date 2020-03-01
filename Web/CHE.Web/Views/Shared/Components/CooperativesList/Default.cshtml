@@ -1,0 +1,6 @@
+﻿@model IEnumerable<CHE.Web.ViewModels.JoinRequests.JoinRequestCooperativeSendViewModel>
+
+@foreach (var cooperative in Model)
+{
+    <option value="@cooperative.Id">@cooperative.Name</option>
+}

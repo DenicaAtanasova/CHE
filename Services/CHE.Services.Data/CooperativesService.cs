@@ -29,6 +29,7 @@
             this._gradesService = gradesService;
         }
 
+        //TODO: Use input model as parameter
         public async Task<bool> CreateAsync(string name, string info, string gradeValue, string creatorId)
         {
             var grade = await this._gradesService.GetByValueAsync(gradeValue);
@@ -53,6 +54,7 @@
             return result;
         }
 
+        //TODO: Use input model as parameter
         public async Task<bool> UpdateAsync(string id, string name, string info, string gradeValue, string city, string neighbourhood, string street = null)
         {
             var cooperativeToUpdate = await this._dbContext.Cooperatives
@@ -111,10 +113,22 @@
             return cooperativeFromDb;
         }
 
+        public async Task<IEnumerable<TEntity>> GetCreatorAllByUsernameAsync<TEntity>(string username)
+        {
+            var cooperativeFromDb = await this._dbContext
+                .Cooperatives
+                .Where(x => x.Creator.UserName == username && !x.IsDeleted)
+                .ProjectTo<TEntity>(_mapper.ConfigurationProvider)
+                .ToArrayAsync();
+
+            return cooperativeFromDb;
+        }
+
+        //TODO: Move to join request service
         public async Task<IEnumerable<TEntity>> GetJoinRequestsAsync<TEntity>(string cooperativeId)
         {
             var requests = await this._dbContext.JoinRequests
-                .Where(x => x.CooperativeId == cooperativeId && x.IsDeleted == false)
+                .Where(x => x.CooperativeId == cooperativeId && x.Receiver == null && x.IsDeleted == false)
                 .ProjectTo<TEntity>(_mapper.ConfigurationProvider)
                 .ToArrayAsync();
 

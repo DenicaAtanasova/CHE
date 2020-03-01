@@ -15,6 +15,8 @@
 
         Task<IEnumerable<TEntity>> GetAllAsync<TEntity>();
 
+        Task<IEnumerable<TEntity>> GetCreatorAllByUsernameAsync<TEntity>(string username);
+
         Task<IEnumerable<TEntity>> GetJoinRequestsAsync<TEntity>(string cooperativeId);
 
         Task<bool> AddMemberAsync(string senderId, string cooperativeId);
