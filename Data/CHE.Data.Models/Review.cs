@@ -12,7 +12,7 @@
 
         public CheUser Sender { get; set; }
 
-        public string RecieverId { get; set; }
+        public string ReceiverId { get; set; }
 
         public CheUser Receiver { get; set; }
     }

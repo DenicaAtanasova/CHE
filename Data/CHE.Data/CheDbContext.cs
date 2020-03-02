@@ -34,7 +34,7 @@
             builder.Entity<Review>()
                 .HasOne(r => r.Receiver)
                 .WithMany(rc => rc.ReviewsReceived)
-                .HasForeignKey(r => r.RecieverId)
+                .HasForeignKey(r => r.ReceiverId)
                 .OnDelete(DeleteBehavior.Restrict);
 
             builder.Entity<Review>()
