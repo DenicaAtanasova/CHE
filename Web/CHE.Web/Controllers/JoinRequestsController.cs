@@ -4,12 +4,12 @@
 
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
+    using Microsoft.AspNetCore.Identity;
 
-    using CHE.Services.Data;
     using CHE.Web.ViewModels.JoinRequests;
     using CHE.Web.InputModels.JoinRequests;
+    using CHE.Services.Data;
     using CHE.Data.Models;
-    using Microsoft.AspNetCore.Identity;
 
     public class JoinRequestsController : Controller
     {
@@ -49,7 +49,7 @@
 
         [Authorize]
         [HttpPost]
-        public async Task<IActionResult> Send(JoinRequestCreateInputModel model)
+        public async Task<IActionResult> Send(JoinRequestCreateInputModel inputModel)
         {
             if (!this.ModelState.IsValid)
             {
@@ -59,7 +59,7 @@
             var senderId = this._userManager.GetUserId(this.User);
 
             var sendRequestSuccessful = await this._joinRequestsService
-                .SendAsync(model.Content, model.CooperativeId, model.ReceiverId, senderId);
+                .SendAsync(inputModel.Content, inputModel.CooperativeId, inputModel.ReceiverId, senderId);
             if (!sendRequestSuccessful)
             {
                 return this.BadRequest();

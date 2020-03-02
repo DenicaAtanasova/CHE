@@ -6,9 +6,9 @@
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Identity;
 
-    using CHE.Services.Data;
     using CHE.Web.InputModels.Cooperatives;
     using CHE.Web.ViewModels.Cooperatives;
+    using CHE.Services.Data;
     using CHE.Data.Models;
 
     public class CooperativesController : Controller

@@ -3,6 +3,7 @@
     using System;
     using System.Linq;
     using System.Threading.Tasks;
+    using System.Collections.Generic;
 
     using Microsoft.EntityFrameworkCore;
 
@@ -11,7 +12,6 @@
 
     using CHE.Data;
     using CHE.Data.Models;
-    using System.Collections.Generic;
 
     public class JoinRequestsService : IJoinRequestsService
     {
