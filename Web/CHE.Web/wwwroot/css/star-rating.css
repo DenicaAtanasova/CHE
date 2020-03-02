@@ -1,0 +1,55 @@
+﻿.modal-body {
+    margin: 10px 0
+}
+
+.review {
+    width: 100%;
+    height: 5em;
+}
+
+.rating {
+    margin-bottom: 5em;
+    position: absolute;
+    top: 30%;
+    left: 50%;
+    transform: translate(-50%, -50%) rotateY(180deg);
+    display: flex;
+}
+
+.rating input {
+    display: none;
+}
+
+.rating label {
+    display: block;
+    cursor: pointer;
+    width: 50px;
+}
+
+.rating label::before {
+    content: '\f005';
+    font-family: fontAwesome;
+    position: relative;
+    display: block;
+    font-size: 35px;
+    color: #10101052;
+}
+
+.rating label::after {
+    content: '\f005';
+    font-family: fontAwesome;
+    position: absolute;
+    display: block;
+    font-size: 35px;
+    color: #e9c914;
+    top: 0;
+    opacity: 0;
+    transition: 0.5s;
+    text-shadow: 0 2px 5px rgba(0,0,0,.5);
+}
+
+.rating label:hover:after,
+.rating label:hover ~ label:after,
+.rating input:checked ~ label:after {
+    opacity: 1;
+}
