@@ -63,6 +63,7 @@ namespace CHE.Web
             services.AddTransient<IJoinRequestsService, JoinRequestsService>();
             services.AddTransient<ITeachersService, TeachersService>();
             services.AddTransient<IPortfoliosService, PortfoliosService>();
+            services.AddTransient<IReviewsService, ReviewsService>();
 
             // AutoMapper
             services.AddAutoMapper(typeof(CooperativeProfile));

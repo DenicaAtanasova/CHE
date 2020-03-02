@@ -5,12 +5,8 @@
 
     public interface IReviewsService
     {
-        Task CreateAsync(string comment, string rating, string senderName, string receiverName);
+        Task<bool> CreateAsync(string comment, int rating, string senderId, string receiverId);
 
-        Task DeleteAsync(string id);
-
-        Task<TEntity> GetByIdAsync<TEntity>(string id);
-
-        Task<IEnumerable<TEntity>> GetAllAsync<TEntity>();
+        Task<IEnumerable<TEntity>> GetTeachersAllAsync<TEntity>(string teacherId);
     }
 }
