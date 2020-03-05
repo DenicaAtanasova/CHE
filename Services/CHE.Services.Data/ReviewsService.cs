@@ -2,7 +2,13 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
     using System.Threading.Tasks;
+
+    using Microsoft.EntityFrameworkCore;
+
+    using AutoMapper;
+    using AutoMapper.QueryableExtensions;
 
     using CHE.Data;
     using CHE.Data.Models;
@@ -10,10 +16,14 @@
     public class ReviewsService : IReviewsService
     {
         private readonly CheDbContext _dbContext;
+        private readonly IMapper _mapper;
 
-        public ReviewsService(CheDbContext dbContext)
+        public ReviewsService(
+            CheDbContext dbContext,
+            IMapper mapper)
         {
             this._dbContext = dbContext;
+            this._mapper = mapper;
         }
 
         public async Task<bool> CreateAsync(string comment, int rating, string senderId, string receiverId)
@@ -34,9 +44,14 @@
         }
 
 
-        public Task<IEnumerable<TEntity>> GetTeachersAllAsync<TEntity>(string teacherId)
+        public async Task<IEnumerable<TEntity>> GetTeachersAllAsync<TEntity>(string teacherId)
         {
-            throw new System.NotImplementedException();
+            var reviews = await this._dbContext.Reviews
+                .Where(x => x.ReceiverId == teacherId && !x.IsDeleted)
+                .ProjectTo<TEntity>(this._mapper.ConfigurationProvider)
+                .ToArrayAsync();
+
+            return reviews;
         }
     }
 }

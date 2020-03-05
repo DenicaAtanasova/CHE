@@ -1,0 +1,23 @@
+﻿@model IEnumerable<CHE.Web.ViewModels.Teachers.TeacherReviewDetailsViewModel>
+@{ 
+    var reviewsCount = 1;
+}
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Rating</th>
+            <th scope="col">Comment</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var review in Model)
+        {
+            <tr>
+                <th scope="row">@(reviewsCount++)</th>
+                <td scope="row">@review.Rating / 5</td>
+                <td scope="row">@review.Comment</td>
+            </tr>
+        }
+    </tbody>
+</table>

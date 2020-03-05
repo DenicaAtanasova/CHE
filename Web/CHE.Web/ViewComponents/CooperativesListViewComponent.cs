@@ -21,7 +21,7 @@
             var cooperativesList = await this._cooperativesService
                 .GetCreatorAllByUsernameAsync<JoinRequestCooperativeSendViewModel>(creatorUsername);
 
-            return View(cooperativesList);
+            return this.View(cooperativesList);
         }
     }
 }

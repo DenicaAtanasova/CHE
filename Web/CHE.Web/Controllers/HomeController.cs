@@ -5,7 +5,7 @@
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.Logging;
 
-    using CHE.Web.Models;
+    using CHE.Web.ViewModels;
 
     public class HomeController : Controller
     {
