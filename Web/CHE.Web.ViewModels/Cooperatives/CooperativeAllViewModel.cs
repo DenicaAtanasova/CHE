@@ -8,6 +8,8 @@
 
         public string Grade { get; set; }
 
+        public string Info { get; set; }
+
         //public int MembersCount { get; set; }
     }
 }
