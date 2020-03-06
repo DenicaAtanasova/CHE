@@ -28,6 +28,13 @@
 
         public async Task<bool> CreateAsync(string comment, int rating, string senderId, string receiverId)
         {
+            var reviewExisits = await this._dbContext.Reviews
+                .AnyAsync(x => x.ReceiverId == receiverId && x.SenderId == senderId);
+            if (reviewExisits)
+            {
+                return false;
+            }
+
             var review = new Review
             {
                 Comment = comment,
