@@ -23,81 +23,7 @@
             this._userManager = userManager;
             this._cooperativesService = cooperativesService;
         }
-
-        [Authorize]
-        public IActionResult Create()
-        {
-            return View();
-        }
-
-        [Authorize]
-        [HttpPost]
-        public async Task<IActionResult> Create(CooperativeCreateInputModel model)
-        {
-            if (!this.ModelState.IsValid)
-            {
-                return this.View();
-            }
-
-            var userId = this._userManager.GetUserId(this.User);
-            var createSuccessful = await this._cooperativesService.CreateAsync(model.Name, model.Info, model.Grade, userId);
-            if (!createSuccessful)
-            {
-                return this.BadRequest();
-            }
-
-            return this.RedirectToAction(nameof(All));
-        }
-
-        [Authorize]
-        public async Task<IActionResult> Edit(string id)
-        {
-            if (id == null)
-            {
-                return this.NotFound();
-            }
-
-            var cooperativeToEdit = await this._cooperativesService.GetByIdAsync<CooperativeEditInputModel>(id);
-
-            return this.View(cooperativeToEdit);
-        }
-
-        [Authorize]
-        [HttpPost]
-        public async Task<IActionResult> Edit(CooperativeEditInputModel model)
-        {
-            if (!this.ModelState.IsValid)
-            {
-                return this.View(model.Id);
-            }
-
-            var updateSuccessful = await this._cooperativesService
-                .UpdateAsync(model.Id, model.Name, model.Info, model.Grade, model.Address.City, model.Address.Neighbourhood, model.Address.Street);
-            if (!updateSuccessful)
-            {
-                return this.BadRequest();
-            }
-
-            return this.RedirectToAction(nameof(Details), new { id = model.Id });
-        }
-
-        [Authorize]
-        public async Task<IActionResult> Delete(string id)
-        {
-            if (id == null)
-            {
-                return this.NotFound();
-            }
-
-            var deleteSuccessful = await this._cooperativesService.DeleteAsync(id);
-
-            if (!deleteSuccessful)
-            {
-                return this.BadRequest();
-            }
-
-            return this.RedirectToAction(nameof(All));
-        }
+        
 
         public async Task<IActionResult> Details(string id)
         {
@@ -123,22 +49,11 @@
         {
             var cooperativesList = new CooperativeAllListViewModel
             {
-                Cooperatives = await this._cooperativesService.GetAllAsync<CooperativeAllViewModel>()
+                Cooperatives = await this._cooperativesService
+                    .GetAllAsync<CooperativeAllViewModel>()
             };
 
             return this.View(cooperativesList);
-        }
-
-        [Authorize]
-        public async Task<IActionResult> RemoveMember(string memberId, string cooperativeId)
-        {
-            var removeMemberSuccessful = await this._cooperativesService.RemoveMemberAsync(memberId, cooperativeId);
-            if (!removeMemberSuccessful)
-            {
-                return this.BadRequest();
-            }
-
-            return this.RedirectToAction(nameof(Details), new { id = cooperativeId });
         }
 
         [Authorize]

@@ -88,7 +88,7 @@
         <hr class="my-4">
         <div class="d-flex justify-content-lg-between">
             <div>
-                <a class="btn btn-primary btn-lg" asp-controller="Cooperatives" asp-action="Edit" asp-route-id="@Model.Id">Edit</a>
+                <a class="btn btn-primary btn-lg" asp-area="Parent" asp-controller="Cooperatives" asp-action="Edit" asp-route-id="@Model.Id">Edit</a>
                 <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#deleteConfirm">
                     Delete
                 </button>
@@ -113,7 +113,7 @@
                 <h5>Name: <strong>@Model.Name</strong></h5>
             </div>
             <div class="modal-footer">
-                <a class="btn btn-primary" asp-controller="Cooperatives" asp-action="Delete" asp-route-id="@Model.Id">Delete</a>
+                <a class="btn btn-primary" asp-area="Parent" asp-controller="Cooperatives" asp-action="Delete" asp-route-id="@Model.Id">Delete</a>
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
             </div>
         </div>
