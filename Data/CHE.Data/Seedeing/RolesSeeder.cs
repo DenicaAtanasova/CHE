@@ -9,18 +9,16 @@
     using System.Linq;
     using System.Threading.Tasks;
 
+    using CHE.Common;
+
     public class RolesSeeder : ISeeder
     {
-        //TODO: Check if role names have to be global constants
-        private const string TEACHER_ROLE = "Teacher";
-        private const string PARENT_ROLE = "Parent";
-
         public async Task SeedAsync(CheDbContext dbContext, IServiceProvider serviceProvider)
         {
             var roleManager = serviceProvider.GetRequiredService<RoleManager<CheRole>>();
 
-            await SeedRoleAsync(roleManager, TEACHER_ROLE);
-            await SeedRoleAsync(roleManager, PARENT_ROLE);
+            await SeedRoleAsync(roleManager, GlobalConstants.TEACHER_ROLE);
+            await SeedRoleAsync(roleManager, GlobalConstants.PARENT_ROLE);
         }
 
         private static async Task SeedRoleAsync(RoleManager<CheRole> roleManager, string roleName)

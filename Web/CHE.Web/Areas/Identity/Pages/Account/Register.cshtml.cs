@@ -1,27 +1,28 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Text.Encodings.Web;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authorization;
-using CHE.Data.Models;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.UI.Services;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.AspNetCore.WebUtilities;
-using Microsoft.Extensions.Logging;
-
-namespace CHE.Web.Areas.Identity.Pages.Account
+﻿namespace CHE.Web.Areas.Identity.Pages.Account
 {
+    using System;
+    using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations;
+    using System.Linq;
+    using System.Text;
+    using System.Text.Encodings.Web;
+    using System.Threading.Tasks;
+
+    using Microsoft.AspNetCore.Authentication;
+    using Microsoft.AspNetCore.Authorization;
+    using Microsoft.AspNetCore.Identity;
+    using Microsoft.AspNetCore.Identity.UI.Services;
+    using Microsoft.AspNetCore.Mvc;
+    using Microsoft.AspNetCore.Mvc.RazorPages;
+    using Microsoft.AspNetCore.WebUtilities;
+    using Microsoft.Extensions.Logging;
+
+    using CHE.Data.Models;
+    using CHE.Common;
+
     [AllowAnonymous]
     public class RegisterModel : PageModel
     {
-        private const string TEACHER_ROLE = "Teacher";
-
         private readonly SignInManager<CheUser> _signInManager;
         private readonly UserManager<CheUser> _userManager;
         private readonly ILogger<RegisterModel> _logger;
@@ -86,7 +87,7 @@ namespace CHE.Web.Areas.Identity.Pages.Account
             if (ModelState.IsValid)
             {
                 var user = new CheUser { UserName = Input.Username, Email = Input.Email, RoleName = Input.Role };
-                if (Input.Role == TEACHER_ROLE)
+                if (Input.Role == GlobalConstants.TEACHER_ROLE)
                 {
                     user.Portfolio = new Portfolio { CreatedOn = DateTime.UtcNow };
                 }

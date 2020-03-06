@@ -15,6 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\Common\CHE.Common\CHE.Common.csproj" />
     <ProjectReference Include="..\CHE.Data.Models\CHE.Data.Models.csproj" />
   </ItemGroup>
 
