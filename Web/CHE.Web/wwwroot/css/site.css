@@ -77,3 +77,7 @@ body {
 .cooperative {
     margin: 1rem;
 }
+
+.card-body{
+    text-align: center;
+}

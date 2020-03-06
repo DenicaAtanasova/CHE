@@ -8,13 +8,12 @@
             <div class="card h-100">
                 <img class="card-img-top" src="http://placehold.it/700x300" alt="">
                 <div class="card-body">
-                    <h4 class="card-title">
-                        <a href="#">@teacher.UserName</a>
-                    </h4>
-                    <p>
-                        <div class="card-text">Rating: @teacher.Rating / 5</div>
-                        <div class="card-text">Reviews: @teacher.ReviewsCount</div>
-                    </p>
+                    <h4 class="card-title">@teacher.UserName</h4>
+                    <vc:star-rating rating="@teacher.Rating"></vc:star-rating>
+                    <div class="d-flex justify-content-lg-between">
+                        <div class="card-text p-2">Rating: @teacher.Rating / 5</div>
+                        <div class="card-text p-2">Reviews: @teacher.ReviewsCount</div>
+                    </div>
                 </div>
                 <div class="card-footer">
                     <a class="btn btn-sm btn-primary" asp-controller="Teachers" asp-action="Details" asp-route-id="@teacher.Id">View</a>
@@ -23,3 +22,8 @@
         </div>
     }
 </div>
+
+@section Styles {
+    <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="~/css/star-rating.css" />
+}

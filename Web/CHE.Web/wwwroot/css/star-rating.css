@@ -53,3 +53,30 @@
 .rating input:checked ~ label:after {
     opacity: 1;
 }
+
+.full-star,
+.half-star,
+.empty-star {
+    display: inline;
+}
+
+.full-star span::before {
+    content: '\f005';
+    font-family: fontAwesome;
+    color: #e9c914;
+    margin: 3px;
+}
+
+.half-star span::before {
+    content: '\f089';
+    font-family: fontAwesome;
+    color: #e9c914;
+    margin: 3px;
+}
+
+.empty-star span::before {
+    content: '\f005';
+    font-family: fontAwesome;
+    color: #10101052;
+    margin: 3px;
+}

@@ -1,0 +1,20 @@
+﻿@model CHE.Web.ViewModels.StarRatingViewModel
+
+<div class="full-star">
+    @for (int i = 1; i <= Model.FullStarCount; i++)
+    {
+        <span></span>
+    }
+</div>
+<div class="half-star">
+    @for (int i = 1; i <= Model.HalfStarCount; i++)
+    {
+        <span></span>
+    }
+</div>
+<div class="empty-star">
+    @for (int i = 1; i <= Model.EmptyStarCount; i++)
+    {
+        <span></span>
+    }
+</div>
