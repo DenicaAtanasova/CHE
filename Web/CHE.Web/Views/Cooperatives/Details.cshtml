@@ -1,4 +1,5 @@
-﻿@model CHE.Web.ViewModels.Cooperatives.CooeprativeDetailsViewModel
+﻿@using CHE.Common
+@model CHE.Web.ViewModels.Cooperatives.CooeprativeDetailsViewModel
 @{
     var membersCount = 1;
 }
@@ -69,7 +70,10 @@
                 }
                 else
                 {
-                    <a class="btn btn-primary btn-lg" asp-controller="JoinRequests" asp-action="Send" asp-route-CooperativeId="@Model.Id">Join</a>
+                    if (this.User.IsInRole(GlobalConstants.PARENT_ROLE))
+                    {
+                        <a class="btn btn-primary btn-lg" asp-controller="JoinRequests" asp-action="Send" asp-route-CooperativeId="@Model.Id">Join</a>
+                    }
                 }
             </div>
             <div>

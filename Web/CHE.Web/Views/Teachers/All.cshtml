@@ -15,8 +15,12 @@
                         <div class="card-text p-2">Reviews: @teacher.ReviewsCount</div>
                     </div>
                 </div>
-                <div class="card-footer">
-                    <a class="btn btn-sm btn-primary" asp-controller="Teachers" asp-action="Details" asp-route-id="@teacher.Id">View</a>
+                <div class="card-footer d-flex justify-content-lg-between">
+                    <div class="p-2">
+                    </div>
+                    <div class="p-2">
+                        <a class="btn btn-sm btn-primary" asp-controller="Teachers" asp-action="Details" asp-route-id="@teacher.Id">View</a>
+                    </div>
                 </div>
             </div>
         </div>

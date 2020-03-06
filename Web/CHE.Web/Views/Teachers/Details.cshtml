@@ -1,4 +1,5 @@
-﻿@model CHE.Web.ViewModels.Teachers.TeacherDetailsViewModel
+﻿@using CHE.Common
+@model CHE.Web.ViewModels.Teachers.TeacherDetailsViewModel
 
 <h1>Teacher portfolio</h1>
 <div class="jumbotron">
@@ -32,8 +33,11 @@
     <hr class="my-4">
     <div class="d-flex justify-content-lg-between">
         <div>
-            <a class="btn btn-primary btn-lg" asp-controller="JoinRequests" asp-action="Send" asp-route-receiverId="@Model.Id">Ask to join</a>
-            <a class="btn btn-primary btn-lg" asp-controller="Reviews" asp-action="Send" asp-route-teacherId="@Model.Id">Send review</a>
+            @if (this.User.IsInRole(GlobalConstants.PARENT_ROLE))
+            {
+                <a class="btn btn-primary btn-lg" asp-controller="JoinRequests" asp-action="Send" asp-route-receiverId="@Model.Id">Ask to join</a>
+                <a class="btn btn-primary btn-lg" asp-area="Parent" asp-controller="Reviews" asp-action="Send" asp-route-teacherId="@Model.Id">Send review</a>
+            }
         </div>
         <div>
             <a class="btn btn-primary btn-lg" asp-controller="Teachers" asp-action="All">Back</a>

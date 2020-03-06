@@ -107,17 +107,15 @@ namespace CHE.Web
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapControllerRoute("areaRoute", "{area:exists}/{controller=Home}/{action=Index}/{id?}");
-                endpoints.MapControllerRoute("default", "{controller=Home}/{action=Index}/{id?}");
-                endpoints.MapRazorPages();
-                //endpoints.MapControllerRoute(
-                //    name: "parentArea",
-                //    pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
+                endpoints.MapControllerRoute(
+                    name: "parentarea",
+                    pattern: "{area:exists}/{controller=home}/{action=index}/{id?}");
 
-                //endpoints.MapControllerRoute(
-                //    name: "default",
-                //    pattern: "{controller=Home}/{action=Index}/{id?}");
-                //endpoints.MapRazorPages();
+                endpoints.MapControllerRoute(
+                    name: "default",
+                    pattern: "{controller=home}/{action=index}/{id?}");
+
+                endpoints.MapRazorPages();
             });
         }
     }
