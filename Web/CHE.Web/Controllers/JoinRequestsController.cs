@@ -13,14 +13,11 @@
 
     public class JoinRequestsController : Controller
     {
-        private readonly UserManager<CheUser> _userManager;
         private readonly IJoinRequestsService _joinRequestsService;
 
         public JoinRequestsController(
-            UserManager<CheUser> userManager,
             IJoinRequestsService joinRequestsService)
         {
-            this._userManager = userManager;
             this._joinRequestsService = joinRequestsService;
         }
 
@@ -35,37 +32,6 @@
             var request = await this._joinRequestsService.GetByIdAsync<JoinRequestDetailsViewModel>(id);
 
             return this.View(request);
-        }
-
-        [Authorize]
-        public IActionResult Send(string cooperativeId, string receiverId)
-        {
-            return View(new JoinRequestCreateInputModel 
-            { 
-                CooperativeId = cooperativeId ,
-                ReceiverId = receiverId
-            });
-        }
-
-        [Authorize]
-        [HttpPost]
-        public async Task<IActionResult> Send(JoinRequestCreateInputModel inputModel)
-        {
-            if (!this.ModelState.IsValid)
-            {
-                return this.View();
-            }
-
-            var senderId = this._userManager.GetUserId(this.User);
-
-            var sendRequestSuccessful = await this._joinRequestsService
-                .SendAsync(inputModel.Content, inputModel.CooperativeId, inputModel.ReceiverId, senderId);
-            if (!sendRequestSuccessful)
-            {
-                return this.BadRequest();
-            }
-
-            return RedirectToAction("All", "Cooperatives");
         }
 
         [Authorize]

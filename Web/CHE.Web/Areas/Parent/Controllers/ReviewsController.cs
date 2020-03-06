@@ -25,7 +25,7 @@
 
         public IActionResult Send(string teacherId)
         {
-            return View(new ReviewSendInputModel { ReceiverId = teacherId });
+            return this.View(new ReviewSendInputModel { ReceiverId = teacherId });
         }
 
         [HttpPost]
@@ -37,10 +37,10 @@
                 .CreateAsync(inputModel.Comment, inputModel.Rating, senderId, inputModel.ReceiverId);
             if (!reviewSendSucceeded)
             {
-                return BadRequest();
+                return this.BadRequest();
             }
 
-            return RedirectToAction("All", "Teachers", new { area = ""});
+            return this.RedirectToAction("All", "Teachers", new { area = ""});
         }
     }
 }
