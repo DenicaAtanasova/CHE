@@ -23,7 +23,6 @@
             this._userManager = userManager;
             this._cooperativesService = cooperativesService;
         }
-        
 
         public async Task<IActionResult> Details(string id)
         {

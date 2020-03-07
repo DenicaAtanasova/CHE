@@ -31,6 +31,10 @@
         [HttpPost]
         public async Task<IActionResult> Send(ReviewSendInputModel inputModel)
         {
+            if (!ModelState.IsValid)
+            {
+                return this.View();
+            }
 
             var senderId = _userManager.GetUserId(User);
             var reviewSendSucceeded = await _reviewsService

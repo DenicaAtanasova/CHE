@@ -5,11 +5,14 @@ namespace CHE.Web.Areas.Identity.Pages.Account.Manage
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Mvc.RazorPages;
     using Microsoft.AspNetCore.Identity;
+    using Microsoft.AspNetCore.Authorization;
 
     using CHE.Web.InputModels.Portfolios;
     using CHE.Data.Models;
     using CHE.Services.Data;
+    using CHE.Common;
 
+    [Authorize(Roles = GlobalConstants.TEACHER_ROLE)]
     public class PortfolioModel : PageModel
     {
         private readonly UserManager<CheUser> _userManager;

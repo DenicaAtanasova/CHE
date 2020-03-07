@@ -1,8 +1,9 @@
 ﻿namespace CHE.Web.InputModels.Attributes.Validation
 {
-    using CHE.Services.Data;
     using System.ComponentModel.DataAnnotations;
     using System.Linq;
+
+    using CHE.Services.Data;
 
     public class GradeAttribute : ValidationAttribute
     {
