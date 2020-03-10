@@ -6,7 +6,10 @@
     {
         <div class="col-lg-4 col-md-6 mb-4">
             <div class="card h-100">
-                <img class="card-img-top" src="http://placehold.it/700x300" alt="">
+                @*<img class="card-img-top" src="http://placehold.it/700x300" alt="">*@
+                <div class="image">
+                    <img class="card-img-top" src="@teacher.ImageUrl" alt="">
+                </div>              
                 <div class="card-body">
                     <h4 class="card-title">@teacher.UserName</h4>
                     <vc:star-rating rating="@teacher.Rating"></vc:star-rating>

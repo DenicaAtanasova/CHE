@@ -23,6 +23,8 @@
     [AllowAnonymous]
     public class RegisterModel : PageModel
     {
+        private const string DEFAULT_IMAGE_CAPTION = "Teacher_Avatar.png";
+        private const string DEFAULT_IMAGE_URL= @"https://chestorage.blob.core.windows.net/uploads/Teacher_Avatar.png";
         private readonly SignInManager<CheUser> _signInManager;
         private readonly UserManager<CheUser> _userManager;
         private readonly ILogger<RegisterModel> _logger;
@@ -89,7 +91,15 @@
                 var user = new CheUser { UserName = Input.Username, Email = Input.Email, RoleName = Input.Role };
                 if (Input.Role == GlobalConstants.TEACHER_ROLE)
                 {
-                    user.Portfolio = new Portfolio { CreatedOn = DateTime.UtcNow };
+                    user.Portfolio = new Portfolio 
+                    {
+                        CreatedOn = DateTime.UtcNow,
+                        Image = new Image 
+                        {
+                            Caption = DEFAULT_IMAGE_CAPTION,
+                            Url = DEFAULT_IMAGE_URL
+                        } 
+                    };
                 }
                 var result = await _userManager.CreateAsync(user, Input.Password);
                 if (result.Succeeded)
