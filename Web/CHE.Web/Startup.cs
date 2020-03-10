@@ -1,22 +1,17 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.UI;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using CHE.Data.Models;
+using Microsoft.EntityFrameworkCore;
+
+using AutoMapper;
+
 using CHE.Data;
+using CHE.Data.Models;
 using CHE.Data.Seedeing;
 using CHE.Services.Data;
-using AutoMapper;
-using CHE.Web.ViewModels;
 using CHE.Services.Mapping;
 
 namespace CHE.Web
@@ -64,6 +59,7 @@ namespace CHE.Web
             services.AddTransient<ITeachersService, TeachersService>();
             services.AddTransient<IPortfoliosService, PortfoliosService>();
             services.AddTransient<IReviewsService, ReviewsService>();
+            services.AddTransient<IImagesService, ImagesService>();
 
             // AutoMapper
             services.AddAutoMapper(typeof(CooperativeProfile));
