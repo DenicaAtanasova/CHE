@@ -21,5 +21,7 @@
         public string OwnerId { get; set; }
 
         public CheUser Owner { get; set; }
+
+        public Image Image { get; set; }
     }
 }
