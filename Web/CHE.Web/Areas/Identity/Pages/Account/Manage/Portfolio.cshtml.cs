@@ -54,7 +54,7 @@ namespace CHE.Web.Areas.Identity.Pages.Account.Manage
             }
 
             var userId = this._userManager.GetUserId(this.User);
-            var updateSuccessful = await this._portfoliosService.UpdateAsync(userId, Input);
+            var updateSuccessful = await this._portfoliosService.UpdateAsync(userId, Input, Input.Image);
 
             if (!updateSuccessful)
             {

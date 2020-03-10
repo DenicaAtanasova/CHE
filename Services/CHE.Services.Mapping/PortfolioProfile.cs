@@ -11,7 +11,9 @@
         public PortfolioProfile()
         {
             this.CreateMap<Portfolio, PortfolioInputModel>()
-                .ReverseMap();
+                .ForMember(dest => dest.Image, opt => opt.Ignore())
+                .ReverseMap()
+                .ForMember(dest => dest.Image, opt => opt.Ignore());
 
             this.CreateMap<Portfolio, TeacherPortfolioDetailsViewModel>();
         }
