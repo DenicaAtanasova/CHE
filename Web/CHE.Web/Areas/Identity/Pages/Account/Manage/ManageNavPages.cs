@@ -17,6 +17,10 @@
 
         public static string TwoFactorAuthentication => "TwoFactorAuthentication";
 
+        public static string Portfolio => "Portfolio";
+
+        public static string JoinRequest => "JoinRequest";
+
         public static string IndexNavClass(ViewContext viewContext) => PageNavClass(viewContext, Index);
 
         public static string EmailNavClass(ViewContext viewContext) => PageNavClass(viewContext, Email);
@@ -28,6 +32,10 @@
         public static string PersonalDataNavClass(ViewContext viewContext) => PageNavClass(viewContext, PersonalData);
 
         public static string TwoFactorAuthenticationNavClass(ViewContext viewContext) => PageNavClass(viewContext, TwoFactorAuthentication);
+
+        public static string PortfolioNavClass(ViewContext viewContext) => PageNavClass(viewContext, Portfolio);
+
+        public static string JoinRequestNavClass(ViewContext viewContext) => PageNavClass(viewContext, JoinRequest);
 
         private static string PageNavClass(ViewContext viewContext, string page)
         {

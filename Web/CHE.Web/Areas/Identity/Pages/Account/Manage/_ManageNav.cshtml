@@ -9,8 +9,8 @@
     <li class="nav-item"><a class="nav-link @ManageNavPages.ChangePasswordNavClass(ViewContext)" id="change-password" asp-page="./ChangePassword">Password</a></li>
     @if (this.User.IsInRole("Teacher"))
     {
-        <li class="nav-item"><a class="nav-link" id="portfolio" asp-page="./Portfolio">Portfolio</a></li>
-        <li class="nav-item"><a class="nav-link" id="join-request" asp-page="./JoinRequest">Join requests</a></li>
+        <li class="nav-item"><a class="nav-link @ManageNavPages.PortfolioNavClass(ViewContext)" id="portfolio" asp-page="./Portfolio">Portfolio</a></li>
+        <li class="nav-item"><a class="nav-link  @ManageNavPages.JoinRequestNavClass(ViewContext)" id="join-request" asp-page="./JoinRequest">Join requests</a></li>
     }
     @if (hasExternalLogins)
     {
