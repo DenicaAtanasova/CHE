@@ -5,6 +5,6 @@
 
     public interface IImagesService
     {
-        Task<bool> Update(IFormFile imageFile, string portfolioId);
+        Task<bool> UpdateAsync(IFormFile imageFile, string portfolioId);
     }
 }

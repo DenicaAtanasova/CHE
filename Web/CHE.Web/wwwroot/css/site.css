@@ -81,3 +81,16 @@ body {
 .card-body{
     text-align: center;
 }
+
+div.image{
+    max-height: 8em;
+}
+
+div.image img {
+    height: 100%;
+    width: auto;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    padding-top: 1em;
+}

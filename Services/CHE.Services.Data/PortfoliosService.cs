@@ -15,7 +15,6 @@
 
     public class PortfoliosService : IPortfoliosService
     {
-        private const string DEFAULT_IMAGE_CAPTION = "Teacher_Avatar.png";
         private readonly CheDbContext _dbContext;
         private readonly IMapper _mapper;
         private readonly IImagesService _imagesService;
@@ -48,10 +47,10 @@
 
             this._dbContext.Entry(portfolioFromDb).State = EntityState.Detached;
 
-            if (imageFile != null && imageFile.FileName != DEFAULT_IMAGE_CAPTION)
+            if (imageFile != null)
             {
                 //TODO: check result
-                await this._imagesService.Update(imageFile, portfolioFromDb.Id);
+                await this._imagesService.UpdateAsync(imageFile, portfolioFromDb.Id);
             }
             updatedPortfolio.Id = portfolioFromDb.Id;
             updatedPortfolio.CreatedOn = portfolioFromDb.CreatedOn;

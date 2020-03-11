@@ -12,6 +12,9 @@
 
     public class ImagesService : IImagesService
     {
+        private const string CONTAINER_NAME = "uploads";
+        private const string DEFAULT_IMAGE_CAPTION = "Teacher_Avatar.png";
+
         private readonly string accessKey;
         private readonly IConfiguration _configuration;
         private readonly CheDbContext _dbContext;
@@ -24,16 +27,18 @@
             this.accessKey = this._configuration.GetConnectionString("BlobConnection:AccessKey");
         }
 
-        public async Task<bool> Update(IFormFile imageFile, string portfolioId)
+        public async Task<bool> UpdateAsync(IFormFile imageFile, string portfolioId)
         {
             var imageToUpdate = await this._dbContext.Images
                 .SingleOrDefaultAsync(x => x.PortfolioId == portfolioId);
 
-            var url = await this.UploadAsync(imageFile);
-            if (url == null)
+            if (imageToUpdate.Caption != DEFAULT_IMAGE_CAPTION)
             {
-                return false;
+                await this.DeleteInBlobAsync(imageToUpdate.Url, imageToUpdate.Caption);
             }
+            
+            var url = await this.UploadToBlobAsync(imageFile);
+
             imageToUpdate.Url = url;
             imageToUpdate.Caption = imageFile.FileName;
 
@@ -42,22 +47,9 @@
             return true;
         }
 
-        private async Task<string> UploadAsync(IFormFile imageFile)
+        private async Task<string> UploadToBlobAsync(IFormFile imageFile)
         {
-            var cloudStorageAccount = CloudStorageAccount.Parse(accessKey);
-            var cloudBlobClient = cloudStorageAccount.CreateCloudBlobClient();
-
-            var strContainerName = "uploads";
-            var cloudBlobContainer = cloudBlobClient.GetContainerReference(strContainerName);
-
-            var isContainerCreated = await cloudBlobContainer.CreateIfNotExistsAsync();
-            if (isContainerCreated)
-            {
-                await cloudBlobContainer
-                    .SetPermissionsAsync(new BlobContainerPermissions { PublicAccess = BlobContainerPublicAccessType.Blob });
-            }
-
-            var cloudBlockBlob = cloudBlobContainer.GetBlockBlobReference(imageFile.FileName);
+            var cloudBlockBlob = this.GetCloudBlockBlob(imageFile.FileName);
             cloudBlockBlob.Properties.ContentType = imageFile.ContentType;
 
             var imageStream = imageFile.OpenReadStream();
@@ -66,6 +58,31 @@
             var url = cloudBlockBlob.Uri.AbsoluteUri;
 
             return url;
+        }
+
+        private async Task<bool> DeleteInBlobAsync(string url, string fileName)
+        {
+            var cloudBlockBlob = this.GetCloudBlockBlob(fileName);
+            var result = await cloudBlockBlob.DeleteIfExistsAsync();
+
+            return result;
+        }
+
+        private CloudBlockBlob GetCloudBlockBlob(string fileName)
+        {
+            var cloudStorageAccount = CloudStorageAccount.Parse(accessKey);
+            var cloudBlobClient = cloudStorageAccount.CreateCloudBlobClient();
+            var cloudBlobContainer = cloudBlobClient.GetContainerReference(CONTAINER_NAME);
+            //var isContainerCreated = await cloudBlobContainer.CreateIfNotExistsAsync();
+            //if (isContainerCreated)
+            //{
+            //    await cloudBlobContainer
+            //        .SetPermissionsAsync(new BlobContainerPermissions { PublicAccess = BlobContainerPublicAccessType.Blob });
+            //}
+
+            var cloudBlockBlob = cloudBlobContainer.GetBlockBlobReference(fileName);
+
+            return cloudBlockBlob;
         }
     }
 }

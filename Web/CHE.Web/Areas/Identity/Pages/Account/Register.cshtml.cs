@@ -25,6 +25,7 @@
     {
         private const string DEFAULT_IMAGE_CAPTION = "Teacher_Avatar.png";
         private const string DEFAULT_IMAGE_URL= @"https://chestorage.blob.core.windows.net/uploads/Teacher_Avatar.png";
+
         private readonly SignInManager<CheUser> _signInManager;
         private readonly UserManager<CheUser> _userManager;
         private readonly ILogger<RegisterModel> _logger;
