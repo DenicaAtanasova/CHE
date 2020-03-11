@@ -4,7 +4,7 @@
 <div class="row">
     @foreach (var teacher in Model.Teachers)
     {
-        <div class="col-lg-4 col-md-6 mb-4">
+        <div class="col-lg-3 col-md-5 mb-4">
             <div class="card h-100">
                 @*<img class="card-img-top" src="http://placehold.it/700x300" alt="">*@
                 <div class="image">
@@ -12,10 +12,11 @@
                 </div>              
                 <div class="card-body">
                     <h4 class="card-title">@teacher.UserName</h4>
+                    <h6>School level @teacher.EducationLevel</h6>
                     <vc:star-rating rating="@teacher.Rating"></vc:star-rating>
-                    <div class="d-flex justify-content-lg-between">
-                        <div class="card-text p-2">Rating: @teacher.Rating / 5</div>
-                        <div class="card-text p-2">Reviews: @teacher.ReviewsCount</div>
+                    <div class="d-flex justify-content-between">    
+                        <div class="card-text">Rating: @teacher.Rating / 5</div>
+                        <div class="card-text">Reviews: @teacher.ReviewsCount</div>
                     </div>
                 </div>
                 <div class="card-footer d-flex justify-content-lg-between">

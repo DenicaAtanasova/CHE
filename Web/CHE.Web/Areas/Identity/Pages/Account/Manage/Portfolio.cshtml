@@ -43,8 +43,8 @@
             <div class="form-group">
                 <label asp-for="Input.EducationLevel"></label>
                 <select asp-for="Input.EducationLevel" class="form-control">
+                    <option value="Unknown">Unknown</option>
                     <option value="Primary">Primary</option>
-                    <option selected disabled>-- Choose education level --</option>
                     <option value="Secondary">Secondary</option>
                 </select>
                 <span asp-validation-for="Input.EducationLevel" class="text-danger"></span>

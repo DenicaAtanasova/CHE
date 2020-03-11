@@ -11,5 +11,7 @@
         public int ReviewsCount { get; set; }
 
         public string ImageUrl { get; set; }
+
+        public string EducationLevel { get; set; }
     }
 }
