@@ -6,6 +6,9 @@
     {
         <div class="col-lg-3 col-md-5 mb-4">
             <div class="card h-100">
+                <div class="image">
+                    <img class="card-img-top" src="https://chestorage.blob.core.windows.net/uploads/Cooperative_Avatar.png" alt="">
+                </div>
                 <div class="card-body">
                     <h4 class="card-title">
                         <strong>Name: </strong>@cooperative.Name
@@ -15,11 +18,14 @@
                         <div><strong>Grade: </strong>@cooperative.Grade</div>
                     </p>
                 </div>
-                <div class="card-footer">
-                    <a class="btn btn-sm btn-primary" asp-controller="Cooperatives" asp-action="Details" asp-route-id="@cooperative.Id">View</a>
+                <div class="card-footer d-flex justify-content-between">
+                    <div class="p-2">
+                    </div>
+                    <div class="p-2">
+                        <a class="btn btn-sm btn-primary" asp-controller="Cooperatives" asp-action="Details" asp-route-id="@cooperative.Id">View</a>
+                    </div>
                 </div>
             </div>
         </div>
-
     }
 </div>
