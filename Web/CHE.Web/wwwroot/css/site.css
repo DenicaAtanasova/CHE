@@ -8,8 +8,9 @@ a.navbar-brand {
 }
 
 /* Provide sufficient contrast against white background */
-a {
-  color: #0366d6;
+a, a:hover {
+  color: #000;
+  text-decoration: none;
 }
 
 .btn-primary {

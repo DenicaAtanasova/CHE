@@ -204,7 +204,16 @@
         }
         #endregion
 
-        // GetByIdAsync
+        #region GetByIdAsync
+        [Fact]
+        public async Task GetByIdAsyncShouldReturnCooperative()
+        {
+            var cooperative = await this._cooperativesService
+                .GetByIdAsync<Cooperative>(TEST_COOPERATIVE.Id);
+
+            Assert.Equal(TEST_COOPERATIVE.Id, cooperative.Id);
+        }
+        #endregion
 
         // GetAllAsync
 

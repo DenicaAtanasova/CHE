@@ -4,29 +4,26 @@
 <div class="row">
     @foreach (var teacher in Model.Teachers)
     {
-        <div class="col-lg-3 col-md-5 mb-4">
+    <div class="col-lg-3 col-md-5 mb-4">
+        <a asp-controller="Teachers" asp-action="Details" asp-route-id="@teacher.Id">
             <div class="card h-100">
                 @*<img class="card-img-top" src="http://placehold.it/700x300" alt="">*@
                 <div class="image">
                     <img class="card-img-top" src="@teacher.ImageUrl" alt="">
-                </div>              
+                </div>
                 <div class="card-body">
-                    <h4 class="card-title">@teacher.UserName</h4>
-                    <h6>School level @teacher.EducationLevel</h6>
+                    <h4 class="card-title">@teacher.UserName</h4>                    
                     <vc:star-rating rating="@teacher.Rating"></vc:star-rating>
-                    <div class="d-flex justify-content-between">    
+                    <div class="d-flex justify-content-between">
                         <div class="card-text">Rating: @teacher.Rating / 5</div>
                         <div class="card-text">Reviews: @teacher.ReviewsCount</div>
                     </div>
                 </div>
                 <div class="card-footer d-flex justify-content-between">
-                    <div class="p-2">
-                    </div>
-                    <div class="p-2">
-                        <a class="btn btn-sm btn-primary" asp-controller="Teachers" asp-action="Details" asp-route-id="@teacher.Id">View</a>
-                    </div>
+                    <h6><strong>School level: </strong>@teacher.EducationLevel</h6>
                 </div>
             </div>
+        </a>
         </div>
     }
 </div>
