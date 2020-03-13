@@ -215,7 +215,46 @@
         }
         #endregion
 
-        // GetAllAsync
+        #region GetAllAsync
+        [Fact]
+        public async Task GetAllAsyncShouldReturnAllUndeletedCooperatives()
+        {
+            var cooperatives = new List<Cooperative>
+            {
+                new Cooperative
+                {
+                    Name = "Name2",
+                    Info = "Info2",
+                    Grade = new Grade {Value = GRADE, NumValue = 1}
+                },
+                new Cooperative
+                {
+                    Name = "Name3",
+                    Info = "Info3",
+                    Grade = new Grade {Value = GRADE, NumValue = 1},
+                    IsDeleted = true
+
+                },
+                new Cooperative
+                {
+                    Name = "Name4",
+                    Info = "Info4",
+                    Grade = new Grade {Value = GRADE, NumValue = 1},
+                    IsDeleted = true
+                }
+            };
+            await this.DbContext.AddRangeAsync(cooperatives);
+            await this.DbContext.SaveChangesAsync();
+
+            var undeletedCoperatives = await this._cooperativesService
+                .GetAllAsync<Cooperative>();
+
+            var expectedCount = 2;
+            var actualCount = undeletedCoperatives.Count();
+
+            Assert.Equal(expectedCount, actualCount);
+        }
+        #endregion
 
         // GetCreatorAllByUsernameAsync
 
