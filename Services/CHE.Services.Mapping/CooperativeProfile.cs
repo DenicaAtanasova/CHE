@@ -11,6 +11,8 @@
     {
         public CooperativeProfile()
         {
+            this.CreateMap<Cooperative, Cooperative>();
+
             this.CreateMap<CooperativeCreateInputModel, Cooperative>();
 
             this.CreateMap<Cooperative, CooperativeAllViewModel>()
