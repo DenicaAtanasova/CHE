@@ -1,11 +1,13 @@
 ﻿namespace CHE.Services.Data.Tests
 {
     using System;
+    using System.Linq;
     using System.Threading.Tasks;
 
     using Xunit;
 
     using CHE.Data.Models;
+    using System.Collections.Generic;
 
     public class CooperativesServiceTests : BaseTest
     {
@@ -168,7 +170,39 @@
         }
         #endregion
 
-        // DeleteAsync
+        #region DeleteAsync
+        [Fact]
+        public async Task DeleteAsyncShouldDeleteCooperative()
+        {
+            var id = TEST_COOPERATIVE.Id;
+
+            var deleteSuccessful = await this._cooperativesService.DeleteAsync(id);
+
+            Assert.True(deleteSuccessful);
+        }
+
+        [Fact]
+        public async Task DeleteAsyncShouldChangeIsDeletedToTrue()
+        {
+            var id = TEST_COOPERATIVE.Id;
+
+            var deleteSuccessful = await this._cooperativesService.DeleteAsync(id);
+
+            Assert.True(TEST_COOPERATIVE.IsDeleted);
+        }
+
+        [Fact]
+        public async Task DeleteAsyncShouldSetDeletedOnDateToDateTimeUtcNow()
+        {
+            var id = TEST_COOPERATIVE.Id;
+            await this._cooperativesService.DeleteAsync(id);
+
+            var expectedDate = DateTime.UtcNow;
+            var actualDate = TEST_COOPERATIVE.DeletedOn;
+
+            Assert.True((expectedDate - actualDate.Value).TotalSeconds < 0.1);
+        }
+        #endregion
 
         // GetByIdAsync
 
