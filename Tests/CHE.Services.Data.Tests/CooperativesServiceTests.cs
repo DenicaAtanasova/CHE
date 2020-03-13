@@ -30,23 +30,10 @@
                 this.Mapper,
                 new GradesService(this.DbContext));
 
-            this.TEST_COOPERATIVE = new Cooperative
-            {
-                Name = NAME,
-                Info = INFO,
-                Grade = new Grade
-                {
-                    Value = GRADE,
-                    NumValue = 1
-                }
-            };
+            this.TEST_COOPERATIVE = this.CreateCooperative();
+            this.TEST_ADDRESS = this.CreateAddress();
 
-            this.TEST_ADDRESS = new Address
-            {
-                City = CITY,
-                Neighbourhood = NEIGHBOURHOOD,
-                Street = STREET
-            };
+            this.AddCooperativeAsync().GetAwaiter().GetResult();
         }
 
         #region CreateAsync
@@ -64,10 +51,6 @@
         [Fact]
         public async Task UpdateAsyncShouldUpdateCooperative()
         {
-
-            await this.DbContext.Cooperatives.AddAsync(TEST_COOPERATIVE);
-            await this.DbContext.SaveChangesAsync();
-
             var updateSuccessful = await this._cooperativesService
                 .UpdateAsync(TEST_COOPERATIVE.Id, NAME, INFO, GRADE, TEST_ADDRESS);
 
@@ -77,10 +60,6 @@
         [Fact]
         public async Task UpdateAsyncShouldUpdateCooperativeNameWhenNameChanged()
         {
-
-            await this.DbContext.Cooperatives.AddAsync(TEST_COOPERATIVE);
-            await this.DbContext.SaveChangesAsync();
-
             var updatedName = "Updated name";
             await this._cooperativesService
                 .UpdateAsync(TEST_COOPERATIVE.Id, updatedName, INFO, GRADE, TEST_ADDRESS);
@@ -91,9 +70,6 @@
         [Fact]
         public async Task UpdateAsyncShouldUpdateCooperativeInfoWhenInfoChanged()
         {
-            await this.DbContext.Cooperatives.AddAsync(TEST_COOPERATIVE);
-            await this.DbContext.SaveChangesAsync();
-
             var updatedInfo = "Updated info";
             await this._cooperativesService
                 .UpdateAsync(TEST_COOPERATIVE.Id, NAME, updatedInfo, GRADE, TEST_ADDRESS);
@@ -104,9 +80,6 @@
         [Fact]
         public async Task UpdateAsyncShouldUpdateCooperativeGradeWhenGradeChanged()
         {
-
-            await this.DbContext.Cooperatives.AddAsync(TEST_COOPERATIVE);
-            await this.DbContext.SaveChangesAsync();
             var initialGradeId = TEST_COOPERATIVE.GradeId;
 
             var updatedGrade = "Second";
@@ -118,11 +91,8 @@
         }
 
         [Fact]
-        public async Task UpdateAsyncShouldChangeModifiedOnDateToDateTimeUtcNow()
+        public async Task UpdateAsyncShouldSetModifiedOnDateToDateTimeUtcNow()
         {
-            await this.DbContext.Cooperatives.AddAsync(TEST_COOPERATIVE);
-            await this.DbContext.SaveChangesAsync();
-
             var address = new Address
             {
                 City = CITY
@@ -138,9 +108,6 @@
         [Fact]
         public async Task UpdateAsyncShouldUpdateCooperativeAddress()
         {
-
-            await this.DbContext.Cooperatives.AddAsync(TEST_COOPERATIVE);
-            await this.DbContext.SaveChangesAsync();
             var initialAddress = TEST_COOPERATIVE.Address;
 
             await this._cooperativesService
@@ -153,7 +120,6 @@
         public async Task UpdateAsyncShouldUpdateCooperativeAddressCityWhenCityChanged()
         {
             TEST_COOPERATIVE.Address = TEST_ADDRESS;
-            await this.DbContext.Cooperatives.AddAsync(TEST_COOPERATIVE);
             await this.DbContext.SaveChangesAsync();
 
             var updatedCity = "Sofia";
@@ -171,7 +137,6 @@
         public async Task UpdateAsyncShouldUpdateCooperativeAddressNeighbourhoodWhenNeighbourhoodChanged()
         {
             TEST_COOPERATIVE.Address = TEST_ADDRESS;
-            await this.DbContext.Cooperatives.AddAsync(TEST_COOPERATIVE);
             await this.DbContext.SaveChangesAsync();
 
             var updatedNeighbourhood = "Mladost";
@@ -189,7 +154,6 @@
         public async Task UpdateAsyncShouldUpdateCooperativeAddressStreetWhenStreetChanged()
         {
             TEST_COOPERATIVE.Address = TEST_ADDRESS;
-            await this.DbContext.Cooperatives.AddAsync(TEST_COOPERATIVE);
             await this.DbContext.SaveChangesAsync();
 
             var updatedStreet = "Main street";
@@ -219,5 +183,39 @@
         // RemoveMemberAsync
 
         // LeaveAsync
+
+        private async Task AddCooperativeAsync()
+        {
+            await this.DbContext.Cooperatives.AddAsync(TEST_COOPERATIVE);
+            await this.DbContext.SaveChangesAsync();
+        }
+
+        private Address CreateAddress()
+        {
+            var address = new Address
+            {
+                City = CITY,
+                Neighbourhood = NEIGHBOURHOOD,
+                Street = STREET
+            };
+
+            return address;
+        }
+
+        private Cooperative CreateCooperative()
+        {
+            var cooperative = new Cooperative
+            {
+                Name = NAME,
+                Info = INFO,
+                Grade = new Grade
+                {
+                    Value = GRADE,
+                    NumValue = 1
+                }
+            };
+
+            return cooperative;
+        }
     }
 }
