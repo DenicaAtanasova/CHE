@@ -10,6 +10,7 @@
     {
         public AddressProfile()
         {
+            this.CreateMap<Address, Address>();
             this.CreateMap<Address, CooperativeAddressInputModel>().ReverseMap();
             this.CreateMap<Address, CooperativeAddressViewModel>();
         }

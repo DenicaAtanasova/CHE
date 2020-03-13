@@ -56,6 +56,7 @@
             cooperativeToUpdate.Name = name;
             cooperativeToUpdate.Info = info;
             cooperativeToUpdate.Grade = await this._gradesService.GetByValueAsync(gradeValue);
+            cooperativeToUpdate.ModifiedOn = DateTime.UtcNow;
 
             var coopAddress = this._mapper.Map<TAddress, Address>(address);
             coopAddress.Cooperative = cooperativeToUpdate;
