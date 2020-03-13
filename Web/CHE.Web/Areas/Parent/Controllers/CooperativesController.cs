@@ -46,14 +46,8 @@
             return this.RedirectToAction("All", "Cooperatives", new { area = ""});
         }
 
-        public async Task<IActionResult> Edit(string id)
+        public async Task<IActionResult> Update(string id)
         {
-            if (id == null)
-            {
-                return this.NotFound();
-            }
-
-            //TODO: check if null
             var cooperativeToEdit = await this._cooperativesService
                 .GetByIdAsync<CooperativeEditInputModel>(id);
 
@@ -61,7 +55,7 @@
         }
 
         [HttpPost]
-        public async Task<IActionResult> Edit(CooperativeEditInputModel model)
+        public async Task<IActionResult> Update(CooperativeEditInputModel model)
         {
             if (!this.ModelState.IsValid)
             {
@@ -69,7 +63,7 @@
             }
 
             var updateSuccessful = await this._cooperativesService
-                .UpdateAsync(model.Id, model.Name, model.Info, model.Grade, model.Address.City, model.Address.Neighbourhood, model.Address.Street);
+                .UpdateAsync(model.Id, model.Name, model.Info, model.Grade, model.Address);
             if (!updateSuccessful)
             {
                 return this.BadRequest();

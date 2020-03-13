@@ -33,11 +33,6 @@
         {
             var grade = await this._gradesService.GetByValueAsync(gradeValue);
 
-            if (grade == null)
-            {
-                return false;
-            }
-
             var cooperative = new Cooperative
             {
                 Name = name,
@@ -53,7 +48,7 @@
             return result;
         }
 
-        public async Task<bool> UpdateAsync(string id, string name, string info, string gradeValue, string city, string neighbourhood, string street = null)
+        public async Task<bool> UpdateAsync<TAddress>(string id, string name, string info, string gradeValue, TAddress address)
         {
             var cooperativeToUpdate = await this._dbContext.Cooperatives
                 .SingleOrDefaultAsync(x => x.Id == id);
@@ -62,14 +57,10 @@
             cooperativeToUpdate.Info = info;
             cooperativeToUpdate.Grade = await this._gradesService.GetByValueAsync(gradeValue);
 
-            var address = new Address
-            {
-                City = city,
-                Neighbourhood = neighbourhood,
-                Street = street,
-                Cooperative = cooperativeToUpdate
-            };
-            await this._dbContext.Addresses.AddAsync(address);
+            var coopAddress = this._mapper.Map<TAddress, Address>(address);
+            coopAddress.Cooperative = cooperativeToUpdate;
+
+            await this._dbContext.Addresses.AddAsync(coopAddress);
 
             var result = await this._dbContext.SaveChangesAsync() > 0;
 

@@ -7,7 +7,7 @@
     {
         Task<bool> CreateAsync(string name, string info, string gradeValue, string creatorId);
 
-        Task<bool> UpdateAsync(string cooperativeId, string name, string info, string gradeValue, string city, string neighbourhood, string street = null);
+        Task<bool> UpdateAsync<TAddress>(string cooperativeId, string name, string info, string gradeValue, TAddress addres);
 
         Task<bool> DeleteAsync(string id);
 
