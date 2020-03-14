@@ -49,6 +49,16 @@
             return requests;
         }
 
+        public async Task<IEnumerable<TEntity>> GetCooperativeAllAsync<TEntity>(string cooperativeId)
+        {
+            var requests = await this._dbContext.JoinRequests
+                 .Where(x => x.CooperativeId == cooperativeId && !x.IsDeleted)
+                 .ProjectTo<TEntity>(this._mapper.ConfigurationProvider)
+                 .ToArrayAsync();
+
+            return requests;
+        }
+
         public async Task<bool> SendAsync(string requestContent, string cooperativeId, string receiverId, string senderId)
         {
             var result = await this.CreateAsync(requestContent, cooperativeId, senderId, receiverId);

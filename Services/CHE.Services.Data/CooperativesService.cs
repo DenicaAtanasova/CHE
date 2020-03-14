@@ -114,16 +114,6 @@
             return cooperativeFromDb;
         }
 
-        public async Task<IEnumerable<TEntity>> GetJoinRequestsAsync<TEntity>(string cooperativeId)
-        {
-            var requests = await this._dbContext.JoinRequests
-                .Where(x => x.CooperativeId == cooperativeId && x.Receiver == null && !x.IsDeleted)
-                .ProjectTo<TEntity>(_mapper.ConfigurationProvider)
-                .ToArrayAsync();
-
-            return requests;
-        }
-
         public async Task<bool> AddMemberAsync(string userId, string cooperativeId)
         {
             var memeber = new CheUserCooperative

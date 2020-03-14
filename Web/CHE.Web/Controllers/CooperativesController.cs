@@ -15,13 +15,16 @@
     {
         private readonly UserManager<CheUser> _userManager;
         private readonly ICooperativesService _cooperativesService;
+        private readonly IJoinRequestsService _joinRequestsService;
 
         public CooperativesController(
             UserManager<CheUser> userManager,
-            ICooperativesService cooperativesService)
+            ICooperativesService cooperativesService,
+            IJoinRequestsService joinRequestsService)
         {
             this._userManager = userManager;
             this._cooperativesService = cooperativesService;
+            this._joinRequestsService = joinRequestsService;
         }
 
         public async Task<IActionResult> Details(string id)
@@ -33,8 +36,9 @@
 
             var currentCooperative = await this._cooperativesService
                 .GetByIdAsync<CooeprativeDetailsViewModel>(id);
-            currentCooperative.JoinRequestsReceived = await this._cooperativesService
-                .GetJoinRequestsAsync<CooperativeJoinRequestDetailsViewModel>(id);
+
+            currentCooperative.JoinRequestsReceived = await this._joinRequestsService
+                .GetCooperativeAllAsync<CooperativeJoinRequestDetailsViewModel>(id);
 
             if (this.User.Identity.Name == currentCooperative.CreatorUserName)
             {
