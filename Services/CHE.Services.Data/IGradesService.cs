@@ -9,6 +9,6 @@
     {
         Task<Grade> GetByValueAsync(string value);
 
-        Task<IEnumerable<string>> GetAllAsync(string currentGrade = null);
+        Task<IEnumerable<string>> GetAllValuesAsync(string currentGrade = null);
     }
 }

@@ -14,7 +14,7 @@
         protected override ValidationResult IsValid(object value, ValidationContext validationContext)
         {
             var gradesService = (IGradesService)validationContext.GetService(typeof(IGradesService));
-            var grades = gradesService.GetAllAsync().GetAwaiter().GetResult();
+            var grades = gradesService.GetAllValuesAsync().GetAwaiter().GetResult();
             var gradeValue = value as string;
             if (grades.Any(x => x == gradeValue))
             {

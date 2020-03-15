@@ -26,13 +26,13 @@
             return gradeFromDb;
         }
 
-        public async Task<IEnumerable<string>> GetAllAsync(string currentGrade = null)
+        public async Task<IEnumerable<string>> GetAllValuesAsync(string currentGrade = null)
         {
             var gradesFromDb = await this._dbContext.Grades
                 .Where(x => x.Value != currentGrade)
                 .OrderBy(x => x.NumValue)
                 .Select(x => x.Value)
-                .ToListAsync();
+                .ToArrayAsync();
 
             return gradesFromDb;
         }
