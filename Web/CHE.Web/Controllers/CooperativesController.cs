@@ -62,8 +62,9 @@
         [Authorize]
         public async Task<IActionResult> Leave(string cooperativeId)
         {
+            var userId = this._userManager.GetUserId(this.User);
             var leaveSuccessful = await this._cooperativesService
-                .LeaveAsync(cooperativeId, this.User.Identity.Name);
+                .RemoveMemberAsync(cooperativeId, userId);
             if (!leaveSuccessful)
             {
                 return this.BadRequest();

@@ -140,16 +140,5 @@
 
             return result;
         }
-
-        public async Task<bool> LeaveAsync(string cooperativeId, string username)
-        {
-            var memberToDelete = await this._dbContext.UserCooperatives
-                .SingleOrDefaultAsync(x => x.CooperativeId == cooperativeId & x.CheUser.UserName == username);
-
-            this._dbContext.Remove(memberToDelete);
-            var result = await this._dbContext.SaveChangesAsync() > 0;
-
-            return result;
-        }
     }
 }

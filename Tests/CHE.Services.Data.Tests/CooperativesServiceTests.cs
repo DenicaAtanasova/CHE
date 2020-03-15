@@ -110,9 +110,9 @@
 
             await this._cooperativesService.UpdateAsync(TEST_COOPERATIVE.Id, COOPERATIVE_NAME, COOPERATIVE_INFO, COOPERATIVE_GRADE, address);
             var expectedDate = DateTime.UtcNow;
-            var actualDate = TEST_COOPERATIVE.ModifiedOn;
+            var actualDate = TEST_COOPERATIVE.ModifiedOn.Value;
 
-            Assert.True((expectedDate - actualDate.Value).TotalSeconds < 0.1);
+            Assert.True((expectedDate - actualDate).TotalSeconds < 0.1);
         }
 
         [Fact]
@@ -206,9 +206,9 @@
             await this._cooperativesService.DeleteAsync(id);
 
             var expectedDate = DateTime.UtcNow;
-            var actualDate = TEST_COOPERATIVE.DeletedOn;
+            var actualDate = TEST_COOPERATIVE.DeletedOn.Value;
 
-            Assert.True((expectedDate - actualDate.Value).TotalSeconds < 0.1);
+            Assert.True((expectedDate - actualDate).TotalSeconds < 0.1);
         }
         #endregion
 
@@ -351,8 +351,6 @@
             Assert.Equal(expectedMembersCount, actualMemebersCount);
         }
         #endregion
-
-        // LeaveAsync
 
         private async Task AddTestCooperativeAsync()
         {
