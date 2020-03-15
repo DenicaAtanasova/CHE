@@ -11,7 +11,7 @@
 
         Task<IEnumerable<TEntity>> GetCooperativeAllAsync<TEntity>(string cooperativeId);
 
-        Task<bool> SendAsync(string requestContent, string cooperativeId, string receiverId, string senderId);
+        Task<bool> CreateAsync(string requestContent, string cooperativeId, string receiverId, string senderId);
 
         Task<bool> AcceptAsync(string requestId);
 

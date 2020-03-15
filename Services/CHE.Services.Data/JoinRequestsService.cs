@@ -59,9 +59,19 @@
             return requests;
         }
 
-        public async Task<bool> SendAsync(string requestContent, string cooperativeId, string receiverId, string senderId)
+        public async Task<bool> CreateAsync(string content, string cooperativeId, string receiverId, string senderId)
         {
-            var result = await this.CreateAsync(requestContent, cooperativeId, senderId, receiverId);
+            var request = new JoinRequest
+            {
+                Content = content,
+                SenderId = senderId,
+                ReceiverId = receiverId,
+                CooperativeId = cooperativeId,
+                CreatedOn = DateTime.UtcNow
+            };
+
+            await this._dbContext.JoinRequests.AddAsync(request);
+            var result = await this._dbContext.SaveChangesAsync() > 0;
 
             return result;
         }
@@ -81,7 +91,7 @@
             else
             {
                 await this._cooperativesService
-                       .AddMemberAsync(request.ReceiverId, request.CooperativeId);
+                    .AddMemberAsync(request.ReceiverId, request.CooperativeId);
             }
 
             this.Delete(request);
@@ -98,32 +108,6 @@
 
             this.Delete(requestToDelete);
 
-            var result = await this._dbContext.SaveChangesAsync() > 0;
-
-            return result;
-        }
-
-        private async Task<bool> CreateAsync(string content, string cooperativeId, string senderId, string receiverId)
-        {
-            var memberExists = this._dbContext.Cooperatives
-                .Where(x => x.Id == cooperativeId)
-                .Any(x => x.Members.Any(m => m.CheUserId == senderId));
-
-            if (memberExists)
-            {
-                return false;
-            }
-
-            var request = new JoinRequest
-            {
-                Content = content,
-                SenderId = senderId,
-                ReceiverId = receiverId,
-                CooperativeId = cooperativeId,
-                CreatedOn = DateTime.UtcNow
-            };
-
-            await this._dbContext.JoinRequests.AddAsync(request);
             var result = await this._dbContext.SaveChangesAsync() > 0;
 
             return result;

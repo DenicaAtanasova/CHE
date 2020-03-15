@@ -10,27 +10,26 @@
     using CHE.Services.Mapping;
     using CHE.Data;
 
-    public class BaseTest : IDisposable
+    public class BaseServiceTest : IDisposable
     {
-        private readonly ServiceProvider _serviceProvider;
+        private readonly IServiceProvider _serviceProvider;
         private readonly CheDbContext _dbContext;
-        private readonly IMapper _mapper;
 
-        public BaseTest()
+        public BaseServiceTest()
         {
-            this._serviceProvider = this.GetServiceProvider();
+            this._serviceProvider = SetServices().BuildServiceProvider();
 
             this._dbContext = this._serviceProvider.GetRequiredService<CheDbContext>();
-            this._mapper = this._serviceProvider.GetRequiredService<IMapper>();
         }
 
         public CheDbContext DbContext => this._dbContext;
 
-        public IMapper Mapper => this._mapper;
+        public IServiceProvider ServiceProvider => this._serviceProvider;
 
         public void Dispose()
         {
             this._dbContext.Database.EnsureDeleted();
+            this.SetServices();
         }
 
         private ServiceCollection SetServices()
@@ -44,14 +43,16 @@
             // autoMapper
             services.AddAutoMapper(typeof(CooperativeProfile));
 
+            // Application services
+            services.AddTransient<ICooperativesService, CooperativesService>();
+            services.AddTransient<IGradesService, GradesService>();
+            services.AddTransient<IJoinRequestsService, JoinRequestsService>();
+            services.AddTransient<ITeachersService, TeachersService>();
+            services.AddTransient<IPortfoliosService, PortfoliosService>();
+            services.AddTransient<IReviewsService, ReviewsService>();
+            services.AddTransient<IImagesService, ImagesService>();
+
             return services;
-        }
-
-        private ServiceProvider GetServiceProvider()
-        {
-            var services = this.SetServices();
-
-            return services.BuildServiceProvider();
         }
     }
 }

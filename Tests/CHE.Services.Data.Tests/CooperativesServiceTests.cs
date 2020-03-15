@@ -5,11 +5,14 @@
     using System.Threading.Tasks;
     using System.Collections.Generic;
 
+    using Microsoft.Extensions.DependencyInjection;
+
     using Xunit;
 
     using CHE.Data.Models;
+    using AutoMapper;
 
-    public class CooperativesServiceTests : BaseTest
+    public class CooperativesServiceTests : BaseServiceTest
     {
         private readonly string CREATOR_ID;
         private const string USERNAME = "Test username";
@@ -26,17 +29,14 @@
         private readonly Cooperative TEST_COOPERATIVE;
         private readonly Address TEST_ADDRESS;
 
-        private readonly CooperativesService _cooperativesService;
-        private readonly GradesService _gradesService;
+        private readonly ICooperativesService _cooperativesService;
+        private readonly IGradesService _gradesService;
 
         public CooperativesServiceTests()
             : base()
         {
-            this._gradesService = new GradesService(this.DbContext);
-            this._cooperativesService = new CooperativesService(
-                this.DbContext,
-                this.Mapper,
-                this._gradesService);
+            this._gradesService = this.ServiceProvider.GetRequiredService<IGradesService>();
+            this._cooperativesService = this.ServiceProvider.GetRequiredService<ICooperativesService>();
 
             CREATOR_ID = Guid.NewGuid().ToString();
             TEST_ADDRESS = this.CreateAddress();
@@ -214,7 +214,7 @@
 
         #region GetByIdAsync
         [Fact]
-        public async Task GetByIdAsyncShouldReturnCooperative()
+        public async Task GetByIdAsyncShouldReturnCorrectCooperative()
         {
             var cooperative = await this._cooperativesService
                 .GetByIdAsync<Cooperative>(TEST_COOPERATIVE.Id);

@@ -1,23 +1,26 @@
 ﻿namespace CHE.Services.Data.Tests
 {
-    using CHE.Data.Models;
-    using System;
     using System.Collections.Generic;
     using System.Linq;
-    using System.Text;
     using System.Threading.Tasks;
+
+    using Microsoft.Extensions.DependencyInjection;
+
     using Xunit;
 
-    public class GradesServiceTests : BaseTest
+    using CHE.Data.Models;
+
+    public class GradesServiceTests : BaseServiceTest
     {
         private const string GRADE_VALUE = "First";
         private const int GRADE_NUMVALUE = 1;
 
-        private readonly GradesService _gradesService;
+        private readonly IGradesService _gradesService;
 
         public GradesServiceTests()
+            : base()
         {
-            this._gradesService = new GradesService(this.DbContext);
+            this._gradesService = this.ServiceProvider.GetRequiredService<IGradesService>();
 
             this.AddFirstAndSecondGradesAsync().GetAwaiter().GetResult();
         }

@@ -42,7 +42,7 @@
             var senderId = this._userManager.GetUserId(this.User);
 
             var sendRequestSuccessful = await this._joinRequestsService
-                .SendAsync(inputModel.Content, inputModel.CooperativeId, inputModel.ReceiverId, senderId);
+                .CreateAsync(inputModel.Content, inputModel.CooperativeId, inputModel.ReceiverId, senderId);
             if (!sendRequestSuccessful)
             {
                 return this.BadRequest();
