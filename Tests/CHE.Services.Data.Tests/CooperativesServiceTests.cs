@@ -301,12 +301,56 @@
             var actualCooperativesCount = creatorCooperatives.Count();
 
             Assert.Equal(expectedCooperativesCount, actualCooperativesCount);
-        }           
+        }
         #endregion
 
-        // AddMemberAsync
+        #region AddMemberAsync
+        [Fact]
+        public async Task AddMemberAsyncShouldAddMemeber()
+        {
+            var memberId = Guid.NewGuid().ToString();
+            await this._cooperativesService.AddMemberAsync(memberId, TEST_COOPERATIVE.Id);
 
-        // RemoveMemberAsync
+            var expectedMembersCount = 1;
+            var actualMemebersCount = TEST_COOPERATIVE.Members.Count;
+
+            Assert.Equal(expectedMembersCount, actualMemebersCount);
+        }
+        #endregion
+
+        #region RemoveMemberAsync
+        [Fact]
+        public async Task RemoveMemberAsyncShouldRemoveMemeber()
+        {
+            var members = new List<CheUserCooperative>();
+
+            var firstMmemberId = Guid.NewGuid().ToString();
+            var firstMember = new CheUserCooperative
+            {
+                CheUserId = firstMmemberId,
+                CooperativeId = TEST_COOPERATIVE.Id
+            };
+            members.Add(firstMember);
+
+            var secondMemberId = Guid.NewGuid().ToString();
+            var secondMember = new CheUserCooperative
+            {
+                CheUserId = secondMemberId,
+                CooperativeId = TEST_COOPERATIVE.Id
+            };
+            members.Add(secondMember);
+
+            await this.DbContext.UserCooperatives.AddRangeAsync(members);
+            await this.DbContext.SaveChangesAsync();
+
+            await this._cooperativesService.RemoveMemberAsync(firstMmemberId, TEST_COOPERATIVE.Id);
+
+            var expectedMembersCount = 1;
+            var actualMemebersCount = TEST_COOPERATIVE.Members.Count;
+
+            Assert.Equal(expectedMembersCount, actualMemebersCount);
+        }
+        #endregion
 
         // LeaveAsync
 
