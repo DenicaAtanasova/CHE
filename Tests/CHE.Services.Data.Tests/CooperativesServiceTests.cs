@@ -3,39 +3,48 @@
     using System;
     using System.Linq;
     using System.Threading.Tasks;
+    using System.Collections.Generic;
 
     using Xunit;
 
     using CHE.Data.Models;
-    using System.Collections.Generic;
 
     public class CooperativesServiceTests : BaseTest
     {
-        private readonly string ID = Guid.NewGuid().ToString();
-        private const string NAME = "Test name";
-        private const string INFO = "Test info";
-        private const string GRADE = "First";
+        private readonly string CREATOR_ID;
+        private const string USERNAME = "Test username";
+
+        private const string COOPERATIVE_NAME = "Test name";
+        private const string COOPERATIVE_INFO = "Test info";
+        private const string COOPERATIVE_GRADE = "First";
+
         private const string CITY = "Test city";
         private const string NEIGHBOURHOOD = "Test neighbourhood";
         private const string STREET = "Test street";
 
+        private readonly CheUser TEST_CREATOR;
         private readonly Cooperative TEST_COOPERATIVE;
         private readonly Address TEST_ADDRESS;
 
         private readonly CooperativesService _cooperativesService;
+        private readonly GradesService _gradesService;
 
         public CooperativesServiceTests()
             : base()
         {
+            this._gradesService = new GradesService(this.DbContext);
             this._cooperativesService = new CooperativesService(
                 this.DbContext,
                 this.Mapper,
-                new GradesService(this.DbContext));
+                this._gradesService);
 
-            this.TEST_COOPERATIVE = this.CreateCooperative();
-            this.TEST_ADDRESS = this.CreateAddress();
+            CREATOR_ID = Guid.NewGuid().ToString();
+            TEST_ADDRESS = this.CreateAddress();
+            TEST_COOPERATIVE = this.CreateCooperative();
+            TEST_CREATOR = this.CreateUser();
 
-            this.AddCooperativeAsync().GetAwaiter().GetResult();
+            this.AddFirstAndSecondGradesAsync().GetAwaiter().GetResult();
+            this.AddTestCooperativeAsync().GetAwaiter().GetResult();
         }
 
         #region CreateAsync
@@ -43,8 +52,7 @@
         public async Task CreateAsyncShouldCreateCooperative()
         {
             var createSuccessful = await this._cooperativesService
-                .CreateAsync(NAME, INFO, GRADE, ID);
-
+                .CreateAsync(COOPERATIVE_NAME, COOPERATIVE_INFO, COOPERATIVE_GRADE, CREATOR_ID);
             Assert.True(createSuccessful);
         }
         #endregion
@@ -54,7 +62,7 @@
         public async Task UpdateAsyncShouldUpdateCooperative()
         {
             var updateSuccessful = await this._cooperativesService
-                .UpdateAsync(TEST_COOPERATIVE.Id, NAME, INFO, GRADE, TEST_ADDRESS);
+                .UpdateAsync(TEST_COOPERATIVE.Id, COOPERATIVE_NAME, COOPERATIVE_INFO, COOPERATIVE_GRADE, TEST_ADDRESS);
 
             Assert.True(updateSuccessful);
         }
@@ -64,7 +72,7 @@
         {
             var updatedName = "Updated name";
             await this._cooperativesService
-                .UpdateAsync(TEST_COOPERATIVE.Id, updatedName, INFO, GRADE, TEST_ADDRESS);
+                .UpdateAsync(TEST_COOPERATIVE.Id, updatedName, COOPERATIVE_INFO, COOPERATIVE_GRADE, TEST_ADDRESS);
 
             Assert.Equal(updatedName, TEST_COOPERATIVE.Name);
         }
@@ -74,7 +82,7 @@
         {
             var updatedInfo = "Updated info";
             await this._cooperativesService
-                .UpdateAsync(TEST_COOPERATIVE.Id, NAME, updatedInfo, GRADE, TEST_ADDRESS);
+                .UpdateAsync(TEST_COOPERATIVE.Id, COOPERATIVE_NAME, updatedInfo, COOPERATIVE_GRADE, TEST_ADDRESS);
 
             Assert.Equal(updatedInfo, TEST_COOPERATIVE.Info);
         }
@@ -86,7 +94,7 @@
 
             var updatedGrade = "Second";
             await this._cooperativesService
-                .UpdateAsync(TEST_COOPERATIVE.Id, NAME, INFO, updatedGrade, TEST_ADDRESS);
+                .UpdateAsync(TEST_COOPERATIVE.Id, COOPERATIVE_NAME, COOPERATIVE_INFO, updatedGrade, TEST_ADDRESS);
             var updatedGradeId = TEST_COOPERATIVE.GradeId;
 
             Assert.NotEqual(initialGradeId, updatedGradeId);
@@ -100,7 +108,7 @@
                 City = CITY
             };
 
-            await this._cooperativesService.UpdateAsync(TEST_COOPERATIVE.Id, NAME, INFO, GRADE, address);
+            await this._cooperativesService.UpdateAsync(TEST_COOPERATIVE.Id, COOPERATIVE_NAME, COOPERATIVE_INFO, COOPERATIVE_GRADE, address);
             var expectedDate = DateTime.UtcNow;
             var actualDate = TEST_COOPERATIVE.ModifiedOn;
 
@@ -113,7 +121,7 @@
             var initialAddress = TEST_COOPERATIVE.Address;
 
             await this._cooperativesService
-                .UpdateAsync(TEST_COOPERATIVE.Id, NAME, INFO, GRADE, TEST_ADDRESS);
+                .UpdateAsync(TEST_COOPERATIVE.Id, COOPERATIVE_NAME, COOPERATIVE_INFO, COOPERATIVE_GRADE, TEST_ADDRESS);
 
             Assert.NotEqual<Address>(initialAddress, TEST_COOPERATIVE.Address);
         }
@@ -130,7 +138,7 @@
                 City = updatedCity
             };
             await this._cooperativesService
-                .UpdateAsync(TEST_COOPERATIVE.Id, NAME, INFO, GRADE, address);
+                .UpdateAsync(TEST_COOPERATIVE.Id, COOPERATIVE_NAME, COOPERATIVE_INFO, COOPERATIVE_GRADE, address);
 
             Assert.Equal(updatedCity, TEST_COOPERATIVE.Address.City);
         }
@@ -147,7 +155,7 @@
                 Neighbourhood = updatedNeighbourhood
             };
             await this._cooperativesService
-                .UpdateAsync(TEST_COOPERATIVE.Id, NAME, INFO, GRADE, address);
+                .UpdateAsync(TEST_COOPERATIVE.Id, COOPERATIVE_NAME, COOPERATIVE_INFO, COOPERATIVE_GRADE, address);
 
             Assert.Equal(updatedNeighbourhood, TEST_COOPERATIVE.Address.Neighbourhood);
         }
@@ -164,7 +172,7 @@
                 Street = updatedStreet
             };
             await this._cooperativesService
-                .UpdateAsync(TEST_COOPERATIVE.Id, NAME, INFO, GRADE, address);
+                .UpdateAsync(TEST_COOPERATIVE.Id, COOPERATIVE_NAME, COOPERATIVE_INFO, COOPERATIVE_GRADE, address);
 
             Assert.Equal(updatedStreet, TEST_COOPERATIVE.Address.Street);
         }
@@ -225,21 +233,20 @@
                 {
                     Name = "Name2",
                     Info = "Info2",
-                    Grade = new Grade {Value = GRADE, NumValue = 1}
+                    Grade = await this._gradesService.GetByValueAsync(COOPERATIVE_GRADE)
                 },
                 new Cooperative
                 {
                     Name = "Name3",
                     Info = "Info3",
-                    Grade = new Grade {Value = GRADE, NumValue = 1},
-                    IsDeleted = true
-
+                    Grade = await this._gradesService.GetByValueAsync(COOPERATIVE_GRADE),
+                    IsDeleted = true                   
                 },
                 new Cooperative
                 {
                     Name = "Name4",
                     Info = "Info4",
-                    Grade = new Grade {Value = GRADE, NumValue = 1},
+                    Grade = await this._gradesService.GetByValueAsync(COOPERATIVE_GRADE),
                     IsDeleted = true
                 }
             };
@@ -256,9 +263,46 @@
         }
         #endregion
 
-        // GetCreatorAllByUsernameAsync
+        #region GetCreatorAllByUsernameAsync
+        [Fact]
+        public async Task GetCreatorAllByUsernameAsyncShouldReturnAllCreatorCooperatives()
+        {
+            var cooperatives = new List<Cooperative>
+            {
+                new Cooperative
+                {
+                    Name = "Name2",
+                    Info = "Info2",
+                    Grade = await this._gradesService.GetByValueAsync(COOPERATIVE_GRADE),
+                    Creator = TEST_CREATOR
+                },
+                new Cooperative
+                {
+                    Name = "Name3",
+                    Info = "Info3",
+                    Grade = await this._gradesService.GetByValueAsync(COOPERATIVE_GRADE),
+                    Creator = TEST_CREATOR
+                },
+                new Cooperative
+                {
+                    Name = "Name4",
+                    Info = "Info4",
+                    Grade = await this._gradesService.GetByValueAsync(COOPERATIVE_GRADE)
+                }
+            };
 
-        // GetJoinRequestsAsync
+            await this.DbContext.Cooperatives.AddRangeAsync(cooperatives);
+            await this.DbContext.SaveChangesAsync();
+
+            var creatorCooperatives = await this._cooperativesService
+                .GetCreatorAllByUsernameAsync<Cooperative>(TEST_CREATOR.UserName);
+
+            var expectedCooperativesCount = 2;
+            var actualCooperativesCount = creatorCooperatives.Count();
+
+            Assert.Equal(expectedCooperativesCount, actualCooperativesCount);
+        }           
+        #endregion
 
         // AddMemberAsync
 
@@ -266,7 +310,7 @@
 
         // LeaveAsync
 
-        private async Task AddCooperativeAsync()
+        private async Task AddTestCooperativeAsync()
         {
             await this.DbContext.Cooperatives.AddAsync(TEST_COOPERATIVE);
             await this.DbContext.SaveChangesAsync();
@@ -288,16 +332,43 @@
         {
             var cooperative = new Cooperative
             {
-                Name = NAME,
-                Info = INFO,
-                Grade = new Grade
-                {
-                    Value = GRADE,
-                    NumValue = 1
-                }
+                Name = COOPERATIVE_NAME,
+                Info = COOPERATIVE_INFO,
+                Grade = this._gradesService.GetByValueAsync(COOPERATIVE_GRADE).GetAwaiter().GetResult()
             };
 
             return cooperative;
+        }
+
+        private CheUser CreateUser()
+        {
+            var user = new CheUser
+            {
+                Id = CREATOR_ID,
+                UserName = USERNAME,
+            };
+
+            return user;
+        }
+
+        private async Task AddFirstAndSecondGradesAsync()
+        {
+            var grades = new List<Grade>
+            {
+                new Grade
+                {
+                    Value = "First",
+                    NumValue = 1
+                },
+                new Grade
+                {
+                    Value = "Second",
+                    NumValue = 2
+                }
+            };
+
+            await this.DbContext.Grades.AddRangeAsync(grades);
+            await this.DbContext.SaveChangesAsync();
         }
     }
 }
