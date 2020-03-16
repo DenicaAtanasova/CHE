@@ -21,6 +21,8 @@
 
         public static string JoinRequest => "JoinRequest";
 
+        public static string Review => "Review";
+
         public static string IndexNavClass(ViewContext viewContext) => PageNavClass(viewContext, Index);
 
         public static string EmailNavClass(ViewContext viewContext) => PageNavClass(viewContext, Email);
@@ -36,6 +38,8 @@
         public static string PortfolioNavClass(ViewContext viewContext) => PageNavClass(viewContext, Portfolio);
 
         public static string JoinRequestNavClass(ViewContext viewContext) => PageNavClass(viewContext, JoinRequest);
+
+        public static string ReviewNavClass(ViewContext viewContext) => PageNavClass(viewContext, Review);
 
         private static string PageNavClass(ViewContext viewContext, string page)
         {
