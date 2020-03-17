@@ -6,28 +6,24 @@
     using System.Collections.Generic;
 
     using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.EntityFrameworkCore;
 
     using Xunit;
 
     using CHE.Data.Models;
-    using AutoMapper;
 
     public class CooperativesServiceTests : BaseServiceTest
     {
-        private readonly string CREATOR_ID;
-        private const string USERNAME = "Test username";
+        private readonly string CREATOR_ID = Guid.NewGuid().ToString();
+        private const string USERNAME = "Username";
 
-        private const string COOPERATIVE_NAME = "Test name";
-        private const string COOPERATIVE_INFO = "Test info";
+        private const string COOPERATIVE_NAME = "Name";
+        private const string COOPERATIVE_INFO = "Info";
         private const string COOPERATIVE_GRADE = "First";
 
-        private const string CITY = "Test city";
-        private const string NEIGHBOURHOOD = "Test neighbourhood";
-        private const string STREET = "Test street";
-
-        private readonly CheUser TEST_CREATOR;
-        private readonly Cooperative TEST_COOPERATIVE;
-        private readonly Address TEST_ADDRESS;
+        private readonly CheUser testCreator;
+        private readonly Cooperative testCooperetaive;
+        private readonly Address testAddress;
 
         private readonly ICooperativesService _cooperativesService;
         private readonly IGradesService _gradesService;
@@ -38,10 +34,9 @@
             this._gradesService = this.ServiceProvider.GetRequiredService<IGradesService>();
             this._cooperativesService = this.ServiceProvider.GetRequiredService<ICooperativesService>();
 
-            CREATOR_ID = Guid.NewGuid().ToString();
-            TEST_ADDRESS = this.CreateAddress();
-            TEST_COOPERATIVE = this.CreateCooperative();
-            TEST_CREATOR = this.CreateUser();
+            this.testAddress = this.SetAddress();
+            this.testCooperetaive = this.SetCooperative();
+            this.testCreator = this.SetUser();
 
             this.AddFirstAndSecondGradesAsync().GetAwaiter().GetResult();
             this.AddTestCooperativeAsync().GetAwaiter().GetResult();
@@ -53,7 +48,23 @@
         {
             var createSuccessful = await this._cooperativesService
                 .CreateAsync(COOPERATIVE_NAME, COOPERATIVE_INFO, COOPERATIVE_GRADE, CREATOR_ID);
+
             Assert.True(createSuccessful);
+        }
+
+        [Fact]
+        public async Task CreateAsyncShouldSetCreatedOnDateToDateTimeUtcNow()
+        {
+            await this._cooperativesService
+                .CreateAsync(COOPERATIVE_NAME, COOPERATIVE_INFO, COOPERATIVE_GRADE, CREATOR_ID);
+
+            var expectedDate = DateTime.UtcNow;
+            var actualDate = await this.DbContext.Cooperatives
+                .Where(x => x.CreatorId == CREATOR_ID)
+                .Select(x => x.CreatedOn)
+                .FirstOrDefaultAsync();
+
+            Assert.Equal(expectedDate, actualDate, new TimeSpan(days: 0, hours: 0, minutes: 0, seconds: 0, milliseconds: 100));
         }
         #endregion
 
@@ -62,7 +73,7 @@
         public async Task UpdateAsyncShouldUpdateCooperative()
         {
             var updateSuccessful = await this._cooperativesService
-                .UpdateAsync(TEST_COOPERATIVE.Id, COOPERATIVE_NAME, COOPERATIVE_INFO, COOPERATIVE_GRADE, TEST_ADDRESS);
+                .UpdateAsync(this.testCooperetaive.Id, COOPERATIVE_NAME, COOPERATIVE_INFO, COOPERATIVE_GRADE, this.testAddress);
 
             Assert.True(updateSuccessful);
         }
@@ -72,9 +83,9 @@
         {
             var updatedName = "Updated name";
             await this._cooperativesService
-                .UpdateAsync(TEST_COOPERATIVE.Id, updatedName, COOPERATIVE_INFO, COOPERATIVE_GRADE, TEST_ADDRESS);
+                .UpdateAsync(this.testCooperetaive.Id, updatedName, COOPERATIVE_INFO, COOPERATIVE_GRADE, this.testAddress);
 
-            Assert.Equal(updatedName, TEST_COOPERATIVE.Name);
+            Assert.Equal(updatedName, this.testCooperetaive.Name);
         }
 
         [Fact]
@@ -82,20 +93,20 @@
         {
             var updatedInfo = "Updated info";
             await this._cooperativesService
-                .UpdateAsync(TEST_COOPERATIVE.Id, COOPERATIVE_NAME, updatedInfo, COOPERATIVE_GRADE, TEST_ADDRESS);
+                .UpdateAsync(this.testCooperetaive.Id, COOPERATIVE_NAME, updatedInfo, COOPERATIVE_GRADE, this.testAddress);
 
-            Assert.Equal(updatedInfo, TEST_COOPERATIVE.Info);
+            Assert.Equal(updatedInfo, this.testCooperetaive.Info);
         }
 
         [Fact]
         public async Task UpdateAsyncShouldUpdateCooperativeGradeWhenGradeChanged()
         {
-            var initialGradeId = TEST_COOPERATIVE.GradeId;
+            var initialGradeId = this.testCooperetaive.GradeId;
 
             var updatedGrade = "Second";
             await this._cooperativesService
-                .UpdateAsync(TEST_COOPERATIVE.Id, COOPERATIVE_NAME, COOPERATIVE_INFO, updatedGrade, TEST_ADDRESS);
-            var updatedGradeId = TEST_COOPERATIVE.GradeId;
+                .UpdateAsync(this.testCooperetaive.Id, COOPERATIVE_NAME, COOPERATIVE_INFO, updatedGrade, this.testAddress);
+            var updatedGradeId = this.testCooperetaive.GradeId;
 
             Assert.NotEqual(initialGradeId, updatedGradeId);
         }
@@ -105,31 +116,31 @@
         {
             var address = new Address
             {
-                City = CITY
+                City = "Plovdiv"
             };
 
-            await this._cooperativesService.UpdateAsync(TEST_COOPERATIVE.Id, COOPERATIVE_NAME, COOPERATIVE_INFO, COOPERATIVE_GRADE, address);
+            await this._cooperativesService.UpdateAsync(this.testCooperetaive.Id, COOPERATIVE_NAME, COOPERATIVE_INFO, COOPERATIVE_GRADE, address);
             var expectedDate = DateTime.UtcNow;
-            var actualDate = TEST_COOPERATIVE.ModifiedOn.Value;
+            var actualDate = this.testCooperetaive.ModifiedOn.Value;
 
-            Assert.True((expectedDate - actualDate).TotalSeconds < 0.1);
+            Assert.Equal(expectedDate, actualDate, new TimeSpan(days: 0, hours: 0, minutes: 0, seconds: 0, milliseconds: 300));
         }
 
         [Fact]
-        public async Task UpdateAsyncShouldUpdateCooperativeAddress()
+        public async Task UpdateAsyncShouldUpdateCooperativeAddressWhenAddressChanged()
         {
-            var initialAddress = TEST_COOPERATIVE.Address;
+            var initialAddress = this.testCooperetaive.Address;
 
             await this._cooperativesService
-                .UpdateAsync(TEST_COOPERATIVE.Id, COOPERATIVE_NAME, COOPERATIVE_INFO, COOPERATIVE_GRADE, TEST_ADDRESS);
+                .UpdateAsync(this.testCooperetaive.Id, COOPERATIVE_NAME, COOPERATIVE_INFO, COOPERATIVE_GRADE, this.testAddress);
 
-            Assert.NotEqual<Address>(initialAddress, TEST_COOPERATIVE.Address);
+            Assert.NotEqual<Address>(initialAddress, this.testCooperetaive.Address);
         }
 
         [Fact]
         public async Task UpdateAsyncShouldUpdateCooperativeAddressCityWhenCityChanged()
         {
-            TEST_COOPERATIVE.Address = TEST_ADDRESS;
+            this.testCooperetaive.Address = this.testAddress;
             await this.DbContext.SaveChangesAsync();
 
             var updatedCity = "Sofia";
@@ -138,15 +149,15 @@
                 City = updatedCity
             };
             await this._cooperativesService
-                .UpdateAsync(TEST_COOPERATIVE.Id, COOPERATIVE_NAME, COOPERATIVE_INFO, COOPERATIVE_GRADE, address);
+                .UpdateAsync(this.testCooperetaive.Id, COOPERATIVE_NAME, COOPERATIVE_INFO, COOPERATIVE_GRADE, address);
 
-            Assert.Equal(updatedCity, TEST_COOPERATIVE.Address.City);
+            Assert.Equal(updatedCity, this.testCooperetaive.Address.City);
         }
 
         [Fact]
         public async Task UpdateAsyncShouldUpdateCooperativeAddressNeighbourhoodWhenNeighbourhoodChanged()
         {
-            TEST_COOPERATIVE.Address = TEST_ADDRESS;
+            this.testCooperetaive.Address = this.testAddress;
             await this.DbContext.SaveChangesAsync();
 
             var updatedNeighbourhood = "Mladost";
@@ -155,15 +166,15 @@
                 Neighbourhood = updatedNeighbourhood
             };
             await this._cooperativesService
-                .UpdateAsync(TEST_COOPERATIVE.Id, COOPERATIVE_NAME, COOPERATIVE_INFO, COOPERATIVE_GRADE, address);
+                .UpdateAsync(this.testCooperetaive.Id, COOPERATIVE_NAME, COOPERATIVE_INFO, COOPERATIVE_GRADE, address);
 
-            Assert.Equal(updatedNeighbourhood, TEST_COOPERATIVE.Address.Neighbourhood);
+            Assert.Equal(updatedNeighbourhood, this.testCooperetaive.Address.Neighbourhood);
         }
 
         [Fact]
         public async Task UpdateAsyncShouldUpdateCooperativeAddressStreetWhenStreetChanged()
         {
-            TEST_COOPERATIVE.Address = TEST_ADDRESS;
+            this.testCooperetaive.Address = this.testAddress;
             await this.DbContext.SaveChangesAsync();
 
             var updatedStreet = "Main street";
@@ -172,9 +183,9 @@
                 Street = updatedStreet
             };
             await this._cooperativesService
-                .UpdateAsync(TEST_COOPERATIVE.Id, COOPERATIVE_NAME, COOPERATIVE_INFO, COOPERATIVE_GRADE, address);
+                .UpdateAsync(this.testCooperetaive.Id, COOPERATIVE_NAME, COOPERATIVE_INFO, COOPERATIVE_GRADE, address);
 
-            Assert.Equal(updatedStreet, TEST_COOPERATIVE.Address.Street);
+            Assert.Equal(updatedStreet, this.testCooperetaive.Address.Street);
         }
         #endregion
 
@@ -182,9 +193,7 @@
         [Fact]
         public async Task DeleteAsyncShouldDeleteCooperative()
         {
-            var id = TEST_COOPERATIVE.Id;
-
-            var deleteSuccessful = await this._cooperativesService.DeleteAsync(id);
+            var deleteSuccessful = await this._cooperativesService.DeleteAsync(this.testCooperetaive.Id);
 
             Assert.True(deleteSuccessful);
         }
@@ -192,23 +201,20 @@
         [Fact]
         public async Task DeleteAsyncShouldChangeIsDeletedToTrue()
         {
-            var id = TEST_COOPERATIVE.Id;
+            var deleteSuccessful = await this._cooperativesService.DeleteAsync(this.testCooperetaive.Id);
 
-            var deleteSuccessful = await this._cooperativesService.DeleteAsync(id);
-
-            Assert.True(TEST_COOPERATIVE.IsDeleted);
+            Assert.True(this.testCooperetaive.IsDeleted);
         }
 
         [Fact]
         public async Task DeleteAsyncShouldSetDeletedOnDateToDateTimeUtcNow()
         {
-            var id = TEST_COOPERATIVE.Id;
-            await this._cooperativesService.DeleteAsync(id);
+            await this._cooperativesService.DeleteAsync(this.testCooperetaive.Id);
 
             var expectedDate = DateTime.UtcNow;
-            var actualDate = TEST_COOPERATIVE.DeletedOn.Value;
+            var actualDate = this.testCooperetaive.DeletedOn.Value;
 
-            Assert.True((expectedDate - actualDate).TotalSeconds < 0.1);
+            Assert.Equal(expectedDate, actualDate, new TimeSpan(days: 0, hours: 0, minutes: 0, seconds: 0, milliseconds: 100));
         }
         #endregion
 
@@ -217,9 +223,9 @@
         public async Task GetByIdAsyncShouldReturnCorrectCooperative()
         {
             var cooperative = await this._cooperativesService
-                .GetByIdAsync<Cooperative>(TEST_COOPERATIVE.Id);
+                .GetByIdAsync<Cooperative>(this.testCooperetaive.Id);
 
-            Assert.Equal(TEST_COOPERATIVE.Id, cooperative.Id);
+            Assert.Equal(this.testCooperetaive.Id, cooperative.Id);
         }
         #endregion
 
@@ -274,14 +280,14 @@
                     Name = "Name2",
                     Info = "Info2",
                     Grade = await this._gradesService.GetByValueAsync(COOPERATIVE_GRADE),
-                    Creator = TEST_CREATOR
+                    Creator = this.testCreator
                 },
                 new Cooperative
                 {
                     Name = "Name3",
                     Info = "Info3",
                     Grade = await this._gradesService.GetByValueAsync(COOPERATIVE_GRADE),
-                    Creator = TEST_CREATOR
+                    Creator = this.testCreator
                 },
                 new Cooperative
                 {
@@ -295,7 +301,7 @@
             await this.DbContext.SaveChangesAsync();
 
             var creatorCooperatives = await this._cooperativesService
-                .GetCreatorAllByUsernameAsync<Cooperative>(TEST_CREATOR.UserName);
+                .GetCreatorAllByUsernameAsync<Cooperative>(this.testCreator.UserName);
 
             var expectedCooperativesCount = 2;
             var actualCooperativesCount = creatorCooperatives.Count();
@@ -309,10 +315,10 @@
         public async Task AddMemberAsyncShouldAddMemeber()
         {
             var memberId = Guid.NewGuid().ToString();
-            await this._cooperativesService.AddMemberAsync(memberId, TEST_COOPERATIVE.Id);
+            await this._cooperativesService.AddMemberAsync(memberId, this.testCooperetaive.Id);
 
             var expectedMembersCount = 1;
-            var actualMemebersCount = TEST_COOPERATIVE.Members.Count;
+            var actualMemebersCount = this.testCooperetaive.Members.Count;
 
             Assert.Equal(expectedMembersCount, actualMemebersCount);
         }
@@ -328,7 +334,7 @@
             var firstMember = new CheUserCooperative
             {
                 CheUserId = firstMmemberId,
-                CooperativeId = TEST_COOPERATIVE.Id
+                CooperativeId = this.testCooperetaive.Id
             };
             members.Add(firstMember);
 
@@ -336,17 +342,17 @@
             var secondMember = new CheUserCooperative
             {
                 CheUserId = secondMemberId,
-                CooperativeId = TEST_COOPERATIVE.Id
+                CooperativeId = this.testCooperetaive.Id
             };
             members.Add(secondMember);
 
             await this.DbContext.UserCooperatives.AddRangeAsync(members);
             await this.DbContext.SaveChangesAsync();
 
-            await this._cooperativesService.RemoveMemberAsync(firstMmemberId, TEST_COOPERATIVE.Id);
+            await this._cooperativesService.RemoveMemberAsync(firstMmemberId, this.testCooperetaive.Id);
 
             var expectedMembersCount = 1;
-            var actualMemebersCount = TEST_COOPERATIVE.Members.Count;
+            var actualMemebersCount = this.testCooperetaive.Members.Count;
 
             Assert.Equal(expectedMembersCount, actualMemebersCount);
         }
@@ -354,35 +360,35 @@
 
         private async Task AddTestCooperativeAsync()
         {
-            await this.DbContext.Cooperatives.AddAsync(TEST_COOPERATIVE);
+            await this.DbContext.Cooperatives.AddAsync(this.testCooperetaive);
             await this.DbContext.SaveChangesAsync();
         }
 
-        private Address CreateAddress()
+        private Address SetAddress()
         {
             var address = new Address
             {
-                City = CITY,
-                Neighbourhood = NEIGHBOURHOOD,
-                Street = STREET
+                City = "Test city",
+                Neighbourhood = "Test neighbourhood",
+                Street = "Test street"
             };
 
             return address;
         }
 
-        private Cooperative CreateCooperative()
+        private Cooperative SetCooperative()
         {
             var cooperative = new Cooperative
             {
-                Name = COOPERATIVE_NAME,
-                Info = COOPERATIVE_INFO,
-                Grade = this._gradesService.GetByValueAsync(COOPERATIVE_GRADE).GetAwaiter().GetResult()
+                Name = "Test name",
+                Info = "Test info",
+                Grade = this._gradesService.GetByValueAsync(COOPERATIVE_GRADE).GetAwaiter().GetResult()               
             };
 
             return cooperative;
         }
 
-        private CheUser CreateUser()
+        private CheUser SetUser()
         {
             var user = new CheUser
             {
