@@ -31,6 +31,12 @@
 
         public async Task<bool> CreateAsync(string name, string info, string gradeValue, string creatorId)
         {
+            var cooperativeNameExists = this._dbContext.Cooperatives.Any(x => x.Name == name);
+            if (cooperativeNameExists)
+            {
+                return false;
+            }
+
             var grade = await this._gradesService.GetByValueAsync(gradeValue);
 
             var cooperative = new Cooperative

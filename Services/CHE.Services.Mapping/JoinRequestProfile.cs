@@ -11,6 +11,8 @@
     {
         public JoinRequestProfile()
         {
+            this.CreateMap<JoinRequest, JoinRequest>();
+
             this.CreateMap<JoinRequest, CooperativeJoinRequestDetailsViewModel>();
 
             this.CreateMap<JoinRequest, JoinRequestDetailsViewModel>();

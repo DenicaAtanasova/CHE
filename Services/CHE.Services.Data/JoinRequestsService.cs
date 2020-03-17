@@ -61,6 +61,7 @@
 
         public async Task<bool> CreateAsync(string content, string cooperativeId, string receiverId, string senderId)
         {
+            // TODO: check if such a request already exists
             var request = new JoinRequest
             {
                 Content = content,
