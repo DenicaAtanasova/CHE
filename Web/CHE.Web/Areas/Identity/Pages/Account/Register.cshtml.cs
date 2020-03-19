@@ -101,6 +101,7 @@
                             Url = DEFAULT_IMAGE_URL
                         } 
                     };
+                    user.Schedule = new Schedule();
                 }
                 var result = await _userManager.CreateAsync(user, Input.Password);
                 if (result.Succeeded)

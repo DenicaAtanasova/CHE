@@ -27,6 +27,8 @@
 
         public CheUser Creator { get; set; }
 
+        public Schedule Schedule { get; set; }
+
         public ICollection<CheUserCooperative> Members { get; set; }
 
         public ICollection<JoinRequest> JoinRequestsReceived { get; set; }

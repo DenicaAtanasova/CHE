@@ -27,5 +27,7 @@
         public ICollection<Review> ReviewsSent { get; set; }
 
         public ICollection<Review> ReviewsReceived { get; set; }
+
+        public Schedule Schedule { get; set; }
     }
 }
