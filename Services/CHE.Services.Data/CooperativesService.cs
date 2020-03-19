@@ -46,7 +46,7 @@
                 CreatorId = creatorId,
                 CreatedOn = DateTime.UtcNow,
                 Grade = grade,
-                Schedule = new Schedule()
+                Schedule = new Schedule { CreatedOn = DateTime.UtcNow }
             };
 
             await this._dbContext.AddAsync(cooperative);

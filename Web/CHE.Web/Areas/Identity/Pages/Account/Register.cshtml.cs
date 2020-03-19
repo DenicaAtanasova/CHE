@@ -101,7 +101,7 @@
                             Url = DEFAULT_IMAGE_URL
                         } 
                     };
-                    user.Schedule = new Schedule();
+                    user.Schedule = new Schedule { CreatedOn = DateTime.UtcNow};
                 }
                 var result = await _userManager.CreateAsync(user, Input.Password);
                 if (result.Succeeded)
