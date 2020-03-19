@@ -7,6 +7,8 @@
   <ItemGroup>
     <Compile Remove="Migrations\20200224083923_JoinRequest_ChangedSender.cs" />
     <Compile Remove="Migrations\20200224083923_JoinRequest_ChangedSender.Designer.cs" />
+    <Compile Remove="Migrations\20200319081613_ChengedEducationToSchoolLevel.cs" />
+    <Compile Remove="Migrations\20200319081613_ChengedEducationToSchoolLevel.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

@@ -20,7 +20,7 @@
         public string Interests { get; set; }
 
         [Display(Name = "School level")]
-        public string EducationLevel { get; set; }
+        public string SchoolLevel { get; set; }
 
         public IFormFile Image { get; set; }
     }
