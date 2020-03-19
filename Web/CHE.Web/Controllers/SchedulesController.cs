@@ -1,12 +1,25 @@
 ﻿namespace CHE.Web.Controllers
 {
+    using System.Threading.Tasks;
     using Microsoft.AspNetCore.Mvc;
+
+    using CHE.Services.Data;
+    using CHE.Web.ViewModels.Schedules;
 
     public class SchedulesController : Controller
     {
-        public IActionResult Details()
+        private readonly ISchedulesService _schedulesService;
+
+        public SchedulesController(ISchedulesService schedulesService)
         {
-            return View();
+            this._schedulesService = schedulesService;
+        }
+
+        public async Task<IActionResult> Details(string id)
+        {
+            var schedule = await this._schedulesService.GetByIdAsync<ScheduleViewModel>(id);
+
+            return View(schedule);
         }
     }
 }

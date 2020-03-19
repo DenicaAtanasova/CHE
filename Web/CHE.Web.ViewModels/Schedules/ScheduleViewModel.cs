@@ -4,7 +4,7 @@ using System.Text;
 
 namespace CHE.Web.ViewModels.Schedules
 {
-    public class SchedulesViewModel
+    public class ScheduleViewModel
     {
         public string Id { get; set; }
     }

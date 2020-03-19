@@ -16,6 +16,8 @@ namespace CHE.Web.ViewModels.Cooperatives
 
         public string CreatorUserName { get; set; }
 
+        public string ScheduleId { get; set; }
+
         public CooperativeAddressViewModel Address { get; set; }
 
         public IEnumerable<CooperativeJoinRequestDetailsViewModel> JoinRequestsReceived { get; set; }
