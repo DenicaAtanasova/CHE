@@ -27,6 +27,10 @@ a, a:hover {
 
 /* Sticky footer styles
 -------------------------------------------------- */
+body {
+    background: #dcdcdc;
+}
+
 html {
   font-size: 14px;
 }
