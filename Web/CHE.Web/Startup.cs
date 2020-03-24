@@ -61,6 +61,7 @@ namespace CHE.Web
             services.AddTransient<IReviewsService, ReviewsService>();
             services.AddTransient<IImagesService, ImagesService>();
             services.AddTransient<ISchedulesService, SchedulesService>();
+            services.AddTransient<IEventsService, EventsService>();
 
             // AutoMapper
             services.AddAutoMapper(typeof(CooperativeProfile));

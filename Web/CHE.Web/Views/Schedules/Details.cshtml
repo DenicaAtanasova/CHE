@@ -1,7 +1,5 @@
 ﻿@model CHE.Web.ViewModels.Schedules.ScheduleViewModel
-
-<h1>Schedule</h1>
-
+ 
 <div class="calendar disable-selection" id="calendar">
     <div class="left-side">
         <div class="current-day text-center">
@@ -10,11 +8,21 @@
         </div>
         <div class="current-day-events">
             <div>Current Events:</div>
-            <ul class="current-day-events-list"></ul>
+            <table>
+                <col width="1200">
+                <col width="30">
+                <col width="30">
+                <tr>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                </tr>
+                <tbody id="events"></tbody>
+            </table>
         </div>
         <div class="add-event-day">
-            <input type="text" class="add-event-day-field" placeholder="Create an Event">
-            <span class="fa fa-plus-circle cursor-pointer add-event-day-field-btn"></span>
+            <span class="add-event-day-field-btn"></span>
+            <button class="add-event-btn"></button>
         </div>
     </div>
     <div class="right-side">
