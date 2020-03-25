@@ -1,14 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using CHE.Services.Data;
-using CHE.Web.ViewModels.Events;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-
-namespace CHE.Web.Controllers
+﻿namespace CHE.Web.Controllers
 {
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Threading.Tasks;
+
+    using Microsoft.AspNetCore.Mvc;
+
+    using CHE.Services.Data;
+    using CHE.Web.ViewModels.Events;
+
     [Route("scheduler/[controller]")]
     [ApiController]
     public class EventsController : ControllerBase

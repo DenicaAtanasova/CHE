@@ -15,6 +15,7 @@
             this._schedulesService = schedulesService;
         }
 
+        [Route("scheduler/{id}")]
         public async Task<IActionResult> Details(string id)
         {
             var schedule = await this._schedulesService.GetByIdAsync<ScheduleViewModel>(id);
