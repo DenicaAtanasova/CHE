@@ -30,7 +30,9 @@
         [HttpGet("date/{date}")]
         public async Task<ActionResult<Dictionary<string, EventViewModel[]>>> GetThreeMonthsEvents(string date)
         {
-            var threeMonthsEvents = await this._eventsService.GetThreeMonthsEventsAsync<EventViewModel>(date);
+            var scheduleId = this.Request.Headers["x-scheduleId"].ToString();
+
+            var threeMonthsEvents = await this._eventsService.GetThreeMonthsEventsAsync<EventViewModel>(scheduleId, date);
 
             var groupedEvents = threeMonthsEvents
                 .GroupBy(x => x.StartDate.Date)

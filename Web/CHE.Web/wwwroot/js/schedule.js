@@ -132,8 +132,14 @@ class CALENDAR {
 
         let days = [...latestDaysInPrevMonth, ...daysInActiveMonth, ...daysInNextMonth];
 
+        let scheduleId = document.getElementById('scheduleId').value.trim();
         let date = calendar.active.formatted;
-        const response = await fetch(`${uri}/date/${date}`);
+        const response = await fetch(`${uri}/date/${date}`, {
+            method: 'GET',
+            headers: {
+                'x-scheduleId': scheduleId
+            }
+        });
         const events = await response.json();
 
         this._displayEvents(events);

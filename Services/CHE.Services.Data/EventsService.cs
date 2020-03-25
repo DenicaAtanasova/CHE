@@ -27,7 +27,7 @@
             this._mapper = mapper;
         }
 
-        public async Task<IEnumerable<TEntity>> GetThreeMonthsEventsAsync<TEntity>(string date)
+        public async Task<IEnumerable<TEntity>> GetThreeMonthsEventsAsync<TEntity>(string scheduleId, string date)
         {
             var currentDate = DateTime.ParseExact(date, "d-M-yyyy", CultureInfo.InvariantCulture);
             var prevMonth = currentDate.Month - 2;
@@ -35,6 +35,7 @@
             var year = currentDate.Year;
 
             var eventsFromDb = await this._dbContext.Events
+                .Where(x => x.ScheduleId == scheduleId)
                 .Where(x => x.StartDate.Year == year && x.StartDate.Month > prevMonth && x.StartDate.Month < nextMonth)
                 .ProjectTo<TEntity>(this._mapper.ConfigurationProvider)
                 .ToArrayAsync();

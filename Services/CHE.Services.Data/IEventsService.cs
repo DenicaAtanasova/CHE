@@ -6,7 +6,7 @@
 
     public interface IEventsService
     {
-        Task<IEnumerable<TEntity>> GetThreeMonthsEventsAsync<TEntity>(string date);
+        Task<IEnumerable<TEntity>> GetThreeMonthsEventsAsync<TEntity>(string scheduleId, string date);
 
         Task<bool> CreateAsync(string title, string descrition, DateTime startDate, DateTime endDate, bool isFullDay, string scheduleId);
     }
