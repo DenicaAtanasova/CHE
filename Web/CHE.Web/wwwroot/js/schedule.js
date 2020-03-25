@@ -1,5 +1,5 @@
 ﻿const AVAILABLE_WEEK_DAYS = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-const localStorageName = 'calendar-events';
+const uri = 'Events';
 
 class CALENDAR {
     constructor(options) {
@@ -9,16 +9,11 @@ class CALENDAR {
             week: this.getFirstElementInsideIdByClassName('calendar-week'),
             month: this.getFirstElementInsideIdByClassName('calendar-month'),
             year: this.getFirstElementInsideIdByClassName('calendar-current-year'),
-            eventList: this.getFirstElementInsideIdByClassName('current-day-events-list'),
-            eventField: this.getFirstElementInsideIdByClassName('add-event-day-field'),
-            eventAddBtn: this.getFirstElementInsideIdByClassName('add-event-day-field-btn'),
             currentDay: this.getFirstElementInsideIdByClassName('calendar-left-side-day'),
             currentWeekDay: this.getFirstElementInsideIdByClassName('calendar-left-side-day-of-week'),
             prevYear: this.getFirstElementInsideIdByClassName('calendar-change-year-slider-prev'),
             nextYear: this.getFirstElementInsideIdByClassName('calendar-change-year-slider-next')
         };
-
-        this.eventList = JSON.parse(localStorage.getItem(localStorageName)) || {};
 
         this.date = +new Date();
         this.options.maxDays = 37;
@@ -38,18 +33,59 @@ class CALENDAR {
         this.drawMonths();
         this.drawDays();
         this.drawYearAndCurrentDay();
-        this.drawEvents();
     }
 
-    drawEvents() {
+    _displayEvents(data) {
         let calendar = this.getCalendar();
-        let eventList = this.eventList[calendar.active.formatted] || ['There is not any events'];
-        let eventTemplate = "";
-        eventList.forEach(item => {
-            eventTemplate += `<li>${item}</li>`;
-        });
+        let date = calendar.active.formatted;
+        let events = data[date];
 
-        this.elements.eventList.innerHTML = eventTemplate;
+        const tBody = document.getElementById('events');
+        tBody.innerHTML = '';
+        const button = document.createElement('button');
+        if (events != undefined) {
+            events.forEach(event => {
+                let editButton = button.cloneNode(false);
+                editButton.className = 'edit-event-btn';
+                editButton.setAttribute('data-toggle', 'tooltip');
+                editButton.setAttribute('data-placement', 'top');
+                editButton.setAttribute('title', 'edit');
+                editButton.setAttribute('onclick', `editEvent(\"${event.id}\")`);
+
+                let deleteButton = button.cloneNode(false);
+                deleteButton.className = 'delete-event-btn';
+                deleteButton.setAttribute('data-toggle', 'tooltip');
+                deleteButton.setAttribute('data-placement', 'top');
+                deleteButton.setAttribute('title', 'delete');
+                deleteButton.setAttribute('onclick', `deleteEvent(\"${event.id}\")`);
+
+                let tr = tBody.insertRow();
+
+                let startTime = event.startDate.substring(11, 16);
+                let endTime = event.endDate.substring(11, 16);
+                let eventInfo = `${startTime}-${endTime}  ${event.title}`;
+
+                let tdTitle = tr.insertCell(0);
+                let nodeTitle = document.createTextNode(eventInfo);
+                tdTitle.appendChild(nodeTitle);
+                tdTitle.setAttribute('data-toggle', 'tooltip');
+                tdTitle.setAttribute('data-placement', 'top');
+                tdTitle.setAttribute('title', `${event.description}`);
+
+                let tdEdit = tr.insertCell(1);
+                tdEdit.appendChild(editButton);
+
+                let tdDelete = tr.insertCell(2);
+                tdDelete.appendChild(deleteButton);
+            });
+        }
+        else {
+            let tr = tBody.insertRow();
+
+            let tdTitle = tr.insertCell(0);
+            let nodeTitle = document.createTextNode('There are no events');
+            tdTitle.appendChild(nodeTitle);
+        }
     }
 
     drawYearAndCurrentDay() {
@@ -59,7 +95,7 @@ class CALENDAR {
         this.elements.currentWeekDay.innerHTML = AVAILABLE_WEEK_DAYS[calendar.active.week];
     }
 
-    drawDays() {
+    async drawDays() {
         let calendar = this.getCalendar();
 
         let latestDaysInPrevMonth = this.range(calendar.active.startWeek).map((day, idx) => {
@@ -70,7 +106,6 @@ class CALENDAR {
                 currentMonth: false
             }
         }).reverse();
-
 
         let daysInActiveMonth = this.range(calendar.active.days).map((day, idx) => {
             let dayNumber = idx + 1;
@@ -85,7 +120,6 @@ class CALENDAR {
             }
         });
 
-
         let countOfDays = this.options.maxDays - (latestDaysInPrevMonth.length + daysInActiveMonth.length);
         let daysInNextMonth = this.range(countOfDays).map((day, idx) => {
             return {
@@ -98,10 +132,17 @@ class CALENDAR {
 
         let days = [...latestDaysInPrevMonth, ...daysInActiveMonth, ...daysInNextMonth];
 
+        let date = calendar.active.formatted;
+        const response = await fetch(`${uri}/date/${date}`);
+        const events = await response.json();
+
+        this._displayEvents(events);
+
         days = days.map(day => {
             let newDayParams = day;
             let formatted = this.getFormattedDate(new Date(`${Number(day.month) + 1}/${day.dayNumber}/${day.year}`));
-            newDayParams.hasEvent = this.eventList[formatted];
+
+            newDayParams.hasEvent = events[formatted];
             return newDayParams;
         });
 
@@ -151,12 +192,10 @@ class CALENDAR {
             let calendar = this.getCalendar();
             let month = e.srcElement.getAttribute('data-month');
             if (!month || calendar.active.month == month) return false;
-
             let newMonth = new Date(calendar.active.tm).setMonth(month);
             this.updateTime(newMonth);
             this.drawAll()
         });
-
 
         this.elements.days.addEventListener('click', e => {
             let element = e.srcElement;
@@ -168,20 +207,7 @@ class CALENDAR {
             this.updateTime(strDate);
             this.drawAll()
         });
-
-
-        this.elements.eventAddBtn.addEventListener('click', e => {
-            let fieldValue = this.elements.eventField.value;
-            if (!fieldValue) return false;
-            let dateFormatted = this.getFormattedDate(new Date(this.date));
-            if (!this.eventList[dateFormatted]) this.eventList[dateFormatted] = [];
-            this.eventList[dateFormatted].push(fieldValue);
-            localStorage.setItem(localStorageName, JSON.stringify(this.eventList));
-            this.elements.eventField.value = '';
-            this.drawAll();
-        });
     }
-
 
     updateTime(time) {
         this.date = +new Date(time);
@@ -227,7 +253,7 @@ class CALENDAR {
     }
 
     getFormattedDate(date) {
-        return `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`;
+        return `${date.getDate()}-${date.getMonth() + 1}-${date.getFullYear()}`;
     }
 
     range(number) {
@@ -239,9 +265,10 @@ class CALENDAR {
     }
 }
 
+let calendar;
 
 (function () {
-    new CALENDAR({
+    calendar = new CALENDAR({
         id: "calendar"
     })
 })();
