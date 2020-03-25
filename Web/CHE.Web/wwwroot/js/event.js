@@ -52,4 +52,13 @@ function addEvent() {
         .catch(error => console.error('Unable to add event.', error));
 }
 
+function deleteEvent(id) {
+    fetch(`${uri}/${id}`, {
+        method: 'DELETE'
+    })
+        .then(() => draw())
+        .catch(error => console.error('Unable to delete event.', error));
+}
+
 window.addEvent = addEvent;
+window.deleteEvent = deleteEvent;

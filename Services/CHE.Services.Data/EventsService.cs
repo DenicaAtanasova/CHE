@@ -61,5 +61,15 @@
 
             return result;
         }
+
+        public async Task<bool> DeleteAsync(string id)
+        {
+            var eventToDelete = await this._dbContext.Events.SingleOrDefaultAsync(x => x.Id == id);
+            this._dbContext.Remove(eventToDelete);
+
+            var result = await this._dbContext.SaveChangesAsync() > 0;
+
+            return result;
+        }
     }
 }

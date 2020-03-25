@@ -9,5 +9,7 @@
         Task<IEnumerable<TEntity>> GetThreeMonthsEventsAsync<TEntity>(string scheduleId, string date);
 
         Task<bool> CreateAsync(string title, string descrition, DateTime startDate, DateTime endDate, bool isFullDay, string scheduleId);
+
+        Task<bool> DeleteAsync(string id);
     }
 }

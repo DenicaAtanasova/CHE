@@ -22,9 +22,9 @@
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<string>> GetEvent(string id)
+        public async Task<ActionResult> GetEvent(string id)
         {
-            return "";
+            return this.Ok();
         }
 
         [HttpGet("date/{date}")]
@@ -53,6 +53,18 @@
             }
             
             return this.CreatedAtAction(nameof(GetEvent), inputEvent);
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<ActionResult> DeleteEvent(string id)
+        {
+            var deleteSuccessful = await this._eventsService.DeleteAsync(id);
+            if (deleteSuccessful)
+            {
+                return this.StatusCode(400);
+            }
+
+            return this.Ok();
         }
     }
 }
