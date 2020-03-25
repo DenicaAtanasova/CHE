@@ -12,6 +12,7 @@
     using AutoMapper.QueryableExtensions;
 
     using CHE.Data;
+    using CHE.Data.Models;
 
     public class EventsService : IEventsService
     {
@@ -40,5 +41,24 @@
 
             return eventsFromDb;
         } 
+
+        public async Task<bool> CreateAsync(string title, string descrition, DateTime startDate, DateTime endDate, bool isFullDay, string scheduleId)
+        {
+            var newEvent = new Event
+            {
+                Title = title,
+                Description = descrition,
+                StartDate = startDate,
+                EndDate = endDate,
+                ScheduleId = scheduleId,
+                IsFullDay = isFullDay,
+                CreatedOn = DateTime.UtcNow
+            };
+
+            await this._dbContext.Events.AddAsync(newEvent);
+            var result = await this._dbContext.SaveChangesAsync() > 0;
+
+            return result;
+        }
     }
 }

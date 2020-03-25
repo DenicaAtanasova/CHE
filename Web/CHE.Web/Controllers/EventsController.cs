@@ -8,6 +8,7 @@
 
     using CHE.Services.Data;
     using CHE.Web.ViewModels.Events;
+    using CHE.Web.InputModels.Events;
 
     [Route("scheduler/[controller]")]
     [ApiController]
@@ -20,6 +21,12 @@
             this._eventsService = eventsService;
         }
 
+        [HttpGet("{id}")]
+        public async Task<ActionResult<string>> GetEvent(string id)
+        {
+            return "";
+        }
+
         [HttpGet("date/{date}")]
         public async Task<ActionResult<Dictionary<string, EventViewModel[]>>> GetThreeMonthsEvents(string date)
         {
@@ -30,6 +37,20 @@
                 .ToDictionary(x => x.Key.Date.ToString("d-M-yyyy"), x => x.ToArray());
 
             return groupedEvents;
+        }
+
+        [HttpPost]
+        public async Task<ActionResult<EventCreateInputModel>> AddEvent(EventCreateInputModel inputEvent)
+        {
+            var createSuccessful = await this._eventsService
+                .CreateAsync(inputEvent.Title, inputEvent.Description, inputEvent.StartDate, inputEvent.EndDate, inputEvent.IsFullDay, inputEvent.ScheduleId);
+
+            if (!createSuccessful)
+            {
+                return this.StatusCode(400);
+            }
+            
+            return this.CreatedAtAction(nameof(GetEvent), inputEvent);
         }
     }
 }

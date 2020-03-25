@@ -272,3 +272,9 @@ let calendar;
         id: "calendar"
     })
 })();
+
+function draw() {
+    calendar.drawAll()
+};
+
+export { draw };
