@@ -22,9 +22,11 @@
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult> GetEvent(string id)
+        public async Task<ActionResult<EventViewModel>> GetEvent(string id)
         {
-            return this.Ok();
+            var currentEvent = await this._eventsService.GetByIdAsync<EventViewModel>(id);
+
+            return currentEvent;
         }
 
         [HttpGet("date/{date}")]
@@ -42,14 +44,14 @@
         }
 
         [HttpPost]
-        public async Task<ActionResult<EventCreateInputModel>> AddEvent(EventCreateInputModel inputEvent)
+        public async Task<ActionResult<EventInputModel>> CreateEvent(EventInputModel inputEvent)
         {
             var createSuccessful = await this._eventsService
                 .CreateAsync(inputEvent.Title, inputEvent.Description, inputEvent.StartDate, inputEvent.EndDate, inputEvent.IsFullDay, inputEvent.ScheduleId);
 
             if (!createSuccessful)
             {
-                return this.StatusCode(400);
+                return this.BadRequest();
             }
             
             return this.CreatedAtAction(nameof(GetEvent), inputEvent);
@@ -61,7 +63,20 @@
             var deleteSuccessful = await this._eventsService.DeleteAsync(id);
             if (deleteSuccessful)
             {
-                return this.StatusCode(400);
+                return this.BadRequest();
+            }
+
+            return this.Ok();
+        }
+
+        [HttpPut("{id}")]
+        public async Task<ActionResult> UpdateEvent(string id, EventInputModel updatedEvent)
+        {
+            var updateSuccessful = await this._eventsService.UpdateAsync(id, updatedEvent.Title, updatedEvent.Description, updatedEvent.StartDate, updatedEvent.EndDate, updatedEvent.IsFullDay);
+
+            if (!updateSuccessful)
+            {
+                return this.BadRequest();
             }
 
             return this.Ok();

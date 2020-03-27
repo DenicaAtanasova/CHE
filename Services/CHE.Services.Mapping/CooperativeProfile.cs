@@ -22,7 +22,7 @@
                 .ForMember(dest => dest.Grade, opt => opt.MapFrom(src => src.Grade.Value))
                 .ForMember(dest => dest.MembersCount, opt => opt.MapFrom(src => src.Members.Count));
 
-            this.CreateMap<Cooperative, CooperativeEditInputModel>()
+            this.CreateMap<Cooperative, CooperativeUpdateInputModel>()
                 .ForMember(dest => dest.Grade, opt => opt.MapFrom(src => src.Grade.Value))
                 .ReverseMap();
 

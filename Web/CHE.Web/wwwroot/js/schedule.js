@@ -45,12 +45,12 @@ class CALENDAR {
         const button = document.createElement('button');
         if (events != undefined) {
             events.forEach(event => {
-                let editButton = button.cloneNode(false);
-                editButton.className = 'edit-event-btn';
-                editButton.setAttribute('data-toggle', 'tooltip');
-                editButton.setAttribute('data-placement', 'top');
-                editButton.setAttribute('title', 'edit');
-                editButton.setAttribute('onclick', `editEvent(\"${event.id}\")`);
+                let updateButton = button.cloneNode(false);
+                updateButton.className = 'update-event-btn';
+                updateButton.setAttribute('data-toggle', 'tooltip');
+                updateButton.setAttribute('data-placement', 'top');
+                updateButton.setAttribute('title', 'update');
+                updateButton.setAttribute('onclick', `loadEvent(\"${event.id}\")`);
 
                 let deleteButton = button.cloneNode(false);
                 deleteButton.className = 'delete-event-btn';
@@ -73,7 +73,7 @@ class CALENDAR {
                 tdTitle.setAttribute('title', `${event.description}`);
 
                 let tdEdit = tr.insertCell(1);
-                tdEdit.appendChild(editButton);
+                tdEdit.appendChild(updateButton);
 
                 let tdDelete = tr.insertCell(2);
                 tdDelete.appendChild(deleteButton);

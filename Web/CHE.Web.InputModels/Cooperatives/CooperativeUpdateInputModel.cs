@@ -2,7 +2,7 @@
 {
     using System.ComponentModel.DataAnnotations;
     using CHE.Web.InputModels.Attributes.Validation;
-    public class CooperativeEditInputModel
+    public class CooperativeUpdateInputModel
     {
         public string Id { get; set; }
 

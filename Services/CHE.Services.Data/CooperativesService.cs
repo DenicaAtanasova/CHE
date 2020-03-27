@@ -68,7 +68,6 @@
             var coopAddress = this._mapper.Map<TAddress, Address>(address);
             coopAddress.Cooperative = cooperativeToUpdate;
 
-            await this._dbContext.Addresses.AddAsync(coopAddress);
 
             var result = await this._dbContext.SaveChangesAsync() > 0;
 

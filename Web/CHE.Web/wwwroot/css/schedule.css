@@ -6,7 +6,7 @@
 
 .add-event-btn,
 .delete-event-btn,
-.edit-event-btn {
+.update-event-btn {
     background-color: #ec364f;
     border: none;
     color: #fff;
@@ -16,7 +16,7 @@
 }
 
 .delete-event-btn,
-.edit-event-btn {
+.update-event-btn {
     padding: 0.3em 0.3em;
 }
 
@@ -26,14 +26,14 @@
 
 .add-event-btn:hover,
 .delete-event-btn:hover,
-.edit-event-btn:hover {
+.update-event-btn:hover {
     background-color: #fff;
     color: #ec364f;
 }
 
 .add-event-btn:focus,
 .delete-event-btn:focus,
-.edit-event-btn:focus {
+.update-event-btn:focus {
     outline: none;
 }
 
@@ -51,10 +51,11 @@
     content: "\f1f8";
 }
 
-.edit-event-btn::before {
+.update-event-btn::before {
     font-family: FontAwesome;
     content: "\f044";
 }
+
 
 .text-center {
     text-align: center;

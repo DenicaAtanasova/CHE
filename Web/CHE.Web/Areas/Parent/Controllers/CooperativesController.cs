@@ -49,13 +49,13 @@
         public async Task<IActionResult> Update(string id)
         {
             var cooperativeToEdit = await this._cooperativesService
-                .GetByIdAsync<CooperativeEditInputModel>(id);
+                .GetByIdAsync<CooperativeUpdateInputModel>(id);
 
             return this.View(cooperativeToEdit);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Update(CooperativeEditInputModel model)
+        public async Task<IActionResult> Update(CooperativeUpdateInputModel model)
         {
             if (!this.ModelState.IsValid)
             {

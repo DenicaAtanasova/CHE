@@ -5,7 +5,7 @@
 
     using CHE.Web.InputModels.Attributes.Validation;
 
-    public class EventCreateInputModel
+    public class EventInputModel
     {
         [Required]
         [StringLength(25)]
