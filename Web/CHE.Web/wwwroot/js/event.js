@@ -58,8 +58,8 @@ function _setDates() {
         endTime = endTimeTextbox.value.trim();
     }
 
-    let startDate = new Date(date + ' ' + startTime);
-    let endDate = new Date(date + ' ' + endTime);
+    let startDate = `${date} ${startTime}`;
+    let endDate = `${date} ${endTime}`;
 
     return {
         startDate: startDate,

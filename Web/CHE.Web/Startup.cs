@@ -14,6 +14,8 @@ using CHE.Data.Seedeing;
 using CHE.Services.Data;
 using CHE.Services.Mapping;
 
+using Newtonsoft.Json;
+
 namespace CHE.Web
 {
     public class Startup
@@ -48,6 +50,7 @@ namespace CHE.Web
                 .AddDefaultUI();
 
             services.AddControllersWithViews();
+
             services.AddRazorPages();
 
             services.AddSingleton(this.configuration);
