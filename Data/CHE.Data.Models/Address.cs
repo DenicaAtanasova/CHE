@@ -1,12 +1,9 @@
 ﻿namespace CHE.Data.Models
 {
-    using System.ComponentModel.DataAnnotations.Schema;
+    using CHE.Data.Common.Models;
 
-    public class Address
+    public class Address : BaseModel<string>
     {
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public string Id { get; set; }
-
         public string City { get; set; }
 
         public string Neighbourhood { get; set; }

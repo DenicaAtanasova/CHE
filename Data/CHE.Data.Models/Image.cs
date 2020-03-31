@@ -1,11 +1,9 @@
 ﻿namespace CHE.Data.Models
 {
-    using System.ComponentModel.DataAnnotations.Schema;
+    using CHE.Data.Common.Models;
 
-    public class Image
-    {
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public string Id { get; set; }
+    public class Image : BaseModel<string>
+    { 
 
         public string Url { get; set; }
 

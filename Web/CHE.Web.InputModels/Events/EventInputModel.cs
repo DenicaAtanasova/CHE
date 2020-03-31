@@ -8,7 +8,7 @@
     public class EventInputModel
     {
         [Required]
-        [StringLength(25)]
+        [StringLength(20)]
         public string Title { get; set; }
 
         public string Description { get; set; }

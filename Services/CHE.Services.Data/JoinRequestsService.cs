@@ -42,7 +42,7 @@
         public async Task<IEnumerable<TEntity>> GetTeacherAllAsync<TEntity>(string teacherId)
         {
             var requests = await this._dbContext.JoinRequests
-                 .Where(x => x.ReceiverId == teacherId && !x.IsDeleted)
+                 .Where(x => x.ReceiverId == teacherId)
                  .ProjectTo<TEntity>(this._mapper.ConfigurationProvider)
                  .ToArrayAsync();
 
@@ -104,14 +104,9 @@
             return result;
         }
 
-        private bool Delete(JoinRequest request)
+        private void Delete(JoinRequest request)
         {
-            request.IsDeleted = true;
-            request.DeletedOn = DateTime.UtcNow;
-
-            var result = this._dbContext.Update(request).State == EntityState.Modified;
-
-            return result;
+            this._dbContext.Remove(request);
         }
     }
 }

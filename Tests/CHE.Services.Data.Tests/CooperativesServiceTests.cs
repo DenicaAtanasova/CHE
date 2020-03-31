@@ -197,25 +197,6 @@
 
             Assert.True(deleteSuccessful);
         }
-
-        [Fact]
-        public async Task DeleteAsyncShouldChangeIsDeletedToTrue()
-        {
-            var deleteSuccessful = await this._cooperativesService.DeleteAsync(this.testCooperetaive.Id);
-
-            Assert.True(this.testCooperetaive.IsDeleted);
-        }
-
-        [Fact]
-        public async Task DeleteAsyncShouldSetDeletedOnDateToDateTimeUtcNow()
-        {
-            await this._cooperativesService.DeleteAsync(this.testCooperetaive.Id);
-
-            var expectedDate = DateTime.UtcNow;
-            var actualDate = this.testCooperetaive.DeletedOn.Value;
-
-            Assert.Equal(expectedDate, actualDate, new TimeSpan(days: 0, hours: 0, minutes: 0, seconds: 0, milliseconds: 100));
-        }
         #endregion
 
         #region GetByIdAsync
@@ -245,15 +226,13 @@
                 {
                     Name = "Name3",
                     Info = "Info3",
-                    Grade = await this._gradesService.GetByValueAsync(COOPERATIVE_GRADE),
-                    IsDeleted = true                   
+                    Grade = await this._gradesService.GetByValueAsync(COOPERATIVE_GRADE)               
                 },
                 new Cooperative
                 {
                     Name = "Name4",
                     Info = "Info4",
-                    Grade = await this._gradesService.GetByValueAsync(COOPERATIVE_GRADE),
-                    IsDeleted = true
+                    Grade = await this._gradesService.GetByValueAsync(COOPERATIVE_GRADE)
                 }
             };
             await this.DbContext.AddRangeAsync(cooperatives);

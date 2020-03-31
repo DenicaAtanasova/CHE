@@ -79,8 +79,7 @@
             var cooperativeToDelete = await this._dbContext.Cooperatives
                 .SingleOrDefaultAsync(x => x.Id == id);
 
-            cooperativeToDelete.IsDeleted = true;
-            cooperativeToDelete.DeletedOn = DateTime.UtcNow;
+            this._dbContext.Remove(cooperativeToDelete);
 
             var result = await this._dbContext.SaveChangesAsync() > 0;
 
@@ -103,7 +102,6 @@
         {
             var cooperativeFromDb = await this._dbContext
                 .Cooperatives
-                .Where(x => !x.IsDeleted)
                 .ProjectTo<TEntity>(_mapper.ConfigurationProvider)
                 .ToArrayAsync();
 
@@ -114,7 +112,7 @@
         {
             var cooperativeFromDb = await this._dbContext
                 .Cooperatives
-                .Where(x => x.Creator.UserName == username && !x.IsDeleted)
+                .Where(x => x.Creator.UserName == username)
                 .ProjectTo<TEntity>(_mapper.ConfigurationProvider)
                 .ToArrayAsync();
 

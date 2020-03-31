@@ -2,7 +2,7 @@
 {
     using Common.Models;
 
-    public class Review : BaseDeletableModel<string>
+    public class Review : BaseModel<string>
     {
         public string Comment { get; set; }
 

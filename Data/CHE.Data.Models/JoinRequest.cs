@@ -2,7 +2,7 @@
 {
     using Common.Models;
 
-    public class JoinRequest : BaseDeletableModel<string>
+    public class JoinRequest : BaseModel<string>
     {
         public string Content { get; set; }
 

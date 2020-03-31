@@ -54,7 +54,7 @@
         public async Task<IEnumerable<TEntity>> GetAllAsync<TEntity>(string teacherId)
         {
             var reviews = await this._dbContext.Reviews
-                .Where(x => x.ReceiverId == teacherId && !x.IsDeleted)
+                .Where(x => x.ReceiverId == teacherId)
                 .ProjectTo<TEntity>(this._mapper.ConfigurationProvider)
                 .ToArrayAsync();
 

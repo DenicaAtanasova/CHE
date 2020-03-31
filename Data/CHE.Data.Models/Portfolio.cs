@@ -2,7 +2,7 @@
 {
     using Common.Models;
 
-    public class Portfolio : BaseDeletableModel<string>
+    public class Portfolio : BaseModel<string>
     {
         public string FirstName { get; set; }
 

@@ -3,7 +3,7 @@
     using Common.Models;
     using System.Collections.Generic;
 
-    public class Cooperative : BaseDeletableModel<string>
+    public class Cooperative : BaseModel<string>
     {
         public Cooperative()
         {
