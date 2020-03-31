@@ -12,13 +12,11 @@
         public CooperativeProfile()
         {
             this.CreateMap<Cooperative, Cooperative>();
-
-            this.CreateMap<CooperativeCreateInputModel, Cooperative>();
-
+            
             this.CreateMap<Cooperative, CooperativeAllViewModel>()
                 .ForMember(dest => dest.Grade, opt => opt.MapFrom(src => src.Grade.Value));
 
-            this.CreateMap<Cooperative, CooeprativeDetailsViewModel>()
+            this.CreateMap<Cooperative, CooperativeDetailsViewModel>()
                 .ForMember(dest => dest.Grade, opt => opt.MapFrom(src => src.Grade.Value))
                 .ForMember(dest => dest.MembersCount, opt => opt.MapFrom(src => src.Members.Count));
 
@@ -26,7 +24,12 @@
                 .ForMember(dest => dest.Grade, opt => opt.MapFrom(src => src.Grade.Value))
                 .ReverseMap();
 
+            //TODO check if have to be moved to jrprofile
             this.CreateMap<Cooperative, JoinRequestCooperativeSendViewModel>();
+
+            this.CreateMap<Cooperative, CooperativeJoinRequestsViewModel>();
+
+            this.CreateMap<Cooperative, CooperativeMembersViewModel>();
         }
     }
 }

@@ -3,7 +3,6 @@
     using AutoMapper;
 
     using CHE.Data.Models;
-    using CHE.Web.ViewModels.Cooperatives;
     using CHE.Web.ViewModels.JoinRequests;
     using CHE.Web.ViewModels.Teachers;
 
@@ -13,7 +12,7 @@
         {
             this.CreateMap<JoinRequest, JoinRequest>();
 
-            this.CreateMap<JoinRequest, CooperativeJoinRequestDetailsViewModel>();
+            this.CreateMap<JoinRequest, JoinRequestAllViewModel>();
 
             this.CreateMap<JoinRequest, JoinRequestDetailsViewModel>();
 

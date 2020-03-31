@@ -65,8 +65,8 @@
             cooperativeToUpdate.Grade = await this._gradesService.GetByValueAsync(gradeValue);
             cooperativeToUpdate.ModifiedOn = DateTime.UtcNow;
 
-            var coopAddress = this._mapper.Map<TAddress, Address>(address);
-            coopAddress.Cooperative = cooperativeToUpdate;
+            var updatedAddress = this._mapper.Map<TAddress, Address>(address);
+            cooperativeToUpdate.Address = updatedAddress;
 
 
             var result = await this._dbContext.SaveChangesAsync() > 0;
@@ -92,6 +92,7 @@
             var cooperativeFromDb = await this._dbContext.Cooperatives
                 .Where(x => x.Id == id)
                 .Include(x => x.Members)
+                .Include(x => x.JoinRequestsReceived)
                 .ProjectTo<TEntity>(_mapper.ConfigurationProvider)
                 .SingleOrDefaultAsync();
 

@@ -1,81 +1,55 @@
 ﻿@using CHE.Common
-@model CHE.Web.ViewModels.Cooperatives.CooeprativeDetailsViewModel
-@{
-    var membersCount = 1;
-}
+@model CHE.Web.ViewModels.Cooperatives.CooperativeDetailsViewModel
 
-    <div class="jumbotron">
-        <h1 class="display-4">@Model.Name</h1>
-        <p class="lead">@Model.Info</p>
-        <hr class="my-4">
-        <div class="row" style="height: 250px">
-            <div class="col-4">
-                <div class="list-group" id="list-tab" role="tablist">
-                    <a class="list-group-item list-group-item-action active" id="list-home-list" data-toggle="list" href="#list-home" role="tab" aria-controls="home">Home</a>
-                    <a class="list-group-item list-group-item-action" id="list-members-list" data-toggle="list" href="#list-members" role="tab" aria-controls="members">Members</a>
+<!-- ======= Breadcrumbs ======= -->
+<section id="breadcrumbs" class="breadcrumbs">
+    <div class="container">
+
+        <ol>
+            <li><a asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
+            <li><a asp-area="" asp-controller="Cooperatives" asp-action="All">Cooperatives</a></li>
+            <li>Details</li>
+        </ol>
+        <h2>Details </h2>
+
+    </div>
+</section><!-- End Breadcrumbs -->
+
+<!-- ======= Cooperaitve Section ======= -->
+<section id="cooperative-details">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-9">
+                <div>
+                    <h2>@Model.Name</h2>
                 </div>
-            </div>
-            <div class="col-8">
-                <div class="tab-content" id="nav-tabContent">
-                    <div class="tab-pane fade show active" id="list-home" role="tabpanel" aria-labelledby="list-home-list">
-                        <div class="d-flex">
-                            <div class="p-2 flex-fill">
-                                <h5>Info</h5>
-                                <hr />
-                                <div><strong>Creator: </strong>@Model.CreatorUserName</div>
-                                <div><strong>Grade: </strong>@Model.Grade</div>
-                                <div><strong>Members count: </strong>@Model.MembersCount</div>
-                            </div>
-                            <div class="p-2 flex-fill">
-                                <h5>Address</h5>
-                                <hr />
-                                <div><strong>City: </strong>@Model.Address?.City</div>
-                                <div><strong>Neighbourhood: </strong>@Model.Address?.Neighbourhood</div>
-                                <div><strong>Street: </strong>@Model.Address?.Street</div>
-                            </div>
-                        </div>
+                <p class="lead">@Model.Info</p>
+                <div class="d-flex">
+                    <div class="p-2 flex-fill">
+                        <h5>Info</h5>
+                        <hr />
+                        <div><strong>Creator: </strong>@Model.CreatorUserName</div>
+                        <div><strong>Grade: </strong>@Model.Grade</div>
+                        <div><strong>Members count: </strong>@Model.MembersCount</div>
                     </div>
-                    <div class="tab-pane fade overflow-auto" id="list-members" role="tabpanel" aria-labelledby="list-members-list" style="height: 250px">
-                        <table class="table table-hover">
-                            <thead>
-                                <tr>
-                                    <th scope="col">#</th>
-                                    <th scope="col">Username</th>
-                                    <th scope="col">Role</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach (var member in Model.Members)
-                                {
-                                    <tr>
-                                        <th scope="row">@(membersCount++)</th>
-                                        <td scope="row">@member.UserName</td>
-                                        <td scope="row">@member.Role</td>
-                                    </tr>
-                                }
-                            </tbody>
-                        </table>
+                    <div class="p-2 flex-fill">
+                        <h5>Address</h5>
+                        <hr />
+                        <div><strong>City: </strong>@Model.Address?.City</div>
+                        <div><strong>Neighbourhood: </strong>@Model.Address?.Neighbourhood</div>
+                        <div><strong>Street: </strong>@Model.Address?.Street</div>
                     </div>
                 </div>
+                <hr class="my-4">
             </div>
         </div>
-        <hr class="my-4">
-        <div class="d-flex justify-content-lg-between">
-            <div>
-                @if (Model.Members.Any(x => x.UserName == this.User.Identity.Name))
+        <div class="row">
+            <div class="col-lg-9">
+                @if (this.User.IsInRole(GlobalConstants.PARENT_ROLE))
                 {
-                    <a class="btn btn-primary btn-lg" asp-controller="Cooperatives" asp-action="Leave" asp-route-CooperativeId="@Model.Id">Leave</a>
+                <a class="btn btn-che" asp-area="Parent" asp-controller="JoinRequests" asp-action="Send" asp-route-CooperativeId="@Model.Id">Join</a>
                 }
-                else
-                {
-                    if (this.User.IsInRole(GlobalConstants.PARENT_ROLE))
-                    {
-                        <a class="btn btn-primary btn-lg" asp-area="Parent" asp-controller="JoinRequests" asp-action="Send" asp-route-CooperativeId="@Model.Id">Join</a>
-                    }
-                }
-            </div>
-            <div>
-                <a class="btn btn-primary btn-lg" asp-controller="Cooperatives" asp-action="All">Back</a>
             </div>
         </div>
     </div>
+</section><!-- End Cooperaitve Section -->

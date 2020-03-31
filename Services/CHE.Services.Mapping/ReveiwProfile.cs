@@ -3,13 +3,13 @@
     using AutoMapper;
 
     using CHE.Data.Models;
-    using CHE.Web.ViewModels.Teachers;
+    using CHE.Web.ViewModels.Reviews;
 
     public class ReveiwProfile : Profile
     {
         public ReveiwProfile()
         {
-            this.CreateMap<Review, TeacherReviewDetailsViewModel>();
+            this.CreateMap<Review, ReviewAllViewModel>();
         }
     }
 }

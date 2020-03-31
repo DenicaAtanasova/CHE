@@ -1,5 +1,5 @@
 ﻿@model CHE.Web.ViewModels.JoinRequests.JoinRequestDetailsViewModel
-@{ 
+@{
     var data = new Dictionary<string, string>
     {
         { "cooperativeId", Model.CooperativeId },
@@ -7,26 +7,38 @@
     };
 }
 
-<div class="jumbotron">
-    <h3 class="display-4">Request to join @Model.CooperativeName</h3>
-    <p class="lead">From: <strong>@Model.SenderUserName</strong></p>
-    <hr class="my-4">
-    <p>@Model.Content</p>
-    <hr class="my-4">
-    <div class="d-flex justify-content-lg-between">
-        <div>
-            <a class="btn btn-primary btn-lg" asp-controller="JoinRequests" asp-action="Accept" asp-all-route-data="@data">Accept</a>
-            <a class="btn btn-primary btn-lg" asp-controller="JoinRequests" asp-action="Reject" asp-all-route-data="@data">Reject</a>
+<!-- ======= Breadcrumbs ======= -->
+<section id="breadcrumbs" class="breadcrumbs">
+    <div class="container">
+
+        <ol>
+            <li><a asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
+            <li><a asp-area="" asp-controller="Cooperatives" asp-action="All">Cooperatives</a></li>
+            <li><a asp-area="" asp-controller="Cooperatives" asp-action="Details" asp-route-id="@Model.CooperativeId">Details</a></li>
+            <li>Join request</li>
+        </ol>
+        <h2>Join request</h2>
+
+    </div>
+</section><!-- End Breadcrumbs -->
+
+<!-- ======= Request Section ======= -->
+<section id="services" class="services">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-5">
+                <h4>Request to join @Model.CooperativeName</h4>
+                <p class="lead">From: <strong>@Model.SenderUserName</strong></p>
+                <hr class="my-4">
+                <p>@Model.Content</p>
+                <hr class="my-4">
+            </div>
         </div>
-        <div>
-            @if (Model.ReceiverId == null)
-            {
-                <a class="btn btn-primary btn-lg" asp-controller="Cooperatives" asp-action="Details" asp-route-id="@Model.CooperativeId">Back</a>
-            }
-            else
-            {
-                <a class="btn btn-primary btn-lg" asp-area="Identity" asp-page="/Account/Manage/JoinRequest" title="Manage">Back</a>
-            }
+        <div class="row">
+            <div class="col-md-5">
+                <a class="btn btn-che" asp-controller="JoinRequests" asp-action="Accept" asp-all-route-data="@data">Accept</a>
+                <a class="btn btn-che" asp-controller="JoinRequests" asp-action="Reject" asp-all-route-data="@data">Reject</a>
+            </div>
         </div>
     </div>
-</div>
+</section><!-- End Request Section -->

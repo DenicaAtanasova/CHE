@@ -1,111 +1,74 @@
-﻿@model CHE.Web.ViewModels.Cooperatives.CooeprativeDetailsViewModel
-@{
-    var requestsCount = 1;
-    var membersCount = 1;
-}
+﻿@model CHE.Web.ViewModels.Cooperatives.CooperativeDetailsViewModel
 
-    <div class="jumbotron">
-        <h1 class="display-4">@Model.Name</h1>
-        <p class="lead">@Model.Info</p>
-        <hr class="my-4">
-        <div class="row" style="height: 250px">
-            <div class="col-4">
-                <div class="list-group" id="list-tab" role="tablist">
-                    <a class="list-group-item list-group-item-action active" id="list-home-list" data-toggle="list" href="#list-home" role="tab" aria-controls="home">Home</a>
-                    <a class="list-group-item list-group-item-action" id="list-members-list" data-toggle="list" href="#list-members" role="tab" aria-controls="memebers">Members</a>
-                    <a class="list-group-item list-group-item-action" id="list-requests-list" data-toggle="list" href="#list-requests" role="tab" aria-controls="requests">Requests</a>
+<!-- ======= Breadcrumbs ======= -->
+<section id="breadcrumbs" class="breadcrumbs">
+    <div class="container">
+        <ol>
+            <li><a asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
+            <li><a asp-area="" asp-controller="Cooperatives" asp-action="All">Cooperatives</a></li>
+            <li>Details</li>
+        </ol>
+        <h2>Details </h2>
+    </div>
+</section><!-- End Breadcrumbs -->
+
+<!-- ======= Details Section ======= -->
+<section id="blog" class="blog">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-9">
+                <div>
+                    <h2>@Model.Name</h2>
                 </div>
+                <p class="lead">@Model.Info</p>
+                <div class="d-flex">
+                    <div class="p-2 flex-fill">
+                        <h5>Info</h5>
+                        <hr />
+                        <div><strong>Creator: </strong>@Model.CreatorUserName</div>
+                        <div><strong>Grade: </strong>@Model.Grade</div>
+                        <div><strong>Members count: </strong>@Model.MembersCount</div>
+                    </div>
+                    <div class="p-2 flex-fill">
+                        <h5>Address</h5>
+                        <hr />
+                        <div><strong>City: </strong>@Model.Address?.City</div>
+                        <div><strong>Neighbourhood: </strong>@Model.Address?.Neighbourhood</div>
+                        <div><strong>Street: </strong>@Model.Address?.Street</div>
+                    </div>
+                </div>
+                <hr class="my-4">
             </div>
-            <div class="col-8">
-                <div class="tab-content" id="nav-tabContent">
-                    <div class="tab-pane fade show active" id="list-home" role="tabpanel" aria-labelledby="list-home-list">
-                        <div class="d-flex">
-                            <div class="p-2 flex-fill">
-                                <h5>Info</h5>
-                                <hr />
-                                <div><strong>Creator: </strong>@Model.CreatorUserName</div>
-                                <div><strong>Grade: </strong>@Model.Grade</div>
-                                <div><strong>Members count: </strong>@Model.MembersCount</div>
-                            </div>
-                            <div class="p-2 flex-fill">
-                                <h5>Address</h5>
-                                <hr />
-                                <div><strong>City: </strong>@Model.Address?.City</div>
-                                <div><strong>Neighbourhood: </strong>@Model.Address?.Neighbourhood</div>
-                                <div><strong>Street: </strong>@Model.Address?.Street</div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="tab-pane fade overflow-auto" id="list-members" role="tabpanel" aria-labelledby="list-memebers-list" style="height: 250px">
-                        <table class="table table-hover">
-                            <thead>
-                                <tr>
-                                    <th scope="col">#</th>
-                                    <th scope="col">Username</th>
-                                    <th scope="col">Role</th>
-                                    <th scope="col" colspan="2">Handle</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach (var member in Model.Members)
-                                {
-                                    <tr>
-                                        <th scope="row">@(membersCount++)</th>
-                                        <td scope="row">@member.UserName</td>
-                                        <td scope="row">@member.Role</td>
-                                        <td><a class="btn btn-primary btn-sm" asp-area="Parent" asp-controller="Cooperatives" asp-action="RemoveMember" asp-route-cooperativeId="@member.CooperativeId" asp-route-memberId="@member.UserId">Remove</a></td>
-                                    </tr>
-                                }
-                            </tbody>
-                        </table>
-                    </div>
-                    <div class="tab-pane fade overflow-auto" id="list-requests" role="tabpanel" aria-labelledby="list-requests-list" style="height: 250px">
-                        <table class="table table-hover">
-                            <thead>
-                                <tr>
-                                    <th scope="col">#</th>
-                                    <th scope="col">Username</th>
-                                    <th scope="col" colspan="2">Handle</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach (var request in Model.JoinRequestsReceived)
-                                {
-                                    <tr>
-                                        <th scope="row">@(requestsCount++)</th>
-                                        <td colspan="2">@request.SenderUserName</td>
-                                        <td><a class="btn btn-primary btn-sm" asp-controller="JoinRequests" asp-action="Details" asp-route-id="@request.Id">Details</a></td>
-                                    </tr>
-                                }
-                            </tbody>
-                        </table>
+            <div class="col-lg-3">
+                <div class="sidebar">
+                    <h3 class="sidebar-title">Categories</h3>
+                    <div class="sidebar-item categories">
+                        <ul class="cooperative-sidebar">
+                            <li class="details-active"><a asp-area="" asp-controller="Cooperatives" asp-action="Details" asp-route-id="@Model.Id">Info</a></li>
+                            <li><a asp-area="Parent" asp-controller="Cooperatives" asp-action="Members" asp-route-id="@Model.Id">Memebers</a></li>
+                            <li><a asp-area="Parent" asp-controller="Cooperatives" asp-action="Requests" asp-route-id="@Model.Id">Join requests</a></li>
+                            <li><a asp-area="" asp-controller="Schedules" asp-action="Details" asp-route-id="@Model.ScheduleId">Schedule</a></li>
+                        </ul>
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="d-flex justify-content-lg-between">
-            <div>
-                <a class="btn btn-primary btn-lg" asp-controller="Schedules" asp-action="Details" asp-route-id="@Model.ScheduleId">Schedule</a>
-            </div>
-            <div>
-                
-            </div>
-        </div>
-        <hr class="my-4">
-        <div class="d-flex justify-content-lg-between">
-            <div>
-                <a class="btn btn-primary btn-lg" asp-area="Parent" asp-controller="Cooperatives" asp-action="Update" asp-route-id="@Model.Id">Update</a>
-                <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#deleteConfirm">
-                    Delete
-                </button>
-            </div>
-            <div>
-                <a class="btn btn-primary btn-lg" asp-controller="Cooperatives" asp-action="All">Back</a>
+            <div class="row">
+                <div class="col-lg-6 d-flex justify-content-between">
+                    <div class="p-2">
+                        <a class="btn btn-che" asp-area="Parent" asp-controller="Cooperatives" asp-action="Update" asp-route-id="@Model.Id">Update</a>
+                    </div>
+                    <div class="p-2">
+                        <button type="button" class="btn btn-che" data-toggle="modal" data-target="#deleteConfirm">
+                            Delete
+                        </button>
+                    </div>                    
+                </div>
             </div>
         </div>
     </div>
+</section><!-- End Details Section -->
 
-<!-- Modal -->
+<!-- ======= Modal ======= -->
 <div class="modal fade" id="deleteConfirm" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -119,9 +82,9 @@
                 <h5>Name: <strong>@Model.Name</strong></h5>
             </div>
             <div class="modal-footer">
-                <a class="btn btn-primary" asp-area="Parent" asp-controller="Cooperatives" asp-action="Delete" asp-route-id="@Model.Id">Delete</a>
+                <a class="btn btn-che" asp-area="Parent" asp-controller="Cooperatives" asp-action="Delete" asp-route-id="@Model.Id">Delete</a>
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
             </div>
         </div>
     </div>
-</div>
+</div><!-- End modal -->

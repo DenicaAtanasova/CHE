@@ -5,7 +5,7 @@
     using Microsoft.AspNetCore.Mvc;
 
     using CHE.Services.Data;
-    using CHE.Web.ViewModels.Teachers;
+    using CHE.Web.ViewModels.Reviews;
 
     public class ReviewsListViewComponent : ViewComponent
     {
@@ -19,7 +19,7 @@
         public async Task<IViewComponentResult> InvokeAsync(string teacherId)
         {
             var reviews = await this._reviewsService
-                .GetTeachersAllAsync<TeacherReviewDetailsViewModel>(teacherId);
+                .GetAllAsync<ReviewAllViewModel>(teacherId);
 
             return this.View(reviews);
         }

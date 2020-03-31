@@ -48,7 +48,7 @@
                 return this.BadRequest();
             }
 
-            return RedirectToAction("All", "Cooperatives", new { area = ""});
+            return RedirectToAction("Details", "Cooperatives", new { area = "", id = inputModel.CooperativeId});
         }
     }
 }

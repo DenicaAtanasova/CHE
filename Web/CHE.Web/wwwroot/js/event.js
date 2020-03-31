@@ -27,16 +27,16 @@ function _clearModal() {
     endTimeTextbox.value = '';
 }
 
-$(function () {
-    $('#is-full-day').on('click', function () {
-        if ($(this).is(':checked')) {
-            $('form div.time').hide();
-        }
-        else {
-            $('form div.time').show();
-        }
-    });
-});
+//$(function () {
+//    $('#is-full-day').on('click', function () {
+//        if ($(this).is(':checked')) {
+//            $('form div.time').hide();
+//        }
+//        else {
+//            $('form div.time').show();
+//        }
+//    });
+//});
 
 //event actions
 function _setDates() {
@@ -125,7 +125,6 @@ function loadEvent(id) {
             .then((currentEvent) => {
                 titleTextbox.value = currentEvent.title;
                 descriptionTextbox.value = currentEvent.description;
-                scheduleIdTextbox.value = currentEvent.scheduleId;
                 eventIdTextbox.value = currentEvent.id;
                 isFullDayTextbox.checked = currentEvent.isFullDay;
                 startTimeTextbox.value = currentEvent.startDate.substring(11, 16);

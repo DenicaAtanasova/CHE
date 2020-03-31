@@ -8,6 +8,7 @@
     using CHE.Data.Models;
     using CHE.Services.Data;
     using CHE.Web.InputModels.Cooperatives;
+    using CHE.Web.ViewModels.Cooperatives;
 
     public class CooperativesController : ParentController
     {
@@ -99,6 +100,21 @@
             }
 
             return this.RedirectToAction("Details", "Cooperatives", new { area = "", id = cooperativeId });
+        }
+
+        public async Task<IActionResult> Members(string id)
+        {
+            var cooperativeWithMembers = await this._cooperativesService.GetByIdAsync<CooperativeMembersViewModel>(id);
+
+            return this.View(cooperativeWithMembers);
+        }
+
+        public async Task<IActionResult> Requests(string id)
+        {
+            var cooperativeWithRequests = await this._cooperativesService
+                .GetByIdAsync<CooperativeJoinRequestsViewModel>(id);
+
+            return this.View(cooperativeWithRequests);
         }
     }
 }

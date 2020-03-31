@@ -6,7 +6,6 @@
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Identity;
 
-    using CHE.Web.InputModels.Cooperatives;
     using CHE.Web.ViewModels.Cooperatives;
     using CHE.Services.Data;
     using CHE.Data.Models;
@@ -15,16 +14,13 @@
     {
         private readonly UserManager<CheUser> _userManager;
         private readonly ICooperativesService _cooperativesService;
-        private readonly IJoinRequestsService _joinRequestsService;
 
         public CooperativesController(
             UserManager<CheUser> userManager,
-            ICooperativesService cooperativesService,
-            IJoinRequestsService joinRequestsService)
+            ICooperativesService cooperativesService)
         {
             this._userManager = userManager;
             this._cooperativesService = cooperativesService;
-            this._joinRequestsService = joinRequestsService;
         }
 
         public async Task<IActionResult> Details(string id)
@@ -35,10 +31,7 @@
             }
 
             var currentCooperative = await this._cooperativesService
-                .GetByIdAsync<CooeprativeDetailsViewModel>(id);
-
-            currentCooperative.JoinRequestsReceived = await this._joinRequestsService
-                .GetCooperativeAllAsync<CooperativeJoinRequestDetailsViewModel>(id);
+                .GetByIdAsync<CooperativeDetailsViewModel>(id);
 
             if (this.User.Identity.Name == currentCooperative.CreatorUserName)
             {

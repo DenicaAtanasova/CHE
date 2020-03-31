@@ -19,6 +19,8 @@
                 .ForMember(dest => dest.EducationLevel, opt => opt.MapFrom(src => src.Portfolio.SchoolLevel.ToString()));
 
             this.CreateMap<CheUser, TeacherDetailsViewModel>();
+
+            this.CreateMap<CheUser, TeacherReviewsViewModel>();
         }
     }
 }

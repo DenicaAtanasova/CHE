@@ -49,7 +49,8 @@ namespace CHE.Web
                 .AddDefaultTokenProviders()
                 .AddDefaultUI();
 
-            services.AddControllersWithViews();
+            services.AddControllersWithViews()
+                .AddNewtonsoftJson();
 
             services.AddRazorPages();
 

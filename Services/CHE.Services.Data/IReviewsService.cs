@@ -7,6 +7,6 @@
     {
         Task<bool> CreateAsync(string comment, int rating, string senderId, string receiverId);
 
-        Task<IEnumerable<TEntity>> GetTeachersAllAsync<TEntity>(string teacherId);
+        Task<IEnumerable<TEntity>> GetAllAsync<TEntity>(string teacherId);
     }
 }

@@ -14,6 +14,8 @@
 
         public string Interests { get; set; }
 
-        public string EducationLevel { get; set; }
+        public string SchoolLevel { get; set; }
+
+        public string ImageUrl { get; set; }
     }
 }

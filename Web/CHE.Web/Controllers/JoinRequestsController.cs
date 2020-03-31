@@ -4,12 +4,9 @@
 
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
-    using Microsoft.AspNetCore.Identity;
 
     using CHE.Web.ViewModels.JoinRequests;
-    using CHE.Web.InputModels.JoinRequests;
     using CHE.Services.Data;
-    using CHE.Data.Models;
 
     public class JoinRequestsController : Controller
     {
@@ -19,6 +16,15 @@
             IJoinRequestsService joinRequestsService)
         {
             this._joinRequestsService = joinRequestsService;
+        }
+
+        [Authorize]
+        public async Task<IActionResult> TeacherAll(string teacherId)
+        {
+            var requests = await this._joinRequestsService
+                .GetTeacherAllAsync<JoinRequestAllViewModel>(teacherId);
+
+            return this.View(requests);
         }
 
         [Authorize]

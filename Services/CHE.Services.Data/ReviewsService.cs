@@ -51,7 +51,7 @@
         }
 
 
-        public async Task<IEnumerable<TEntity>> GetTeachersAllAsync<TEntity>(string teacherId)
+        public async Task<IEnumerable<TEntity>> GetAllAsync<TEntity>(string teacherId)
         {
             var reviews = await this._dbContext.Reviews
                 .Where(x => x.ReceiverId == teacherId && !x.IsDeleted)

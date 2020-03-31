@@ -15,7 +15,8 @@
                 .ReverseMap()
                 .ForMember(dest => dest.Image, opt => opt.Ignore());
 
-            this.CreateMap<Portfolio, TeacherPortfolioDetailsViewModel>();
+            this.CreateMap<Portfolio, TeacherPortfolioDetailsViewModel>()
+                .ForMember(dest => dest.SchoolLevel, opt => opt.MapFrom(src => src.SchoolLevel.ToString()));
         }
     }
 }

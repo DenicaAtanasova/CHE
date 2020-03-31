@@ -1,54 +1,84 @@
 ﻿@model CHE.Web.ViewModels.Schedules.ScheduleViewModel
-
-<div class="calendar disable-selection" id="calendar">
-    <input type="hidden" id="scheduleId" value="@Model.Id">
-    <div class="left-side">
-        <div class="current-day text-center">
-            <h1 class="calendar-left-side-day"></h1>
-            <div class="calendar-left-side-day-of-week"></div>
-        </div>
-        <div class="current-day-events">
-            <div>Current Events:</div>
-            <table>
-                <col width="1200">
-                <col width="30">
-                <col width="30">
-                <tr>
-                    <th></th>
-                    <th></th>
-                    <th></th>
-                </tr>
-                <tbody id="events"></tbody>
-            </table>
-        </div>
-        <div class="add-event-day">
-            <span class="add-event-day-field-btn"></span>
-            <button class="add-event-btn" onclick="loadEvent()"></button>
-        </div>
+<!-- ======= Breadcrumbs ======= -->
+<section id="breadcrumbs" class="breadcrumbs">
+    <div class="container">
+        <ol>
+            <li><a asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
+            <li><a asp-area="" asp-controller="Cooperatives" asp-action="All">Cooperatives</a></li>
+            <li>Details</li>
+        </ol>
+        <h2>Details </h2>
     </div>
-    <div class="right-side">
-        <div class="text-right calendar-change-year">
-            <div class="calendar-change-year-slider">
-                <span class="fa fa-caret-left cursor-pointer calendar-change-year-slider-prev"></span>
-                <span class="calendar-current-year"></span>
-                <span class="fa fa-caret-right cursor-pointer calendar-change-year-slider-next"></span>
+</section><!-- End Breadcrumbs -->
+
+<!-- ======= Schedule Section ======= -->
+<section id="blog" class="blog">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-9 entries">
+                <div class="calendar disable-selection" id="calendar">
+                    <input type="hidden" id="schedule-id" value="@Model.Id">
+                    <div class="left-side">
+                        <div class="current-day text-center">
+                            <h1 class="calendar-left-side-day"></h1>
+                            <div class="calendar-left-side-day-of-week"></div>
+                        </div>
+                        <div class="current-day-events">
+                            <div>Current Events:</div>
+                            <table>
+                                <col width="1200">
+                                <col width="30">
+                                <col width="30">
+                                <tr>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
+                                </tr>
+                                <tbody id="events"></tbody>
+                            </table>
+                        </div>
+                        <div class="add-event-day">
+                            <span class="add-event-day-field-btn"></span>
+                            <button class="add-event-btn" onclick="loadEvent()"></button>
+                        </div>
+                    </div>
+                    <div class="right-side">
+                        <div class="text-right calendar-change-year">
+                            <div class="calendar-change-year-slider">
+                                <span class="icofont-caret-left cursor-pointer calendar-change-year-slider-prev"></span>
+                                <span class="calendar-current-year"></span>
+                                <span class="icofont-caret-right cursor-pointer calendar-change-year-slider-next"></span>
+                            </div>
+                        </div>
+                        <div class="calendar-month-list">
+                            <ul class="calendar-month"></ul>
+                        </div>
+                        <div class="calendar-week-list">
+                            <ul class="calendar-week"></ul>
+                        </div>
+                        <div class="calendar-day-list">
+                            <ul class="calendar-days"></ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3">
+                <div class="sidebar">
+                    <h3 class="sidebar-title">Categories</h3>
+                    <div class="sidebar-item categories">
+                        <ul>
+                            <li><a asp-area="" asp-controller="Cooperatives" asp-action="Details" asp-route-id="@Model.CooperativeId">Info</a></li>
+                            <li><a asp-area="Parent" asp-controller="Cooperatives" asp-action="Members" asp-route-id="@Model.CooperativeId">Memebers</a></li>
+                            <li><a asp-area="Parent" asp-controller="Cooperatives" asp-action="Requests" asp-route-id="@Model.CooperativeId">Join requests</a></li>
+                            <li class="details-active"><a asp-area="" asp-controller="Schedules" asp-action="Details" asp-route-id="@Model.Id">Schedule</a></li>
+                        </ul>
+                    </div>
+                </div>
             </div>
         </div>
-        <div class="calendar-month-list">
-            <ul class="calendar-month"></ul>
-        </div>
-        <div class="calendar-week-list">
-            <ul class="calendar-week"></ul>
-        </div>
-        <div class="calendar-day-list">
-            <ul class="calendar-days"></ul>
-        </div>
     </div>
-</div>
-
-@section Styles {
-    <link rel="stylesheet" href="~/css/schedule.css">
-}
+</section>
+<!-- ======= Schedule Section ======= -->
 
 @section Scripts {
     <script type="module" async src="~/js/schedule.js"></script>
@@ -68,7 +98,6 @@
             <div class="modal-body">
                 <form id="event-form" method="post">
                     <div class="form-group">
-                        <input type="hidden" id="schedule-id" value="@Model.Id" />
                         <input type="hidden" id="event-id" value="" />
                     </div>
                     <div class="form-group">
@@ -87,12 +116,12 @@
                         <label for="end-time" class="col-form-label">End time</label>
                         <input type="time" class="form-control" id="end-time" />
                     </div>
-                    <label for="is-full-day" class="col-form-label">Is full day</label>
-                    <input type="checkbox" id="is-full-day" />
+                    @*<label for="is-full-day" class="col-form-label">Is full day</label>
+                    <input type="checkbox" id="is-full-day" />*@
                 </form>
             </div>
             <div class="modal-footer">
-                <button class=" btn btn-primary" onclick="handleEvent()">Save</button>
+                <button class=" btn btn-che" onclick="handleEvent()">Save</button>
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
             </div>
         </div>

@@ -132,7 +132,7 @@ class CALENDAR {
 
         let days = [...latestDaysInPrevMonth, ...daysInActiveMonth, ...daysInNextMonth];
 
-        let scheduleId = document.getElementById('scheduleId').value.trim();
+        let scheduleId = document.getElementById('schedule-id').value.trim();
         let date = calendar.active.formatted;
         const response = await fetch(`${uri}/date/${date}`, {
             method: 'GET',

@@ -1,10 +1,23 @@
 ﻿@model CHE.Web.InputModels.Cooperatives.CooperativeUpdateInputModel
+<!-- ======= Breadcrumbs ======= -->
+<section id="breadcrumbs" class="breadcrumbs">
+    <div class="container">
+        <ol>
+            <li><a asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
+            <li><a asp-area="" asp-controller="Cooperatives" asp-action="All">Cooperatives</a></li>
+            <li><a asp-area="" asp-controller="Cooperatives" asp-action="Details" asp-route-id="@Model.Id">Details</a></li>
+            <li>Update</li>
+        </ol>
+        <h2>Update </h2>
+    </div>
+</section><!-- End Breadcrumbs -->
 
-<div class="row">
-    <div class="col-md-10">
+<!-- ======= Update Section ======= -->
+<section id="services" class="services">
+    <div class="container">
         <form method="post" asp-controller="Cooperatives" asp-action="Update">
-            <div class="d-flex justify-content-around">
-                <div class="p-2 flex-fill">
+            <div class="row">
+                <div class="col-md-5">
                     <h4>Edit cooperative</h4>
                     <hr />
                     <div class="form-group">
@@ -14,7 +27,7 @@
                     </div>
                     <div class="form-group">
                         <label asp-for="Info"></label>
-                        <input asp-for="Info" class="form-control" />
+                        <textarea asp-for="Info" class="form-control"></textarea>
                         <span asp-validation-for="Info" class="text-danger"></span>
                     </div>
                     <div class="form-group">
@@ -26,7 +39,7 @@
                         <span asp-validation-for="Grade" class="text-danger"></span>
                     </div>
                 </div>
-                <div class="p-2 flex-fill">
+                <div class="col-md-5">
                     <h4>Add Address</h4>
                     <hr />
                     <div class="form-group">
@@ -46,17 +59,14 @@
                     </div>
                 </div>
             </div>
-            <div class="d-flex justify-content-between">
-                <div class="p-2">
-                    <button type="submit" class="btn btn-primary  btn-lg">Save changes</button>
-                </div>
-                <div class="p-2">
-                    <a class="btn btn-primary btn-lg" asp-area="" asp-controller="Cooperatives" asp-action="Details" asp-route-id="@Model.Id">Cancel</a>
+            <div class="row">
+                <div class="col-md-5">
+                    <button type="submit" class="btn btn-che">Save changes</button>
                 </div>
             </div>
         </form>
     </div>
-</div>
+</section><!-- End Update Section -->
 
 @section Scripts{
     <partial name="_ValidationScriptsPartial" />
