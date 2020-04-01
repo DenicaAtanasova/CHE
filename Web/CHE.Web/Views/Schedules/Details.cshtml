@@ -1,84 +1,27 @@
 ﻿@model CHE.Web.ViewModels.Schedules.ScheduleViewModel
-<!-- ======= Breadcrumbs ======= -->
-<section id="breadcrumbs" class="breadcrumbs">
-    <div class="container">
-        <ol>
-            <li><a asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
-            <li><a asp-area="" asp-controller="Cooperatives" asp-action="All">Cooperatives</a></li>
-            <li>Details</li>
-        </ol>
-        <h2>Details </h2>
-    </div>
-</section><!-- End Breadcrumbs -->
-
-<!-- ======= Schedule Section ======= -->
-<section id="blog" class="blog">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-9 entries">
-                <div class="calendar disable-selection" id="calendar">
-                    <input type="hidden" id="schedule-id" value="@Model.Id">
-                    <div class="left-side">
-                        <div class="current-day text-center">
-                            <h1 class="calendar-left-side-day"></h1>
-                            <div class="calendar-left-side-day-of-week"></div>
-                        </div>
-                        <div class="current-day-events">
-                            <div>Current Events:</div>
-                            <table>
-                                <col width="1500">
-                                <col width="20">
-                                <col width="20">
-                                <tr>
-                                    <th></th>
-                                    <th></th>
-                                    <th></th>
-                                </tr>
-                                <tbody id="events"></tbody>
-                            </table>
-                        </div>
-                        <div class="add-event-day">
-                            <span class="add-event-day-field-btn"></span>
-                            <button class="add-event-btn" onclick="loadEvent()"></button>
-                        </div>
-                    </div>
-                    <div class="right-side">
-                        <div class="text-right calendar-change-year">
-                            <div class="calendar-change-year-slider">
-                                <span class="icofont-caret-left cursor-pointer calendar-change-year-slider-prev"></span>
-                                <span class="calendar-current-year"></span>
-                                <span class="icofont-caret-right cursor-pointer calendar-change-year-slider-next"></span>
-                            </div>
-                        </div>
-                        <div class="calendar-month-list">
-                            <ul class="calendar-month"></ul>
-                        </div>
-                        <div class="calendar-week-list">
-                            <ul class="calendar-week"></ul>
-                        </div>
-                        <div class="calendar-day-list">
-                            <ul class="calendar-days"></ul>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-3">
-                <div class="sidebar">
-                    <h3 class="sidebar-title">Categories</h3>
-                    <div class="sidebar-item categories">
-                        <ul>
-                            <li><a asp-area="" asp-controller="Cooperatives" asp-action="Details" asp-route-id="@Model.CooperativeId">Info</a></li>
-                            <li><a asp-area="Parent" asp-controller="Cooperatives" asp-action="Members" asp-route-id="@Model.CooperativeId">Memebers</a></li>
-                            <li><a asp-area="Parent" asp-controller="Cooperatives" asp-action="Requests" asp-route-id="@Model.CooperativeId">Join requests</a></li>
-                            <li class="details-active"><a asp-area="" asp-controller="Schedules" asp-action="Details" asp-route-id="@Model.Id">Schedule</a></li>
-                        </ul>
-                    </div>
-                </div>
+@{
+    ViewData["id"] = Model.CooperativeId;
+    ViewData["scheduleId"] = Model.Id;
+}
+@if (this.User.IsInRole(GlobalConstants.PARENT_ROLE))
+{
+    <!-- ======= Breadcrumbs ======= -->
+    <partial name="_DetailsBreadcrumbsPartial" />
+    <!-- End Breadcrumbs -->
+    <!-- ======= Schedule Section ======= -->
+    <section id="blog" class="blog">
+        <div class="container">
+            <div class="row">
+                <partial name="_SchedulePartial" />
+                <partial name="_CooperativeSidebarPartial" />
             </div>
         </div>
-    </div>
-</section>
-<!-- ======= Schedule Section ======= -->
+    </section>
+}
+else
+{
+    <partial name="_SchedulePartial" />
+}
 
 @section Scripts {
     <script type="module" async src="~/js/schedule.js"></script>

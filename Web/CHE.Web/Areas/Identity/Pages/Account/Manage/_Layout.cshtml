@@ -1,0 +1,35 @@
+﻿@{
+    Layout = "/Views/Shared/_Layout.cshtml";
+}
+
+<!-- ======= Breadcrumbs ======= -->
+<section id="breadcrumbs" class="breadcrumbs">
+    <div class="container">
+        <ol>
+            <li><a asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
+            <li>Account</li>
+        </ol>
+        <h2>Account </h2>
+    </div>
+</section><!-- End Breadcrumbs -->
+<!-- ======= Schedule Section ======= -->
+ 
+<section id="blog" class="blog">
+    <div class="container">
+        <div class="row">
+             @RenderBody()
+            <div class="col-lg-3">
+                <div class="sidebar">
+                    <h3 class="sidebar-title">Categories</h3>
+                    <div class="sidebar-item categories">
+                        <partial name="_ManageNav" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+@section Scripts {
+    @RenderSection("Scripts", required: false)
+}

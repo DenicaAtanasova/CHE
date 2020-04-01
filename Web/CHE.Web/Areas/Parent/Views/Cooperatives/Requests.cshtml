@@ -1,18 +1,13 @@
 ﻿@model CHE.Web.ViewModels.Cooperatives.CooperativeJoinRequestsViewModel
 @{
+    ViewData["id"] = Model.Id;
+    ViewData["scheduleId"] = Model.ScheduleId;
     var requestsCount = 1;
 }
 <!-- ======= Breadcrumbs ======= -->
-<section id="breadcrumbs" class="breadcrumbs">
-    <div class="container">
-        <ol>
-            <li><a asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
-            <li><a asp-area="" asp-controller="Cooperatives" asp-action="All">Cooperatives</a></li>
-            <li>Details</li>
-        </ol>
-        <h2>Details </h2>
-    </div>
-</section><!-- End Breadcrumbs -->
+<partial name="_DetailsBreadcrumbsPartial"/>
+<!-- End Breadcrumbs -->
+
 <!-- ======= Requests Section ======= -->
 <section id="blog" class="blog">
     <div class="container">
@@ -38,19 +33,7 @@
                     </tbody>
                 </table>
             </div>
-            <div class="col-lg-3">
-                <div class="sidebar">
-                    <h3 class="sidebar-title">Categories</h3>
-                    <div class="sidebar-item categories">
-                        <ul class="cooperative-sidebar">
-                            <li><a asp-area="" asp-controller="Cooperatives" asp-action="Details" asp-route-id="@Model.Id">Info</a></li>
-                            <li><a asp-area="Parent" asp-controller="Cooperatives" asp-action="Members" asp-route-id="@Model.Id">Memebers</a></li>
-                            <li class="details-active"><a asp-area="Parent" asp-controller="Cooperatives" asp-action="Requests" asp-route-id="@Model.Id">Join requests</a></li>
-                            <li><a asp-area="" asp-controller="Schedules" asp-action="Details" asp-route-id="@Model.ScheduleId">Schedule</a></li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
+            <partial name="_CooperativeSidebarPartial" />
         </div>
     </div>
 </section><!-- End Requests Section -->

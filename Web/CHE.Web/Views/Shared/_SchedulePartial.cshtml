@@ -1,0 +1,49 @@
+﻿@model CHE.Web.ViewModels.Schedules.ScheduleViewModel
+
+<div class="col-lg-9 entries">
+    <div class="calendar disable-selection" id="calendar">
+        <input type="hidden" id="schedule-id" value="@Model.Id">
+        <div class="left-side">
+            <div class="current-day text-center">
+                <h1 class="calendar-left-side-day"></h1>
+                <div class="calendar-left-side-day-of-week"></div>
+            </div>
+            <div class="current-day-events">
+                <div>Current Events:</div>
+                <table>
+                    <col width="1500">
+                    <col width="20">
+                    <col width="20">
+                    <tr>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                    <tbody id="events"></tbody>
+                </table>
+            </div>
+            <div class="add-event-day">
+                <span class="add-event-day-field-btn"></span>
+                <button class="add-event-btn" onclick="loadEvent()"></button>
+            </div>
+        </div>
+        <div class="right-side">
+            <div class="text-right calendar-change-year">
+                <div class="calendar-change-year-slider">
+                    <span class="icofont-caret-left cursor-pointer calendar-change-year-slider-prev"></span>
+                    <span class="calendar-current-year"></span>
+                    <span class="icofont-caret-right cursor-pointer calendar-change-year-slider-next"></span>
+                </div>
+            </div>
+            <div class="calendar-month-list">
+                <ul class="calendar-month"></ul>
+            </div>
+            <div class="calendar-week-list">
+                <ul class="calendar-week"></ul>
+            </div>
+            <div class="calendar-day-list">
+                <ul class="calendar-days"></ul>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,19 +1,7 @@
-﻿@using CHE.Common
-@model CHE.Web.ViewModels.Cooperatives.CooperativeDetailsViewModel
-
+﻿@model CHE.Web.ViewModels.Cooperatives.CooperativeDetailsViewModel
 <!-- ======= Breadcrumbs ======= -->
-<section id="breadcrumbs" class="breadcrumbs">
-    <div class="container">
-
-        <ol>
-            <li><a asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
-            <li><a asp-area="" asp-controller="Cooperatives" asp-action="All">Cooperatives</a></li>
-            <li>Details</li>
-        </ol>
-        <h2>Details </h2>
-
-    </div>
-</section><!-- End Breadcrumbs -->
+<partial name="_DetailsBreadcrumbsPartial" />
+<!-- End Breadcrumbs -->
 
 <!-- ======= Cooperaitve Section ======= -->
 <section id="cooperative-details">
@@ -47,7 +35,7 @@
             <div class="col-lg-9">
                 @if (this.User.IsInRole(GlobalConstants.PARENT_ROLE))
                 {
-                <a class="btn btn-che" asp-area="Parent" asp-controller="JoinRequests" asp-action="Send" asp-route-CooperativeId="@Model.Id">Join</a>
+                    <a class="btn btn-che" asp-area="Parent" asp-controller="JoinRequests" asp-action="Send" asp-route-CooperativeId="@Model.Id">Join</a>
                 }
             </div>
         </div>

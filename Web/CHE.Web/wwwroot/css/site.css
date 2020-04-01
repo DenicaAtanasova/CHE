@@ -49,11 +49,13 @@ h1, h2, h3, h4, h5, h6 {
     box-shadow: none;
 }
 
-select option:hover {
-    margin: 40px;
-    background-color: rgba(0, 0, 0, 0.3);
+.btn-link{
+    color: #e96b56;
+}
+
+.nav-pills .nav-link.active, .nav-pills .show > .nav-link {
     color: #fff;
-    text-shadow: 0 1px 0 rgba(0, 0, 0, 0.4);
+    background-color: #e9ecef;
 }
 
 div.image {
@@ -2088,84 +2090,42 @@ div.image {
     color: #e96b56;
 }
 
-.blog .sidebar .categories ul a span {
-    padding-left: 5px;
-    color: #bababa;
-    font-size: 14px;
-}
-
 li.details-active {
     background: #f7f7f7;
     padding: 0;
 }
 
-        .blog .sidebar .recent-posts .post-item + .post-item {
-            margin-top: 15px;
-        }
+.blog .sidebar .recent-posts .post-item + .post-item {
+    margin-top: 15px;
+}
 
-        .blog .sidebar .recent-posts img {
-            width: 80px;
-            float: left;
-        }
+.blog .sidebar .recent-posts img {
+    width: 80px;
+    float: left;
+}
 
-        .blog .sidebar .recent-posts h4 {
-            font-size: 15px;
-            margin-left: 95px;
-            font-weight: bold;
-        }
+.blog .sidebar .recent-posts h4 {
+    font-size: 15px;
+    margin-left: 95px;
+    font-weight: bold;
+}
 
-            .blog .sidebar .recent-posts h4 a {
-                color: #212121;
-                transition: 0.3s;
-            }
+.blog .sidebar .recent-posts h4 a {
+    color: #212121;
+    transition: 0.3s;
+}
 
-                .blog .sidebar .recent-posts h4 a:hover {
-                    color: #e96b56;
-                }
+.blog .sidebar .recent-posts h4 a:hover {
+    color: #e96b56;
+}
 
-        .blog .sidebar .recent-posts time {
-            display: block;
-            margin-left: 95px;
-            font-style: italic;
-            font-size: 14px;
-            color: #bababa;
-        }
-
-        .blog .sidebar .tags {
-            margin-bottom: -10px;
-        }
-
-            .blog .sidebar .tags ul {
-                list-style: none;
-                padding: 0;
-            }
-
-                .blog .sidebar .tags ul li {
-                    display: inline-block;
-                }
-
-                .blog .sidebar .tags ul a {
-                    color: #949494;
-                    font-size: 14px;
-                    padding: 6px 15px 8px 15px;
-                    margin: 0 6px 8px 0;
-                    border: 1px solid #ededed;
-                    border-radius: 50px;
-                    display: inline-block;
-                    transition: 0.3s;
-                }
-
-                    .blog .sidebar .tags ul a:hover {
-                        color: #fff;
-                        border-color: #e96b56;
-                        background: #e96b56;
-                    }
-
-                    .blog .sidebar .tags ul a span {
-                        padding-left: 5px;
-                        color: #ededed;
-                        font-size: 14px;
-                    }
+.blog .sidebar .recent-posts time {
+    display: block;
+    margin-left: 95px;
+    font-style: italic;
+    font-size: 14px;
+    color: #bababa;
+}
 
 /*--------------------------------------------------------------
 # Footer
