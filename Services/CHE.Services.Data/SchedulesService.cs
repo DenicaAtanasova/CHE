@@ -6,28 +6,22 @@
     using Microsoft.EntityFrameworkCore;
 
     using CHE.Data;
-
-    using AutoMapper;
-    using AutoMapper.QueryableExtensions;
+    using CHE.Services.Mapping;
 
     public class SchedulesService : ISchedulesService
     {
         private readonly CheDbContext _dbContext;
-        private readonly IMapper _mapper;
 
-        public SchedulesService(
-            CheDbContext dbContext,
-            IMapper mapper)
+        public SchedulesService(CheDbContext dbContext)
         {
             this._dbContext = dbContext;
-            this._mapper = mapper;
         }
 
         public async Task<TEntity> GetByIdAsync<TEntity>(string id)
         {
             var schedule = await this._dbContext.Schedules
                 .Where(x => x.Id == id)
-                .ProjectTo<TEntity>(this._mapper.ConfigurationProvider)
+                .To<TEntity>()
                 .SingleOrDefaultAsync();
 
             return schedule;

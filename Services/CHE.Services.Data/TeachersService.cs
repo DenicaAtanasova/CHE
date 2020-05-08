@@ -6,31 +6,24 @@
     using System.Threading.Tasks;
     using System.Linq;
 
-    using AutoMapper;
-    using AutoMapper.QueryableExtensions;
-
     using CHE.Data;
+    using CHE.Services.Mapping;
+    using CHE.Common;
 
     public class TeachersService : ITeachersService
     {
-        private const string TEACHER_ROLE = "Teacher";
-
         private readonly CheDbContext _dbContext;
-        private readonly IMapper _mapper;
 
-        public TeachersService(
-            CheDbContext dbContext,
-            IMapper mapper)
+        public TeachersService(CheDbContext dbContext)
         {
             this._dbContext = dbContext;
-            this._mapper = mapper;
         }
 
         public async Task<IEnumerable<TEntity>> GetAllAsync<TEntity>()
         {
             var teachers = await this._dbContext.Users
-                .Where(x => x.RoleName == TEACHER_ROLE)
-                .ProjectTo<TEntity>(this._mapper.ConfigurationProvider)
+                .Where(x => x.RoleName == GlobalConstants.TEACHER_ROLE)
+                .To<TEntity>()
                 .ToArrayAsync();
 
             return teachers;
@@ -40,7 +33,7 @@
         {
             var teacher = await this._dbContext.Users
                 .Where(x => x.Id == id)
-                .ProjectTo<TEntity>(this._mapper.ConfigurationProvider)
+                .To<TEntity>()
                 .SingleOrDefaultAsync();
 
             return teacher;

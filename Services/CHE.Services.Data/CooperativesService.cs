@@ -7,25 +7,20 @@
     using System.Linq;
     using System.Threading.Tasks;
 
-    using AutoMapper;
-    using AutoMapper.QueryableExtensions;
-
     using CHE.Data;
     using CHE.Data.Models;
+    using CHE.Services.Mapping;
 
     public class CooperativesService : ICooperativesService
     {
         private readonly CheDbContext _dbContext;
-        private readonly IMapper _mapper;
         private readonly IGradesService _gradesService;
 
         public CooperativesService(
             CheDbContext dbContext,
-            IMapper mapper,
             IGradesService gradesService)
         {
             this._dbContext = dbContext;
-            this._mapper = mapper;
             this._gradesService = gradesService;
         }
 
@@ -65,9 +60,8 @@
             cooperativeToUpdate.Grade = await this._gradesService.GetByValueAsync(gradeValue);
             cooperativeToUpdate.ModifiedOn = DateTime.UtcNow;
 
-            var updatedAddress = this._mapper.Map<TAddress, Address>(address);
+            var updatedAddress = address.Map<TAddress, Address>();
             cooperativeToUpdate.Address = updatedAddress;
-
 
             var result = await this._dbContext.SaveChangesAsync() > 0;
 
@@ -88,11 +82,12 @@
 
         public async Task<TEntity> GetByIdAsync<TEntity>(string id)
         {
+            //TODO get members and requests in different methods
             var cooperativeFromDb = await this._dbContext.Cooperatives
                 .Where(x => x.Id == id)
                 .Include(x => x.Members)
                 .Include(x => x.JoinRequestsReceived)
-                .ProjectTo<TEntity>(_mapper.ConfigurationProvider)
+                .To<TEntity>()
                 .SingleOrDefaultAsync();
 
             return cooperativeFromDb;
@@ -102,7 +97,7 @@
         {
             var cooperativeFromDb = await this._dbContext
                 .Cooperatives
-                .ProjectTo<TEntity>(_mapper.ConfigurationProvider)
+                .To<TEntity>()
                 .ToArrayAsync();
 
             return cooperativeFromDb;
@@ -113,7 +108,7 @@
             var cooperativeFromDb = await this._dbContext
                 .Cooperatives
                 .Where(x => x.Creator.UserName == username)
-                .ProjectTo<TEntity>(_mapper.ConfigurationProvider)
+                .To<TEntity>()
                 .ToArrayAsync();
 
             return cooperativeFromDb;

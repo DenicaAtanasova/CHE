@@ -1,8 +1,11 @@
 ﻿namespace CHE.Web.ViewModels.Events
 {
+    using CHE.Data.Models;
+    using CHE.Services.Mapping;
+
     using System;
 
-    public class EventViewModel
+    public class EventViewModel : IMapFrom<Event>
     {
         public string Id { get; set; }
         

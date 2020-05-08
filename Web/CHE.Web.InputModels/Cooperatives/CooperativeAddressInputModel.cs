@@ -1,10 +1,10 @@
 ﻿namespace CHE.Web.InputModels.Cooperatives
 {
-    using System.ComponentModel.DataAnnotations;
+    using CHE.Data.Models;
+    using CHE.Services.Mapping;
 
-    public class CooperativeAddressInputModel
+    public class CooperativeAddressInputModel : IMapFrom<Address>, IMapTo<Address>
     {
-        [Required]
         public string City { get; set; }
 
         public string Neighbourhood { get; set; }

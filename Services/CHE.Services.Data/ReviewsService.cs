@@ -7,23 +7,18 @@
 
     using Microsoft.EntityFrameworkCore;
 
-    using AutoMapper;
-    using AutoMapper.QueryableExtensions;
-
     using CHE.Data;
     using CHE.Data.Models;
+    using CHE.Services.Mapping;
 
     public class ReviewsService : IReviewsService
     {
         private readonly CheDbContext _dbContext;
-        private readonly IMapper _mapper;
 
         public ReviewsService(
-            CheDbContext dbContext,
-            IMapper mapper)
+            CheDbContext dbContext)
         {
             this._dbContext = dbContext;
-            this._mapper = mapper;
         }
 
         public async Task<bool> CreateAsync(string comment, int rating, string senderId, string receiverId)
@@ -50,12 +45,11 @@
             return result;
         }
 
-
         public async Task<IEnumerable<TEntity>> GetAllAsync<TEntity>(string teacherId)
         {
             var reviews = await this._dbContext.Reviews
                 .Where(x => x.ReceiverId == teacherId)
-                .ProjectTo<TEntity>(this._mapper.ConfigurationProvider)
+                .To<TEntity>()
                 .ToArrayAsync();
 
             return reviews;

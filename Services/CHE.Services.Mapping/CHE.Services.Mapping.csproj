@@ -10,8 +10,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Data\CHE.Data.Models\CHE.Data.Models.csproj" />
-    <ProjectReference Include="..\..\Web\CHE.Web.InputModels\CHE.Web.InputModels.csproj" />
-    <ProjectReference Include="..\..\Web\CHE.Web.ViewModels\CHE.Web.ViewModels.csproj" />
   </ItemGroup>
 
 </Project>

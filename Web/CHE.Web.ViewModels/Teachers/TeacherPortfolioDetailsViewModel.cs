@@ -1,6 +1,11 @@
 ﻿namespace CHE.Web.ViewModels.Teachers
 {
-    public class TeacherPortfolioDetailsViewModel
+    using AutoMapper;
+
+    using CHE.Data.Models;
+    using CHE.Services.Mapping;
+
+    public class TeacherPortfolioDetailsViewModel : IMapExplicitly
     {
         public string FirstName { get; set; }
 
@@ -17,5 +22,11 @@
         public string SchoolLevel { get; set; }
 
         public string ImageUrl { get; set; }
+
+        public void CreateMappings(IProfileExpression configuration)
+        {
+            configuration.CreateMap<Portfolio, TeacherPortfolioDetailsViewModel>()
+                .ForMember(dest => dest.SchoolLevel, opt => opt.MapFrom(src => src.SchoolLevel.ToString()));
+        }
     }
 }

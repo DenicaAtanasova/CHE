@@ -1,6 +1,9 @@
 ﻿namespace CHE.Web.ViewModels.Teachers
 {
-    public class TeacherDetailsViewModel
+    using CHE.Data.Models;
+    using CHE.Services.Mapping;
+
+    public class TeacherDetailsViewModel : IMapFrom<CheUser>
     {
         public string Id { get; set; }
 

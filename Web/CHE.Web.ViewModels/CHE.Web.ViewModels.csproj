@@ -4,4 +4,9 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\Data\CHE.Data.Models\CHE.Data.Models.csproj" />
+    <ProjectReference Include="..\..\Services\CHE.Services.Mapping\CHE.Services.Mapping.csproj" />
+  </ItemGroup>
+
 </Project>

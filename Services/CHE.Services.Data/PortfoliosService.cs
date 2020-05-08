@@ -5,27 +5,22 @@
     using System.Threading.Tasks;
 
     using Microsoft.EntityFrameworkCore;
-
-    using AutoMapper;
-    using AutoMapper.QueryableExtensions;
+    using Microsoft.AspNetCore.Http;
 
     using CHE.Data;
     using CHE.Data.Models;
-    using Microsoft.AspNetCore.Http;
+    using CHE.Services.Mapping;
 
     public class PortfoliosService : IPortfoliosService
     {
         private readonly CheDbContext _dbContext;
-        private readonly IMapper _mapper;
         private readonly IImagesService _imagesService;
 
         public PortfoliosService(
             CheDbContext dbContext,
-            IMapper mapper,
             IImagesService imagesService)
-            {
-                this._dbContext = dbContext;
-                this._mapper = mapper;
+        {
+            this._dbContext = dbContext;
             this._imagesService = imagesService;
         }
 
@@ -33,7 +28,7 @@
         {
             var portfolio = await this._dbContext.Portfolios
                 .Where(x => x.Owner.Id == userId)
-                .ProjectTo<TEntity>(this._mapper.ConfigurationProvider)
+                .To<TEntity>()
                 .SingleOrDefaultAsync();
 
             return portfolio;
@@ -41,7 +36,7 @@
 
         public async Task<bool> UpdateAsync<TEntity>(string teacherId, TEntity portfolio, IFormFile imageFile)
         {
-            var updatedPortfolio = this._mapper.Map<TEntity, Portfolio>(portfolio);
+            var updatedPortfolio = portfolio.Map<TEntity, Portfolio>();
             var portfolioFromDb = await this._dbContext.Portfolios
                 .SingleOrDefaultAsync(x => x.OwnerId == teacherId);
 

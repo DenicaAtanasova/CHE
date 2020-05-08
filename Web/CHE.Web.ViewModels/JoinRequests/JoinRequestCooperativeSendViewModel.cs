@@ -1,6 +1,9 @@
 ﻿namespace CHE.Web.ViewModels.JoinRequests
 {
-    public class JoinRequestCooperativeSendViewModel
+    using CHE.Data.Models;
+    using CHE.Services.Mapping;
+
+    public class JoinRequestCooperativeSendViewModel : IMapFrom<Cooperative>
     {
         public string Id { get; set; }
 

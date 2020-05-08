@@ -1,6 +1,9 @@
 ﻿namespace CHE.Web.ViewModels.Cooperatives
 {
-    public class CooperativeAddressViewModel
+    using CHE.Data.Models;
+    using CHE.Services.Mapping;
+
+    public class CooperativeAddressViewModel : IMapFrom<Address>
     {
         public string City { get; set; }
 

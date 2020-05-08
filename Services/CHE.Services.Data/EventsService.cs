@@ -8,30 +8,24 @@
 
     using Microsoft.EntityFrameworkCore;
 
-    using AutoMapper;
-    using AutoMapper.QueryableExtensions;
-
     using CHE.Data;
     using CHE.Data.Models;
+    using CHE.Services.Mapping;
 
     public class EventsService : IEventsService
     {
         private readonly CheDbContext _dbContext;
-        private readonly IMapper _mapper;
 
-        public EventsService(
-            CheDbContext dbContext,
-            IMapper mapper)
+        public EventsService(CheDbContext dbContext)
         {
             this._dbContext = dbContext;
-            this._mapper = mapper;
         }
 
         public async Task<TEntity> GetByIdAsync<TEntity>(string id)
         {
             var eventFromDb = await this._dbContext.Events
                 .Where(x => x.Id == id)
-                .ProjectTo<TEntity>(this._mapper.ConfigurationProvider)
+                .To<TEntity>()
                 .SingleOrDefaultAsync();
 
             return eventFromDb;
@@ -47,7 +41,7 @@
             var eventsFromDb = await this._dbContext.Events
                 .Where(x => x.ScheduleId == scheduleId)
                 .Where(x => x.StartDate.Year == year && x.StartDate.Month > prevMonth && x.StartDate.Month < nextMonth)
-                .ProjectTo<TEntity>(this._mapper.ConfigurationProvider)
+                .To<TEntity>()
                 .ToArrayAsync();
 
             return eventsFromDb;

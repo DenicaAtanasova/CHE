@@ -1,9 +1,15 @@
 ﻿namespace CHE.Web.InputModels.Portfolios
 {
-    using Microsoft.AspNetCore.Http;
     using System.ComponentModel.DataAnnotations;
 
-    public class PortfolioInputModel
+    using Microsoft.AspNetCore.Http;
+
+    using AutoMapper;
+
+    using CHE.Data.Models;
+    using CHE.Services.Mapping;
+
+    public class PortfolioInputModel : IMapExplicitly
     {
         [Display(Name = "First name")]
         public string FirstName { get; set; }
@@ -23,5 +29,13 @@
         public string SchoolLevel { get; set; }
 
         public IFormFile Image { get; set; }
+
+        public void CreateMappings(IProfileExpression configuration)
+        {
+            configuration.CreateMap<Portfolio, PortfolioInputModel>()
+                .ForMember(dest => dest.Image, opt => opt.Ignore())
+                .ReverseMap()
+                .ForMember(dest => dest.Image, opt => opt.Ignore());
+        }
     }
 }

@@ -1,6 +1,9 @@
 ﻿namespace CHE.Web.ViewModels.Reviews
 {
-    public class ReviewAllViewModel
+    using CHE.Data.Models;
+    using CHE.Services.Mapping;
+
+    public class ReviewAllViewModel : IMapFrom<Review>
     {
         public string Comment { get; set; }
 

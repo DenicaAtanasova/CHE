@@ -7,25 +7,20 @@
 
     using Microsoft.EntityFrameworkCore;
 
-    using AutoMapper;
-    using AutoMapper.QueryableExtensions;
-
     using CHE.Data;
     using CHE.Data.Models;
+    using CHE.Services.Mapping;
 
     public class JoinRequestsService : IJoinRequestsService
     {
         private readonly CheDbContext _dbContext;
-        private readonly IMapper _mapper;
         private readonly ICooperativesService _cooperativesService;
 
         public JoinRequestsService(
             CheDbContext dbContext,
-            IMapper mapper,
             ICooperativesService cooperativesService)
         {
             this._dbContext = dbContext;
-            this._mapper = mapper;
             this._cooperativesService = cooperativesService;
         }
 
@@ -33,7 +28,7 @@
         {
             var requestFromDb = await this._dbContext.JoinRequests
                 .Where(x => x.Id == id)
-                .ProjectTo<TEntity>(this._mapper.ConfigurationProvider)
+                .To<TEntity>()
                 .SingleOrDefaultAsync();
 
             return requestFromDb;
@@ -43,7 +38,7 @@
         {
             var requests = await this._dbContext.JoinRequests
                  .Where(x => x.ReceiverId == teacherId)
-                 .ProjectTo<TEntity>(this._mapper.ConfigurationProvider)
+                 .To<TEntity>()
                  .ToArrayAsync();
 
             return requests;

@@ -1,6 +1,9 @@
 ﻿namespace CHE.Web.ViewModels.JoinRequests
 {
-    public class JoinRequestAllViewModel
+    using CHE.Data.Models;
+    using CHE.Services.Mapping;
+
+    public class JoinRequestAllViewModel : IMapFrom<JoinRequest>
     {
         public string Id { get; set; }
 

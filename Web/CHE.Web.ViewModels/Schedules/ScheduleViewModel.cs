@@ -1,6 +1,9 @@
 ﻿namespace CHE.Web.ViewModels.Schedules
 {
-    public class ScheduleViewModel
+    using CHE.Data.Models;
+    using CHE.Services.Mapping;
+
+    public class ScheduleViewModel : IMapFrom<Schedule>
     {
         public string Id { get; set; }
 

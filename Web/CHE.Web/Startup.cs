@@ -6,6 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.EntityFrameworkCore;
 
+using System.Reflection;
 using AutoMapper;
 
 using CHE.Data;
@@ -13,8 +14,10 @@ using CHE.Data.Models;
 using CHE.Data.Seedeing;
 using CHE.Services.Data;
 using CHE.Services.Mapping;
+using CHE.Web.ViewModels;
 
 using Newtonsoft.Json;
+using CHE.Web.InputModels.Cooperatives;
 
 namespace CHE.Web
 {
@@ -66,14 +69,15 @@ namespace CHE.Web
             services.AddTransient<IImagesService, ImagesService>();
             services.AddTransient<ISchedulesService, SchedulesService>();
             services.AddTransient<IEventsService, EventsService>();
-
-            // AutoMapper
-            services.AddAutoMapper(typeof(CooperativeProfile));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            AutoMapperConfig.RegisterMappings(
+                typeof(ErrorViewModel).GetTypeInfo().Assembly, 
+                typeof(CooperativeCreateInputModel).GetTypeInfo().Assembly);
+
             // Seed data
             using (var serviceScope = app.ApplicationServices.CreateScope())
             {
