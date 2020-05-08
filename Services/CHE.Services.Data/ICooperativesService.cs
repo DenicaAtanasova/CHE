@@ -20,5 +20,7 @@
         Task<bool> AddMemberAsync(string userId, string cooperativeId);
 
         Task<bool> RemoveMemberAsync(string memberId, string cooperativeId);
+
+        Task<bool> CheckIfMemberAsync(string userId, string cooperativeId);
     }
 }

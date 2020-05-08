@@ -8,6 +8,8 @@
 
         public string ScheduleId { get; set; }
 
+        public string CreatorUserName { get; set; }
+
         public IEnumerable<CooperativeUserDetailsViewModel> Members { get; set; }
     }
 }

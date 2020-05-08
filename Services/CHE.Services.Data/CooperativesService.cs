@@ -145,5 +145,13 @@
 
             return result;
         }
+
+        public async Task<bool> CheckIfMemberAsync(string userId, string cooperativeId)
+        {
+            var isMember = await this._dbContext.UserCooperatives
+                .AnyAsync(x => x.CheUserId == userId && x.CooperativeId == cooperativeId);
+
+            return isMember;
+        }
     }
 }

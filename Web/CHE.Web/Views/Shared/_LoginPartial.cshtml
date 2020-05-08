@@ -5,11 +5,11 @@
 
 @if (SignInManager.IsSignedIn(User))
 {
-    <a asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello @User.Identity.Name!</a>
-    <a asp-area="Identity" asp-page="/Account/Logout"><i class="icofont-logout"></i> Logout</a>
+    <li><a asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello @User.Identity.Name!</a></li>
+    <li><a asp-area="Identity" asp-page="/Account/Logout">Logout</a></li>
 }
 else
 {
-    <a asp-area="Identity" asp-page="/Account/Register"><i class="icofont-ui-user"></i> Register</a>
-    <a asp-area="Identity" asp-page="/Account/Login"><i class="icofont-login"></i> Login</a>
+    <li><a asp-area="Identity" asp-page="/Account/Register">Register</a></li>
+    <li><a asp-area="Identity" asp-page="/Account/Login">Login</a></li>
 }

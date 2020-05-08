@@ -33,6 +33,10 @@
             var currentCooperative = await this._cooperativesService
                 .GetByIdAsync<CooperativeDetailsViewModel>(id);
 
+            var userId = this._userManager.GetUserId(this.User);
+            var isMember = await this._cooperativesService.CheckIfMemberAsync(userId, currentCooperative.Id);
+            this.ViewData["isMember"] = isMember;
+
             if (this.User.Identity.Name == currentCooperative.CreatorUserName)
             {
                 return this.View("DetailsCreator", currentCooperative);

@@ -10,6 +10,14 @@ const startTimeTextbox = document.getElementById('start-time');
 const endTimeTextbox = document.getElementById('end-time');
 
 //modal actions
+
+$("#is-full-day").change(function () {
+    if ($(this).is(":checked"))
+        $('input[type="time"]').prop("disabled", true);
+    else
+        $('input[type="time"]').prop("disabled", false);
+});
+
 function _hideModal() {
     $('#event-modal').modal('hide');
 }
@@ -26,17 +34,6 @@ function _clearModal() {
     startTimeTextbox.value = '';
     endTimeTextbox.value = '';
 }
-
-//$(function () {
-//    $('#is-full-day').on('click', function () {
-//        if ($(this).is(':checked')) {
-//            $('form div.time').hide();
-//        }
-//        else {
-//            $('form div.time').show();
-//        }
-//    });
-//});
 
 //event actions
 function _setDates() {

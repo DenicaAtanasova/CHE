@@ -1,10 +1,15 @@
 ﻿@model CHE.Web.ViewModels.Cooperatives.CooperativeDetailsViewModel
+@{ 
+    ViewData["id"] = Model.Id;
+    ViewData["scheduleId"] = Model.ScheduleId;
+    var isMember = (bool)this.ViewData["isMember"];
+}
 <!-- ======= Breadcrumbs ======= -->
 <partial name="_DetailsBreadcrumbsPartial" />
 <!-- End Breadcrumbs -->
 
 <!-- ======= Cooperaitve Section ======= -->
-<section id="cooperative-details">
+<section id="blog" class="blog">
     <div class="container">
         <div class="row">
             <div class="col-lg-9">
@@ -30,12 +35,23 @@
                 </div>
                 <hr class="my-4">
             </div>
+            @if (isMember)
+            {
+                <partial name="_CooperativeSidebarPartial" />
+            }
         </div>
         <div class="row">
             <div class="col-lg-9">
                 @if (this.User.IsInRole(GlobalConstants.PARENT_ROLE))
                 {
-                    <a class="btn btn-che" asp-area="Parent" asp-controller="JoinRequests" asp-action="Send" asp-route-CooperativeId="@Model.Id">Join</a>
+                    if (isMember)
+                    {
+                        <a class="btn btn-che" asp-area="" asp-controller="Cooperatives" asp-action="Leave" asp-route-CooperativeId="@Model.Id">Leave</a>
+                    }
+                    else
+                    {
+                        <a class="btn btn-che" asp-area="Parent" asp-controller="JoinRequests" asp-action="Send" asp-route-CooperativeId="@Model.Id">Join</a>
+                    }
                 }
             </div>
         </div>

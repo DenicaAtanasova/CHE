@@ -212,7 +212,7 @@
 
         #region GetAllAsync
         [Fact]
-        public async Task GetAllAsyncShouldReturnAllUndeletedCooperatives()
+        public async Task GetAllAsyncShouldReturnAllCooperatives()
         {
             var cooperatives = new List<Cooperative>
             {
@@ -241,7 +241,7 @@
             var undeletedCoperatives = await this._cooperativesService
                 .GetAllAsync<Cooperative>();
 
-            var expectedCount = 2;
+            var expectedCount = 4;
             var actualCount = undeletedCoperatives.Count();
 
             Assert.Equal(expectedCount, actualCount);

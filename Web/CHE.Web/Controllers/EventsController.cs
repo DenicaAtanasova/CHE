@@ -46,6 +46,7 @@
         [HttpPost]
         public async Task<ActionResult<EventInputModel>> CreateEvent(EventInputModel inputEvent)
         {
+            //TODO: return id ?
             var createSuccessful = await this._eventsService
                 .CreateAsync(inputEvent.Title, inputEvent.Description, inputEvent.StartDate, inputEvent.EndDate, inputEvent.IsFullDay, inputEvent.ScheduleId);
 
@@ -66,7 +67,7 @@
                 return this.BadRequest();
             }
 
-            return this.Ok();
+            return this.NoContent();
         }
 
         [HttpPut("{id}")]
@@ -79,7 +80,7 @@
                 return this.BadRequest();
             }
 
-            return this.Ok();
+            return this.NoContent();
         }
     }
 }

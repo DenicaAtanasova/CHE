@@ -2,6 +2,7 @@
 @{
     ViewData["id"] = Model.Id;
     ViewData["scheduleId"] = Model.ScheduleId;
+    var isMember = (bool)this.ViewData["isMember"];
 }
 <!-- ======= Breadcrumbs ======= -->
 <partial name="_DetailsBreadcrumbsPartial" />
