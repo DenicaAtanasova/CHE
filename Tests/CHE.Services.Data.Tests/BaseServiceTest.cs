@@ -40,9 +40,6 @@
             services.AddDbContext<CheDbContext>(
                 opt => opt.UseInMemoryDatabase(Guid.NewGuid().ToString()));
 
-            // autoMapper
-            services.AddAutoMapper(typeof(CooperativeProfile));
-
             // Application services
             services.AddTransient<ICooperativesService, CooperativesService>();
             services.AddTransient<IGradesService, GradesService>();

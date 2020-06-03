@@ -19,8 +19,6 @@
 
         public static string Review => "Review";
 
-        public static string Schedule => "Schedule";
-
         public static string IndexNavClass(ViewContext viewContext) => PageNavClass(viewContext, Index);
 
         public static string EmailNavClass(ViewContext viewContext) => PageNavClass(viewContext, Email);

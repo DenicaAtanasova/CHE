@@ -3,7 +3,7 @@
     using CHE.Data.Models;
     using CHE.Services.Mapping;
 
-    public class TeacherJoinRequestVIewModel : IMapFrom<CheUser>
+    public class TeacherJoinRequestVIewModel : IMapFrom<JoinRequest>
     {
         public string Id { get; set; }
 
