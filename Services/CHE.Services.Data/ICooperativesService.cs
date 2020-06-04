@@ -5,7 +5,7 @@
 
     public interface ICooperativesService
     {
-        Task<bool> CreateAsync(string name, string info, string gradeValue, string creatorId);
+        Task<bool> CreateAsync<TAddress>(string name, string info, string gradeValue, string creatorId, TAddress addres);
 
         Task<bool> UpdateAsync<TAddress>(string cooperativeId, string name, string info, string gradeValue, TAddress addres);
 

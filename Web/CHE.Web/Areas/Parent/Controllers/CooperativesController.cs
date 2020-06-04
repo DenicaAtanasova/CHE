@@ -38,7 +38,7 @@
 
             var userId = this._userManager.GetUserId(this.User);
             var createSuccessful = await this._cooperativesService
-                .CreateAsync(model.Name, model.Info, model.Grade, userId);
+                .CreateAsync(model.Name, model.Info, model.Grade, userId, model.Address);
             if (!createSuccessful)
             {
                 return this.BadRequest();

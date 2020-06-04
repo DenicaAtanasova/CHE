@@ -24,15 +24,16 @@
             this._gradesService = gradesService;
         }
 
-        public async Task<bool> CreateAsync(string name, string info, string gradeValue, string creatorId)
+        public async Task<bool> CreateAsync<TAddress>(string name, string info, string gradeValue, string creatorId, TAddress address)
         {
-            var cooperativeNameExists = this._dbContext.Cooperatives.Any(x => x.Name == name);
-            if (cooperativeNameExists)
-            {
-                return false;
-            }
+            //var cooperativeNameExists = this._dbContext.Cooperatives.Any(x => x.Name == name);
+            //if (cooperativeNameExists)
+            //{
+            //    return false;
+            //}
 
             var grade = await this._gradesService.GetByValueAsync(gradeValue);
+            var cooperativeAddress = address.Map<TAddress, Address>();
 
             var cooperative = new Cooperative
             {
@@ -41,7 +42,8 @@
                 CreatorId = creatorId,
                 CreatedOn = DateTime.UtcNow,
                 Grade = grade,
-                Schedule = new Schedule { CreatedOn = DateTime.UtcNow }
+                Schedule = new Schedule { CreatedOn = DateTime.UtcNow },
+                Address = cooperativeAddress
             };
 
             await this._dbContext.AddAsync(cooperative);
