@@ -3,13 +3,11 @@
 <!-- ======= Breadcrumbs ======= -->
 <section id="breadcrumbs" class="breadcrumbs">
     <div class="container">
-
         <ol>
             <li><a asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
             <li>Cooperatives</li>
         </ol>
         <h2>Cooperatives</h2>
-
     </div>
 </section><!-- End Breadcrumbs -->
 
@@ -18,17 +16,19 @@
     <div class="container">      
         <div class="row">
             @foreach (var cooperative in Model.Cooperatives)
-            {
-            <div class="card col-lg-4 col-md-6 d-flex align-items-stretch mt-4">
-                <div class="icon-box">
-                    <div class="icon"><i class="icofont-users-alt-5"></i></div>
-                    <h4><a asp-controller="Cooperatives" asp-action="Details" asp-route-id="@cooperative.Id">@cooperative.Name</a></h4>
-                    <p>@cooperative.Info</p>
-                </div>
-                <div class="card-footer d-flex justify-content-between">
-                    <div><strong>Grade: </strong>@cooperative.Grade</div>
-                </div>
-            </div>
+            {        
+                <div class="card col-lg-4 col-md-6 d-flex align-items-stretch mt-4">
+                    <a asp-controller="Cooperatives" asp-action="Details" asp-route-id="@cooperative.Id">
+                        <div class="icon-box">
+                            <div class="icon"><i class="icofont-users-alt-5"></i></div>
+                            <h4>@cooperative.Name</h4>
+                            <p>@cooperative.Info</p>
+                        </div>
+                    </a>
+                    <div class="card-footer d-flex justify-content-between">
+                        <div><strong>Grade: </strong>@cooperative.Grade</div>
+                    </div>
+                </div>           
             }
         </div>
     </div> 

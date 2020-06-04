@@ -749,6 +749,10 @@ section {
     border: none;
 }
 
+.card a {
+    color: #545454;
+}
+
 .services .icon-box {
     text-align: center;
     box-shadow: 5px 5px 10px #888888;
@@ -795,14 +799,13 @@ section {
     font-size: 24px;
 }
 
-.services .icon-box h4 a {
-    color: #545454;
-}
-
 .services .icon-box p {
     line-height: 24px;
     font-size: 14px;
     margin-bottom: 0;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
 }
 
 .services .icon-box:hover {
@@ -822,7 +825,8 @@ section {
     background: #ef9383;
 }
 
-.services .icon-box:hover h4 a, .services .icon-box:hover p {
+.services .icon-box:hover h4, 
+.services .icon-box:hover p {
     color: #fff;
 }
 
