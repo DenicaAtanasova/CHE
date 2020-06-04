@@ -1,9 +1,0 @@
-﻿@model CHE.Web.InputModels.JoinRequests.JoinRequestCreateInputModel
-
-<div class="form-group">
-    <select asp-for="CooperativeId" class="form-control">
-        <option selected disabled>-- Choose cooperative --</option>
-        <vc:cooperatives-list creator-username="@User.Identity.Name"></vc:cooperatives-list>
-    </select>
-    <span asp-validation-for="CooperativeId" class="text-danger"></span>
-</div>
