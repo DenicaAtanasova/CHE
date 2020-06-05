@@ -1,0 +1,38 @@
+﻿@{
+    Layout = "/Views/Shared/_Layout.cshtml";
+    var id = ViewData["id"];
+}
+<!-- ======= Breadcrumbs ======= -->
+<section id="breadcrumbs" class="breadcrumbs">
+    <div class="container">
+        <ol>
+            <li><a asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
+            <li><a asp-area="" asp-controller="Teachers" asp-action="All">Teachers</a></li>
+            <li>Details</li>
+        </ol>
+        <h2>Details </h2>
+    </div>
+</section>
+<!-- End Breadcrumbs -->
+<!-- ======= Details Section ======= -->
+<section id="blog" class="blog">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-9">
+                @RenderBody()
+            </div>
+            <div class="col-lg-3">
+                <div class="sidebar">
+                    <h3 class="sidebar-title">Categories</h3>
+                    <div class="sidebar-item categories">
+                        <ul>
+                            <li class="details-active"><a asp-area="" asp-controller="Teachers" asp-action="Details" asp-route-id="@id">Info</a></li>
+                            <li><a asp-area="" asp-controller="Reviews" asp-action="All" asp-route-id="@id">Reviews</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- End Details Section -->

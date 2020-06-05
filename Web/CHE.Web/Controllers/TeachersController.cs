@@ -30,6 +30,7 @@
         {
             var currentTeacher = await this._teachersService
                 .GetByIdAsync<TeacherDetailsViewModel>(id);
+            this.ViewData["id"] = currentTeacher.Id;
 
             return this.View(currentTeacher);
         }

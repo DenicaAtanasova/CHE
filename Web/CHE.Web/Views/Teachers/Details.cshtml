@@ -1,60 +1,36 @@
 ﻿@using CHE.Common
 @model CHE.Web.ViewModels.Teachers.TeacherDetailsViewModel
-<!-- ======= Breadcrumbs ======= -->
-<section id="breadcrumbs" class="breadcrumbs">
-    <div class="container">
-        <ol>
-            <li><a asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
-            <li><a asp-area="" asp-controller="Teachers" asp-action="All">Teachers</a></li>
-            <li>Details</li>
-        </ol>
-        <h2>Details </h2>
-    </div>
-</section><!-- End Breadcrumbs -->
+@{ 
+    Layout = "/Views/Shared/_LayoutTeacher.cshtml";
+}
 
-<!-- ======= Details Section ======= -->
-<section id="blog" class="blog">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-3 image">
-                <img src="@Model.Portfolio.ImageUrl" alt="no picture">
-            </div>
-            <div class="col-lg-6">
-                <h5>Info</h5>
-                <hr />
-                <div><strong>First name: </strong>@Model.Portfolio.FirstName</div>
-                <div><strong>Last name: </strong>@Model.Portfolio.LastName</div>
-                <div><strong>Education: </strong>@Model.Portfolio.Education</div>
-                <div><strong>Experience: </strong>@Model.Portfolio.Experience</div>
-                <div><strong>Skills: </strong>@Model.Portfolio.Skills</div>
-                <div><strong>Interests: </strong>@Model.Portfolio.Interests</div>
-                <div><strong>School level: </strong>@Model.Portfolio.SchoolLevel</div>
-            </div>
-            <div class="col-lg-3">
-                <div class="sidebar">
-                    <h3 class="sidebar-title">Categories</h3>
-                    <div class="sidebar-item categories">
-                        <ul>
-                            <li class="details-active"><a asp-area="" asp-controller="Teachers" asp-action="Details" asp-route-id="@Model.Id">Info</a></li>
-                            <li><a asp-area="" asp-controller="Reviews" asp-action="All" asp-route-id="@Model.Id">Reviews</a></li>
-                        </ul>
-                    </div><!-- End sidebar categories-->
-                </div><!-- End sidebar -->
-            </div><!-- End calendar sidebar -->
-        </div>
-        <div class="row">
-            <div class="col-lg-9">
-                <hr class="my-4">
-                <div class="d-flex justify-content-lg-between">
-                    <div>
-                        @if (this.User.IsInRole(GlobalConstants.PARENT_ROLE))
-                        {
-                            <a class="btn btn-che" asp-area="Parent" asp-controller="JoinRequests" asp-action="Send" asp-route-receiverId="@Model.Id">Ask to join</a>
-                            <a class="btn btn-che" asp-area="Parent" asp-controller="Reviews" asp-action="Send" asp-route-teacherId="@Model.Id">Send review</a>
-                        }
-                    </div>
-                </div>
+<div class="row">
+    <div class="col-lg-3 image">
+        <img src="@Model.Portfolio.ImageUrl" alt="no picture">
+    </div>
+    <div class="col-lg-6">
+        <h5>Info</h5>
+        <hr />
+        <div><strong>First name: </strong>@Model.Portfolio.FirstName</div>
+        <div><strong>Last name: </strong>@Model.Portfolio.LastName</div>
+        <div><strong>Education: </strong>@Model.Portfolio.Education</div>
+        <div><strong>Experience: </strong>@Model.Portfolio.Experience</div>
+        <div><strong>Skills: </strong>@Model.Portfolio.Skills</div>
+        <div><strong>Interests: </strong>@Model.Portfolio.Interests</div>
+        <div><strong>School level: </strong>@Model.Portfolio.SchoolLevel</div>
+    </div>           
+</div>
+<div class="row">
+    <div class="col-lg-12">
+        <hr class="my-4">
+        <div class="d-flex justify-content-lg-between">
+            <div>
+                @if (this.User.IsInRole(GlobalConstants.PARENT_ROLE))
+                {
+                    <a class="btn btn-che" asp-area="Parent" asp-controller="JoinRequests" asp-action="Send" asp-route-receiverId="@Model.Id">Ask to join</a>
+                    <a class="btn btn-che" asp-area="Parent" asp-controller="Reviews" asp-action="Send" asp-route-teacherId="@Model.Id">Send review</a>
+                }
             </div>
         </div>
     </div>
-</section><!-- End Details Section -->
+</div>
