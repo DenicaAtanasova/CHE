@@ -1,56 +1,40 @@
 ﻿@model CHE.Web.ViewModels.Cooperatives.CooperativeDetailsViewModel
 @{
-    ViewData["id"] = Model.Id;
-    ViewData["scheduleId"] = Model.ScheduleId;
+    Layout = "/Views/Shared/_LayoutCooperative.cshtml";
     var isMember = (bool)this.ViewData["isMember"];
 }
-<!-- ======= Breadcrumbs ======= -->
-<partial name="_DetailsBreadcrumbsPartial" />
-<!-- End Breadcrumbs -->
 
-<!-- ======= Details Section ======= -->
-<section id="blog" class="blog">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-9">
-                <div>
-                    <h2>@Model.Name</h2>
-                </div>
-                <p class="lead">@Model.Info</p>
-                <div class="d-flex">
-                    <div class="p-2 flex-fill">
-                        <h5>Info</h5>
-                        <hr />
-                        <div><strong>Creator: </strong>@Model.CreatorUserName</div>
-                        <div><strong>Grade: </strong>@Model.Grade</div>
-                        <div><strong>Members count: </strong>@Model.MembersCount</div>
-                    </div>
-                    <div class="p-2 flex-fill">
-                        <h5>Address</h5>
-                        <hr />
-                        <div><strong>City: </strong>@Model.Address?.City</div>
-                        <div><strong>Neighbourhood: </strong>@Model.Address?.Neighbourhood</div>
-                        <div><strong>Street: </strong>@Model.Address?.Street</div>
-                    </div>
-                </div>
-                <hr class="my-4">
-            </div>
-            <partial name="_CooperativeSidebarPartial" />
-            <div class="row">
-                <div class="col-lg-6 d-flex justify-content-between">
-                    <div class="p-2">
-                        <a class="btn btn-che" asp-area="Parent" asp-controller="Cooperatives" asp-action="Update" asp-route-id="@Model.Id">Update</a>
-                    </div>
-                    <div class="p-2">
-                        <button type="button" class="btn btn-che" data-toggle="modal" data-target="#deleteConfirm">
-                            Delete
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
+<div>
+    <h2>@Model.Name</h2>
+</div>
+<p class="lead">@Model.Info</p>
+<div class="d-flex">
+    <div class="p-2 flex-fill">
+        <h5>Info</h5>
+        <hr />
+        <div><strong>Creator: </strong>@Model.CreatorUserName</div>
+        <div><strong>Grade: </strong>@Model.Grade</div>
+        <div><strong>Members count: </strong>@Model.MembersCount</div>
     </div>
-</section><!-- End Details Section -->
+    <div class="p-2 flex-fill">
+        <h5>Address</h5>
+        <hr />
+        <div><strong>City: </strong>@Model.Address?.City</div>
+        <div><strong>Neighbourhood: </strong>@Model.Address?.Neighbourhood</div>
+        <div><strong>Street: </strong>@Model.Address?.Street</div>
+    </div>
+</div>
+<hr class="my-4">
+<div class="d-flex justify-content-between">
+    <div class="p-2">
+        <a class="btn btn-che" asp-area="Parent" asp-controller="Cooperatives" asp-action="Update" asp-route-id="@Model.Id">Update</a>
+    </div>
+    <div class="p-2">
+        <button type="button" class="btn btn-che" data-toggle="modal" data-target="#deleteConfirm">
+            Delete
+        </button>
+    </div>
+</div>
 <!-- ======= Modal ======= -->
 <div class="modal fade" id="deleteConfirm" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
@@ -70,4 +54,5 @@
             </div>
         </div>
     </div>
-</div><!-- End modal -->
+</div>
+<!-- End modal -->

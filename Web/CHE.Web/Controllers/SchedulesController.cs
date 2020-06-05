@@ -20,7 +20,8 @@
         public async Task<IActionResult> Details(string id)
         {
             var schedule = await this._schedulesService.GetByIdAsync<ScheduleViewModel>(id);
-
+            this.ViewData["id"] = schedule.CooperativeId;
+            this.ViewData["scheduleId"] = schedule.Id;
             return View(schedule);
         }
     }

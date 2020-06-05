@@ -1,35 +1,60 @@
 ﻿@model CHE.Web.ViewModels.Schedules.ScheduleViewModel
 @{
-    ViewData["id"] = Model.CooperativeId;
-    ViewData["scheduleId"] = Model.Id;
+    Layout = "/Views/Shared/_LayoutCooperative.cshtml";
 }
 
-@if (this.User.IsInRole(GlobalConstants.PARENT_ROLE))
-{
-    <!-- ======= Breadcrumbs ======= -->
-    <partial name="_DetailsBreadcrumbsPartial" />
-    <!-- End Breadcrumbs -->
-    <!-- ======= Schedule Section ======= -->
-    <section id="blog" class="blog">
-        <div class="container">
-            <div class="row">
-                <partial name="_SchedulePartial" />
-                <partial name="_CooperativeSidebarPartial" />
+<div class="calendar disable-selection" id="calendar">
+    <input type="hidden" id="schedule-id" value="@Model.Id">
+    <div class="left-side">
+        <div class="current-day text-center">
+            <h1 class="calendar-left-side-day"></h1>
+            <div class="calendar-left-side-day-of-week"></div>
+        </div>
+        <div class="current-day-events">
+            <div>Current Events:</div>
+            <table>
+                <col width="1500">
+                <col width="20">
+                <col width="20">
+                <tr>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                </tr>
+                <tbody id="events"></tbody>
+            </table>
+        </div>
+        <div class="add-event-day">
+            <span class="add-event-day-field-btn"></span>
+            <button class="add-event-btn" onclick="loadEvent()"></button>
+        </div>
+    </div>
+    <div class="right-side">
+        <div class="text-right calendar-change-year">
+            <div class="calendar-change-year-slider">
+                <span class="icofont-caret-left cursor-pointer calendar-change-year-slider-prev"></span>
+                <span class="calendar-current-year"></span>
+                <span class="icofont-caret-right cursor-pointer calendar-change-year-slider-next"></span>
             </div>
         </div>
-    </section>
-}
-else
-{
-    <partial name="_SchedulePartial" />
-}
+        <div class="calendar-month-list">
+            <ul class="calendar-month"></ul>
+        </div>
+        <div class="calendar-week-list">
+            <ul class="calendar-week"></ul>
+        </div>
+        <div class="calendar-day-list">
+            <ul class="calendar-days"></ul>
+        </div>
+    </div>
+</div>
 
 @section Scripts {
     <script type="module" async src="~/js/schedule.js"></script>
     <script type="module" async src="~/js/event.js"></script>
 }
 
-<!-- Modal -->
+<!-- ======= Modal ======= -->
 <div class="modal fade" id="event-modal" tabindex="-1" role="dialog" aria-labelledby="addEventLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -71,3 +96,4 @@ else
         </div>
     </div>
 </div>
+<!-- End modal -->

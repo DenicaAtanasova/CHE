@@ -1,59 +1,40 @@
 ﻿@model CHE.Web.ViewModels.Cooperatives.CooperativeDetailsViewModel
-@{ 
-    ViewData["id"] = Model.Id;
-    ViewData["scheduleId"] = Model.ScheduleId;
+@{
+    Layout = "/Views/Shared/_LayoutCooperative.cshtml";
     var isMember = (bool)this.ViewData["isMember"];
 }
-<!-- ======= Breadcrumbs ======= -->
-<partial name="_DetailsBreadcrumbsPartial" />
-<!-- End Breadcrumbs -->
 
-<!-- ======= Cooperaitve Section ======= -->
-<section id="blog" class="blog">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-9">
-                <div>
-                    <h2>@Model.Name</h2>
-                </div>
-                <p class="lead">@Model.Info</p>
-                <div class="d-flex">
-                    <div class="p-2 flex-fill">
-                        <h5>Info</h5>
-                        <hr />
-                        <div><strong>Creator: </strong>@Model.CreatorUserName</div>
-                        <div><strong>Grade: </strong>@Model.Grade</div>
-                        <div><strong>Members count: </strong>@Model.MembersCount</div>
-                    </div>
-                    <div class="p-2 flex-fill">
-                        <h5>Address</h5>
-                        <hr />
-                        <div><strong>City: </strong>@Model.Address?.City</div>
-                        <div><strong>Neighbourhood: </strong>@Model.Address?.Neighbourhood</div>
-                        <div><strong>Street: </strong>@Model.Address?.Street</div>
-                    </div>
-                </div>
-                <hr class="my-4">
-            </div>
-            @if (isMember)
-            {
-                <partial name="_CooperativeSidebarPartial" />
-            }
-        </div>
-        <div class="row">
-            <div class="col-lg-9">
-                @if (this.User.IsInRole(GlobalConstants.PARENT_ROLE))
-                {
-                    if (isMember)
-                    {
-                        <a class="btn btn-che" asp-area="" asp-controller="Cooperatives" asp-action="Leave" asp-route-CooperativeId="@Model.Id">Leave</a>
-                    }
-                    else
-                    {
-                        <a class="btn btn-che" asp-area="Parent" asp-controller="JoinRequests" asp-action="Send" asp-route-CooperativeId="@Model.Id">Join</a>
-                    }
-                }
-            </div>
-        </div>
+<div>
+    <h2>@Model.Name</h2>
+</div>
+<p class="lead">@Model.Info</p>
+<div class="d-flex">
+    <div class="p-2 flex-fill">
+        <h5>Info</h5>
+        <hr />
+        <div><strong>Creator: </strong>@Model.CreatorUserName</div>
+        <div><strong>Grade: </strong>@Model.Grade</div>
+        <div><strong>Members count: </strong>@Model.MembersCount</div>
     </div>
-</section><!-- End Cooperaitve Section -->
+    <div class="p-2 flex-fill">
+        <h5>Address</h5>
+        <hr />
+        <div><strong>City: </strong>@Model.Address?.City</div>
+        <div><strong>Neighbourhood: </strong>@Model.Address?.Neighbourhood</div>
+        <div><strong>Street: </strong>@Model.Address?.Street</div>
+    </div>
+</div>
+<hr class="my-4">
+<div class="col-lg-9">
+    @if (this.User.IsInRole(GlobalConstants.PARENT_ROLE))
+    {
+        if (isMember)
+        {
+            <a class="btn btn-che" asp-area="" asp-controller="Cooperatives" asp-action="Leave" asp-route-CooperativeId="@Model.Id">Leave</a>
+        }
+        else
+        {
+            <a class="btn btn-che" asp-area="Parent" asp-controller="JoinRequests" asp-action="Send" asp-route-CooperativeId="@Model.Id">Join</a>
+        }
+    }
+</div>

@@ -105,6 +105,8 @@
         public async Task<IActionResult> Members(string id)
         {
             var cooperativeWithMembers = await this._cooperativesService.GetByIdAsync<CooperativeMembersViewModel>(id);
+            this.ViewData["id"] = cooperativeWithMembers.Id;
+            this.ViewData["scheduleId"] = cooperativeWithMembers.ScheduleId;
 
             return this.View(cooperativeWithMembers);
         }
@@ -113,6 +115,8 @@
         {
             var cooperativeWithRequests = await this._cooperativesService
                 .GetByIdAsync<CooperativeJoinRequestsViewModel>(id);
+            this.ViewData["id"] = cooperativeWithRequests.Id;
+            this.ViewData["scheduleId"] = cooperativeWithRequests.ScheduleId;
 
             return this.View(cooperativeWithRequests);
         }

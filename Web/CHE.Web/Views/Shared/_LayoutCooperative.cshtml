@@ -1,0 +1,44 @@
+﻿@{
+    Layout = "/Views/Shared/_Layout.cshtml";
+    var id = ViewData["id"];
+    var scheduleId = ViewData["scheduleId"];
+}
+<!-- ======= Breadcrumbs ======= -->
+<section id="breadcrumbs" class="breadcrumbs">
+    <div class="container">
+        <ol>
+            <li><a asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
+            <li><a asp-area="" asp-controller="Cooperatives" asp-action="All">Cooperatives</a></li>
+            <li>Details</li>
+        </ol>
+        <h2>Details </h2>
+    </div>
+</section>
+<!-- End Breadcrumbs -->
+<!-- ======= Details Section ======= -->
+<section id="blog" class="blog">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-9">
+                @RenderBody()
+            </div>
+            <div class="col-lg-3">
+                <div class="sidebar">
+                    <h3 class="sidebar-title">Categories</h3>
+                    <div class="sidebar-item categories">
+                        <nav class="nav-coop">
+                            <ul>
+                                <li><a asp-area="" asp-controller="Cooperatives" asp-action="Details" asp-route-id="@id">Info</a></li>
+                                <li><a asp-area="Parent" asp-controller="Cooperatives" asp-action="Members" asp-route-id="@id">Memebers</a></li>
+                                <li><a asp-area="Parent" asp-controller="Cooperatives" asp-action="Requests" asp-route-id="@id">Join requests</a></li>
+                                <li><a asp-area="" asp-controller="Schedules" asp-action="Details" asp-route-id="@scheduleId">Schedule</a></li>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+@RenderSection("Scripts", required: false)
+<!-- End Details Section -->

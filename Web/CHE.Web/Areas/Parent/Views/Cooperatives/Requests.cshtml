@@ -1,42 +1,28 @@
 ﻿@model CHE.Web.ViewModels.Cooperatives.CooperativeJoinRequestsViewModel
 @{
-    ViewData["id"] = Model.Id;
-    ViewData["scheduleId"] = Model.ScheduleId;
+    Layout = "/Views/Shared/_LayoutCooperative.cshtml";
     var requestsCount = 1;
 }
-<!-- ======= Breadcrumbs ======= -->
-<partial name="_DetailsBreadcrumbsPartial"/>
-<!-- End Breadcrumbs -->
 
-<!-- ======= Requests Section ======= -->
-<section id="blog" class="blog">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-9">
-                <table class="table table-hover">
-                    <thead>
-                        <tr>
-                            <th scope="col">#</th>
-                            <th scope="col">Username</th>
-                            <th scope="col" colspan="2">Handle</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var request in Model.JoinRequestsReceived)
-                        {
-                            <tr>
-                                <th scope="row">@(requestsCount++)</th>
-                                <td colspan="2">@request.SenderUserName</td>
-                                @if(Model.CreatorUserName == this.User.Identity.Name)
-                                {
-                                    <td><a class="btn btn-che btn-sm" asp-area="" asp-controller="JoinRequests" asp-action="Details" asp-route-id="@request.Id">Details</a></td>
-                                }
-                            </tr>
-                        }
-                    </tbody>
-                </table>
-            </div>
-            <partial name="_CooperativeSidebarPartial" />
-        </div>
-    </div>
-</section><!-- End Requests Section -->
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Username</th>
+            <th scope="col" colspan="2">Handle</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var request in Model.JoinRequestsReceived)
+        {
+            <tr>
+                <th scope="row">@(requestsCount++)</th>
+                <td colspan="2">@request.SenderUserName</td>
+                @if (Model.CreatorUserName == this.User.Identity.Name)
+                {
+                    <td><a class="btn btn-che btn-sm" asp-area="" asp-controller="JoinRequests" asp-action="Details" asp-route-id="@request.Id">Details</a></td>
+                }
+            </tr>
+        }
+    </tbody>
+</table>

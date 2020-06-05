@@ -1,44 +1,30 @@
 ﻿@model CHE.Web.ViewModels.Cooperatives.CooperativeMembersViewModel
 @{
-    ViewData["id"] = Model.Id;
-    ViewData["scheduleId"] = Model.ScheduleId;
+    Layout = "/Views/Shared/_LayoutCooperative.cshtml";
     var membersCount = 1;
 }
-<!-- ======= Breadcrumbs ======= -->
-<partial name="_DetailsBreadcrumbsPartial" />
-<!-- End Breadcrumbs -->
 
-<!-- ======= Members Section ======= -->
-<section id="blog" class="blog">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-9">
-                <table class="table table-hover">
-                    <thead>
-                        <tr>
-                            <th scope="col">#</th>
-                            <th scope="col">Username</th>
-                            <th scope="col">Role</th>
-                            <th scope="col" colspan="2">Handle</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var member in Model.Members)
-                        {
-                            <tr>
-                                <th scope="row">@(membersCount++)</th>
-                                <td scope="row">@member.UserName</td>
-                                <td scope="row">@member.Role</td>
-                                @if (Model.CreatorUserName == this.User.Identity.Name)
-                                {
-                                    <td><a class="btn btn-che btn-sm" asp-area="Parent" asp-controller="Cooperatives" asp-action="RemoveMember" asp-route-cooperativeId="@member.CooperativeId" asp-route-memberId="@member.UserId">Remove</a></td>
-                                }
-                            </tr>
-                        }
-                    </tbody>
-                </table>
-            </div>
-            <partial name="_CooperativeSidebarPartial" />
-        </div>
-    </div>
-</section><!-- End Members Section -->
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Username</th>
+            <th scope="col">Role</th>
+            <th scope="col" colspan="2">Handle</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var member in Model.Members)
+        {
+            <tr>
+                <th scope="row">@(membersCount++)</th>
+                <td scope="row">@member.UserName</td>
+                <td scope="row">@member.Role</td>
+                @if (Model.CreatorUserName == this.User.Identity.Name)
+                {
+                    <td><a class="btn btn-che btn-sm" asp-area="Parent" asp-controller="Cooperatives" asp-action="RemoveMember" asp-route-cooperativeId="@member.CooperativeId" asp-route-memberId="@member.UserId">Remove</a></td>
+                }
+            </tr>
+        }
+    </tbody>
+</table>

@@ -36,6 +36,8 @@
             var userId = this._userManager.GetUserId(this.User);
             var isMember = await this._cooperativesService.CheckIfMemberAsync(userId, currentCooperative.Id);
             this.ViewData["isMember"] = isMember;
+            this.ViewData["id"] = currentCooperative.Id;
+            this.ViewData["scheduleId"] = currentCooperative.ScheduleId;
 
             if (this.User.Identity.Name == currentCooperative.CreatorUserName)
             {
