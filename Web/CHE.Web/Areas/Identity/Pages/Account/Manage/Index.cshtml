@@ -4,7 +4,7 @@
     ViewData["ActivePage"] = ManageNavPages.Index;
 }
 
-<div class="col-lg-5">
+<div class="col-lg-6">
     <partial name="_StatusMessage" model="Model.StatusMessage" />
     <form id="profile-form" method="post">
         <div asp-validation-summary="All" class="text-danger"></div>
@@ -19,8 +19,6 @@
         </div>
         <button id="update-profile-button" type="submit" class="btn btn-che">Save</button>
     </form>
-</div>
-<div class="col-lg-4">
 </div>
 
 @section Scripts {

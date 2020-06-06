@@ -3,24 +3,23 @@
 @{
     var requestsCount = 1;
 }
-<div class="col-lg-9">
-    <table class="table table-hover">
-        <thead>
+
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Cooperative</th>
+            <th scope="col" colspan="2">Handle</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var request in Model.Input)
+        {
             <tr>
-                <th scope="col">#</th>
-                <th scope="col">Cooperative</th>
-                <th scope="col" colspan="2">Handle</th>
+                <th scope="row">@(requestsCount++)</th>
+                <td colspan="2">@request.CooperativeName</td>
+                <td><a class="btn btn-che btn-sm" asp-area="" asp-controller="JoinRequests" asp-action="Details" asp-route-id="@request.Id">Details</a></td>
             </tr>
-        </thead>
-        <tbody>
-            @foreach (var request in Model.Input)
-            {
-                <tr>
-                    <th scope="row">@(requestsCount++)</th>
-                    <td colspan="2">@request.CooperativeName</td>
-                    <td><a class="btn btn-che btn-sm" asp-area="" asp-controller="JoinRequests" asp-action="Details" asp-route-id="@request.Id">Details</a></td>
-                </tr>
-            }
-        </tbody>
-    </table>
-</div>
+        }
+    </tbody>
+</table>

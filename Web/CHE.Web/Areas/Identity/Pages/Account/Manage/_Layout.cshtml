@@ -17,12 +17,14 @@
 <section id="blog" class="blog">
     <div class="container">
         <div class="row">
-             @RenderBody()
+            <div class="col-lg-9">
+                @RenderBody()
+            </div>
             <div class="col-lg-3">
                 <div class="sidebar">
                     <h3 class="sidebar-title">Categories</h3>
                     <div class="sidebar-item categories">
-                        <partial name="_ManageNav" />
+                        <partial name="_AccountNavPartial" />
                     </div>
                 </div>
             </div>

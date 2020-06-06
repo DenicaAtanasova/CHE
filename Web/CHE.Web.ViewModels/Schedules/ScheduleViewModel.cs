@@ -8,5 +8,7 @@
         public string Id { get; set; }
 
         public string CooperativeId { get; set; }
+
+        public string TeacherId { get; set; }
     }
 }

@@ -1,0 +1,23 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using CHE.Data.Models
+@inject UserManager<CheUser> UserManager
+@{ 
+    var user = await UserManager.GetUserAsync(this.User);
+    var scheduleId = user.Schedule?.Id;
+}
+
+<nav class="nav-coop">
+    <ul>
+        <li><a asp-area="Identity" asp-page="/Account/Manage/Index">Profile</a></li>
+        <li><a asp-area="Identity" asp-page="/Account/Manage/Email">Email</a></li>
+        <li><a asp-area="Identity" asp-page="/Account/Manage/ChangePassword">Password</a></li>
+        @if (this.User.IsInRole("Teacher"))
+        {
+            <li><a asp-area="Identity" asp-page="/Account/Manage/Portfolio">Portfolio</a></li>
+            <li><a asp-area="Identity" asp-page="/Account/Manage/JoinRequest">Join requests</a></li>
+            <li><a asp-area="Identity" asp-page="/Account/Manage/Review">Reviews</a></li>
+            <li><a asp-area="" asp-controller="Schedules" asp-action="Details" asp-route-id="scheduleId">Schedule</a></li>
+        }
+        <li><a asp-area="Identity" asp-page="/Account/Manage/PersonalData">Personal data</a></li>
+    </ul>
+</nav>
