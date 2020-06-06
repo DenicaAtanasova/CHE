@@ -1,54 +1,59 @@
 ﻿@page
 @model CHE.Web.Areas.Identity.Pages.Account.Manage.PortfolioModel
 
-<div class="col-lg-6">
+<div >
     <partial name="_StatusMessage" model="Model.StatusMessage" />
     <form id="portfolio-form" method="post" enctype="multipart/form-data">
-        <div asp-validation-summary="All" class="text-danger"></div>
-        <div class="form-group">
-            <label asp-for="Input.FirstName"></label>
-            <input asp-for="Input.FirstName" class="form-control" />
-            <span asp-validation-for="Input.FirstName" class="text-danger"></span>
-        </div>
-        <div class="form-group">
-            <label asp-for="Input.LastName"></label>
-            <input asp-for="Input.LastName" class="form-control" />
-            <span asp-validation-for="Input.LastName" class="text-danger"></span>
-        </div>
-        <div class="form-group">
-            <label asp-for="Input.Education"></label>
-            <input asp-for="Input.Education" class="form-control" />
-            <span asp-validation-for="Input.Education" class="text-danger"></span>
-        </div>
-        <div class="form-group">
-            <label asp-for="Input.Experience"></label>
-            <textarea asp-for="Input.Experience" class="form-control"></textarea>
-            <span asp-validation-for="Input.Experience" class="text-danger"></span>
-        </div>
-        <div class="form-group">
-            <label asp-for="Input.Skills"></label>
-            <textarea asp-for="Input.Skills" class="form-control"></textarea>
-            <span asp-validation-for="Input.Skills" class="text-danger"></span>
-        </div>
-        <div class="form-group">
-            <label asp-for="Input.Interests"></label>
-            <textarea asp-for="Input.Interests" class="form-control"></textarea>
-            <span asp-validation-for="Input.Interests" class="text-danger"></span>
-        </div>
-        <div class="form-group">
-            <label asp-for="Input.SchoolLevel"></label>
-            <select asp-for="Input.SchoolLevel" class="form-control">
-                <option value="Unknown">Unknown</option>
-                <option value="Primary">Primary</option>
-                <option value="Secondary">Secondary</option>
-            </select>
-            <span asp-validation-for="Input.SchoolLevel" class="text-danger"></span>
-        </div>
-        <div class="form-group">
-            <label asp-for="Input.Image"></label>
-            <input type="file" asp-for="Input.Image" class="form-control" />
-            <span asp-validation-for="Input.Image" class="text-danger"></span>
-        </div>
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="form-group">
+                    <label asp-for="Input.FirstName"></label>
+                    <input asp-for="Input.FirstName" class="form-control" />
+                    <span asp-validation-for="Input.FirstName" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Input.Education"></label>
+                    <input asp-for="Input.Education" class="form-control" />
+                    <span asp-validation-for="Input.Education" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Input.Experience"></label>
+                    <textarea asp-for="Input.Experience" class="form-control"></textarea>
+                    <span asp-validation-for="Input.Experience" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Input.Skills"></label>
+                    <textarea asp-for="Input.Skills" class="form-control"></textarea>
+                    <span asp-validation-for="Input.Skills" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="form-group">
+                    <label asp-for="Input.LastName"></label>
+                    <input asp-for="Input.LastName" class="form-control" />
+                    <span asp-validation-for="Input.LastName" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Input.SchoolLevel"></label>
+                    <select asp-for="Input.SchoolLevel" class="form-control">
+                        <option value="Unknown">Unknown</option>
+                        <option value="Primary">Primary</option>
+                        <option value="Secondary">Secondary</option>
+                    </select>
+                    <span asp-validation-for="Input.SchoolLevel" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Input.Interests"></label>
+                    <textarea asp-for="Input.Interests" class="form-control"></textarea>
+                    <span asp-validation-for="Input.Interests" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Input.Image"></label>
+                    <input type="file" asp-for="Input.Image" class="form-control" />
+                    <span asp-validation-for="Input.Image" class="text-danger"></span>
+                </div>
+            </div>
+        </div>      
         <button id="update-profile-button" type="submit" class="btn btn-che">Save</button>
     </form>
 </div>

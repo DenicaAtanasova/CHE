@@ -7,7 +7,6 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.EntityFrameworkCore;
 
 using System.Reflection;
-using AutoMapper;
 
 using CHE.Data;
 using CHE.Data.Models;

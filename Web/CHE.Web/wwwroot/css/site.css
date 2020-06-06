@@ -32,6 +32,12 @@ h1, h2, h3, h4, h5, h6 {
     font-family: "Raleway", sans-serif;
 }
 
+label {
+    font-style: italic;
+    font-weight: 600;
+    color: #e96b56;
+}
+
 .btn-che {
     color: #fff;
     background-color: #e96b56;
