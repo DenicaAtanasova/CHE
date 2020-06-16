@@ -5,10 +5,13 @@
     using Microsoft.AspNetCore.Mvc;
 
     using CHE.Services.Data;
+    using CHE.Web.ViewModels;
     using CHE.Web.ViewModels.Teachers;
 
     public class TeachersController : Controller
     {
+        private const int DEFAULT_PAGE_SIZE = 18;
+
         private readonly ITeachersService _teachersService;
 
         public TeachersController(ITeachersService teachersService)
@@ -16,14 +19,15 @@
             this._teachersService = teachersService;
         }
 
-        public async Task<IActionResult> All()
+        public async Task<IActionResult> All(int pageIndex = 1)
         {
-            var teachers = new TeacherAllListViewModel
-            {
-                Teachers = await this._teachersService.GetAllAsync<TeacherAllViewModel>()
-            };
+            var teachers = this._teachersService
+                    .GetAll<TeacherAllViewModel>();
 
-            return View(teachers);
+            var teachersList = await PaginatedList<TeacherAllViewModel>
+                 .CreateAsync(teachers, pageIndex, DEFAULT_PAGE_SIZE);
+
+            return View(teachersList);
         }
 
         public async Task<IActionResult> Details(string id)

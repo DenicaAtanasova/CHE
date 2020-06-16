@@ -1,4 +1,5 @@
-﻿@model CHE.Web.ViewModels.Cooperatives.CooperativeAllListViewModel
+﻿@using CHE.Web.ViewModels;
+@model PaginatedList<CHE.Web.ViewModels.Cooperatives.CooperativeAllViewModel>
 <!-- ======= Breadcrumbs ======= -->
 <section id="breadcrumbs" class="breadcrumbs">
     <div class="container">
@@ -21,7 +22,7 @@
             </div>
         </div>
         <div class="row">
-            @foreach (var cooperative in Model.Cooperatives)
+            @foreach (var cooperative in Model)
             {
                 <div class="card col-lg-4 col-md-6 d-flex align-items-stretch mt-4">
                     <a asp-controller="Cooperatives" asp-action="Details" asp-route-id="@cooperative.Id">
@@ -36,14 +37,7 @@
                     </div>
                 </div>
             }
-        </div>
+        </div>  
+        <vc:pagination page-index="@Model.PageIndex" has-previous-page="@Model.HasPreviousPage" has-next-page="@Model.HasNextPage"></vc:pagination>        
     </div>
 </section><!-- End Services Section -->
-
-@section Scripts{
-    <script>
-        $('#filter-btn').click(function () {
-            $('#filter-tab').toggle();
-        });
-    </script>
-}

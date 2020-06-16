@@ -2356,7 +2356,7 @@ div.image {
     outline: none;
 }
 
-.calendar .add-event-day .add-event-day-field::placeholder {
+.calendar .add-event-day .add-event-day-field:placeholder {
     color: #ccc;
 }
 
@@ -2473,4 +2473,25 @@ div.image {
 
 a.schedule {
     color: #495057;
+}
+
+.row.paging{
+ padding-top: 2rem;
+}
+
+.page-item.active .page-link {
+    background-color: #e96b56;
+    border-color: #e96b56;
+}
+
+.page-link {
+    color: #e96b56;
+}
+
+.page-link:hover {
+    color: #545454;
+}
+
+.btn.focus, .btn:focus {
+    box-shadow: 0 0 0 0.2rem #ccc;
 }

@@ -2,7 +2,6 @@
 {
     using Microsoft.EntityFrameworkCore;
 
-    using System.Collections.Generic;
     using System.Threading.Tasks;
     using System.Linq;
 
@@ -19,12 +18,11 @@
             this._dbContext = dbContext;
         }
 
-        public async Task<IEnumerable<TEntity>> GetAllAsync<TEntity>()
+        public IQueryable<TEntity> GetAll<TEntity>()
         {
-            var teachers = await this._dbContext.Users
+            var teachers = this._dbContext.Users
                 .Where(x => x.RoleName == GlobalConstants.TEACHER_ROLE)
-                .To<TEntity>()
-                .ToArrayAsync();
+                .To<TEntity>();
 
             return teachers;
         }

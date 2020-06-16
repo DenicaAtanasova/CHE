@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace CHE.Web.ViewModels
+﻿namespace CHE.Web.ViewModels
 {
     public class StarRatingViewModel
     {

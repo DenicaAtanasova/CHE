@@ -6,12 +6,15 @@
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Identity;
 
+    using CHE.Web.ViewModels;
     using CHE.Web.ViewModels.Cooperatives;
     using CHE.Services.Data;
     using CHE.Data.Models;
 
     public class CooperativesController : Controller
     {
+        private const int DEFAULT_PAGE_SIZE = 18;
+
         private readonly UserManager<CheUser> _userManager;
         private readonly ICooperativesService _cooperativesService;
 
@@ -47,13 +50,13 @@
             return this.View(currentCooperative);
         }
 
-        public async Task<IActionResult> All()
+        public async Task<IActionResult> All(int pageIndex = 1)
         {
-            var cooperativesList = new CooperativeAllListViewModel
-            {
-                Cooperatives = await this._cooperativesService
-                    .GetAllAsync<CooperativeAllViewModel>()
-            };
+            var cooperatives = this._cooperativesService
+                    .GetAll<CooperativeAllViewModel>();
+
+            var cooperativesList = await PaginatedList<CooperativeAllViewModel>
+                .CreateAsync(cooperatives, pageIndex, DEFAULT_PAGE_SIZE);
 
             return this.View(cooperativesList);
         }

@@ -95,12 +95,11 @@
             return cooperativeFromDb;
         }
 
-        public async Task<IEnumerable<TEntity>> GetAllAsync<TEntity>()
+        public IQueryable<TEntity> GetAll<TEntity>()
         {
-            var cooperativeFromDb = await this._dbContext
+            var cooperativeFromDb = this._dbContext
                 .Cooperatives
-                .To<TEntity>()
-                .ToArrayAsync();
+                .To<TEntity>();
 
             return cooperativeFromDb;
         }

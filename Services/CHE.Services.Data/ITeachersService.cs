@@ -1,12 +1,11 @@
 ﻿namespace CHE.Services.Data
 {
-
-    using System.Collections.Generic;
+    using System.Linq;
     using System.Threading.Tasks;
 
     public interface ITeachersService
     {
-        Task<IEnumerable<TEntity>> GetAllAsync<TEntity>();
+        IQueryable<TEntity> GetAll<TEntity>();
 
         Task<TEntity> GetByIdAsync<TEntity>(string id);
     }
