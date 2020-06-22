@@ -1,6 +1,7 @@
 ﻿@model CHE.Web.ViewModels.Schedules.ScheduleViewModel
 @{
     Layout = (string)ViewData["layout"];
+    var isAuthenticated = (bool)this.ViewData["isAuthenticated"];
 }
 
 <div class="calendar disable-selection" id="calendar">
@@ -26,7 +27,10 @@
         </div>
         <div class="add-event-day">
             <span class="add-event-day-field-btn"></span>
-            <button class="add-event-btn" onclick="loadEvent()"></button>
+            @if (isAuthenticated)
+            {
+                <button class="add-event-btn" onclick="loadEvent()"></button>
+            }
         </div>
     </div>
     <div class="right-side">

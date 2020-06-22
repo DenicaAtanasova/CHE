@@ -13,16 +13,27 @@
         private const string TEACHER_LAYOUT = "/Areas/Identity/Pages/Account/Manage/_Layout.cshtml";
 
         private readonly ISchedulesService _schedulesService;
+        private readonly ICooperativesService _cooperativesService;
 
-        public SchedulesController(ISchedulesService schedulesService)
+        public SchedulesController(
+            ISchedulesService schedulesService,
+            ICooperativesService cooperativesService)
         {
             this._schedulesService = schedulesService;
+            this._cooperativesService = cooperativesService;
         }
 
         [Route("scheduler/{id}")]
         public async Task<IActionResult> Details(string id)
-        { 
+        {
             var schedule = await this._schedulesService.GetByIdAsync<ScheduleViewModel>(id);
+            this.ViewData["isAuthenticated"] = await this._cooperativesService
+                                                .CheckIfMemberAsync(this.User.Identity.Name, schedule.CooperativeId) ||
+                                               await this._cooperativesService
+                                                .CheckIfCreatorAsync(this.User.Identity.Name, schedule.CooperativeId);
+            this.ViewData["id"] = schedule.CooperativeId;
+            this.ViewData["scheduleId"] = schedule.Id;
+
             if (schedule.TeacherId == null)
             {
                 this.ViewData["layout"] = COOPERATIVE_LAYOUT;
@@ -31,8 +42,6 @@
             {
                 this.ViewData["layout"] = TEACHER_LAYOUT;
             }
-            this.ViewData["id"] = schedule.CooperativeId;
-            this.ViewData["scheduleId"] = schedule.Id;
 
             return View(schedule);
         }

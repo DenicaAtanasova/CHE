@@ -142,12 +142,20 @@
             return result;
         }
 
-        public async Task<bool> CheckIfMemberAsync(string userId, string cooperativeId)
+        public async Task<bool> CheckIfMemberAsync(string username, string cooperativeId)
         {
             var isMember = await this._dbContext.UserCooperatives
-                .AnyAsync(x => x.CheUserId == userId && x.CooperativeId == cooperativeId);
+                .AnyAsync(x => x.CheUser.UserName == username && x.CooperativeId == cooperativeId);
 
             return isMember;
+        }
+
+        public async Task<bool> CheckIfCreatorAsync(string username, string cooperativeId)
+        {
+            var isCreator = await this._dbContext.Cooperatives
+                .AnyAsync(x => x.Creator.UserName == username && x.Id == cooperativeId);
+
+            return isCreator;
         }
     }
 }

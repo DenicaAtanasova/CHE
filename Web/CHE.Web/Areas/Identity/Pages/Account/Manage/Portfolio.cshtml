@@ -49,8 +49,11 @@
                 </div>
                 <div class="form-group">
                     <label asp-for="Input.Image"></label>
-                    <input type="file" asp-for="Input.Image" class="form-control" />
-                    <span asp-validation-for="Input.Image" class="text-danger"></span>
+                    <div class="custom-file">
+                        <label asp-for="Input.Image" class="custom-file-label">Choose file</label>
+                        <input type="file" asp-for="Input.Image" class="custom-file-input">
+                        <span asp-validation-for="Input.Image" class="text-danger"></span>
+                    </div>
                 </div>
             </div>
         </div>      

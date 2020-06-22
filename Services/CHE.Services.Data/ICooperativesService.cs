@@ -22,6 +22,8 @@
 
         Task<bool> RemoveMemberAsync(string memberId, string cooperativeId);
 
-        Task<bool> CheckIfMemberAsync(string userId, string cooperativeId);
+        Task<bool> CheckIfMemberAsync(string username, string cooperativeId);
+
+        Task<bool> CheckIfCreatorAsync(string username, string cooperativeId);
     }
 }
