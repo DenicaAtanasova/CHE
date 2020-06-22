@@ -1,4 +1,4 @@
 ﻿@page
 @model ReviewModel
 
-<vc:reviews-list teacher-id="@Model.Teacher.Id"></vc:reviews-list>
+<partial name="_ReviewsAllPartial" model="@Model.Reviews" />
