@@ -39,7 +39,7 @@
             var requests = await this._dbContext.JoinRequests
                  .Where(x => x.ReceiverId == teacherId)
                  .To<TEntity>()
-                 .ToArrayAsync();
+                 .ToListAsync();
 
             return requests;
         }

@@ -22,8 +22,12 @@
 
         Task<bool> RemoveMemberAsync(string memberId, string cooperativeId);
 
+        Task<IEnumerable<TEntity>> GetMembersAsync<TEntity>(string id);
+
         Task<bool> CheckIfMemberAsync(string username, string cooperativeId);
 
         Task<bool> CheckIfCreatorAsync(string username, string cooperativeId);
+
+        Task<IEnumerable<TEntity>> GetRequestsAsync<TEntity>(string id);
     }
 }

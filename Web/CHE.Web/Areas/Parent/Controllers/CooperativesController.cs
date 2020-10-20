@@ -9,6 +9,7 @@
     using CHE.Services.Data;
     using CHE.Web.InputModels.Cooperatives;
     using CHE.Web.ViewModels.Cooperatives;
+    using CHE.Web.ViewModels.JoinRequests;
 
     public class CooperativesController : ParentController
     {
@@ -104,21 +105,28 @@
 
         public async Task<IActionResult> Members(string id)
         {
-            var cooperativeWithMembers = await this._cooperativesService.GetByIdAsync<CooperativeMembersViewModel>(id);
-            this.ViewData["id"] = cooperativeWithMembers.Id;
-            this.ViewData["scheduleId"] = cooperativeWithMembers.ScheduleId;
+            var cooperative = await this._cooperativesService
+                .GetByIdAsync<CooperativeMembersViewModel>(id);
+            cooperative.Members = await this._cooperativesService
+                .GetMembersAsync<CooperativeUserDetailsViewModel>(id);
 
-            return this.View(cooperativeWithMembers);
+            this.ViewData["id"] = cooperative.Id;
+            this.ViewData["scheduleId"] = cooperative.ScheduleId;
+
+            return this.View(cooperative);
         }
 
         public async Task<IActionResult> Requests(string id)
         {
-            var cooperativeWithRequests = await this._cooperativesService
+            var cooperative = await this._cooperativesService
                 .GetByIdAsync<CooperativeJoinRequestsViewModel>(id);
-            this.ViewData["id"] = cooperativeWithRequests.Id;
-            this.ViewData["scheduleId"] = cooperativeWithRequests.ScheduleId;
+            cooperative.JoinRequestsReceived = await this._cooperativesService
+                .GetRequestsAsync<JoinRequestAllViewModel>(id);
 
-            return this.View(cooperativeWithRequests);
+            this.ViewData["id"] = cooperative.Id;
+            this.ViewData["scheduleId"] = cooperative.ScheduleId;
+
+            return this.View(cooperative);
         }
     }
 }

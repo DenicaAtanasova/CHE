@@ -15,7 +15,6 @@ using CHE.Services.Data;
 using CHE.Services.Mapping;
 using CHE.Web.ViewModels;
 
-using Newtonsoft.Json;
 using CHE.Web.InputModels.Cooperatives;
 
 namespace CHE.Web
@@ -28,10 +27,7 @@ namespace CHE.Web
         {
             this.configuration = configuration;
         }
-
-        public IConfiguration Configuration { get; }
-
-        // This method gets called by the runtime. Use this method to add services to the container.
+        
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<CheDbContext>(options =>
@@ -70,14 +66,13 @@ namespace CHE.Web
             services.AddTransient<IEventsService, EventsService>();
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             AutoMapperConfig.RegisterMappings(
                 typeof(ErrorViewModel).GetTypeInfo().Assembly, 
                 typeof(CooperativeCreateInputModel).GetTypeInfo().Assembly);
 
-            // Seed data
+            //Seed data
             using (var serviceScope = app.ApplicationServices.CreateScope())
             {
                 var serviceProvider = serviceScope.ServiceProvider;
@@ -99,7 +94,6 @@ namespace CHE.Web
             else
             {
                 app.UseExceptionHandler("/Home/Error");
-                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
             app.UseHttpsRedirection();

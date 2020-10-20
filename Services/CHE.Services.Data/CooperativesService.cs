@@ -87,8 +87,6 @@
             //TODO get members and requests in different methods
             var cooperativeFromDb = await this._dbContext.Cooperatives
                 .Where(x => x.Id == id)
-                .Include(x => x.Members)
-                .Include(x => x.JoinRequestsReceived)
                 .To<TEntity>()
                 .SingleOrDefaultAsync();
 
@@ -142,6 +140,16 @@
             return result;
         }
 
+        public async Task<IEnumerable<TEntity>> GetMembersAsync<TEntity>(string id)
+        {
+            var members = await this._dbContext.UserCooperatives
+                .Where(x => x.CooperativeId == id)
+                .To<TEntity>()
+                .ToListAsync();
+
+            return members;
+        }
+
         public async Task<bool> CheckIfMemberAsync(string username, string cooperativeId)
         {
             var isMember = await this._dbContext.UserCooperatives
@@ -156,6 +164,16 @@
                 .AnyAsync(x => x.Creator.UserName == username && x.Id == cooperativeId);
 
             return isCreator;
+        }
+
+        public async Task<IEnumerable<TEntity>> GetRequestsAsync<TEntity>(string id)
+        {
+            var requests = await this._dbContext.JoinRequests
+                .Where(x => x.CooperativeId == id)
+                .To<TEntity>()
+                .ToListAsync();
+
+            return requests;
         }
     }
 }
