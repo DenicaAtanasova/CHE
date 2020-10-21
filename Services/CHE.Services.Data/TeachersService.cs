@@ -30,13 +30,25 @@
             return teacher;
         }
 
-        public IQueryable<TEntity> GetAll<TEntity>()
+        public async Task<IEnumerable<TEntity>> GetAllAsync<TEntity>(int startIndex = 1, int endIndex = 0)
         {
-            var teachers = this._dbContext.Users
+            var count = endIndex == 0
+                ? await this._dbContext.Users.CountAsync()
+                : endIndex;
+
+            var teachers = await this._dbContext.Users
                 .Where(x => x.RoleName == GlobalConstants.TEACHER_ROLE)
-                .To<TEntity>();
+                .Skip(startIndex - 1)
+                .Take(count)
+                .To<TEntity>()
+                .ToListAsync();
 
             return teachers;
         }
+
+        public async Task<int> Count() =>
+            await this._dbContext.Users
+            .Where(x => x.RoleName == GlobalConstants.TEACHER_ROLE)
+            .CountAsync();
     }
 }

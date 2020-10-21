@@ -14,7 +14,7 @@
 
         Task<TEntity> GetByIdAsync<TEntity>(string id);
 
-        IQueryable<TEntity> GetAll<TEntity>();
+        Task<IEnumerable<TEntity>> GetAllAsync<TEntity>(int startIndex, int endIndex);
 
         Task<IEnumerable<TEntity>> GetCreatorAllByUsernameAsync<TEntity>(string username);
 
@@ -29,5 +29,7 @@
         Task<bool> CheckIfCreatorAsync(string username, string cooperativeId);
 
         Task<IEnumerable<TEntity>> GetRequestsAsync<TEntity>(string id);
+
+        Task<int> Count();
     }
 }

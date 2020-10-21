@@ -10,6 +10,7 @@
     using CHE.Data;
     using CHE.Data.Models;
     using CHE.Services.Mapping;
+    using CHE.Common;
 
     public class CooperativesService : ICooperativesService
     {
@@ -24,6 +25,7 @@
             this._gradesService = gradesService;
         }
 
+        //TODO make entities: city, neighbouirhood, street
         public async Task<bool> CreateAsync<TAddress>(string name, string info, string gradeValue, string creatorId, TAddress address)
         {
             //var cooperativeNameExists = this._dbContext.Cooperatives.Any(x => x.Name == name);
@@ -93,13 +95,20 @@
             return cooperativeFromDb;
         }
 
-        public IQueryable<TEntity> GetAll<TEntity>()
+        public async Task<IEnumerable<TEntity>> GetAllAsync<TEntity>(int startIndex = 1, int endIndex = 0)
         {
-            var cooperativeFromDb = this._dbContext
-                .Cooperatives
-                .To<TEntity>();
+            var count = endIndex == 0 
+                ? await this._dbContext.Cooperatives.CountAsync() 
+                : endIndex;
 
-            return cooperativeFromDb;
+            var cooperative = await this._dbContext
+                .Cooperatives
+                .Skip(startIndex - 1)
+                .Take(count)
+                .To<TEntity>()
+                .ToListAsync();
+
+            return cooperative;
         }
 
         public async Task<IEnumerable<TEntity>> GetCreatorAllByUsernameAsync<TEntity>(string username)
@@ -175,5 +184,9 @@
 
             return requests;
         }
+
+        public async Task<int> Count() =>
+            await this._dbContext.Cooperatives
+            .CountAsync();
     }
 }

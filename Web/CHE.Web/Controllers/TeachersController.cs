@@ -21,11 +21,13 @@
 
         public async Task<IActionResult> All(int pageIndex = 1)
         {
-            var teachers = this._teachersService
-                    .GetAll<TeacherAllViewModel>();
+            var teachers = await this._teachersService
+                    .GetAllAsync<TeacherAllViewModel>(pageIndex, DEFAULT_PAGE_SIZE);
 
-            var teachersList = await PaginatedList<TeacherAllViewModel>
-                 .CreateAsync(teachers, pageIndex, DEFAULT_PAGE_SIZE);
+            var count = await this._teachersService.Count();
+
+            var teachersList = PaginatedList<TeacherAllViewModel>
+                 .Create(teachers, count, pageIndex, DEFAULT_PAGE_SIZE);
 
             return View(teachersList);
         }

@@ -52,11 +52,11 @@
 
         public async Task<IActionResult> All(int pageIndex = 1)
         {
-            var cooperatives = this._cooperativesService
-                    .GetAll<CooperativeAllViewModel>();
-
-            var cooperativesList = await PaginatedList<CooperativeAllViewModel>
-                .CreateAsync(cooperatives, pageIndex, DEFAULT_PAGE_SIZE);
+            var cooperatives = await this._cooperativesService
+                    .GetAllAsync<CooperativeAllViewModel>(pageIndex, DEFAULT_PAGE_SIZE);
+            var count = await this._cooperativesService.Count();
+            var cooperativesList = PaginatedList<CooperativeAllViewModel>
+                .Create(cooperatives, count, pageIndex, DEFAULT_PAGE_SIZE);
 
             return this.View(cooperativesList);
         }
