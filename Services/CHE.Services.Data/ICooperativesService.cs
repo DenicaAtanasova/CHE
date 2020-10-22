@@ -1,7 +1,6 @@
 ﻿namespace CHE.Services.Data
 {
     using System.Collections.Generic;
-    using System.Linq;
     using System.Threading.Tasks;
 
     public interface ICooperativesService
@@ -14,7 +13,7 @@
 
         Task<TEntity> GetByIdAsync<TEntity>(string id);
 
-        Task<IEnumerable<TEntity>> GetAllAsync<TEntity>(int startIndex, int endIndex);
+        Task<IEnumerable<TEntity>> GetAllAsync<TEntity>(int startIndex, int endIndex, string filterCity = null);
 
         Task<IEnumerable<TEntity>> GetCreatorAllByUsernameAsync<TEntity>(string username);
 

@@ -1,5 +1,4 @@
-﻿@using CHE.Web.ViewModels;
-@model PaginatedList<CHE.Web.ViewModels.Cooperatives.CooperativeAllViewModel>
+﻿@model CHE.Web.ViewModels.Cooperatives.CooperativeAllLIstViewModel
 <!-- ======= Breadcrumbs ======= -->
 <section id="breadcrumbs" class="breadcrumbs">
     <div class="container">
@@ -13,16 +12,43 @@
 <!-- ======= Services Section ======= -->
 <section id="services" class="services">
     <div class="container">
-        <div class="row">
-            <div class="col-lg-4 col-md-6">
-                <button id="filter-btn" class="btn btn-che">filter</button>
-                <div id="filter-tab">
-                    <h1>Filter</h1>
+        <form method="post" asp-controller="Cooperatives" asp-action="All">
+            <div class="row">
+                <div class="col-lg-4">
+                    <div class="form-group">
+                        <label asp-for="@Model.Filter.Grade">Filter by grade</label>
+                        <select asp-for="@Model.Filter.Grade" class="form-control">
+                            <option selected disabled>-- Choose grade --</option>
+                            <vc:grades-list current-grade=""></vc:grades-list>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="form-group">
+                        <label asp-for="@Model.Filter.City">Filter by city</label>
+                        <select asp-for="@Model.Filter.City" class="form-control">
+                            <option selected disabled>-- Choose city --</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="form-group">
+                        <label asp-for="@Model.Filter.Neighbourhood">Filter by neighbourhood</label>
+                        <select asp-for="@Model.Filter.Neighbourhood" class="form-control">
+                            <option selected disabled>-- Choose neighbourhood --</option>
+                        </select>
+                    </div>
                 </div>
             </div>
-        </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <button type="submit" class="btn btn-che">Filter</button>
+                </div>
+            </div>
+        </form>     
+        <hr class="my-4">
         <div class="row">
-            @foreach (var cooperative in Model)
+            @foreach (var cooperative in Model.Cooperatives)
             {
                 <div class="card col-lg-4 col-md-6 d-flex align-items-stretch mt-4">
                     <a asp-controller="Cooperatives" asp-action="Details" asp-route-id="@cooperative.Id">
@@ -37,7 +63,12 @@
                     </div>
                 </div>
             }
-        </div>  
-        <vc:pagination page-index="@Model.PageIndex" has-previous-page="@Model.HasPreviousPage" has-next-page="@Model.HasNextPage"></vc:pagination>        
+        </div>
+        <vc:pagination
+            controller="Cooperatives"
+            page-index="@Model.Cooperatives.PageIndex" 
+            has-previous-page="@Model.Cooperatives.HasPreviousPage" 
+            has-next-page="@Model.Cooperatives.HasNextPage">
+        </vc:pagination>
     </div>
 </section><!-- End Services Section -->

@@ -5,10 +5,11 @@
 
     public class PaginationViewComponent : ViewComponent
     {
-        public IViewComponentResult Invoke(int pageIndex, bool hasPreviousPage, bool hasNextPage)
+        public IViewComponentResult Invoke(string controller, int pageIndex, bool hasPreviousPage, bool hasNextPage)
         {
             var paginationModel = new PaginationViewModel 
             {
+                Controller = controller,
                 PageIndex = pageIndex,
                 HasPreviousPage = hasPreviousPage,
                 HasNextPage = hasNextPage

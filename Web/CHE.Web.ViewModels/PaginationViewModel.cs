@@ -2,6 +2,8 @@
 {
     public class PaginationViewModel
     {
+        public string Controller { get; set; }
+
         public int PageIndex { get; set; }
 
         public bool HasPreviousPage { get; set; }

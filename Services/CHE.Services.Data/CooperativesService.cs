@@ -10,7 +10,6 @@
     using CHE.Data;
     using CHE.Data.Models;
     using CHE.Services.Mapping;
-    using CHE.Common;
 
     public class CooperativesService : ICooperativesService
     {
@@ -25,7 +24,6 @@
             this._gradesService = gradesService;
         }
 
-        //TODO make entities: city, neighbouirhood, street
         public async Task<bool> CreateAsync<TAddress>(string name, string info, string gradeValue, string creatorId, TAddress address)
         {
             //var cooperativeNameExists = this._dbContext.Cooperatives.Any(x => x.Name == name);
@@ -95,20 +93,29 @@
             return cooperativeFromDb;
         }
 
-        public async Task<IEnumerable<TEntity>> GetAllAsync<TEntity>(int startIndex = 1, int endIndex = 0)
+        public async Task<IEnumerable<TEntity>> GetAllAsync<TEntity>(
+            int startIndex = 1, 
+            int endIndex = 0, 
+            string filterGrade = null)
         {
             var count = endIndex == 0 
                 ? await this._dbContext.Cooperatives.CountAsync() 
                 : endIndex;
 
-            var cooperative = await this._dbContext
-                .Cooperatives
+            var cooperatives = this._dbContext.Cooperatives.AsNoTracking();
+
+            if (filterGrade != null)
+            {
+                cooperatives = cooperatives.Where(x => x.Grade.Value == filterGrade);
+            }
+
+            var filteredCooperatives = await cooperatives
                 .Skip(startIndex - 1)
                 .Take(count)
                 .To<TEntity>()
                 .ToListAsync();
 
-            return cooperative;
+            return filteredCooperatives;
         }
 
         public async Task<IEnumerable<TEntity>> GetCreatorAllByUsernameAsync<TEntity>(string username)
