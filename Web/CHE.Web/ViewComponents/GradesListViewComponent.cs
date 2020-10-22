@@ -17,7 +17,7 @@
         {
             var gradesList = await _gradesService.GetAllValuesAsync(currentGrade);
 
-            return View(gradesList);
+            return this.View(gradesList);
         }
     }
 }

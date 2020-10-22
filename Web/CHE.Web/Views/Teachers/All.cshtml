@@ -41,6 +41,11 @@
                 </div>
             }
         </div>
-        <vc:pagination page-index="@Model.PageIndex" has-previous-page="@Model.HasPreviousPage" has-next-page="@Model.HasNextPage"></vc:pagination>
+        <vc:pagination 
+            controller="Teachers"
+            page-index="@Model.PageIndex" 
+            has-previous-page="@Model.HasPreviousPage" 
+            has-next-page="@Model.HasNextPage">
+        </vc:pagination>
     </div>
 </section><!-- End Services Section -->

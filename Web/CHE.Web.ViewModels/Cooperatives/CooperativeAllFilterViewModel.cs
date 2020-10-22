@@ -1,6 +1,6 @@
 ﻿namespace CHE.Web.ViewModels.Cooperatives
 {
-    public class CooperativeAllFilterViewModel
+    public class CooperativeAllFilterViewModel : IFilter
     {
         public string Grade { get; set; }
 

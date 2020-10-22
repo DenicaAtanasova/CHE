@@ -64,6 +64,7 @@ namespace CHE.Web
             services.AddTransient<IImagesService, ImagesService>();
             services.AddTransient<ISchedulesService, SchedulesService>();
             services.AddTransient<IEventsService, EventsService>();
+            services.AddTransient<IAddressesService, AddressesService>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

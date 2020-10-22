@@ -5,15 +5,30 @@
 
     public interface ICooperativesService
     {
-        Task<bool> CreateAsync<TAddress>(string name, string info, string gradeValue, string creatorId, TAddress addres);
+        Task<bool> CreateAsync<TAddress>(
+            string name, 
+            string info, 
+            string gradeValue, 
+            string creatorId, 
+            TAddress addres);
 
-        Task<bool> UpdateAsync<TAddress>(string cooperativeId, string name, string info, string gradeValue, TAddress addres);
+        Task<bool> UpdateAsync<TAddress>(
+            string cooperativeId, 
+            string name, 
+            string info, 
+            string gradeValue, 
+            TAddress addres);
 
         Task<bool> DeleteAsync(string id);
 
         Task<TEntity> GetByIdAsync<TEntity>(string id);
 
-        Task<IEnumerable<TEntity>> GetAllAsync<TEntity>(int startIndex, int endIndex, string filterCity = null);
+        Task<IEnumerable<TEntity>> GetAllAsync<TEntity>(
+            int startIndex, 
+            int endIndex,
+            string gradeFilter,
+            string cityFilter,
+            string neighbourhoodFilter);
 
         Task<IEnumerable<TEntity>> GetCreatorAllByUsernameAsync<TEntity>(string username);
 
@@ -29,6 +44,9 @@
 
         Task<IEnumerable<TEntity>> GetRequestsAsync<TEntity>(string id);
 
-        Task<int> Count();
+        Task<int> Count(
+            string gradeFilter = null,
+            string cityFilter = null,
+            string neighbourhoodFilter = null);
     }
 }

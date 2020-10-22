@@ -18,8 +18,15 @@
                     <div class="form-group">
                         <label asp-for="@Model.Filter.Grade">Filter by grade</label>
                         <select asp-for="@Model.Filter.Grade" class="form-control">
-                            <option selected disabled>-- Choose grade --</option>
-                            <vc:grades-list current-grade=""></vc:grades-list>
+                            @if (Model.Filter.Grade == null)
+                            {
+                                <option selected disabled>-- Choose grade --</option>
+                            }
+                            else
+                            {
+                                <option selected>@Model.Filter.Grade</option>
+                            }
+                            <vc:grades-list current-grade="@Model.Filter.Grade"></vc:grades-list>
                         </select>
                     </div>
                 </div>
@@ -27,7 +34,15 @@
                     <div class="form-group">
                         <label asp-for="@Model.Filter.City">Filter by city</label>
                         <select asp-for="@Model.Filter.City" class="form-control">
-                            <option selected disabled>-- Choose city --</option>
+                            @if (Model.Filter.City == null)
+                            {
+                                <option selected disabled>-- Choose city --</option>
+                            }
+                            else
+                            {
+                                <option selected>@Model.Filter.City</option>
+                            }
+                            <vc:cities-list></vc:cities-list>
                         </select>
                     </div>
                 </div>
@@ -35,7 +50,15 @@
                     <div class="form-group">
                         <label asp-for="@Model.Filter.Neighbourhood">Filter by neighbourhood</label>
                         <select asp-for="@Model.Filter.Neighbourhood" class="form-control">
+                            @if (Model.Filter.Neighbourhood == null)
+                            {
                             <option selected disabled>-- Choose neighbourhood --</option>
+                            }
+                            else
+                            {
+                                <option selected>@Model.Filter.Neighbourhood</option>
+                            }
+                            <vc:neighbourhoods-list></vc:neighbourhoods-list>
                         </select>
                     </div>
                 </div>
@@ -45,30 +68,32 @@
                     <button type="submit" class="btn btn-che">Filter</button>
                 </div>
             </div>
-        </form>     
-        <hr class="my-4">
-        <div class="row">
-            @foreach (var cooperative in Model.Cooperatives)
-            {
-                <div class="card col-lg-4 col-md-6 d-flex align-items-stretch mt-4">
-                    <a asp-controller="Cooperatives" asp-action="Details" asp-route-id="@cooperative.Id">
-                        <div class="icon-box">
-                            <div class="icon"><i class="icofont-users-alt-5"></i></div>
-                            <h4>@cooperative.Name</h4>
-                            <p>@cooperative.Info</p>
+        @*</form>*@     
+            <hr class="my-4">
+            <div class="row">
+                @foreach (var cooperative in Model.Cooperatives)
+                {
+                    <div class="card col-lg-4 col-md-6 d-flex align-items-stretch mt-4">
+                        <a asp-controller="Cooperatives" asp-action="Details" asp-route-id="@cooperative.Id">
+                            <div class="icon-box">
+                                <div class="icon"><i class="icofont-users-alt-5"></i></div>
+                                <h4>@cooperative.Name</h4>
+                                <p>@cooperative.Info</p>
+                            </div>
+                        </a>
+                        <div class="card-footer d-flex justify-content-between">
+                            <div><strong>Grade: </strong>@cooperative.Grade</div>
                         </div>
-                    </a>
-                    <div class="card-footer d-flex justify-content-between">
-                        <div><strong>Grade: </strong>@cooperative.Grade</div>
                     </div>
-                </div>
-            }
-        </div>
-        <vc:pagination
-            controller="Cooperatives"
-            page-index="@Model.Cooperatives.PageIndex" 
-            has-previous-page="@Model.Cooperatives.HasPreviousPage" 
-            has-next-page="@Model.Cooperatives.HasNextPage">
-        </vc:pagination>
+                }
+            </div>
+            <vc:pagination
+                controller="Cooperatives"
+                page-index="@Model.Cooperatives.PageIndex" 
+                has-previous-page="@Model.Cooperatives.HasPreviousPage" 
+                has-next-page="@Model.Cooperatives.HasNextPage"
+                filter="@Model.Filter">
+            </vc:pagination>
+        </form>
     </div>
 </section><!-- End Services Section -->

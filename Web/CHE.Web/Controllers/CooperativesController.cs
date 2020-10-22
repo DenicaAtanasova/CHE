@@ -14,7 +14,7 @@
     public class CooperativesController : Controller
     {
         //TODO: Change to 18
-        private const int DEFAULT_PAGE_SIZE = 18;
+        private const int DEFAULT_PAGE_SIZE = 3;
 
         private readonly UserManager<CheUser> _userManager;
         private readonly ICooperativesService _cooperativesService;
@@ -54,12 +54,13 @@
         public async Task<IActionResult> All(CooperativeAllFilterViewModel filter, int pageIndex = 1)
         {
             var cooperatives = await this._cooperativesService
-                    .GetAllAsync<CooperativeAllViewModel>(pageIndex, DEFAULT_PAGE_SIZE, filter.Grade);
-            var count = await this._cooperativesService.Count();
+                    .GetAllAsync<CooperativeAllViewModel>(pageIndex, DEFAULT_PAGE_SIZE, filter.Grade, filter.City, filter.Neighbourhood);
+            var count = await this._cooperativesService.Count(filter.Grade, filter.City, filter.Neighbourhood);
             var cooperativesList = new CooperativeAllLIstViewModel
             {
                 Cooperatives = PaginatedList<CooperativeAllViewModel>
-                .Create(cooperatives, count, pageIndex, DEFAULT_PAGE_SIZE)
+                .Create(cooperatives, count, pageIndex, DEFAULT_PAGE_SIZE),
+                Filter = filter
             };
 
             return this.View(cooperativesList);

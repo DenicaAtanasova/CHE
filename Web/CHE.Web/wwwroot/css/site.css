@@ -38,6 +38,15 @@ label {
     color: #797170;
 }
 
+.btn:disabled{
+    cursor: default;
+}
+
+.btn.disabled {
+    cursor: not-allowed;
+    pointer-events: none;
+}
+
 .btn-che {
     color: #fff;
     background-color: #e96b56;

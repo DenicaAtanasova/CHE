@@ -96,21 +96,18 @@
         public async Task<IEnumerable<TEntity>> GetAllAsync<TEntity>(
             int startIndex = 1, 
             int endIndex = 0, 
-            string filterGrade = null)
+            string gradeFilter = null,
+            string cityFilter = null,
+            string neighbourhoodFilter = null)
         {
             var count = endIndex == 0 
                 ? await this._dbContext.Cooperatives.CountAsync() 
                 : endIndex;
 
-            var cooperatives = this._dbContext.Cooperatives.AsNoTracking();
-
-            if (filterGrade != null)
-            {
-                cooperatives = cooperatives.Where(x => x.Grade.Value == filterGrade);
-            }
+            var cooperatives = this.FilterCollection(gradeFilter, cityFilter, neighbourhoodFilter);
 
             var filteredCooperatives = await cooperatives
-                .Skip(startIndex - 1)
+                .Skip((startIndex - 1) * count)
                 .Take(count)
                 .To<TEntity>()
                 .ToListAsync();
@@ -192,8 +189,38 @@
             return requests;
         }
 
-        public async Task<int> Count() =>
-            await this._dbContext.Cooperatives
-            .CountAsync();
+        public async Task<int> Count(
+            string gradeFilter = null,
+            string cityFilter = null,
+            string neighbourhoodFilter = null)
+        {
+            var filteredCooperatives = this.FilterCollection(gradeFilter, cityFilter, neighbourhoodFilter);
+            return await filteredCooperatives.CountAsync();
+        }
+
+        private IQueryable<Cooperative> FilterCollection(
+            string gradeFilter = null,
+            string cityFilter = null,
+            string neighbourhoodFilter = null)
+        {
+            var cooperatives = this._dbContext.Cooperatives.AsQueryable();
+
+            if (gradeFilter != null)
+            {
+                cooperatives = cooperatives.Where(x => x.Grade.Value == gradeFilter);
+            }
+
+            if (cityFilter != null)
+            {
+                cooperatives = cooperatives.Where(x => x.Address.City == cityFilter);
+            }
+
+            if (neighbourhoodFilter != null)
+            {
+                cooperatives = cooperatives.Where(x => x.Address.Neighbourhood == neighbourhoodFilter);
+            }
+
+            return cooperatives;
+        }
     }
 }

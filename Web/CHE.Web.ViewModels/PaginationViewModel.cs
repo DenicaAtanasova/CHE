@@ -9,5 +9,7 @@
         public bool HasPreviousPage { get; set; }
 
         public bool HasNextPage { get; set; }
+
+        public IFilter Filter { get; set; }
     }
 }
