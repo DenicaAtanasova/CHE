@@ -13,8 +13,7 @@
 
     public class CooperativesController : Controller
     {
-        //TODO: Change to 18
-        private const int DEFAULT_PAGE_SIZE = 3;
+        private const int DEFAULT_PAGE_SIZE = 18;
 
         private readonly UserManager<CheUser> _userManager;
         private readonly ICooperativesService _cooperativesService;

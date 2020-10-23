@@ -10,7 +10,7 @@
 
     public class TeachersController : Controller
     {
-        private const int DEFAULT_PAGE_SIZE = 3;
+        private const int DEFAULT_PAGE_SIZE = 18;
 
         private readonly ITeachersService _teachersService;
 
