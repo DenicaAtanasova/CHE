@@ -7,8 +7,8 @@
     {
         Task<TEntity> GetByIdAsync<TEntity>(string id);
 
-        Task<IEnumerable<TEntity>> GetAllAsync<TEntity>(int startIndex, int endIndex);
+        Task<IEnumerable<TEntity>> GetAllAsync<TEntity>(int startIndex, int endIndex, string schoolLevelFilter);
 
-        Task<int> Count();
+        Task<int> Count(string schoolLevelFilter);
     }
 }

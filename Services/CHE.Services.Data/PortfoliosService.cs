@@ -11,6 +11,8 @@
     using CHE.Data.Models;
     using CHE.Services.Mapping;
 
+    using System.Collections.Generic;
+
     public class PortfoliosService : IPortfoliosService
     {
         private readonly CheDbContext _dbContext;
@@ -56,6 +58,22 @@
             var result = await this._dbContext.SaveChangesAsync() > 0;
 
             return result;
+        }
+
+        public IEnumerable<string> GetAllSchoolLevels(string currentSchoolLevel)
+        {
+            var schoolLevelList = Enum.GetValues(typeof(SchoolLevel))
+                .Cast<SchoolLevel>()
+                .Where(x => x.ToString() != "Unknown")
+                .Select(x => x.ToString());
+
+            if (!string.IsNullOrEmpty(currentSchoolLevel))
+            {
+                schoolLevelList = schoolLevelList
+                    .Where(x => x.ToString() == currentSchoolLevel);
+            }
+
+            return schoolLevelList;
         }
     }
 }

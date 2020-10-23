@@ -7,15 +7,7 @@
 
     using System.Collections.Generic;
     using System.Linq;
-    using System.Security.Cryptography.X509Certificates;
     using System.Threading.Tasks;
-
-    public interface IAddressesService
-    {
-        Task<IEnumerable<TEntity>> GetAllCitiesAsync<TEntity>();
-
-        Task<IEnumerable<TEntity>> GetAllNeighbourhoodsAsync<TEntity>();
-    }
 
     public class AddressesService : IAddressesService
     {

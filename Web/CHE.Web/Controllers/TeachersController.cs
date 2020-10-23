@@ -10,7 +10,7 @@
 
     public class TeachersController : Controller
     {
-        private const int DEFAULT_PAGE_SIZE = 18;
+        private const int DEFAULT_PAGE_SIZE = 3;
 
         private readonly ITeachersService _teachersService;
 
@@ -19,15 +19,19 @@
             this._teachersService = teachersService;
         }
 
-        public async Task<IActionResult> All(int pageIndex = 1)
+        public async Task<IActionResult> All(TeacherAllFilterViewModel filter, int pageIndex = 1)
         {
             var teachers = await this._teachersService
-                    .GetAllAsync<TeacherAllViewModel>(pageIndex, DEFAULT_PAGE_SIZE);
+                    .GetAllAsync<TeacherAllViewModel>(pageIndex, DEFAULT_PAGE_SIZE, filter.SchoolLevel);
 
-            var count = await this._teachersService.Count();
+            var count = await this._teachersService.Count(filter.SchoolLevel);
 
-            var teachersList = PaginatedList<TeacherAllViewModel>
-                 .Create(teachers, count, pageIndex, DEFAULT_PAGE_SIZE);
+            var teachersList = new TeacherAllListViewModel
+            {
+                Teachers = PaginatedList<TeacherAllViewModel>
+                 .Create(teachers, count, pageIndex, DEFAULT_PAGE_SIZE),
+                Filter = filter
+            };
 
             return View(teachersList);
         }

@@ -9,8 +9,9 @@
     using CHE.Data;
     using CHE.Services.Mapping;
     using CHE.Common;
+    using CHE.Data.Models;
+    using System;
 
-    //TODO: Rename to UserService
     public class TeachersService : ITeachersService
     {
         private readonly CheDbContext _dbContext;
@@ -30,15 +31,19 @@
             return teacher;
         }
 
-        public async Task<IEnumerable<TEntity>> GetAllAsync<TEntity>(int startIndex = 1, int endIndex = 0)
+        public async Task<IEnumerable<TEntity>> GetAllAsync<TEntity>(
+            int startIndex = 1, 
+            int endIndex = 0, 
+            string schoolLevelFilter = null)
         {
             var count = endIndex == 0
                 ? await this._dbContext.Users.CountAsync()
                 : endIndex;
 
-            var teachers = await this._dbContext.Users
-                .Where(x => x.RoleName == GlobalConstants.TEACHER_ROLE)
-                .Skip(startIndex - 1)
+            var filteredTeachers = this.FilterCollection(schoolLevelFilter);
+
+            var teachers = await filteredTeachers
+                .Skip((startIndex - 1) * count)
                 .Take(count)
                 .To<TEntity>()
                 .ToListAsync();
@@ -46,9 +51,26 @@
             return teachers;
         }
 
-        public async Task<int> Count() =>
-            await this._dbContext.Users
-            .Where(x => x.RoleName == GlobalConstants.TEACHER_ROLE)
-            .CountAsync();
+        public async Task<int> Count(string schoolLevelFilter)
+        {
+            var filteredTachers = this.FilterCollection(schoolLevelFilter);
+
+            return await filteredTachers.CountAsync();
+        }
+
+        private IQueryable<CheUser> FilterCollection(string schoolLevelFilter = null)
+        {
+            var teachers = this._dbContext.Users
+                .AsNoTracking()
+                .Where(x => x.RoleName == GlobalConstants.TEACHER_ROLE);
+
+            if (schoolLevelFilter != null)
+            {
+                var schoolLevel = (SchoolLevel)Enum.Parse(typeof(SchoolLevel), schoolLevelFilter);
+                teachers = teachers.Where(x => x.Portfolio.SchoolLevel == schoolLevel);
+            }
+
+            return teachers;
+        }
     }
 }

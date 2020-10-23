@@ -42,7 +42,7 @@
                             {
                                 <option selected>@Model.Filter.City</option>
                             }
-                            <vc:cities-list></vc:cities-list>
+                            <vc:cities-list current-city="@Model.Filter.City"></vc:cities-list>
                         </select>
                     </div>
                 </div>
@@ -58,7 +58,7 @@
                             {
                                 <option selected>@Model.Filter.Neighbourhood</option>
                             }
-                            <vc:neighbourhoods-list></vc:neighbourhoods-list>
+                            <vc:neighbourhoods-list current-neighbourhood="@Model.Filter.Neighbourhood"></vc:neighbourhoods-list>
                         </select>
                     </div>
                 </div>

@@ -1,5 +1,4 @@
-﻿@using CHE.Web.ViewModels;
-@model PaginatedList<CHE.Web.ViewModels.Teachers.TeacherAllViewModel>
+﻿@model CHE.Web.ViewModels.Teachers.TeacherAllListViewModel
 
 <!-- ======= Breadcrumbs ======= -->
 <section id="breadcrumbs" class="breadcrumbs">
@@ -16,36 +15,61 @@
 <!-- ======= Services Section ======= -->
 <section id="teachers" class="services">
     <div class="container">
-        <div class="row">
-            @foreach (var teacher in Model)
-            {
-                <div class="card col-lg-4 col-md-6 d-flex align-items-stretch mt-4">
-                    <a asp-controller="Teachers" asp-action="Details" asp-route-id="@teacher.Id">
-                        <div class="icon-box">
-                            <div class="icon">
-                                <img class="card-img-top" src="@teacher.ImageUrl" alt="">
-                            </div>
-                            <h4>@teacher.UserName</h4>
-                            <div>
-                            </div>
-                            <vc:star-rating rating="@teacher.Rating"></vc:star-rating>
-                            <div class="d-flex justify-content-between">
-                                <div class="card-text"><h6>Rating: @teacher.Rating / 5</h6></div>
-                                <div class="card-text"><h6>Reviews: @teacher.ReviewsCount</h6></div>
-                            </div>
-                        </div>
-                    </a>
-                    <div class="card-footer d-flex justify-content-between">
-                        <div><strong>School level: </strong>@teacher.SchoolLevel</div>
+        <form method="post" asp-controller="Teachers" asp-action="All">
+            <div class="row">
+                <div class="col-lg-4">
+                    <div class="form-group">
+                        <label asp-for="@Model.Filter.SchoolLevel">Filter by school level</label>
+                        <select asp-for="@Model.Filter.SchoolLevel" class="form-control">
+                            @if (Model.Filter.SchoolLevel == null)
+                            {
+                                <option selected disabled>-- Choose school level --</option>
+                            }
+                            else
+                            {
+                                <option selected>@Model.Filter.SchoolLevel</option>
+                            }
+                            <vc:school-level-list current-school-level="@Model.Filter.SchoolLevel"></vc:school-level-list>
+                        </select>
                     </div>
                 </div>
-            }
-        </div>
-        <vc:pagination 
-            controller="Teachers"
-            page-index="@Model.PageIndex" 
-            has-previous-page="@Model.HasPreviousPage" 
-            has-next-page="@Model.HasNextPage">
-        </vc:pagination>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <button type="submit" class="btn btn-che">Filter</button>
+                </div>
+            </div>
+            <div class="row">
+                @foreach (var teacher in Model.Teachers)
+                {
+                    <div class="card col-lg-4 col-md-6 d-flex align-items-stretch mt-4">
+                        <a asp-controller="Teachers" asp-action="Details" asp-route-id="@teacher.Id">
+                            <div class="icon-box">
+                                <div class="icon">
+                                    <img class="card-img-top" src="@teacher.ImageUrl" alt="">
+                                </div>
+                                <h4>@teacher.UserName</h4>
+                                <div>
+                                </div>
+                                <vc:star-rating rating="@teacher.Rating"></vc:star-rating>
+                                <div class="d-flex justify-content-between">
+                                    <div class="card-text"><h6>Rating: @teacher.Rating / 5</h6></div>
+                                    <div class="card-text"><h6>Reviews: @teacher.ReviewsCount</h6></div>
+                                </div>
+                            </div>
+                        </a>
+                        <div class="card-footer d-flex justify-content-between">
+                            <div><strong>School level: </strong>@teacher.SchoolLevel</div>
+                        </div>
+                    </div>
+                }
+            </div>
+            <vc:pagination controller="Teachers"
+                           page-index="@Model.Teachers.PageIndex"
+                           has-previous-page="@Model.Teachers.HasPreviousPage"
+                           has-next-page="@Model.Teachers.HasNextPage"
+                           filter="@Model.Filter">
+            </vc:pagination>
+        </form>
     </div>
 </section><!-- End Services Section -->

@@ -84,7 +84,6 @@
 
         public async Task<TEntity> GetByIdAsync<TEntity>(string id)
         {
-            //TODO get members and requests in different methods
             var cooperativeFromDb = await this._dbContext.Cooperatives
                 .Where(x => x.Id == id)
                 .To<TEntity>()
@@ -104,15 +103,15 @@
                 ? await this._dbContext.Cooperatives.CountAsync() 
                 : endIndex;
 
-            var cooperatives = this.FilterCollection(gradeFilter, cityFilter, neighbourhoodFilter);
+            var filteredCooperatives = this.FilterCollection(gradeFilter, cityFilter, neighbourhoodFilter);
 
-            var filteredCooperatives = await cooperatives
+            var cooperatives = await filteredCooperatives
                 .Skip((startIndex - 1) * count)
                 .Take(count)
                 .To<TEntity>()
                 .ToListAsync();
 
-            return filteredCooperatives;
+            return cooperatives;
         }
 
         public async Task<IEnumerable<TEntity>> GetCreatorAllByUsernameAsync<TEntity>(string username)

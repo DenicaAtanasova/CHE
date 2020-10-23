@@ -4,6 +4,7 @@
     using CHE.Web.ViewModels.Cooperatives;
 
     using Microsoft.AspNetCore.Mvc;
+
     using System.Linq;
     using System.Threading.Tasks;
 
@@ -16,10 +17,11 @@
             this._addressesService = addressesService;
         }
 
-        public async Task<IViewComponentResult> InvokeAsync()
+        public async Task<IViewComponentResult> InvokeAsync(string currentCity)
         {
             var citiesList = await this._addressesService
                 .GetAllCitiesAsync<CooperativeAllCityViewModel>();
+            citiesList = citiesList.Where(x => x.City != currentCity);
 
             return this.View(citiesList);
         }
