@@ -202,7 +202,7 @@
             string cityFilter = null,
             string neighbourhoodFilter = null)
         {
-            var cooperatives = this._dbContext.Cooperatives.AsQueryable();
+            var cooperatives = this._dbContext.Cooperatives.AsNoTracking();
 
             if (gradeFilter != null)
             {
