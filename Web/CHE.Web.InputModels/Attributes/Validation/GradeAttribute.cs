@@ -3,20 +3,27 @@
     using System.ComponentModel.DataAnnotations;
     using System.Linq;
 
-    using CHE.Services.Data;
-
     public class GradeAttribute : ValidationAttribute
     {
         private const string ERROR_MESSAGE = "Grade must be between first and eighth.";
+        private readonly string[] VALID_GRADES = 
+        {
+            "First",
+            "Second",
+            "Third",
+            "Forth",
+            "Fifth",
+            "Sixth",
+            "Seventh",
+            "Eight"
+        };
 
         public string GetErrorMessage() => ERROR_MESSAGE;
 
         protected override ValidationResult IsValid(object value, ValidationContext validationContext)
         {
-            var gradesService = (IGradesService)validationContext.GetService(typeof(IGradesService));
-            var grades = gradesService.GetAllValuesAsync().GetAwaiter().GetResult();
             var gradeValue = value as string;
-            if (grades.Any(x => x == gradeValue))
+            if (VALID_GRADES.Any(x => x == gradeValue))
             {
                 return ValidationResult.Success;
             }
