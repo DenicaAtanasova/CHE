@@ -39,7 +39,7 @@
                     <button type="submit" class="btn btn-che">Filter</button>
                 </div>
             </div>
-            <div class="row">
+            @*<div class="row">
                 @foreach (var teacher in Model.Teachers)
                 {
                     <div class="card col-lg-4 col-md-6 d-flex align-items-stretch mt-4">
@@ -63,7 +63,7 @@
                         </div>
                     </div>
                 }
-            </div>
+            </div>*@
             <vc:pagination controller="Teachers"
                            page-index="@Model.Teachers.PageIndex"
                            has-previous-page="@Model.Teachers.HasPreviousPage"

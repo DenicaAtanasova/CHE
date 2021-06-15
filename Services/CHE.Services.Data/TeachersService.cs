@@ -2,6 +2,7 @@
 {
     using Microsoft.EntityFrameworkCore;
 
+    using System;
     using System.Threading.Tasks;
     using System.Linq;
     using System.Collections.Generic;
@@ -10,7 +11,6 @@
     using CHE.Services.Mapping;
     using CHE.Common;
     using CHE.Data.Models;
-    using System;
 
     public class TeachersService : ITeachersService
     {

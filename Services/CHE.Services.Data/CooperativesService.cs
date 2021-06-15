@@ -24,7 +24,12 @@
             this._gradesService = gradesService;
         }
 
-        public async Task<bool> CreateAsync<TAddress>(string name, string info, string gradeValue, string creatorId, TAddress address)
+        public async Task<bool> CreateAsync<TAddress>(
+            string name, 
+            string info, 
+            string gradeValue, 
+            string creatorId, 
+            TAddress address)
         {
             //var cooperativeNameExists = this._dbContext.Cooperatives.Any(x => x.Name == name);
             //if (cooperativeNameExists)
@@ -52,7 +57,12 @@
             return result;
         }
 
-        public async Task<bool> UpdateAsync<TAddress>(string id, string name, string info, string gradeValue, TAddress address)
+        public async Task<bool> UpdateAsync<TAddress>(
+            string id, 
+            string name, 
+            string info, 
+            string gradeValue, 
+            TAddress address)
         {
             var cooperativeToUpdate = await this._dbContext.Cooperatives
                 .SingleOrDefaultAsync(x => x.Id == id);
@@ -180,10 +190,13 @@
 
         public async Task<IEnumerable<TEntity>> GetRequestsAsync<TEntity>(string id)
         {
-            var requests = await this._dbContext.JoinRequests
-                .Where(x => x.CooperativeId == id)
+            var r = this._dbContext.JoinRequests
+                .Where(x => x.CooperativeId == id);
+            var requests = await r
                 .To<TEntity>()
                 .ToListAsync();
+
+
 
             return requests;
         }

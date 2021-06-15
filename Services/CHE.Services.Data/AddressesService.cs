@@ -34,8 +34,8 @@
         {
             var cities = await this._dbContext.Addresses
                 .Where(x => x.Neighbourhood != null)
-                .Distinct()
                 .To<TEntity>()
+                .Distinct()
                 .ToListAsync();
 
             return cities;
