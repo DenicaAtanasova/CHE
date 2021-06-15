@@ -1,7 +1,6 @@
 ﻿namespace CHE.Web.ViewComponents
 {
     using CHE.Services.Data;
-    using CHE.Web.ViewModels.Cooperatives;
 
     using Microsoft.AspNetCore.Mvc;
 
@@ -20,8 +19,8 @@
         public async Task<IViewComponentResult> InvokeAsync(string currentCity)
         {
             var citiesList = await this._addressesService
-                .GetAllCitiesAsync<CooperativeAllCityViewModel>();
-            citiesList = citiesList.Where(x => x.City != currentCity);
+                .GetAllCitiesAsync();
+            citiesList = citiesList.Where(x => x != currentCity);
 
             return this.View(citiesList);
         }

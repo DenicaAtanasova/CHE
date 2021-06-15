@@ -12,6 +12,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Data\CHE.Data.Models\CHE.Data.Models.csproj" />
     <ProjectReference Include="..\..\Data\CHE.Data\CHE.Data.csproj" />
+    <ProjectReference Include="..\..\Web\CHE.Web.InputModels\CHE.Web.InputModels.csproj" />
     <ProjectReference Include="..\CHE.Services.Mapping\CHE.Services.Mapping.csproj" />
   </ItemGroup>
 

@@ -1,8 +1,9 @@
 ﻿namespace CHE.Services.Data
 {
     using CHE.Data;
+    using CHE.Data.Models;
     using CHE.Services.Mapping;
-
+    using CHE.Web.InputModels.Cooperatives;
     using Microsoft.EntityFrameworkCore;
 
     using System.Collections.Generic;
@@ -18,27 +19,44 @@
             this._dbContext = dbContext;
         }
 
-        //TODO: Create class City
-        public async Task<IEnumerable<TEntity>> GetAllCitiesAsync<TEntity>()
+        public async Task<string> GetAddressIdAsync(CooperativeAddressInputModel address)
         {
-            var cities = await this._dbContext.Addresses
-                .To<TEntity>()
-                .Distinct()
-                .ToListAsync();
+            var addressFromDb = await this._dbContext.Addresses
+                .SingleOrDefaultAsync(x => x.City == address.City && x.Neighbourhood == address.Neighbourhood);
 
-            return cities;
+            if (addressFromDb is null)
+            {
+                return await this.CreateAsync(address.City, address.Neighbourhood);
+            }
+
+            return addressFromDb.Id;
         }
 
-        //TODO: Create class Neighbourhood
-        public async Task<IEnumerable<TEntity>> GetAllNeighbourhoodsAsync<TEntity>()
-        {
-            var cities = await this._dbContext.Addresses
-                .Where(x => x.Neighbourhood != null)
-                .To<TEntity>()
+        public async Task<IEnumerable<string>> GetAllCitiesAsync()
+            => await this._dbContext.Addresses
+                .Select(x => x.City)
                 .Distinct()
                 .ToListAsync();
 
-            return cities;
+        public async Task<IEnumerable<string>> GetAllNeighbourhoodsAsync()
+            => await this._dbContext.Addresses
+                .Where(x => x.Neighbourhood != null)
+                .Select(x => x.Neighbourhood)
+                .Distinct()
+                .ToListAsync();
+
+        private async Task<string> CreateAsync(string city, string neighbourhood)
+        {
+            var address = new Address
+            {
+                City = city,
+                Neighbourhood = neighbourhood
+            };
+
+            this._dbContext.Addresses.Add(address);
+            await this._dbContext.SaveChangesAsync();
+
+            return address.Id;
         }
     }
 }
