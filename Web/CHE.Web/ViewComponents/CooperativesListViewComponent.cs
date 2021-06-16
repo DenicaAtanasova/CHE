@@ -19,7 +19,7 @@
         public async Task<IViewComponentResult> InvokeAsync(string creatorUsername)
         {
             var cooperativesList = await this._cooperativesService
-                .GetCreatorAllByUsernameAsync<JoinRequestCooperativeSendViewModel>(creatorUsername);
+                .GetAllByCreatorAsync<JoinRequestCooperativeSendViewModel>(creatorUsername);
 
             return this.View(cooperativesList);
         }

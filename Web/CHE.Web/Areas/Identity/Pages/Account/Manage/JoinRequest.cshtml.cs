@@ -32,7 +32,7 @@ namespace CHE.Web.Areas.Identity.Pages.Account.Manage
         {
             var userId = this._userManager.GetUserId(this.User);
             this.Input = await this._joinRequestsService
-                .GetTeacherAllAsync<TeacherJoinRequestVIewModel>(userId);
+                .GetAllByTeacherAsync<TeacherJoinRequestVIewModel>(userId);
 
             if (this.Input == null)
             {

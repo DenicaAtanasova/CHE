@@ -7,12 +7,10 @@
     {
         Task<TEntity> GetByIdAsync<TEntity>(string id);
 
-        Task<IEnumerable<TEntity>> GetTeacherAllAsync<TEntity>(string teacherId);
+        Task<IEnumerable<TEntity>> GetAllByTeacherAsync<TEntity>(string teacherId);
 
-        Task<bool> CreateAsync(string requestContent, string cooperativeId, string receiverId, string senderId);
+        Task<IEnumerable<TEntity>> GetAllByCooperativeAsync<TEntity>(string cooperativeId);
 
-        Task<bool> AcceptAsync(string requestId);
-
-        Task<bool> RejectAsync(string requestId);
+        Task CreateAsync(string requestContent, string cooperativeId, string receiverId, string senderId);
     }
 }

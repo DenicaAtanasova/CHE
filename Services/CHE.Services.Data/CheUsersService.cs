@@ -72,5 +72,40 @@
 
             return teachers;
         }
+
+        public async Task AcceptRequestAsync(string requestId)
+        {
+            var request = await this._dbContext.JoinRequests
+                .SingleOrDefaultAsync(x => x.Id == requestId);
+
+            // request is send from parent to cooperative
+            if (request.ReceiverId == null)
+            {
+                //TODO: AddMemberToCooperativeAsync
+                //await this._cooperativesService
+                //    .AddMemberAsync(request.SenderId, request.CooperativeId);
+            }
+            // request is send from parent to teacher 
+            else
+            {
+                //TODO: AddMemberToCooperativeAsync
+                //await this._cooperativesService
+                //    .AddMemberAsync(request.ReceiverId, request.CooperativeId);
+            }
+
+            this._dbContext.Remove(request);
+
+            await this._dbContext.SaveChangesAsync();
+        }
+
+        public async Task RejectRequestAsync(string requestId)
+        {
+            var requestToDelete = await this._dbContext.JoinRequests
+                .SingleOrDefaultAsync(x => x.Id == requestId);
+
+            this._dbContext.Remove(requestToDelete);
+
+            await this._dbContext.SaveChangesAsync();
+        }
     }
 }

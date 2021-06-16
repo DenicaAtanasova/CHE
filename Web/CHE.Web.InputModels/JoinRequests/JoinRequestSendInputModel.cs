@@ -1,7 +1,7 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace CHE.Web.InputModels.JoinRequests
+﻿namespace CHE.Web.InputModels.JoinRequests
 {
+    using System.ComponentModel.DataAnnotations;
+
     public class JoinRequestCreateInputModel
     {
         [Required]

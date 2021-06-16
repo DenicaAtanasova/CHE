@@ -11,18 +11,21 @@
     public class JoinRequestsController : Controller
     {
         private readonly IJoinRequestsService _joinRequestsService;
+        private readonly ICheUsersService _cheUsersService;
 
         public JoinRequestsController(
-            IJoinRequestsService joinRequestsService)
+            IJoinRequestsService joinRequestsService,
+            ICheUsersService cheUsersService)
         {
             this._joinRequestsService = joinRequestsService;
+            this._cheUsersService = cheUsersService;
         }
 
         [Authorize]
         public async Task<IActionResult> TeacherAll(string teacherId)
         {
             var requests = await this._joinRequestsService
-                .GetTeacherAllAsync<JoinRequestAllViewModel>(teacherId);
+                .GetAllByTeacherAsync<JoinRequestAllViewModel>(teacherId);
 
             return this.View(requests);
         }
@@ -43,11 +46,7 @@
         [Authorize]
         public async Task<IActionResult> Reject(string cooperativeId, string requestId)
         {
-            var rejectRequestSuccessful = await this._joinRequestsService.RejectAsync(requestId);
-            if (!rejectRequestSuccessful)
-            {
-                return this.BadRequest();
-            }
+            await this._cheUsersService.RejectRequestAsync(requestId);
 
             return this.RedirectToAction("Details", "Cooperatives", new { id = cooperativeId });
         }
@@ -55,11 +54,7 @@
         [Authorize]
         public async Task<IActionResult> Accept(string cooperativeId, string requestId)
         {
-            var acceptRequestSuccessful = await this._joinRequestsService.AcceptAsync(requestId);
-            if (!acceptRequestSuccessful)
-            {
-                return this.BadRequest();
-            }
+            await this._cheUsersService.AcceptRequestAsync(requestId);
 
             return this.RedirectToAction("Details", "Cooperatives", new { id = cooperativeId });
         }

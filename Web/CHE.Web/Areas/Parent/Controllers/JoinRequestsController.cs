@@ -41,12 +41,8 @@
 
             var senderId = this._userManager.GetUserId(this.User);
 
-            var sendRequestSuccessful = await this._joinRequestsService
+            await this._joinRequestsService
                 .CreateAsync(inputModel.Content, inputModel.CooperativeId, inputModel.ReceiverId, senderId);
-            if (!sendRequestSuccessful)
-            {
-                return this.BadRequest();
-            }
 
             return RedirectToAction("Details", "Cooperatives", new { area = "", id = inputModel.CooperativeId});
         }

@@ -15,13 +15,16 @@
     {
         private readonly UserManager<CheUser> _userManager;
         private readonly ICooperativesService _cooperativesService;
+        private readonly IJoinRequestsService _joinRequestsService;
 
         public CooperativesController(
             UserManager<CheUser> userManager,
-            ICooperativesService cooperativesService)
+            ICooperativesService cooperativesService,
+            IJoinRequestsService joinRequestsService)
         {
             this._userManager = userManager;
             this._cooperativesService = cooperativesService;
+            this._joinRequestsService = joinRequestsService;
         }
 
         public IActionResult Create()
@@ -93,12 +96,8 @@
 
         public async Task<IActionResult> RemoveMember(string memberId, string cooperativeId)
         {
-            var removeMemberSuccessful = await this._cooperativesService
+            await this._cooperativesService
                 .RemoveMemberAsync(memberId, cooperativeId);
-            if (!removeMemberSuccessful)
-            {
-                return this.BadRequest();
-            }
 
             return this.RedirectToAction("Details", "Cooperatives", new { area = "", id = cooperativeId });
         }
@@ -120,8 +119,8 @@
         {
             var cooperative = await this._cooperativesService
                 .GetByIdAsync<CooperativeJoinRequestsViewModel>(id);
-            cooperative.JoinRequestsReceived = await this._cooperativesService
-                .GetRequestsAsync<JoinRequestAllViewModel>(id);
+            cooperative.JoinRequestsReceived = await this._joinRequestsService
+                .GetAllByCooperativeAsync<JoinRequestAllViewModel>(id);
 
             this.ViewData["id"] = cooperative.Id;
             this.ViewData["scheduleId"] = cooperative.ScheduleId;
