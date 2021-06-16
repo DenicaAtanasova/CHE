@@ -59,7 +59,7 @@ namespace CHE.Web
             services.AddTransient<ICooperativesService, CooperativesService>();
             services.AddTransient<IGradesService, GradesService>();
             services.AddTransient<IJoinRequestsService, JoinRequestsService>();
-            services.AddTransient<ITeachersService, TeachersService>();
+            services.AddTransient<ICheUsersService, CheUsersService>();
             services.AddTransient<IPortfoliosService, PortfoliosService>();
             services.AddTransient<IReviewsService, ReviewsService>();
             services.AddTransient<IImagesService, ImagesService>();
@@ -91,7 +91,6 @@ namespace CHE.Web
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                app.UseDatabaseErrorPage();
             }
             else
             {

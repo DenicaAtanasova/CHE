@@ -3,7 +3,7 @@
     using System.Collections.Generic;
     using System.Threading.Tasks;
 
-    public interface ITeachersService
+    public interface ICheUsersService
     {
         Task<TEntity> GetByIdAsync<TEntity>(string id);
 

@@ -12,11 +12,11 @@
     using CHE.Common;
     using CHE.Data.Models;
 
-    public class TeachersService : ITeachersService
+    public class CheUsersService : ICheUsersService
     {
         private readonly CheDbContext _dbContext;
 
-        public TeachersService(CheDbContext dbContext)
+        public CheUsersService(CheDbContext dbContext)
         {
             this._dbContext = dbContext;
         }

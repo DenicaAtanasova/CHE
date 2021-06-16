@@ -12,9 +12,9 @@
     {
         private const int DEFAULT_PAGE_SIZE = 18;
 
-        private readonly ITeachersService _teachersService;
+        private readonly ICheUsersService _teachersService;
 
-        public TeachersController(ITeachersService teachersService)
+        public TeachersController(ICheUsersService teachersService)
         {
             this._teachersService = teachersService;
         }
