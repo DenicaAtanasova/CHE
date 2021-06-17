@@ -41,7 +41,7 @@
                 Info = info,
                 CreatorId = creatorId,
                 CreatedOn = DateTime.UtcNow,
-                Grade = await this._gradesService.GetByValueAsync(gradeValue),
+                GradeId = await this._gradesService.GetIdAsync(gradeValue),
                 Schedule = new Schedule { CreatedOn = DateTime.UtcNow },
                 Address = cooperativeAddress
             };
@@ -64,7 +64,7 @@
 
             cooperativeToUpdate.Name = name;
             cooperativeToUpdate.Info = info;
-            cooperativeToUpdate.Grade = await this._gradesService.GetByValueAsync(gradeValue);
+            cooperativeToUpdate.GradeId = await this._gradesService.GetIdAsync(gradeValue);
             cooperativeToUpdate.ModifiedOn = DateTime.UtcNow;
 
             //TODO: Get address from address service
@@ -157,13 +157,6 @@
         public async Task<bool> CheckIfCreatorAsync(string username, string cooperativeId)
             => await this._dbContext.Cooperatives
                 .AnyAsync(x => x.Creator.UserName == username && x.Id == cooperativeId);
-
-        //TODO: Move to request service
-        public async Task<IEnumerable<TEntity>> GetRequestsAsync<TEntity>(string id)
-            => await this._dbContext.JoinRequests
-                .Where(x => x.CooperativeId == id)
-                .To<TEntity>()
-                .ToListAsync();
 
         public async Task<int> Count(
             string gradeFilter = null,

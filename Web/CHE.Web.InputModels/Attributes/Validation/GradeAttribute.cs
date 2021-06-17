@@ -15,7 +15,7 @@
             "Fifth",
             "Sixth",
             "Seventh",
-            "Eight"
+            "Eighth"
         };
 
         public string GetErrorMessage() => ERROR_MESSAGE;

@@ -29,7 +29,7 @@
         [Fact]
         public async Task GetByValueAsyncShouldReturnCorrectGrade()
         {
-            var grade = await this._gradesService.GetByValueAsync(GRADE_VALUE);
+            var grade = await this._gradesService.GetIdAsync(GRADE_VALUE);
 
             Assert.Equal(GRADE_VALUE, grade.Value);
             Assert.Equal(GRADE_NUMVALUE, grade.NumValue);
