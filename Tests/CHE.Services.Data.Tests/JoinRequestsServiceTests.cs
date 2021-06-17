@@ -4,95 +4,125 @@
     using System.Linq;
     using System.Threading.Tasks;
 
-    using Microsoft.Extensions.DependencyInjection;
-
-    using CHE.Data.Models;
-
-    using Xunit;
     using Microsoft.EntityFrameworkCore;
 
-    public class JoinRequestsServiceTests : BaseServiceTest
+    using CHE.Data;
+    using CHE.Data.Models;
+    using CHE.Services.Mapping;
+    using CHE.Web.InputModels.JoinRequests;
+    using CHE.Web.ViewModels.JoinRequests;
+
+    using Xunit;
+
+    public class JoinRequestsServiceTests
     {
-        private const string CONTENT = "Test content";
-        private readonly string COOPERATIVE_ID = Guid.NewGuid().ToString();
-        private readonly string RECEIVER_ID = Guid.NewGuid().ToString();
-        private readonly string SENDER_ID = Guid.NewGuid().ToString();
-
-        private readonly JoinRequest testRequest;
-
+        private readonly CheDbContext _dbContext;
         private readonly IJoinRequestsService _joinRequestsService;
 
+
         public JoinRequestsServiceTests()
-            :base()
         {
-            this._joinRequestsService = this.ServiceProvider.GetRequiredService<IJoinRequestsService>();
+            var options = new DbContextOptionsBuilder<CheDbContext>()
+                .UseInMemoryDatabase(Guid.NewGuid().ToString())
+                .Options;
+            this._dbContext = new CheDbContext(options);
 
-            this.testRequest = SetJoinRequest();
+            this._joinRequestsService = new JoinRequestsService(this._dbContext);
 
-            this.AddTestJoinRequestAsync().GetAwaiter().GetResult();
-        }
-
-        #region GetByIdAsync
-        [Fact]
-        public async Task GetByIdAsyncShouldReturnCorrectJoinRequest()
-        {
-            var request = await this._joinRequestsService.GetByIdAsync<JoinRequest>(this.testRequest.Id);
-
-            Assert.Equal(this.testRequest.Id, request.Id);
-        }
-        #endregion
-
-        #region GetTeacherAllAsync
-        #endregion
-
-        #region GetCooperativeAllAsync
-        #endregion
-
-        #region CreateAsync
-        [Fact]
-        public async Task CreateAsyncShouldCreateJoinRequest()
-        {
-            var createSuccessful = await this._joinRequestsService
-                .CreateAsync(CONTENT, COOPERATIVE_ID, RECEIVER_ID, SENDER_ID);
-
-            Assert.True(createSuccessful);
+            AutoMapperConfig.RegisterMappings(
+                typeof(JoinRequestInputModel).Assembly,
+                typeof(JoinRequestDetailsViewModel).Assembly);
         }
 
         [Fact]
-        public async Task CreateAsyncShouldSetCreatedOnDateToDateTimeUtcNow()
+        public async Task GetByIdAsync_ShouldReturnCorrectJoinRequest()
         {
-            await this._joinRequestsService.CreateAsync(CONTENT, COOPERATIVE_ID, RECEIVER_ID, SENDER_ID);
+            var expectedRequest = new JoinRequest
+            {
+                CooperativeId = Guid.NewGuid().ToString(),
+                ReceiverId = Guid.NewGuid().ToString()
+            };
+
+            this._dbContext.JoinRequests.Add(expectedRequest);
+            await this._dbContext.SaveChangesAsync();
+
+            var actualRequest = await this._joinRequestsService
+                .GetByIdAsync<JoinRequestDetailsViewModel>(expectedRequest.Id);
+
+            Assert.Equal(expectedRequest.Id, actualRequest.Id);
+            Assert.Equal(expectedRequest.CooperativeId, actualRequest.CooperativeId);
+            Assert.Equal(expectedRequest.ReceiverId, actualRequest.ReceiverId);
+        }
+
+        [Fact]
+        public async Task GetByIdAsync_ShouldReturnNullWithIncorrectId()
+        {
+            this._dbContext.JoinRequests.Add(
+                new JoinRequest
+                {
+                    CooperativeId = Guid.NewGuid().ToString(),
+                    ReceiverId = Guid.NewGuid().ToString()
+                });
+            await this._dbContext.SaveChangesAsync();
+
+            var actualRequest = await this._joinRequestsService
+                .GetByIdAsync<JoinRequestDetailsViewModel>(Guid.NewGuid().ToString());
+
+            Assert.Null(actualRequest);
+        }
+
+        [Fact]
+        public async Task CreateAsync_ShouldWorkCorrectlyWithoutExistingJoinRequest()
+        {
+            var content = "Content";
+            var cooperativeId = Guid.NewGuid().ToString();
+            var senderId = Guid.NewGuid().ToString();
+
+            var requestId = await this._joinRequestsService.CreateAsync(content, cooperativeId, senderId);
+            var joinRequestFromDb = await this._dbContext.JoinRequests.SingleOrDefaultAsync();
+
+            Assert.Equal(joinRequestFromDb.Id, requestId);
+        }
+
+        [Fact]
+        public async Task CreateAsync_ShouldWorkCorrectlyWithExistingJoinRequest()
+        {
+
+            var content = "Content";
+            var cooperativeId = Guid.NewGuid().ToString();
+            var senderId = Guid.NewGuid().ToString();
+
+            var testJoinRequest = new JoinRequest
+            {
+                Content = content,
+                CooperativeId = cooperativeId,
+                SenderId = senderId
+            };
+
+            this._dbContext.JoinRequests.Add(testJoinRequest);
+            await this._dbContext.SaveChangesAsync();
+
+            var requestId = await this._joinRequestsService.CreateAsync(content, cooperativeId, senderId);
+
+            Assert.Equal(testJoinRequest.Id, requestId);
+        }
+
+        [Fact]
+        public async Task CreateAsync_ShouldSetCreatedOnDateToDateTimeUtcNow()
+        {
+            var content = "Content";
+            var cooperativeId = Guid.NewGuid().ToString();
+            var senderId = Guid.NewGuid().ToString();
+
+            await this._joinRequestsService.CreateAsync(content, cooperativeId, senderId);
 
             var expectedDate = DateTime.UtcNow;
-            var actualDate = await this.DbContext.JoinRequests
-                .Where(x => x.CooperativeId == COOPERATIVE_ID && x.SenderId == SENDER_ID && x.ReceiverId == RECEIVER_ID)
+            var actualDate = await this._dbContext.JoinRequests
+                .Where(x => x.CooperativeId == cooperativeId && x.SenderId == senderId)
                 .Select(x => x.CreatedOn)
                 .FirstOrDefaultAsync();
 
-            Assert.Equal(expectedDate, actualDate, new TimeSpan(days: 0, hours: 0, minutes: 0, seconds: 0, milliseconds: 100));
-        }
-        #endregion
-
-        #region AcceptAsync
-        #endregion
-
-        #region RejectAsync
-        #endregion
-
-        private JoinRequest SetJoinRequest()
-        {
-            var request = new JoinRequest
-            {
-                Content = CONTENT
-            };
-
-            return request;
-        }
-
-        private async Task AddTestJoinRequestAsync()
-        {
-            await this.DbContext.JoinRequests.AddAsync(this.testRequest);
-            await this.DbContext.SaveChangesAsync();
+            Assert.Equal(expectedDate, actualDate, new TimeSpan(days: 0, hours: 0, minutes: 0, seconds: 0, milliseconds: 500));
         }
     }
 }

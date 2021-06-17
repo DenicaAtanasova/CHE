@@ -2,7 +2,7 @@
 {
     using System.ComponentModel.DataAnnotations;
 
-    public class JoinRequestCreateInputModel
+    public class JoinRequestInputModel
     {
         [Required]
         public string Content { get; set; }
