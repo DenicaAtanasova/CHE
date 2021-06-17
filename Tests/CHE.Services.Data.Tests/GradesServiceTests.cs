@@ -7,6 +7,7 @@
 
     using System;
     using System.Collections.Generic;
+    using System.Linq;
     using System.Threading.Tasks;
 
     using Xunit;
@@ -62,7 +63,7 @@
         }
 
         [Fact]
-        public async Task GetAllValuesAsync_ShouldWorkCorrectly()
+        public async Task GetAllValuesAsync_ShouldWorkCorrectlyWithCurrentGradeNull()
         {
             var gradesList = new string[]
             {
@@ -89,6 +90,42 @@
             var gradesValues = await this._gradesService.GetAllValuesAsync();
 
             Assert.Equal(gradesList, gradesValues);
+        }
+
+        [Theory]
+        [InlineData("First")]
+        [InlineData("Second")]
+        public async Task GetAllValuesAsync_ShouldWorkCorrectlyWithCurrentGradeNotNull(string currentGrade)
+        {
+            var gradesList = new string[]
+            {
+                "First",
+                "Second",
+                "Third",
+                "Forth"
+            };
+
+            var grades = new List<Grade>();
+            for (int i = 1; i <= gradesList.Length; i++)
+            {
+                grades.Add(
+                    new Grade
+                    {
+                        NumValue = i,
+                        Value = gradesList[i - 1]
+                    });
+            }
+
+            this._dbContext.Grades.AddRange(grades);
+            await this._dbContext.SaveChangesAsync();
+
+            var expectedGradesValues = gradesList
+                .Where(x => x != currentGrade);
+
+            var actualGradesValues = await this._gradesService
+                .GetAllValuesAsync(currentGrade);
+
+            Assert.Equal(expectedGradesValues, actualGradesValues);
         }
     }
 }

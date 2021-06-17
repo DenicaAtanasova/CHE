@@ -1,7 +1,5 @@
 ﻿namespace CHE.Services.Data
 {
-    using CHE.Data.Models;
-
     using System.Collections.Generic;
     using System.Threading.Tasks;
 
