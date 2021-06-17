@@ -21,15 +21,19 @@
 
         public async Task<string> GetAddressIdAsync(CooperativeAddressInputModel address)
         {
-            var addressFromDb = await this._dbContext.Addresses
-                .SingleOrDefaultAsync(x => x.City == address.City && x.Neighbourhood == address.Neighbourhood);
+            var addressId = await this._dbContext.Addresses
+                .AsNoTracking()
+                .Where(x => x.City == address.City &&
+                            x.Neighbourhood == address.Neighbourhood)
+                .Select(x => x.Id)
+                .SingleOrDefaultAsync();
 
-            if (addressFromDb is null)
+            if (addressId is null)
             {
                 return await this.CreateAsync(address.City, address.Neighbourhood);
             }
 
-            return addressFromDb.Id;
+            return addressId;
         }
 
         public async Task<IEnumerable<string>> GetAllCitiesAsync()
