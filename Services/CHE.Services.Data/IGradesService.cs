@@ -7,7 +7,7 @@
 
     public interface IGradesService
     {
-        Task<string> GetIdAsync(string value);
+        Task<string> GetGardeIdAsync(string value);
 
         Task<IEnumerable<string>> GetAllValuesAsync(string currentGrade = null);
     }

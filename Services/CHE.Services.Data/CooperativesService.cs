@@ -41,7 +41,7 @@
                 Info = info,
                 CreatorId = creatorId,
                 CreatedOn = DateTime.UtcNow,
-                GradeId = await this._gradesService.GetIdAsync(gradeValue),
+                GradeId = await this._gradesService.GetGardeIdAsync(gradeValue),
                 Schedule = new Schedule { CreatedOn = DateTime.UtcNow },
                 Address = cooperativeAddress
             };
@@ -64,7 +64,7 @@
 
             cooperativeToUpdate.Name = name;
             cooperativeToUpdate.Info = info;
-            cooperativeToUpdate.GradeId = await this._gradesService.GetIdAsync(gradeValue);
+            cooperativeToUpdate.GradeId = await this._gradesService.GetGardeIdAsync(gradeValue);
             cooperativeToUpdate.ModifiedOn = DateTime.UtcNow;
 
             //TODO: Get address from address service

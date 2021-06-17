@@ -1,72 +1,94 @@
 ﻿namespace CHE.Services.Data.Tests
 {
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Threading.Tasks;
+    using CHE.Data;
+    using CHE.Data.Models;
 
-    using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.EntityFrameworkCore;
+
+    using System;
+    using System.Collections.Generic;
+    using System.Threading.Tasks;
 
     using Xunit;
 
-    using CHE.Data.Models;
 
-    public class GradesServiceTests : BaseServiceTest
+    public class GradesServiceTests
     {
-        private const string GRADE_VALUE = "First";
-        private const int GRADE_NUMVALUE = 1;
-
+        private readonly CheDbContext _dbContext;
         private readonly IGradesService _gradesService;
 
         public GradesServiceTests()
-            : base()
         {
-            this._gradesService = this.ServiceProvider.GetRequiredService<IGradesService>();
+            var options = new DbContextOptionsBuilder<CheDbContext>()
+                .UseInMemoryDatabase(Guid.NewGuid().ToString())
+                .Options;
+            this._dbContext = new CheDbContext(options);
 
-            this.AddFirstAndSecondGradesAsync().GetAwaiter().GetResult();
+            this._gradesService = new GradesService(this._dbContext);
         }
 
-        #region GetByValueAsync
-        [Fact]
-        public async Task GetByValueAsyncShouldReturnCorrectGrade()
+        [Theory]
+        [InlineData("First")]
+        [InlineData("Second")]
+        public async Task GetGardeIdAsync_ShouldWorkCorrectly(string gradeValue)
         {
-            var grade = await this._gradesService.GetIdAsync(GRADE_VALUE);
-
-            Assert.Equal(GRADE_VALUE, grade.Value);
-            Assert.Equal(GRADE_NUMVALUE, grade.NumValue);
-        }
-        #endregion
-
-        #region GetAllValuesAsync
-        [Fact]
-        public async Task GetAllValuesAsyncShouldReturnAllGrades()
-        {
-            var grades = await this._gradesService.GetAllValuesAsync();
-
-            var expectedGradesCount = 2;
-            var actualGradeCount = grades.Count();
-
-            Assert.Equal(expectedGradesCount, actualGradeCount);
-        }
-        #endregion
-
-        private async Task AddFirstAndSecondGradesAsync()
-        {
-            var grades = new List<Grade>
+            var gradesList = new string[]
             {
-                new Grade
-                {
-                    Value = "First",
-                    NumValue = 1
-                },
-                new Grade
-                {
-                    Value = "Second",
-                    NumValue = 2
-                }
+                "First",
+                "Second",
+                "Third",
+                "Forth"
             };
 
-            await this.DbContext.Grades.AddRangeAsync(grades);
-            await this.DbContext.SaveChangesAsync();
+            var grades = new List<Grade>();
+            for (int i = 1; i <= gradesList.Length; i++)
+            {
+                grades.Add(
+                    new Grade
+                    {
+                        NumValue = i,
+                        Value = gradesList[i - 1]
+                    });
+            }
+
+            this._dbContext.Grades.AddRange(grades);
+            await this._dbContext.SaveChangesAsync();
+
+            var gradeFromDb = await this._dbContext.Grades
+                .SingleOrDefaultAsync(x => x.Value == gradeValue);
+            var gradeId = await this._gradesService.GetGardeIdAsync(gradeValue);
+
+            Assert.Equal(gradeFromDb.Id, gradeId);
+        }
+
+        [Fact]
+        public async Task GetAllValuesAsync_ShouldWorkCorrectly()
+        {
+            var gradesList = new string[]
+            {
+                "First",
+                "Second",
+                "Third",
+                "Forth"
+            };
+
+            var grades = new List<Grade>();
+            for (int i = 1; i <= gradesList.Length; i++)
+            {
+                grades.Add(
+                    new Grade
+                    {
+                        NumValue = i,
+                        Value = gradesList[i - 1]
+                    });
+            }
+
+            this._dbContext.Grades.AddRange(grades);
+            await this._dbContext.SaveChangesAsync();
+
+            var gradesValues = await this._gradesService.GetAllValuesAsync();
+
+            Assert.Equal(gradesList, gradesValues);
         }
     }
 }

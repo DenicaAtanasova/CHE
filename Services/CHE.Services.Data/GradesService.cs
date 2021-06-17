@@ -17,7 +17,7 @@
             this._dbContext = dbContext;
         }
 
-        public async Task<string> GetIdAsync(string value)
+        public async Task<string> GetGardeIdAsync(string value)
             => await this._dbContext.Grades
                 .AsNoTracking()
                 .Where(x => x.Value == value)
