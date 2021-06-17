@@ -23,6 +23,7 @@
 
         public async Task<TEntity> GetByIdAsync<TEntity>(string id)
             => await this._dbContext.JoinRequests
+                .AsNoTracking()
                 .Where(x => x.Id == id)
                 .To<TEntity>()
                 .SingleOrDefaultAsync();
@@ -41,14 +42,17 @@
                 .To<TEntity>()
                 .ToListAsync();
 
-        public async Task CreateAsync(string content, string cooperativeId, string receiverId, string senderId)
+        public async Task<string> CreateAsync(string content, string cooperativeId, string senderId, string receiverId)
         {
-            var requestExists = await this._dbContext.JoinRequests
-                .AnyAsync(x => x.CooperativeId == cooperativeId &&
-                               x.ReceiverId == receiverId &&
-                               x.SenderId == senderId);
+            var requestId = await this._dbContext.JoinRequests
+                .AsNoTracking()
+                .Where(x => x.CooperativeId == cooperativeId &&
+                            x.ReceiverId == receiverId &&
+                            x.SenderId == senderId)
+                .Select(x=> x.Id)
+                .SingleOrDefaultAsync();
 
-            if (!requestExists)
+            if (requestId is null)
             {
                 var request = new JoinRequest
                 {
@@ -61,7 +65,11 @@
 
                 this._dbContext.JoinRequests.Add(request);
                 await this._dbContext.SaveChangesAsync();
-            }           
+
+                return request.Id;
+            }          
+
+            return requestId;
         }
     }
 }

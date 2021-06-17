@@ -11,6 +11,6 @@
 
         Task<IEnumerable<TEntity>> GetAllByCooperativeAsync<TEntity>(string cooperativeId);
 
-        Task CreateAsync(string requestContent, string cooperativeId, string receiverId, string senderId);
+        Task<string> CreateAsync(string requestContent, string cooperativeId, string senderId, string receiverId = null);
     }
 }
