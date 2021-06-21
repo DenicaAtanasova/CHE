@@ -61,6 +61,12 @@
                 .HasForeignKey(jr => jr.SenderId)
                 .OnDelete(DeleteBehavior.Restrict);
 
+            builder.Entity<Schedule>()
+                .HasOne(s => s.Cooperative)
+                .WithOne(c => c.Schedule)
+                .HasForeignKey<Schedule>(c => c.CooperativeId)
+                .OnDelete(DeleteBehavior.Cascade);
+
             base.OnModelCreating(builder);
         }
     }
