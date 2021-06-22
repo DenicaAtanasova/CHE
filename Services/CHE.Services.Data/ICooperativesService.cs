@@ -1,26 +1,19 @@
 ﻿namespace CHE.Services.Data
 {
     using CHE.Web.InputModels.Cooperatives;
+
     using System.Collections.Generic;
     using System.Threading.Tasks;
 
     public interface ICooperativesService
     {
-        Task<bool> CreateAsync(
-            string name, 
-            string info, 
-            string gradeValue, 
+        Task<string> CreateAsync(
             string creatorId,
-            CooperativeAddressInputModel addres);
+            CooperativeCreateInputModel inputModel);
 
-        Task<bool> UpdateAsync(
-            string cooperativeId, 
-            string name, 
-            string info, 
-            string gradeValue,
-            CooperativeAddressInputModel addres);
+        Task UpdateAsync(CooperativeUpdateInputModel inputModel);
 
-        Task<bool> DeleteAsync(string id);
+        Task DeleteAsync(string id);
 
         Task<TEntity> GetByIdAsync<TEntity>(string id);
 
@@ -31,7 +24,7 @@
             string cityFilter,
             string neighbourhoodFilter);
 
-        Task<IEnumerable<TEntity>> GetAllByCreatorAsync<TEntity>(string username);
+        Task<IEnumerable<TEntity>> GetAllByCreatorAsync<TEntity>(string userId);
 
         Task AddMemberAsync(string userId, string cooperativeId);
 
@@ -39,11 +32,9 @@
 
         Task<IEnumerable<TEntity>> GetMembersAsync<TEntity>(string id);
 
-        Task<bool> CheckIfMemberAsync(string username, string cooperativeId);
+        Task<bool> CheckIfMemberAsync(string userId, string cooperativeId);
 
-        Task<bool> CheckIfCreatorAsync(string username, string cooperativeId);
-
-        //Task<IEnumerable<TEntity>> GetRequestsAsync<TEntity>(string id);
+        Task<bool> CheckIfCreatorAsync(string userId, string cooperativeId);
 
         Task<int> Count(
             string gradeFilter = null,

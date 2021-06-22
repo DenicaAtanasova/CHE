@@ -15,10 +15,12 @@
     public class CheUsersService : ICheUsersService
     {
         private readonly CheDbContext _dbContext;
+        private readonly ICooperativesService _cooperativesService;
 
-        public CheUsersService(CheDbContext dbContext)
+        public CheUsersService(CheDbContext dbContext, ICooperativesService cooperativesService)
         {
             this._dbContext = dbContext;
+            this._cooperativesService = cooperativesService;
         }
 
         public async Task<TEntity> GetByIdAsync<TEntity>(string id)
@@ -58,39 +60,21 @@
             return await filteredTachers.CountAsync();
         }
 
-        private IQueryable<CheUser> FilterCollection(string schoolLevelFilter = null)
-        {
-            var teachers = this._dbContext.Users
-                .AsNoTracking()
-                .Where(x => x.RoleName == GlobalConstants.TEACHER_ROLE);
-
-            if (schoolLevelFilter != null)
-            {
-                var schoolLevel = (SchoolLevel)Enum.Parse(typeof(SchoolLevel), schoolLevelFilter);
-                teachers = teachers.Where(x => x.Portfolio.SchoolLevel == schoolLevel);
-            }
-
-            return teachers;
-        }
-
         public async Task AcceptRequestAsync(string requestId)
         {
             var request = await this._dbContext.JoinRequests
                 .SingleOrDefaultAsync(x => x.Id == requestId);
 
+            
             // request is send from parent to cooperative
             if (request.ReceiverId == null)
             {
-                //TODO: AddMemberToCooperativeAsync
-                //await this._cooperativesService
-                //    .AddMemberAsync(request.SenderId, request.CooperativeId);
+                await this._cooperativesService.AddMemberAsync(request.SenderId, request.CooperativeId);
             }
             // request is send from parent to teacher 
             else
             {
-                //TODO: AddMemberToCooperativeAsync
-                //await this._cooperativesService
-                //    .AddMemberAsync(request.ReceiverId, request.CooperativeId);
+                await this._cooperativesService.AddMemberAsync(request.ReceiverId, request.CooperativeId);
             }
 
             this._dbContext.Remove(request);
@@ -106,6 +90,21 @@
             this._dbContext.Remove(requestToDelete);
 
             await this._dbContext.SaveChangesAsync();
+        }
+
+        private IQueryable<CheUser> FilterCollection(string schoolLevelFilter = null)
+        {
+            var teachers = this._dbContext.Users
+                .AsNoTracking()
+                .Where(x => x.RoleName == GlobalConstants.TEACHER_ROLE);
+
+            if (schoolLevelFilter != null)
+            {
+                var schoolLevel = (SchoolLevel)Enum.Parse(typeof(SchoolLevel), schoolLevelFilter);
+                teachers = teachers.Where(x => x.Portfolio.SchoolLevel == schoolLevel);
+            }
+
+            return teachers;
         }
     }
 }

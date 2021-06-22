@@ -1,11 +1,11 @@
 ﻿namespace CHE.Web.ViewComponents
 {
+    using CHE.Services.Data;
+    using CHE.Web.ViewModels.JoinRequests;
+
     using Microsoft.AspNetCore.Mvc;
 
     using System.Threading.Tasks;
-
-    using CHE.Services.Data;
-    using CHE.Web.ViewModels.JoinRequests;
 
     public class CooperativesListViewComponent : ViewComponent
     {
@@ -16,10 +16,10 @@
             this._cooperativesService = cooperativesService;
         }
 
-        public async Task<IViewComponentResult> InvokeAsync(string creatorUsername)
+        public async Task<IViewComponentResult> InvokeAsync(string userId)
         {
             var cooperativesList = await this._cooperativesService
-                .GetAllByCreatorAsync<JoinRequestCooperativeSendViewModel>(creatorUsername);
+                .GetAllByCreatorAsync<JoinRequestCooperativeSendViewModel>(userId);
 
             return this.View(cooperativesList);
         }

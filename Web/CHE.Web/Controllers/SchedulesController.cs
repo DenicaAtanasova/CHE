@@ -3,7 +3,9 @@
     using System.Threading.Tasks;
 
     using Microsoft.AspNetCore.Mvc;
+    using Microsoft.AspNetCore.Identity;
 
+    using CHE.Data.Models;
     using CHE.Services.Data;
     using CHE.Web.ViewModels.Schedules;
 
@@ -12,13 +14,16 @@
         private const string COOPERATIVE_LAYOUT = "/Views/Shared/_LayoutCooperative.cshtml";
         private const string TEACHER_LAYOUT = "/Areas/Identity/Pages/Account/Manage/_Layout.cshtml";
 
+        private readonly UserManager<CheUser> _userManager;
         private readonly ISchedulesService _schedulesService;
         private readonly ICooperativesService _cooperativesService;
 
         public SchedulesController(
+            UserManager<CheUser> userManager,
             ISchedulesService schedulesService,
             ICooperativesService cooperativesService)
         {
+            this._userManager = userManager;
             this._schedulesService = schedulesService;
             this._cooperativesService = cooperativesService;
         }
@@ -27,10 +32,11 @@
         public async Task<IActionResult> Details(string id)
         {
             var schedule = await this._schedulesService.GetByIdAsync<ScheduleViewModel>(id);
+            var userId = this._userManager.GetUserId(this.User);
             this.ViewData["isAuthenticated"] = await this._cooperativesService
-                                                .CheckIfMemberAsync(this.User.Identity.Name, schedule.CooperativeId) ||
+                                                .CheckIfMemberAsync(userId, schedule.CooperativeId) ||
                                                await this._cooperativesService
-                                                .CheckIfCreatorAsync(this.User.Identity.Name, schedule.CooperativeId);
+                                                .CheckIfCreatorAsync(userId, schedule.CooperativeId);
             this.ViewData["id"] = schedule.CooperativeId;
             this.ViewData["scheduleId"] = schedule.Id;
 

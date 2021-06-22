@@ -28,6 +28,7 @@
 
         public async Task<IActionResult> Details(string id)
         {
+            var us =this.User;
             if (id == null)
             {
                 return this.NotFound();

@@ -41,12 +41,8 @@
             }
 
             var userId = this._userManager.GetUserId(this.User);
-            var createSuccessful = await this._cooperativesService
-                .CreateAsync(model.Name, model.Info, model.Grade, userId, model.Address);
-            if (!createSuccessful)
-            {
-                return this.BadRequest();
-            }
+             await this._cooperativesService
+                .CreateAsync(userId, model);
 
             return this.RedirectToAction("All", "Cooperatives", new { area = ""});
         }
@@ -67,12 +63,7 @@
                 return this.View(model.Id);
             }
 
-            var updateSuccessful = await this._cooperativesService
-                .UpdateAsync(model.Id, model.Name, model.Info, model.Grade, model.Address);
-            if (!updateSuccessful)
-            {
-                return this.BadRequest();
-            }
+            await this._cooperativesService.UpdateAsync(model);
 
             return this.RedirectToAction("Details", "Cooperatives", new { area = "", id = model.Id });
         }
@@ -84,12 +75,7 @@
                 return this.NotFound();
             }
 
-            var deleteSuccessful = await this._cooperativesService
-                .DeleteAsync(id);
-            if (!deleteSuccessful)
-            {
-                return this.BadRequest();
-            }
+            await this._cooperativesService.DeleteAsync(id);
 
             return this.RedirectToAction("All", "Cooperatives", new { area = "" });
         }

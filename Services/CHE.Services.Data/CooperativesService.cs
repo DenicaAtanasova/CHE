@@ -16,76 +16,59 @@
     {
         private readonly CheDbContext _dbContext;
         private readonly IGradesService _gradesService;
+        private readonly IAddressesService _addressesService;
 
         public CooperativesService(
             CheDbContext dbContext,
-            IGradesService gradesService)
+            IGradesService gradesService,
+            IAddressesService addressesService)
         {
             this._dbContext = dbContext;
             this._gradesService = gradesService;
+            this._addressesService = addressesService;
         }
 
-        public async Task<bool> CreateAsync(
-            string name, 
-            string info, 
-            string gradeValue, 
+        public async Task<string> CreateAsync(
             string creatorId,
-            CooperativeAddressInputModel address)
+            CooperativeCreateInputModel inputModel)
         {
-            //TODO: Get address from address service
-            var cooperativeAddress = address.Map<CooperativeAddressInputModel, Address>();
-
             var cooperative = new Cooperative
             {
-                Name = name,
-                Info = info,
                 CreatorId = creatorId,
+                Name = inputModel.Name,
+                Info = inputModel.Info,
                 CreatedOn = DateTime.UtcNow,
-                GradeId = await this._gradesService.GetGardeIdAsync(gradeValue),
+                GradeId = await this._gradesService.GetGardeIdAsync(inputModel.Grade),
                 Schedule = new Schedule { CreatedOn = DateTime.UtcNow },
-                Address = cooperativeAddress
+                AddressId = await this._addressesService.GetAddressIdAsync(inputModel.Address)
             };
 
             this._dbContext.Add(cooperative);
-            var result = await this._dbContext.SaveChangesAsync() > 0;
+            await this._dbContext.SaveChangesAsync();
 
-            return result;
+            return cooperative.Id;
         }
 
-        public async Task<bool> UpdateAsync(
-            string id, 
-            string name, 
-            string info, 
-            string gradeValue,
-            CooperativeAddressInputModel address)
+        public async Task UpdateAsync(
+            CooperativeUpdateInputModel inputModel)
         {
-            var cooperativeToUpdate = await this._dbContext.Cooperatives
-                .SingleOrDefaultAsync(x => x.Id == id);
-
-            cooperativeToUpdate.Name = name;
-            cooperativeToUpdate.Info = info;
-            cooperativeToUpdate.GradeId = await this._gradesService.GetGardeIdAsync(gradeValue);
+            var cooperativeToUpdate = new Cooperative { Id = inputModel.Id };
+            cooperativeToUpdate.Name = inputModel.Name;
+            cooperativeToUpdate.Info = inputModel.Info;
+            cooperativeToUpdate.CreatorId = inputModel.CreatorId;
+            cooperativeToUpdate.CreatedOn = inputModel.CreatedOn;
+            cooperativeToUpdate.GradeId = await this._gradesService.GetGardeIdAsync(inputModel.Grade);
             cooperativeToUpdate.ModifiedOn = DateTime.UtcNow;
-
-            //TODO: Get address from address service
-            var updatedAddress = address.Map<CooperativeAddressInputModel, Address>();
-            cooperativeToUpdate.Address = updatedAddress;
+            cooperativeToUpdate.AddressId = await this._addressesService.GetAddressIdAsync(inputModel.Address);
 
             this._dbContext.Cooperatives.Update(cooperativeToUpdate);
-            var result = await this._dbContext.SaveChangesAsync() > 0;
-
-            return result;
+            await this._dbContext.SaveChangesAsync();
         }
 
-        public async Task<bool> DeleteAsync(string id)
+        public async Task DeleteAsync(string id)
         {
-            var cooperativeToDelete = await this._dbContext.Cooperatives
-                .SingleOrDefaultAsync(x => x.Id == id);
-
-            this._dbContext.Remove(cooperativeToDelete);
-            var result = await this._dbContext.SaveChangesAsync() > 0;
-
-            return result;
+            this._dbContext.Remove(new Cooperative { Id = id });
+            await this._dbContext.SaveChangesAsync();
         }
 
         public async Task<TEntity> GetByIdAsync<TEntity>(string id)
@@ -117,28 +100,33 @@
             return cooperatives;
         }
 
-        public async Task<IEnumerable<TEntity>> GetAllByCreatorAsync<TEntity>(string username) 
+        public async Task<IEnumerable<TEntity>> GetAllByCreatorAsync<TEntity>(string userId) 
             => await this._dbContext.Cooperatives
                 .AsNoTracking()
-                .Where(x => x.Creator.UserName == username)
+                .Where(x => x.Creator.Id == userId)
                 .To<TEntity>()
                 .ToListAsync();
 
-        //TODO: Move members methods
         public async Task AddMemberAsync(string userId, string cooperativeId)
-            => await this._dbContext.UserCooperatives.AddAsync(
+        {
+            this._dbContext.UserCooperatives.Add(
                 new CheUserCooperative
                 {
                     CooperativeId = cooperativeId,
                     CheUserId = userId
                 });
 
+            await this._dbContext.SaveChangesAsync();
+        }
+
         public async Task RemoveMemberAsync(string memberId, string cooperativeId)
         {
-            var cooperativeMember = await this._dbContext.UserCooperatives
-                .SingleOrDefaultAsync(x => x.CheUserId == memberId && x.CooperativeId == cooperativeId);
-
-            this._dbContext.UserCooperatives.Remove(cooperativeMember);
+            this._dbContext.UserCooperatives.Remove(
+                new CheUserCooperative
+                {
+                    CooperativeId = cooperativeId,
+                    CheUserId = memberId
+                });
 
             await this._dbContext.SaveChangesAsync();
         }
@@ -150,13 +138,13 @@
                 .To<TEntity>()
                 .ToListAsync();
 
-        public async Task<bool> CheckIfMemberAsync(string username, string cooperativeId)
+        public async Task<bool> CheckIfMemberAsync(string userId, string cooperativeId)
             => await this._dbContext.UserCooperatives
-                .AnyAsync(x => x.CheUser.UserName == username && x.CooperativeId == cooperativeId);
+                .AnyAsync(x => x.CheUserId == userId && x.CooperativeId == cooperativeId);
 
-        public async Task<bool> CheckIfCreatorAsync(string username, string cooperativeId)
+        public async Task<bool> CheckIfCreatorAsync(string userId, string cooperativeId)
             => await this._dbContext.Cooperatives
-                .AnyAsync(x => x.Creator.UserName == username && x.Id == cooperativeId);
+                .AnyAsync(x => x.Creator.Id == userId && x.Id == cooperativeId);
 
         public async Task<int> Count(
             string gradeFilter = null,
