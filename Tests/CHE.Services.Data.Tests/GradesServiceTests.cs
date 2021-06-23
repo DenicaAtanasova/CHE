@@ -12,7 +12,6 @@
 
     using Xunit;
 
-
     public class GradesServiceTests
     {
         private readonly CheDbContext _dbContext;
@@ -27,7 +26,6 @@
 
             this._gradesService = new GradesService(this._dbContext);
         }
-
         [Theory]
         [InlineData("First")]
         [InlineData("Second")]

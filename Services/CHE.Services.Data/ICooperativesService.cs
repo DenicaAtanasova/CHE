@@ -18,11 +18,11 @@
         Task<TEntity> GetByIdAsync<TEntity>(string id);
 
         Task<IEnumerable<TEntity>> GetAllAsync<TEntity>(
-            int startIndex, 
-            int endIndex,
-            string gradeFilter,
-            string cityFilter,
-            string neighbourhoodFilter);
+            int startIndex = 1,
+            int endIndex = 0,
+            string gradeFilter = null,
+            string cityFilter = null,
+            string neighbourhoodFilter = null);
 
         Task<IEnumerable<TEntity>> GetAllByCreatorAsync<TEntity>(string userId);
 
@@ -36,7 +36,7 @@
 
         Task<bool> CheckIfCreatorAsync(string userId, string cooperativeId);
 
-        Task<int> Count(
+        Task<int> CountAsync(
             string gradeFilter = null,
             string cityFilter = null,
             string neighbourhoodFilter = null);

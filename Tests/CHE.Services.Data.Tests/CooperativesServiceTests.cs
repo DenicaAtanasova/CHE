@@ -1,395 +1,668 @@
 ﻿namespace CHE.Services.Data.Tests
 {
+    using CHE.Data;
+    using CHE.Data.Models;
+    using CHE.Services.Mapping;
+    using CHE.Web.InputModels.Cooperatives;
+    using CHE.Web.ViewModels.Cooperatives;
+    using Microsoft.EntityFrameworkCore;
+
+    using Moq;
+
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using System.Text;
     using System.Threading.Tasks;
 
+    using Xunit;
     public class CooperativesServiceTests
     {
-        //private readonly string CREATOR_ID = Guid.NewGuid().ToString();
-        //private const string USERNAME = "Username";
-
-        //private const string COOPERATIVE_NAME = "Name";
-        //private const string COOPERATIVE_INFO = "Info";
-        //private const string COOPERATIVE_GRADE = "First";
-
-        //private readonly CheUser testCreator;
-        //private readonly Cooperative testCooperetaive;
-        //private readonly Address testAddress;
-
-        //private readonly ICooperativesService _cooperativesService;
-        //private readonly IGradesService _gradesService;
-
-        //public CooperativesServiceTests()
-        //    : base()
-        //{
-        //    this._gradesService = this.ServiceProvider.GetRequiredService<IGradesService>();
-        //    this._cooperativesService = this.ServiceProvider.GetRequiredService<ICooperativesService>();
-
-        //    this.testAddress = this.SetAddress();
-        //    this.testCooperetaive = this.SetCooperative();
-        //    this.testCreator = this.SetUser();
-
-        //    this.AddFirstAndSecondGradesAsync().GetAwaiter().GetResult();
-        //    this.AddTestCooperativeAsync().GetAwaiter().GetResult();
-        //}
-
-        //#region CreateAsync
-        //[Fact]
-        //public async Task CreateAsyncShouldCreateCooperative()
-        //{
-        //    var createSuccessful = await this._cooperativesService
-        //        .CreateAsync(COOPERATIVE_NAME, COOPERATIVE_INFO, COOPERATIVE_GRADE, CREATOR_ID, testAddress);
-
-        //    Assert.True(createSuccessful);
-        //}
-
-        //[Fact]
-        //public async Task CreateAsyncShouldSetCreatedOnDateToDateTimeUtcNow()
-        //{
-        //    await this._cooperativesService
-        //        .CreateAsync(COOPERATIVE_NAME, COOPERATIVE_INFO, COOPERATIVE_GRADE, CREATOR_ID, testAddress);
-
-        //    var expectedDate = DateTime.UtcNow;
-        //    var actualDate = await this.DbContext.Cooperatives
-        //        .Where(x => x.CreatorId == CREATOR_ID)
-        //        .Select(x => x.CreatedOn)
-        //        .FirstOrDefaultAsync();
-
-        //    Assert.Equal(expectedDate, actualDate, new TimeSpan(days: 0, hours: 0, minutes: 0, seconds: 0, milliseconds: 100));
-        //}
-        //#endregion
-
-        //#region UpdateAsync
-        //[Fact]
-        //public async Task UpdateAsyncShouldUpdateCooperative()
-        //{
-        //    var updateSuccessful = await this._cooperativesService
-        //        .UpdateAsync(this.testCooperetaive.Id, COOPERATIVE_NAME, COOPERATIVE_INFO, COOPERATIVE_GRADE, this.testAddress);
-
-        //    Assert.True(updateSuccessful);
-        //}
-
-        //[Fact]
-        //public async Task UpdateAsyncShouldUpdateCooperativeNameWhenNameChanged()
-        //{
-        //    var updatedName = "Updated name";
-        //    await this._cooperativesService
-        //        .UpdateAsync(this.testCooperetaive.Id, updatedName, COOPERATIVE_INFO, COOPERATIVE_GRADE, this.testAddress);
-
-        //    Assert.Equal(updatedName, this.testCooperetaive.Name);
-        //}
-
-        //[Fact]
-        //public async Task UpdateAsyncShouldUpdateCooperativeInfoWhenInfoChanged()
-        //{
-        //    var updatedInfo = "Updated info";
-        //    await this._cooperativesService
-        //        .UpdateAsync(this.testCooperetaive.Id, COOPERATIVE_NAME, updatedInfo, COOPERATIVE_GRADE, this.testAddress);
-
-        //    Assert.Equal(updatedInfo, this.testCooperetaive.Info);
-        //}
-
-        //[Fact]
-        //public async Task UpdateAsyncShouldUpdateCooperativeGradeWhenGradeChanged()
-        //{
-        //    var initialGradeId = this.testCooperetaive.GradeId;
-
-        //    var updatedGrade = "Second";
-        //    await this._cooperativesService
-        //        .UpdateAsync(this.testCooperetaive.Id, COOPERATIVE_NAME, COOPERATIVE_INFO, updatedGrade, this.testAddress);
-        //    var updatedGradeId = this.testCooperetaive.GradeId;
-
-        //    Assert.NotEqual(initialGradeId, updatedGradeId);
-        //}
-
-        //[Fact]
-        //public async Task UpdateAsyncShouldSetModifiedOnDateToDateTimeUtcNow()
-        //{
-        //    var address = new Address
-        //    {
-        //        City = "Plovdiv"
-        //    };
-
-        //    await this._cooperativesService.UpdateAsync(this.testCooperetaive.Id, COOPERATIVE_NAME, COOPERATIVE_INFO, COOPERATIVE_GRADE, address);
-        //    var expectedDate = DateTime.UtcNow;
-        //    var actualDate = this.testCooperetaive.ModifiedOn.Value;
-
-        //    Assert.Equal(expectedDate, actualDate, new TimeSpan(days: 0, hours: 0, minutes: 0, seconds: 0, milliseconds: 300));
-        //}
-
-        //[Fact]
-        //public async Task UpdateAsyncShouldUpdateCooperativeAddressWhenAddressChanged()
-        //{
-        //    var initialAddress = this.testCooperetaive.Address;
-
-        //    await this._cooperativesService
-        //        .UpdateAsync(this.testCooperetaive.Id, COOPERATIVE_NAME, COOPERATIVE_INFO, COOPERATIVE_GRADE, this.testAddress);
-
-        //    Assert.NotEqual<Address>(initialAddress, this.testCooperetaive.Address);
-        //}
-
-        //[Fact]
-        //public async Task UpdateAsyncShouldUpdateCooperativeAddressCityWhenCityChanged()
-        //{
-        //    this.testCooperetaive.Address = this.testAddress;
-        //    await this.DbContext.SaveChangesAsync();
-
-        //    var updatedCity = "Sofia";
-        //    var address = new Address
-        //    {
-        //        City = updatedCity
-        //    };
-        //    await this._cooperativesService
-        //        .UpdateAsync(this.testCooperetaive.Id, COOPERATIVE_NAME, COOPERATIVE_INFO, COOPERATIVE_GRADE, address);
-
-        //    Assert.Equal(updatedCity, this.testCooperetaive.Address.City);
-        //}
-
-        //[Fact]
-        //public async Task UpdateAsyncShouldUpdateCooperativeAddressNeighbourhoodWhenNeighbourhoodChanged()
-        //{
-        //    this.testCooperetaive.Address = this.testAddress;
-        //    await this.DbContext.SaveChangesAsync();
-
-        //    var updatedNeighbourhood = "Mladost";
-        //    var address = new Address
-        //    {
-        //        Neighbourhood = updatedNeighbourhood
-        //    };
-        //    await this._cooperativesService
-        //        .UpdateAsync(this.testCooperetaive.Id, COOPERATIVE_NAME, COOPERATIVE_INFO, COOPERATIVE_GRADE, address);
-
-        //    Assert.Equal(updatedNeighbourhood, this.testCooperetaive.Address.Neighbourhood);
-        //}
-
-        //[Fact]
-        //public async Task UpdateAsyncShouldUpdateCooperativeAddressStreetWhenStreetChanged()
-        //{
-        //    this.testCooperetaive.Address = this.testAddress;
-        //    await this.DbContext.SaveChangesAsync();
-
-        //    var updatedStreet = "Main street";
-        //    var address = new Address
-        //    {
-        //        Street = updatedStreet
-        //    };
-        //    await this._cooperativesService
-        //        .UpdateAsync(this.testCooperetaive.Id, COOPERATIVE_NAME, COOPERATIVE_INFO, COOPERATIVE_GRADE, address);
-
-        //    Assert.Equal(updatedStreet, this.testCooperetaive.Address.Street);
-        //}
-        //#endregion
-
-        //#region DeleteAsync
-        //[Fact]
-        //public async Task DeleteAsyncShouldDeleteCooperative()
-        //{
-        //    var deleteSuccessful = await this._cooperativesService.DeleteAsync(this.testCooperetaive.Id);
-
-        //    Assert.True(deleteSuccessful);
-        //}
-        //#endregion
-
-        //#region GetByIdAsync
-        //[Fact]
-        //public async Task GetByIdAsyncShouldReturnCorrectCooperative()
-        //{
-        //    var cooperative = await this._cooperativesService
-        //        .GetByIdAsync<Cooperative>(this.testCooperetaive.Id);
-
-        //    Assert.Equal(this.testCooperetaive.Id, cooperative.Id);
-        //}
-        //#endregion
-
-        //#region GetAllAsync
-        //[Fact]
-        //public async Task GetAllAsyncShouldReturnAllCooperatives()
-        //{
-        //    //var cooperatives = new List<Cooperative>
-        //    //{
-        //    //    new Cooperative
-        //    //    {
-        //    //        Name = "Name2",
-        //    //        Info = "Info2",
-        //    //        Grade = await this._gradesService.GetByValueAsync(COOPERATIVE_GRADE)
-        //    //    },
-        //    //    new Cooperative
-        //    //    {
-        //    //        Name = "Name3",
-        //    //        Info = "Info3",
-        //    //        Grade = await this._gradesService.GetByValueAsync(COOPERATIVE_GRADE)               
-        //    //    },
-        //    //    new Cooperative
-        //    //    {
-        //    //        Name = "Name4",
-        //    //        Info = "Info4",
-        //    //        Grade = await this._gradesService.GetByValueAsync(COOPERATIVE_GRADE)
-        //    //    }
-        //    //};
-        //    //await this.DbContext.AddRangeAsync(cooperatives);
-        //    //await this.DbContext.SaveChangesAsync();
-
-        //    //var undeletedCoperatives = await this._cooperativesService
-        //    //    .GetAllAsync<Cooperative>();
-
-        //    //var expectedCount = 4;
-        //    //var actualCount = undeletedCoperatives.Count();
-
-        //    //Assert.Equal(expectedCount, actualCount);
-        //}
-        //#endregion
-
-        //#region GetCreatorAllByUsernameAsync
-        //[Fact]
-        //public async Task GetCreatorAllByUsernameAsyncShouldReturnAllCreatorCooperatives()
-        //{
-        //    var cooperatives = new List<Cooperative>
-        //    {
-        //        new Cooperative
-        //        {
-        //            Name = "Name2",
-        //            Info = "Info2",
-        //            Grade = await this._gradesService.GetByValueAsync(COOPERATIVE_GRADE),
-        //            Creator = this.testCreator
-        //        },
-        //        new Cooperative
-        //        {
-        //            Name = "Name3",
-        //            Info = "Info3",
-        //            Grade = await this._gradesService.GetByValueAsync(COOPERATIVE_GRADE),
-        //            Creator = this.testCreator
-        //        },
-        //        new Cooperative
-        //        {
-        //            Name = "Name4",
-        //            Info = "Info4",
-        //            Grade = await this._gradesService.GetByValueAsync(COOPERATIVE_GRADE)
-        //        }
-        //    };
-
-        //    await this.DbContext.Cooperatives.AddRangeAsync(cooperatives);
-        //    await this.DbContext.SaveChangesAsync();
-
-        //    var creatorCooperatives = await this._cooperativesService
-        //        .GetCreatorAllByUsernameAsync<Cooperative>(this.testCreator.UserName);
-
-        //    var expectedCooperativesCount = 2;
-        //    var actualCooperativesCount = creatorCooperatives.Count();
-
-        //    Assert.Equal(expectedCooperativesCount, actualCooperativesCount);
-        //}
-        //#endregion
-
-        //#region AddMemberAsync
-        //[Fact]
-        //public async Task AddMemberAsyncShouldAddMemeber()
-        //{
-        //    var memberId = Guid.NewGuid().ToString();
-        //    await this._cooperativesService.AddMemberAsync(memberId, this.testCooperetaive.Id);
-
-        //    var expectedMembersCount = 1;
-        //    var actualMemebersCount = this.testCooperetaive.Members.Count;
-
-        //    Assert.Equal(expectedMembersCount, actualMemebersCount);
-        //}
-        //#endregion
-
-        //#region RemoveMemberAsync
-        //[Fact]
-        //public async Task RemoveMemberAsyncShouldRemoveMemeber()
-        //{
-        //    var members = new List<CheUserCooperative>();
-
-        //    var firstMmemberId = Guid.NewGuid().ToString();
-        //    var firstMember = new CheUserCooperative
-        //    {
-        //        CheUserId = firstMmemberId,
-        //        CooperativeId = this.testCooperetaive.Id
-        //    };
-        //    members.Add(firstMember);
-
-        //    var secondMemberId = Guid.NewGuid().ToString();
-        //    var secondMember = new CheUserCooperative
-        //    {
-        //        CheUserId = secondMemberId,
-        //        CooperativeId = this.testCooperetaive.Id
-        //    };
-        //    members.Add(secondMember);
-
-        //    await this.DbContext.UserCooperatives.AddRangeAsync(members);
-        //    await this.DbContext.SaveChangesAsync();
-
-        //    await this._cooperativesService.RemoveMemberAsync(firstMmemberId, this.testCooperetaive.Id);
-
-        //    var expectedMembersCount = 1;
-        //    var actualMemebersCount = this.testCooperetaive.Members.Count;
-
-        //    Assert.Equal(expectedMembersCount, actualMemebersCount);
-        //}
-        //#endregion
-
-        //private async Task AddTestCooperativeAsync()
-        //{
-        //    await this.DbContext.Cooperatives.AddAsync(this.testCooperetaive);
-        //    await this.DbContext.SaveChangesAsync();
-        //}
-
-        //private Address SetAddress()
-        //{
-        //    var address = new Address
-        //    {
-        //        City = "Test city",
-        //        Neighbourhood = "Test neighbourhood",
-        //        Street = "Test street"
-        //    };
-
-        //    return address;
-        //}
-
-        //private Cooperative SetCooperative()
-        //{
-        //    var cooperative = new Cooperative
-        //    {
-        //        Name = "Test name",
-        //        Info = "Test info",
-        //        Grade = this._gradesService.GetByValueAsync(COOPERATIVE_GRADE).GetAwaiter().GetResult()               
-        //    };
-
-        //    return cooperative;
-        //}
-
-        //private CheUser SetUser()
-        //{
-        //    var user = new CheUser
-        //    {
-        //        Id = CREATOR_ID,
-        //        UserName = USERNAME,
-        //    };
-
-        //    return user;
-        //}
-
-        //private async Task AddFirstAndSecondGradesAsync()
-        //{
-        //    var grades = new List<Grade>
-        //    {
-        //        new Grade
-        //        {
-        //            Value = "First",
-        //            NumValue = 1
-        //        },
-        //        new Grade
-        //        {
-        //            Value = "Second",
-        //            NumValue = 2
-        //        }
-        //    };
-
-        //    await this.DbContext.Grades.AddRangeAsync(grades);
-        //    await this.DbContext.SaveChangesAsync();
-        //}
+        private const string FIRST_GRADE = "First";
+        private readonly string FIRST_GRADE_ID = Guid.NewGuid().ToString();
+
+        private readonly CooperativeAddressInputModel ADDRESS = new CooperativeAddressInputModel
+        {
+            City = "Sofia",
+            Neighbourhood = "Dianabad"
+        };
+        private readonly string ADDRESS_ID = Guid.NewGuid().ToString();
+
+        private readonly CheDbContext _dbContext;
+        private readonly ICooperativesService _cooperativesService;
+
+        public CooperativesServiceTests()
+        {
+            var options = new DbContextOptionsBuilder<CheDbContext>()
+                .UseInMemoryDatabase(Guid.NewGuid().ToString())
+                .Options;
+            this._dbContext = new CheDbContext(options);
+
+            var gradesService = new Mock<IGradesService>();
+            gradesService.Setup(x => x.GetGardeIdAsync(FIRST_GRADE))
+                .ReturnsAsync(FIRST_GRADE_ID);
+
+            var addressesService = new Mock<IAddressesService>();
+            addressesService.Setup(x => x.GetAddressIdAsync(ADDRESS))
+                .ReturnsAsync(ADDRESS_ID);
+
+            this._cooperativesService = new CooperativesService(this._dbContext, gradesService.Object, addressesService.Object);
+
+            AutoMapperConfig.RegisterMappings(
+                typeof(CooperativeCreateInputModel).Assembly,
+                typeof(CooperativeAllViewModel).Assembly);
+        }
+
+        [Fact]
+        public async Task CreateAsync_ShouldWorkCorrectly()
+        {
+            var creatorId = Guid.NewGuid().ToString();
+
+            var cooperative = new CooperativeCreateInputModel
+            {
+                Name = "CoopName",
+                Info = "CoopInfo",
+                Grade = FIRST_GRADE,
+                Address = ADDRESS
+            };
+
+            var cooperativeId = await this._cooperativesService.CreateAsync(creatorId, cooperative);
+            var expectedCreatedOnDate = DateTime.UtcNow;
+            var cooperativeFromDb = await this._dbContext.Cooperatives.SingleOrDefaultAsync();
+
+            Assert.Equal(cooperativeFromDb.Id, cooperativeId);
+            Assert.Equal(creatorId, cooperativeFromDb.CreatorId);
+            Assert.Equal(cooperative.Name, cooperativeFromDb.Name);
+            Assert.Equal(cooperative.Info, cooperativeFromDb.Info);
+            Assert.Equal(FIRST_GRADE_ID, cooperativeFromDb.GradeId);
+            Assert.Equal(ADDRESS_ID, cooperativeFromDb.AddressId);
+            Assert.Equal(expectedCreatedOnDate, cooperativeFromDb.CreatedOn,
+                new TimeSpan(days: 0, hours: 0, minutes: 0, seconds: 0, milliseconds: 1000));
+            Assert.NotNull(cooperativeFromDb.Schedule);
+        }
+
+        [Fact]
+        public async Task UpdateAsync_ShouldWorkCorrectly()
+        {
+            var creatorId = Guid.NewGuid().ToString();
+
+            var cooperative = new Cooperative
+            {
+                Name = "CoopName",
+                Info = "CoopInfo",
+                Grade = new Grade
+                {
+                    NumValue = 2,
+                    Value = "Second"
+                },
+                Address = new Address
+                {
+                    City = "Varna",
+                    Neighbourhood = "Levski"
+                },
+                CreatorId = Guid.NewGuid().ToString()
+            };
+
+            this._dbContext.Cooperatives.Add(cooperative);
+            await this._dbContext.SaveChangesAsync();
+            this._dbContext.Entry(cooperative).State = EntityState.Detached;
+
+            var updatedName = "updatedName";
+            var updatedInfo = "updatedInfo";
+
+            var cooperativeUpdateModel = new CooperativeUpdateInputModel
+            {
+                Id = cooperative.Id,
+                Name = updatedName,
+                Info = updatedInfo,
+                Grade = FIRST_GRADE,
+                Address = ADDRESS,
+                CreatorId = cooperative.CreatorId,
+                CreatedOn = cooperative.CreatedOn
+            };
+
+            await this._cooperativesService
+                .UpdateAsync(cooperativeUpdateModel);
+            var expectedModifiedOnDate = DateTime.UtcNow;
+
+            var updatedCooperative = await this._dbContext.Cooperatives
+                .SingleOrDefaultAsync(x => x.Id == cooperative.Id);
+
+            Assert.Equal(cooperativeUpdateModel.Name, updatedCooperative.Name);
+            Assert.Equal(cooperativeUpdateModel.Info, updatedCooperative.Info);
+            Assert.Equal(cooperativeUpdateModel.CreatorId, updatedCooperative.CreatorId);
+            Assert.Equal(FIRST_GRADE_ID, updatedCooperative.GradeId);
+            Assert.Equal(ADDRESS_ID, updatedCooperative.AddressId);
+            Assert.Equal(expectedModifiedOnDate, updatedCooperative.ModifiedOn.Value, new TimeSpan(days: 0, hours: 0, minutes: 0, seconds: 0, milliseconds: 1000));
+        }
+
+        [Fact]
+        public async Task DeleteAsync_ShouldWorkCorrectly()
+        {
+            var cooperative = new Cooperative
+            {
+                Name = "CoopName",
+                Info = "CoopInfo",
+                Grade = new Grade
+                {
+                    NumValue = 2,
+                    Value = "Second"
+                },
+                Address = new Address
+                {
+                    City = "Varna",
+                    Neighbourhood = "Levski"
+                },
+                CreatorId = Guid.NewGuid().ToString()
+            };
+
+            this._dbContext.Cooperatives.Add(cooperative);
+            await this._dbContext.SaveChangesAsync();
+            this._dbContext.Entry(cooperative).State = EntityState.Detached;
+
+            await this._cooperativesService.DeleteAsync(cooperative.Id);
+
+            Assert.Empty(this._dbContext.Cooperatives);
+            Assert.Empty(this._dbContext.Schedules);
+        }
+
+        [Fact]
+        public async Task GetByIdAsync_ShouldWorkCorrectly()
+        {
+            var cooperative = new Cooperative
+            {
+                Name = "CoopName",
+                Info = "CoopInfo",
+                Grade = new Grade
+                {
+                    NumValue = 2,
+                    Value = "Second"
+                },
+                Address = new Address
+                {
+                    City = "Varna",
+                    Neighbourhood = "Levski"
+                },
+                CreatorId = Guid.NewGuid().ToString()
+            };
+
+            this._dbContext.Cooperatives.Add(cooperative);
+            await this._dbContext.SaveChangesAsync();
+
+            var cooperativeFromDb = await this._cooperativesService
+                .GetByIdAsync<CooperativeUpdateInputModel>(cooperative.Id);
+
+            Assert.Equal(cooperative.Id, cooperativeFromDb.Id);
+        }
+
+        [Fact]
+        public async Task GetAllAsync_ShouldWorkCorrectlyWithoutArgs()
+        {
+            var cooperatives = new List<Cooperative>
+            {
+                new Cooperative
+                {
+                    Name = "Name1",
+                    Info = "Info1",
+                },
+                new Cooperative
+                {
+                    Name = "Name2",
+                    Info = "Info2",
+                },
+                new Cooperative
+                {
+                    Name = "Name3",
+                    Info = "Info3",
+                },
+                new Cooperative
+                {
+                    Name = "Name4",
+                    Info = "Info4",
+                }
+            };
+            await this._dbContext.AddRangeAsync(cooperatives);
+            await this._dbContext.SaveChangesAsync();
+
+            var cooperativesFromDb = await this._cooperativesService
+                .GetAllAsync<CooperativeAllViewModel>();
+
+            Assert.Equal(cooperatives.Count, cooperativesFromDb.Count());
+
+            var index = 0;
+            foreach (var cooperative in cooperativesFromDb)
+            {
+                Assert.Equal(cooperatives[index++].Id, cooperative.Id);
+            }
+        }
+
+        [Theory]
+        [InlineData(0, 0, null, null, null)]
+        [InlineData(-2, 0, null, null, null)]
+        [InlineData(1, 6, null, null, null)]
+        [InlineData(0, 2, "First", null, null)]
+        [InlineData(0, 6, null, "Sofia", null)]
+        [InlineData(1, 6, null, null, "Levski")]
+        [InlineData(0, 6, "First", "Sofia", null)]
+        [InlineData(1, 6, "First", "Sofia", "Levski")]
+        public async Task GetAllAsync_ShouldWorkCorrectlyWithArgs(
+            int startIndex,
+            int endIndex,
+            string gradeFilter,
+            string cityFilter,
+            string neighbourhoodFilter)
+        {
+            var cooperatives = new List<Cooperative>
+            {
+                new Cooperative
+                {
+                    Name = "Name1",
+                    Info = "Info1",
+                    Grade = new Grade
+                    {
+                        NumValue = 1,
+                        Value = "First"
+                    },
+                    Address = new Address
+                    {
+                        City = "Sofia",
+                        Neighbourhood = "Dianabad"
+                    }
+                },
+                new Cooperative
+                {
+                    Name = "Name2",
+                    Info = "Info2",
+                    Grade = new Grade
+                    {
+                        NumValue = 1,
+                        Value = "First"
+                    },
+                    Address = new Address
+                    {
+                        City = "Sofia",
+                        Neighbourhood = "Levski"
+                    }
+                },
+                new Cooperative
+                {
+                    Name = "Name3",
+                    Info = "Info3",
+                    Grade = new Grade
+                    {
+                        NumValue = 2,
+                        Value = "Second"
+                    },
+                    Address = new Address
+                    {
+                        City = "Sofia",
+                        Neighbourhood = "Vitosha"
+                    }
+                },
+                new Cooperative
+                {
+                    Name = "Name4",
+                    Info = "Info4",
+                    Grade = new Grade
+                    {
+                        NumValue = 3,
+                        Value = "Third"
+                    },
+                    Address = new Address
+                    {
+                        City = "Varna",
+                        Neighbourhood = "Levski"
+                    }
+                }
+            };
+            await this._dbContext.AddRangeAsync(cooperatives);
+            await this._dbContext.SaveChangesAsync();
+
+            var cooperativesFromDb = await this._cooperativesService
+                .GetAllAsync<CooperativeAllViewModel>(startIndex, endIndex, gradeFilter, cityFilter, neighbourhoodFilter);
+
+            var count = endIndex == 0
+                ? await this._dbContext.Cooperatives.CountAsync()
+                : endIndex;
+
+            cooperatives = this.GetFilterCollection(cooperatives, gradeFilter, cityFilter, neighbourhoodFilter)
+                .Skip((startIndex - 1) * count)
+                .Take(count)
+                .ToList();
+
+            Assert.Equal(cooperatives.Count, cooperativesFromDb.Count());
+
+            var index = 0;
+            foreach (var cooperative in cooperativesFromDb)
+            {
+                Assert.Equal(cooperatives[index++].Id, cooperative.Id);
+            }
+        }
+
+        [Fact]
+        public async Task GetAllByCreatorAsync_ShouldWorkCorrectly()
+        {
+            var creatorId = Guid.NewGuid().ToString();
+
+            var cooperatives = new List<Cooperative>
+            {
+                new Cooperative
+                {
+                    Name = "Name1",
+                    Info = "Info1",
+                    CreatorId = creatorId
+                },
+                new Cooperative
+                {
+                    Name = "Name2",
+                    Info = "Info2",
+                    CreatorId = creatorId
+                },
+                new Cooperative
+                {
+                    Name = "Name3",
+                    Info = "Info3",
+                    CreatorId = creatorId
+                },
+                new Cooperative
+                {
+                    Name = "Name4",
+                    Info = "Info4",
+                    CreatorId = creatorId
+                }
+            };
+
+            this._dbContext.Cooperatives.AddRange(cooperatives);
+            await this._dbContext.SaveChangesAsync();
+
+            var cooperativesFromDb = await this._cooperativesService
+                .GetAllByCreatorAsync<CooperativeAllViewModel>(creatorId);
+
+            Assert.Equal(cooperatives.Count, cooperativesFromDb.Count());
+
+            var index = 0;
+            foreach (var cooperative in cooperativesFromDb)
+            {
+                Assert.Equal(cooperatives[index++].Id, cooperative.Id);
+            }
+        }
+
+        //TODO: Test if member exists?
+        [Fact]
+        public async Task AddMemberAsync_ShouldWorkCorrectly()
+        {
+            var memberId = Guid.NewGuid().ToString();
+            var cooperativeId = Guid.NewGuid().ToString();
+            await this._cooperativesService.AddMemberAsync(memberId, cooperativeId);
+
+            var memberFromDb = await this._dbContext.UserCooperatives
+                .SingleOrDefaultAsync(x => x.CheUserId == memberId && x.CooperativeId == cooperativeId);
+
+            var expectedMembersCount = 1;
+            Assert.Equal(expectedMembersCount, this._dbContext.UserCooperatives.Count());
+        }
+
+        [Fact]
+        public async Task RemoveMemberAsync_ShouldWorkCorrectly()
+        {
+            var memberId = Guid.NewGuid().ToString();
+            var cooperativeId = Guid.NewGuid().ToString();
+
+            var member = new CheUserCooperative
+            {
+                CooperativeId = cooperativeId,
+                CheUserId = memberId
+            };
+            this._dbContext.UserCooperatives.Add(member);
+
+            await this._dbContext.SaveChangesAsync();
+            this._dbContext.Entry(member).State = EntityState.Detached;
+
+            await this._cooperativesService.RemoveMemberAsync(memberId, cooperativeId);
+
+            var expectedMembersCount = 0;
+
+            Assert.Equal(expectedMembersCount, this._dbContext.UserCooperatives.Count());
+        }
+
+        [Fact]
+        public async Task GetMembersAsync_ShouldWorkCorrectly()
+        {
+            var members = new List<CheUserCooperative>
+            {
+                new CheUserCooperative
+                {
+                    CheUser = new CheUser
+                    {
+                        UserName = "UserName1"
+                    }
+                },
+                new CheUserCooperative
+                {
+                    CheUser = new CheUser
+                    {
+                        UserName = "UserName2"
+                    }
+                },
+                new CheUserCooperative
+                {
+                    CheUser = new CheUser
+                    {
+                        UserName = "UserName3"
+                    }
+                },
+            };
+
+            var cooperative = new Cooperative
+            {
+                Name = "CoopName",
+                Info = "CoopInfo",
+                Members = members,
+            };
+
+            this._dbContext.Cooperatives.Add(cooperative);
+            await this._dbContext.SaveChangesAsync();
+
+            var memebersFromDb = await this._cooperativesService.GetMembersAsync<CooperativeUserDetailsViewModel>(cooperative.Id);
+
+            Assert.Equal(members.Count, memebersFromDb.Count());
+
+            var index = 0;
+            foreach (var member in memebersFromDb)
+            {
+                Assert.Equal(members[index++].CheUserId, member.UserId);
+            }
+        }
+
+        [Fact]
+        public async Task CheckIfMemberAsync_ShouldWorkCorrectly()
+        {
+            var searchedMemberId = Guid.NewGuid().ToString();
+            var cooperative = new Cooperative
+            {
+                Name = "CoopName",
+                Info = "CoopInfo",
+                Members = new List<CheUserCooperative>
+                { 
+                    new CheUserCooperative
+                    {
+                        CheUserId = searchedMemberId
+                    },
+                    new CheUserCooperative
+                    {
+                        CheUserId = Guid.NewGuid().ToString()
+                    }
+                }
+            };
+
+            this._dbContext.Cooperatives.Add(cooperative);
+            await this._dbContext.SaveChangesAsync();
+
+            Assert.True(await this._cooperativesService
+                .CheckIfMemberAsync(searchedMemberId, cooperative.Id));
+            Assert.False(await this._cooperativesService
+                .CheckIfMemberAsync(Guid.NewGuid().ToString(), cooperative.Id));
+        }
+
+        [Fact]
+        public async Task CheckIfCreatorAsync_ShouldWorkCorrectly()
+        {
+            var creatorId = Guid.NewGuid().ToString();
+            var cooperative = new Cooperative
+            {
+                Name = "CoopName",
+                Info = "CoopInfo",
+                CreatorId = creatorId
+            };
+
+            this._dbContext.Cooperatives.Add(cooperative);
+            await this._dbContext.SaveChangesAsync();
+
+            Assert.True(await this._cooperativesService
+                .CheckIfCreatorAsync(creatorId, cooperative.Id));
+            Assert.False(await this._cooperativesService
+                .CheckIfCreatorAsync(Guid.NewGuid().ToString(), cooperative.Id));
+        }
+
+        [Fact]
+        public async Task CountAsync_ShouldWorkCorrectlyWithoutArgs()
+        {
+            var cooperatives = new List<Cooperative>
+            {
+                new Cooperative
+                {
+                    Name = "Name1",
+                    Info = "Info1"
+                },
+                new Cooperative
+                {
+                    Name = "Name2",
+                    Info = "Info2"
+                },
+                new Cooperative
+                {
+                    Name = "Name3",
+                    Info = "Info3"
+                },
+                new Cooperative
+                {
+                    Name = "Name4",
+                    Info = "Info4"
+                }
+            };
+
+            this._dbContext.Cooperatives.AddRange(cooperatives);
+            await this._dbContext.SaveChangesAsync();
+
+            var count = await this._cooperativesService.CountAsync();
+
+            Assert.Equal(cooperatives.Count, count);
+        }
+
+        [Theory]
+        [InlineData("First", null, null)]
+        [InlineData(null, "Sofia", null)]
+        [InlineData(null, null, "Levski")]
+        [InlineData("First", "Sofia", null)]
+        [InlineData("First", "Sofia", "Levski")]
+        public async Task CountAsync_ShouldWorkCorrectlyWithArgs(
+            string gradeFilter,
+            string cityFilter,
+            string neighbourhoodFilter)
+        {
+            var cooperatives = new List<Cooperative>
+            {
+                new Cooperative
+                {
+                    Name = "Name1",
+                    Info = "Info1",
+                    Grade = new Grade
+                    {
+                        NumValue = 1,
+                        Value = "First"
+                    },
+                    Address = new Address
+                    {
+                        City = "Sofia",
+                        Neighbourhood = "Dianabad"
+                    }
+                },
+                new Cooperative
+                {
+                    Name = "Name2",
+                    Info = "Info2",
+                    Grade = new Grade
+                    {
+                        NumValue = 1,
+                        Value = "First"
+                    },
+                    Address = new Address
+                    {
+                        City = "Sofia",
+                        Neighbourhood = "Levski"
+                    }
+                },
+                new Cooperative
+                {
+                    Name = "Name3",
+                    Info = "Info3",
+                    Grade = new Grade
+                    {
+                        NumValue = 2,
+                        Value = "Second"
+                    },
+                    Address = new Address
+                    {
+                        City = "Sofia",
+                        Neighbourhood = "Vitosha"
+                    }
+                },
+                new Cooperative
+                {
+                    Name = "Name4",
+                    Info = "Info4",
+                    Grade = new Grade
+                    {
+                        NumValue = 3,
+                        Value = "Third"
+                    },
+                    Address = new Address
+                    {
+                        City = "Varna",
+                        Neighbourhood = "Levski"
+                    }
+                }
+            };
+            await this._dbContext.AddRangeAsync(cooperatives);
+            await this._dbContext.SaveChangesAsync();
+
+
+            var expectedCount = this.GetFilterCollection(cooperatives, gradeFilter, cityFilter, neighbourhoodFilter).Count();
+            var count = await this._cooperativesService.CountAsync(gradeFilter, cityFilter, neighbourhoodFilter);
+            Assert.Equal(expectedCount, count);
+        }
+
+        private IEnumerable<Cooperative> GetFilterCollection(
+            IEnumerable<Cooperative> cooperatives,
+            string gradeFilter = null,
+            string cityFilter = null,
+            string neighbourhoodFilter = null)
+        {
+            if (gradeFilter != null)
+            {
+                cooperatives = cooperatives.Where(x => x.Grade.Value == gradeFilter).ToList();
+            }
+
+            if (cityFilter != null)
+            {
+                cooperatives = cooperatives.Where(x => x.Address.City == cityFilter).ToList();
+            }
+
+            if (neighbourhoodFilter != null)
+            {
+                cooperatives = cooperatives.Where(x => x.Address.Neighbourhood == neighbourhoodFilter).ToList();
+            }
+
+            return cooperatives;
+        }
     }
 }

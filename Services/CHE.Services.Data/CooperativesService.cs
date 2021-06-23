@@ -89,7 +89,7 @@
                 ? await this._dbContext.Cooperatives.CountAsync() 
                 : endIndex;
 
-            var filteredCooperatives = this.FilterCollection(gradeFilter, cityFilter, neighbourhoodFilter);
+            var filteredCooperatives = this.GetFilterCollection(gradeFilter, cityFilter, neighbourhoodFilter);
 
             var cooperatives = await filteredCooperatives
                 .Skip((startIndex - 1) * count)
@@ -103,7 +103,7 @@
         public async Task<IEnumerable<TEntity>> GetAllByCreatorAsync<TEntity>(string userId) 
             => await this._dbContext.Cooperatives
                 .AsNoTracking()
-                .Where(x => x.Creator.Id == userId)
+                .Where(x => x.CreatorId == userId)
                 .To<TEntity>()
                 .ToListAsync();
 
@@ -144,15 +144,15 @@
 
         public async Task<bool> CheckIfCreatorAsync(string userId, string cooperativeId)
             => await this._dbContext.Cooperatives
-                .AnyAsync(x => x.Creator.Id == userId && x.Id == cooperativeId);
+                .AnyAsync(x => x.CreatorId == userId && x.Id == cooperativeId);
 
-        public async Task<int> Count(
+        public async Task<int> CountAsync(
             string gradeFilter = null,
             string cityFilter = null,
             string neighbourhoodFilter = null)
-            => await this.FilterCollection(gradeFilter, cityFilter, neighbourhoodFilter).CountAsync();
+            => await this.GetFilterCollection(gradeFilter, cityFilter, neighbourhoodFilter).CountAsync();
 
-        private IQueryable<Cooperative> FilterCollection(
+        private IQueryable<Cooperative> GetFilterCollection(
             string gradeFilter = null,
             string cityFilter = null,
             string neighbourhoodFilter = null)

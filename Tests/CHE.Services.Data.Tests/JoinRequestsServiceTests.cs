@@ -1,16 +1,16 @@
 ﻿namespace CHE.Services.Data.Tests
 {
-    using System;
-    using System.Linq;
-    using System.Threading.Tasks;
-
-    using Microsoft.EntityFrameworkCore;
-
     using CHE.Data;
     using CHE.Data.Models;
     using CHE.Services.Mapping;
     using CHE.Web.InputModels.JoinRequests;
     using CHE.Web.ViewModels.JoinRequests;
+
+    using Microsoft.EntityFrameworkCore;
+
+    using System;
+    using System.Linq;
+    using System.Threading.Tasks;
 
     using Xunit;
 

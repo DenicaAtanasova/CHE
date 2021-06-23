@@ -55,7 +55,7 @@
         {
             var cooperatives = await this._cooperativesService
                     .GetAllAsync<CooperativeAllViewModel>(pageIndex, DEFAULT_PAGE_SIZE, filter.Grade, filter.City, filter.Neighbourhood);
-            var count = await this._cooperativesService.Count(filter.Grade, filter.City, filter.Neighbourhood);
+            var count = await this._cooperativesService.CountAsync(filter.Grade, filter.City, filter.Neighbourhood);
             var cooperativesList = new CooperativeAllLIstViewModel
             {
                 Cooperatives = PaginatedList<CooperativeAllViewModel>

@@ -1,4 +1,5 @@
-﻿namespace CHE.Services.Data.Tests
+﻿
+namespace CHE.Services.Data.Tests
 {
     using CHE.Data;
     using CHE.Data.Models;
