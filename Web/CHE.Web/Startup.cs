@@ -32,7 +32,7 @@ namespace CHE.Web
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<CheDbContext>(options =>
-                options.UseSqlServer(this.configuration.GetConnectionString("DefaultConnection")));
+                options.UseSqlServer(this.configuration.GetConnectionString("DbConnection")));
 
             services.AddIdentity<CheUser, CheRole>(options =>
             {

@@ -24,7 +24,7 @@
         {
             this._configuration = configuration;
             this._dbContext = dbContext;
-            this.accessKey = this._configuration.GetConnectionString("BlobConnection:AccessKey");
+            this.accessKey = this._configuration.GetConnectionString("BlobConnection");
         }
 
         public async Task<bool> UpdateAsync(IFormFile imageFile, string portfolioId)
