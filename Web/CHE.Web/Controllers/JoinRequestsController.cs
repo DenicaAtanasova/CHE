@@ -8,6 +8,7 @@
     using CHE.Web.ViewModels.JoinRequests;
     using CHE.Services.Data;
 
+    //TODO: [Authorize]
     public class JoinRequestsController : Controller
     {
         private readonly IJoinRequestsService _joinRequestsService;

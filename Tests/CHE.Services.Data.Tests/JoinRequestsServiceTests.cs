@@ -73,7 +73,7 @@
         }
 
         [Fact]
-        public async Task CreateAsync_ShouldWorkCorrectlyWithoutExistingJoinRequest()
+        public async Task CreateAsync_ShouldWorkCorrectly()
         {
             var content = "Content";
             var cooperativeId = Guid.NewGuid().ToString();
@@ -83,29 +83,6 @@
             var joinRequestFromDb = await this._dbContext.JoinRequests.SingleOrDefaultAsync();
 
             Assert.Equal(joinRequestFromDb.Id, requestId);
-        }
-
-        [Fact]
-        public async Task CreateAsync_ShouldWorkCorrectlyWithExistingJoinRequest()
-        {
-
-            var content = "Content";
-            var cooperativeId = Guid.NewGuid().ToString();
-            var senderId = Guid.NewGuid().ToString();
-
-            var testJoinRequest = new JoinRequest
-            {
-                Content = content,
-                CooperativeId = cooperativeId,
-                SenderId = senderId
-            };
-
-            this._dbContext.JoinRequests.Add(testJoinRequest);
-            await this._dbContext.SaveChangesAsync();
-
-            var requestId = await this._joinRequestsService.CreateAsync(content, cooperativeId, senderId);
-
-            Assert.Equal(testJoinRequest.Id, requestId);
         }
 
         [Fact]
@@ -123,7 +100,7 @@
                 .Select(x => x.CreatedOn)
                 .FirstOrDefaultAsync();
 
-            Assert.Equal(expectedDate, actualDate, new TimeSpan(days: 0, hours: 0, minutes: 0, seconds: 0, milliseconds: 500));
+            Assert.Equal(expectedDate, actualDate, new TimeSpan(days: 0, hours: 0, minutes: 0, seconds: 0, milliseconds: 1000));
         }
 
         [Fact]

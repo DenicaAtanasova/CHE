@@ -42,34 +42,22 @@
                 .To<TEntity>()
                 .ToListAsync();
 
+        //TODO: Check if reciever have to be null by default
         public async Task<string> CreateAsync(string content, string cooperativeId, string senderId, string receiverId)
         {
-            var requestId = await this._dbContext.JoinRequests
-                .AsNoTracking()
-                .Where(x => x.CooperativeId == cooperativeId &&
-                            x.ReceiverId == receiverId &&
-                            x.SenderId == senderId)
-                .Select(x=> x.Id)
-                .SingleOrDefaultAsync();
-
-            if (requestId is null)
+            var request = new JoinRequest
             {
-                var request = new JoinRequest
-                {
-                    Content = content,
-                    SenderId = senderId,
-                    ReceiverId = receiverId,
-                    CooperativeId = cooperativeId,
-                    CreatedOn = DateTime.UtcNow
-                };
+                Content = content,
+                SenderId = senderId,
+                ReceiverId = receiverId,
+                CooperativeId = cooperativeId,
+                CreatedOn = DateTime.UtcNow
+            };
 
-                this._dbContext.JoinRequests.Add(request);
-                await this._dbContext.SaveChangesAsync();
+            this._dbContext.JoinRequests.Add(request);
+            await this._dbContext.SaveChangesAsync();
 
-                return request.Id;
-            }          
-
-            return requestId;
+            return request.Id;
         }
     }
 }
