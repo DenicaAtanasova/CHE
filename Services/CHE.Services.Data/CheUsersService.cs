@@ -1,37 +1,40 @@
 ﻿namespace CHE.Services.Data
-{
+{ 
+    using CHE.Common;
+    using CHE.Data;
+    using CHE.Data.Models;
+    using CHE.Services.Mapping;
+    using CHE.Web.InputModels.JoinRequests;
+
     using Microsoft.EntityFrameworkCore;
 
     using System;
-    using System.Threading.Tasks;
-    using System.Linq;
     using System.Collections.Generic;
-
-    using CHE.Data;
-    using CHE.Services.Mapping;
-    using CHE.Common;
-    using CHE.Data.Models;
+    using System.Linq;
+    using System.Threading.Tasks;
 
     public class CheUsersService : ICheUsersService
     {
         private readonly CheDbContext _dbContext;
         private readonly ICooperativesService _cooperativesService;
+        private readonly IJoinRequestsService _joinRequestsService;
 
-        public CheUsersService(CheDbContext dbContext, ICooperativesService cooperativesService)
+        public CheUsersService(
+            CheDbContext dbContext, 
+            ICooperativesService cooperativesService,
+            IJoinRequestsService joinRequestsService)
         {
             this._dbContext = dbContext;
             this._cooperativesService = cooperativesService;
+            this._joinRequestsService = joinRequestsService;
         }
 
         public async Task<TEntity> GetByIdAsync<TEntity>(string id)
-        {
-            var teacher = await this._dbContext.Users
+            => await this._dbContext.Users
+                .AsNoTracking()
                 .Where(x => x.Id == id)
                 .To<TEntity>()
                 .SingleOrDefaultAsync();
-
-            return teacher;
-        }
 
         public async Task<IEnumerable<TEntity>> GetAllAsync<TEntity>(
             int startIndex = 1, 
@@ -64,7 +67,6 @@
         {
             var request = await this._dbContext.JoinRequests
                 .SingleOrDefaultAsync(x => x.Id == requestId);
-
             
             // request is send from parent to cooperative
             if (request.ReceiverId == null)
@@ -90,6 +92,26 @@
             this._dbContext.Remove(requestToDelete);
 
             await this._dbContext.SaveChangesAsync();
+        }
+
+        public async Task SendRequestAsync(string senderId, JoinRequestInputModel inputModel)
+        {
+            var requestId = await this._dbContext.JoinRequests
+                .AsNoTracking()
+                .Where(x => x.CooperativeId == inputModel.CooperativeId &&
+                            x.ReceiverId == inputModel.ReceiverId &&
+                            x.SenderId == senderId)
+                .Select(x => x.Id)
+                .SingleOrDefaultAsync();
+
+            if (requestId is null)
+            {
+                await this._joinRequestsService.CreateAsync(
+                    inputModel.Content, 
+                    inputModel.CooperativeId, 
+                    senderId, 
+                    inputModel.ReceiverId);
+            }
         }
 
         private IQueryable<CheUser> FilterCollection(string schoolLevelFilter = null)

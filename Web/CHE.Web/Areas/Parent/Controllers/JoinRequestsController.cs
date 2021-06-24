@@ -12,14 +12,14 @@
     public class JoinRequestsController : ParentController
     {
         private readonly UserManager<CheUser> _userManager;
-        private readonly IJoinRequestsService _joinRequestsService;
+        private readonly ICheUsersService _usersService;
 
         public JoinRequestsController(
             UserManager<CheUser> userManager,
-            IJoinRequestsService joinRequestsService)
+            ICheUsersService usersService)
         {
             this._userManager = userManager;
-            this._joinRequestsService = joinRequestsService;
+            this._usersService = usersService;
         }
 
         public IActionResult Send(string cooperativeId, string receiverId)
@@ -41,8 +41,8 @@
 
             var senderId = this._userManager.GetUserId(this.User);
 
-            await this._joinRequestsService
-                .CreateAsync(inputModel.Content, inputModel.CooperativeId, senderId, inputModel.ReceiverId);
+            await this._usersService
+                .SendRequestAsync(senderId, inputModel);
 
             return RedirectToAction("Details", "Cooperatives", new { area = "", id = inputModel.CooperativeId});
         }

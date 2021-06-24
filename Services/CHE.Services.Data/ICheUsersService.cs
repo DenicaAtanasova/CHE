@@ -1,5 +1,7 @@
 ﻿namespace CHE.Services.Data
 {
+    using CHE.Web.InputModels.JoinRequests;
+
     using System.Collections.Generic;
     using System.Threading.Tasks;
 
@@ -14,5 +16,7 @@
         Task AcceptRequestAsync(string requestId);
 
         Task RejectRequestAsync(string requestId);
+
+        Task SendRequestAsync(string senderId, JoinRequestInputModel inputModel);
     }
 }
