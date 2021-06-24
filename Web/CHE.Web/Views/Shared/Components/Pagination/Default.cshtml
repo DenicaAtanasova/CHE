@@ -7,20 +7,20 @@
     <nav aria-label="Page navigation">
         <ul class="pagination">
             <li class="page-item">
-                <button type="submit" class="btn btn-default @prevDisabled"
+                <a class="btn btn-default @prevDisabled"
                         asp-controller="@Model.Controller" asp-action="All"
                         asp-route-pageIndex="@(Model.PageIndex - 1)">
                     Previous
-                </button>
+                </a>
             </li>
             @if (Model.HasPreviousPage)
             {
                 <li class="page-item">
-                    <button type="submit" class="btn page-link"
+                    <a class="btn page-link"
                         asp-controller="@Model.Controller" asp-action="All"
                         asp-route-pageIndex="@(Model.PageIndex - 1)">
                         @(Model.PageIndex - 1)
-                    </button>
+                    </a>
                 </li>
             }
             <li class="page-item active">
@@ -31,19 +31,21 @@
             @if (Model.HasNextPage)
             {
             <li class="page-item">
-                <button type="submit" class="btn page-link"
+                <a class="btn page-link"
                     asp-controller="@Model.Controller" asp-action="All"
+                    asp-route-filter="@Model.Filter"
                     asp-route-pageIndex="@(Model.PageIndex + 1)">
                     @(Model.PageIndex + 1)
-                </button>
+                </a>
             </li>
             }
             <li class="page-item">
-                <button type="submit" class="btn btn-default @nextDisabled"
+                <a class="btn btn-default @nextDisabled"
                         asp-controller="@Model.Controller" asp-action="All"
+                        asp-route-filter="@Model.Filter"
                         asp-route-pageIndex="@(Model.PageIndex + 1)">
                     Next
-                </button>
+                </a>
             </li>
         </ul>
     </nav>
