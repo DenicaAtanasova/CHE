@@ -195,6 +195,23 @@
         }
 
         [Fact]
+        public async Task GetByIdAsync_ShouldReturnNullWithIncorrectId()
+        {
+            this._dbContext.Cooperatives.Add(
+                new Cooperative
+                {
+                    Name = "CoopName",
+                    Info = "CoopInfo"
+                });
+            await this._dbContext.SaveChangesAsync();
+
+            var actualRequest = await this._cooperativesService
+                .GetByIdAsync<CooperativeUpdateInputModel>(Guid.NewGuid().ToString());
+
+            Assert.Null(actualRequest);
+        }
+
+        [Fact]
         public async Task GetAllAsync_ShouldWorkCorrectlyWithoutArgs()
         {
             var cooperatives = new List<Cooperative>
