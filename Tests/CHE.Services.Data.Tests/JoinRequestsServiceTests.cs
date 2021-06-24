@@ -9,6 +9,7 @@
     using Microsoft.EntityFrameworkCore;
 
     using System;
+    using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
 
@@ -123,6 +124,118 @@
                 .FirstOrDefaultAsync();
 
             Assert.Equal(expectedDate, actualDate, new TimeSpan(days: 0, hours: 0, minutes: 0, seconds: 0, milliseconds: 500));
+        }
+
+        [Fact]
+        public async Task GetAllByTeacherAsync_ShouldWorkCorrectly()
+        {
+            var serchedTeacher = new CheUser
+            {
+                UserName = "Maria"
+            };
+
+            var requestsList = new List<JoinRequest>
+            {
+                new JoinRequest
+                {
+                    Content = "JR1",
+                    Receiver = serchedTeacher,
+                    Sender = new CheUser
+                    {
+                        UserName = "Sender"
+                    }
+                },
+                new JoinRequest
+                {
+                    Content = "JR2",
+                    Receiver = serchedTeacher,
+                    Sender = new CheUser
+                    {
+                        UserName = "Sender"
+                    }
+                },
+                new JoinRequest
+                {
+                    Content = "JR3",
+                    ReceiverId = Guid.NewGuid().ToString(),
+                    Sender = new CheUser
+                    {
+                        UserName = "Sender"
+                    }
+                }
+            };
+
+            this._dbContext.JoinRequests.AddRange(requestsList);
+
+            await this._dbContext.SaveChangesAsync();
+
+            var teachersRequests = await this._joinRequestsService
+                .GetAllByTeacherAsync<JoinRequestAllViewModel>(serchedTeacher.Id);
+            var expectedrequestsList = requestsList.Where(x => x.ReceiverId == serchedTeacher.Id).ToList();
+
+            Assert.Equal(expectedrequestsList.Count(), teachersRequests.Count());
+
+            var index = 0;
+            foreach (var request in teachersRequests)
+            {
+                Assert.Equal(requestsList[index++].Id, request.Id);
+            }
+        }
+
+        [Fact]
+        public async Task GetAllByCooperativeAsync_ShouldWorkCorrectly()
+        {
+            var serchedCooperative = new Cooperative
+            {
+                Name = "coop"
+            };
+
+            var requestsList = new List<JoinRequest>
+            {
+                new JoinRequest
+                {
+                    Content = "JR1",
+                    Cooperative = serchedCooperative,
+                    Sender = new CheUser
+                    {
+                        UserName = "Sender"
+                    }
+                },
+                new JoinRequest
+                {
+                    Content = "JR2",
+                    Cooperative = serchedCooperative,
+                    Sender = new CheUser
+                    {
+                        UserName = "Sender"
+                    }
+                },
+                new JoinRequest
+                {
+                    Content = "JR3",
+                    CooperativeId = Guid.NewGuid().ToString(),
+                    Sender = new CheUser
+                    {
+                        UserName = "Sender"
+                    }
+                }
+            };
+
+            this._dbContext.JoinRequests.AddRange(requestsList);
+
+            await this._dbContext.SaveChangesAsync();
+
+            var cooperativeRequests = await this._joinRequestsService
+                .GetAllByCooperativeAsync<JoinRequestAllViewModel>(serchedCooperative.Id);
+            var expectedRequestsList = requestsList.Where(x => x.CooperativeId == serchedCooperative.Id).ToList();
+
+            Assert.Equal(expectedRequestsList.Count(), cooperativeRequests.Count());
+
+            var index = 0;
+            foreach (var request in cooperativeRequests)
+            {
+                Assert.Equal(requestsList[index++].Id, request.Id);
+            }
         }
     }
 }
