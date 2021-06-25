@@ -4,14 +4,16 @@ using CHE.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace CHE.Data.Migrations
 {
     [DbContext(typeof(CheDbContext))]
-    partial class CheDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210625074442_AddCascadeDeleteOnReceiverJoinRequests")]
+    partial class AddCascadeDeleteOnReceiverJoinRequests
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -633,7 +635,7 @@ namespace CHE.Data.Migrations
                     b.HasOne("CHE.Data.Models.CheUser", "Receiver")
                         .WithMany("ReviewsReceived")
                         .HasForeignKey("ReceiverId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("CHE.Data.Models.CheUser", "Sender")
                         .WithMany("ReviewsSent")

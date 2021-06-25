@@ -41,7 +41,7 @@
                 .HasOne(r => r.Receiver)
                 .WithMany(rc => rc.ReviewsReceived)
                 .HasForeignKey(r => r.ReceiverId)
-                .OnDelete(DeleteBehavior.Restrict);
+                .OnDelete(DeleteBehavior.Cascade);
 
             builder.Entity<Review>()
                 .HasOne(r => r.Sender)
@@ -49,11 +49,12 @@
                 .HasForeignKey(r => r.SenderId)
                 .OnDelete(DeleteBehavior.Restrict);
 
+            //TODO: Make cascade delete
             builder.Entity<JoinRequest>()
                 .HasOne(jr => jr.Receiver)
                 .WithMany(r => r.JoinRequestsReceived)
                 .HasForeignKey(jr => jr.ReceiverId)
-                .OnDelete(DeleteBehavior.Restrict);
+                .OnDelete(DeleteBehavior.Cascade);
 
             builder.Entity<JoinRequest>()
                 .HasOne(jr => jr.Sender)
@@ -61,11 +62,24 @@
                 .HasForeignKey(jr => jr.SenderId)
                 .OnDelete(DeleteBehavior.Restrict);
 
+            builder.Entity<JoinRequest>()
+                .HasOne(jr => jr.Cooperative)
+                .WithMany(s => s.JoinRequestsReceived)
+                .HasForeignKey(jr => jr.CooperativeId)
+                .OnDelete(DeleteBehavior.Cascade);
+
             builder.Entity<Schedule>()
                 .HasOne(s => s.Cooperative)
                 .WithOne(c => c.Schedule)
                 .HasForeignKey<Schedule>(c => c.CooperativeId)
                 .OnDelete(DeleteBehavior.Cascade);
+
+            builder.Entity<Event>()
+                .HasOne(e => e.Schedule)
+                .WithMany(s => s.Events)
+                .HasForeignKey(e => e.ScheduleId)
+                .OnDelete(DeleteBehavior.Cascade);
+
 
             base.OnModelCreating(builder);
         }
