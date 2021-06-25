@@ -81,7 +81,7 @@
         {
             var userId = this._userManager.GetUserId(this.User);
             await this._cooperativesService
-                .RemoveMemberAsync(cooperativeId, userId);
+                .RemoveMemberAsync(userId, cooperativeId);
 
             return this.RedirectToAction(nameof(Details), new { id = cooperativeId });
         }
