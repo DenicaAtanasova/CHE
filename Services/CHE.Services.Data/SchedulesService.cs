@@ -1,12 +1,12 @@
 ﻿namespace CHE.Services.Data
 {
-    using System.Linq;
-    using System.Threading.Tasks;
+    using CHE.Data;
+    using CHE.Services.Mapping;
 
     using Microsoft.EntityFrameworkCore;
 
-    using CHE.Data;
-    using CHE.Services.Mapping;
+    using System.Linq;
+    using System.Threading.Tasks;
 
     public class SchedulesService : ISchedulesService
     {
@@ -18,13 +18,10 @@
         }
 
         public async Task<TEntity> GetByIdAsync<TEntity>(string id)
-        {
-            var schedule = await this._dbContext.Schedules
+            => await this._dbContext.Schedules
+                .AsNoTracking()
                 .Where(x => x.Id == id)
                 .To<TEntity>()
                 .SingleOrDefaultAsync();
-
-            return schedule;
-        }
     }
 }

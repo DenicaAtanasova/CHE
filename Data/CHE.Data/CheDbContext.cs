@@ -49,7 +49,6 @@
                 .HasForeignKey(r => r.SenderId)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            //TODO: Make cascade delete
             builder.Entity<JoinRequest>()
                 .HasOne(jr => jr.Receiver)
                 .WithMany(r => r.JoinRequestsReceived)
