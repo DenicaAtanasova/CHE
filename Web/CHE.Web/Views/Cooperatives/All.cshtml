@@ -1,4 +1,5 @@
-﻿@model CHE.Web.ViewModels.Cooperatives.CooperativeAllLIstViewModel
+﻿@using System.Linq;
+@model CHE.Web.ViewModels.Cooperatives.CooperativeAllListViewModel
 <!-- ======= Breadcrumbs ======= -->
 <section id="breadcrumbs" class="breadcrumbs">
     <div class="container">
@@ -26,7 +27,10 @@
                             {
                                 <option selected>@Model.Filter.Grade</option>
                             }
-                            <vc:grades-list current-grade="@Model.Filter.Grade"></vc:grades-list>
+                            @foreach (var grade in Model.Grades.Where(x => x != Model.Filter.Grade))
+                            {
+                                <option>@grade</option>
+                            }
                         </select>
                     </div>
                 </div>
@@ -42,7 +46,10 @@
                             {
                                 <option selected>@Model.Filter.City</option>
                             }
-                            <vc:cities-list current-city="@Model.Filter.City"></vc:cities-list>
+                            @foreach (var city in Model.Cities.Where(x => x != Model.Filter.City))
+                            {
+                                <option>@city</option>
+                            }
                         </select>
                     </div>
                 </div>
@@ -52,13 +59,16 @@
                         <select asp-for="@Model.Filter.Neighbourhood" class="form-control">
                             @if (Model.Filter.Neighbourhood == null)
                             {
-                            <option selected disabled>-- Choose neighbourhood --</option>
+                                <option selected disabled>-- Choose neighbourhood --</option>
                             }
                             else
                             {
                                 <option selected>@Model.Filter.Neighbourhood</option>
                             }
-                            <vc:neighbourhoods-list current-neighbourhood="@Model.Filter.Neighbourhood"></vc:neighbourhoods-list>
+                            @foreach (var neighbourhood in Model.Neighbourhoods.Where(x => x != Model.Filter.Neighbourhood))
+                            {
+                                <option>@neighbourhood</option>
+                            }
                         </select>
                     </div>
                 </div>
@@ -66,6 +76,7 @@
             <div class="row">
                 <div class="col-md-12">
                     <button type="submit" class="btn btn-che">Filter</button>
+                    <a asp-controller="Cooperatives" asp-action="All" class="btn btn-che">Clear Filters</a>
                 </div>
             </div>
             <hr class="my-4">
@@ -86,13 +97,12 @@
                     </div>
                 }
             </div>
-            <vc:pagination
-                controller="Cooperatives"
-                page-index="@Model.Cooperatives.PageIndex" 
-                has-previous-page="@Model.Cooperatives.HasPreviousPage" 
-                has-next-page="@Model.Cooperatives.HasNextPage"
-                filter="@Model.Filter">
-            </vc:pagination>
         </form>
+        <vc:pagination controller="Cooperatives"
+                       page-index="@Model.Cooperatives.PageIndex"
+                       has-previous-page="@Model.Cooperatives.HasPreviousPage"
+                       has-next-page="@Model.Cooperatives.HasNextPage"
+                       filter="@Model.Filter">
+        </vc:pagination>
     </div>
 </section><!-- End Services Section -->

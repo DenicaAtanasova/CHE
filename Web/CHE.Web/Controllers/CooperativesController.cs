@@ -13,17 +13,23 @@
 
     public class CooperativesController : Controller
     {
-        private const int DEFAULT_PAGE_SIZE = 18;
+        private const int DEFAULT_PAGE_SIZE = 6;
 
         private readonly UserManager<CheUser> _userManager;
         private readonly ICooperativesService _cooperativesService;
+        private readonly IGradesService _gradesService;
+        private readonly IAddressesService _addressesService;
 
         public CooperativesController(
             UserManager<CheUser> userManager,
-            ICooperativesService cooperativesService)
+            ICooperativesService cooperativesService,
+            IGradesService gradesService,
+            IAddressesService addressesService)
         {
             this._userManager = userManager;
             this._cooperativesService = cooperativesService;
+            this._gradesService = gradesService;
+            this._addressesService = addressesService;
         }
 
         public async Task<IActionResult> Details(string id)
@@ -56,11 +62,15 @@
             var cooperatives = await this._cooperativesService
                     .GetAllAsync<CooperativeAllViewModel>(pageIndex, DEFAULT_PAGE_SIZE, filter.Grade, filter.City, filter.Neighbourhood);
             var count = await this._cooperativesService.CountAsync(filter.Grade, filter.City, filter.Neighbourhood);
-            var cooperativesList = new CooperativeAllLIstViewModel
+
+            var cooperativesList = new CooperativeAllListViewModel
             {
                 Cooperatives = PaginatedList<CooperativeAllViewModel>
                 .Create(cooperatives, count, pageIndex, DEFAULT_PAGE_SIZE),
-                Filter = filter
+                Filter = filter, 
+                Grades = await this._gradesService.GetAllValuesAsync(),
+                Cities = await this._addressesService.GetAllCitiesAsync(),
+                Neighbourhoods = await this._addressesService.GetAllNeighbourhoodsAsync()
             };
 
             return this.View(cooperativesList);

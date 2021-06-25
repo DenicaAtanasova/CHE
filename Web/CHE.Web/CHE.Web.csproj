@@ -38,12 +38,4 @@
     <Folder Include="wwwroot\lib\icofont\" />
   </ItemGroup>
 
-
-  <ItemGroup>
-    <Content Update="Views\Shared\Components\CitiesList\Default.cshtml">
-      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </Content>
-  </ItemGroup>
-
 </Project>

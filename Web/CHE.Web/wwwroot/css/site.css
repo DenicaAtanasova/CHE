@@ -2495,6 +2495,7 @@ a.schedule {
 
 .page-link {
     color: #e96b56;
+    position: static;
 }
 
 .page-link:hover {
