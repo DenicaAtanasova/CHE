@@ -73,12 +73,17 @@
                 .HasForeignKey<Schedule>(c => c.CooperativeId)
                 .OnDelete(DeleteBehavior.Cascade);
 
+            builder.Entity<Schedule>()
+                .HasOne(s => s.Teacher)
+                .WithOne(c => c.Schedule)
+                .HasForeignKey<Schedule>(c => c.TeacherId)
+                .OnDelete(DeleteBehavior.Cascade);
+
             builder.Entity<Event>()
                 .HasOne(e => e.Schedule)
                 .WithMany(s => s.Events)
                 .HasForeignKey(e => e.ScheduleId)
                 .OnDelete(DeleteBehavior.Cascade);
-
 
             base.OnModelCreating(builder);
         }

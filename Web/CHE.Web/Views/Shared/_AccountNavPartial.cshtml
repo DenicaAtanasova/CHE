@@ -3,7 +3,7 @@
 @inject UserManager<CheUser> UserManager
 @{ 
     var user = await UserManager.GetUserAsync(this.User);
-    var scheduleId = user.ScheduleId;
+    var scheduleId = user.Schedule.Id;
 }
 
 <nav class="nav-coop">

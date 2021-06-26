@@ -28,8 +28,6 @@
 
         public ICollection<Review> ReviewsReceived { get; set; }
 
-        public string ScheduleId { get; set; }
-
         public Schedule Schedule { get; set; }
     }
 }

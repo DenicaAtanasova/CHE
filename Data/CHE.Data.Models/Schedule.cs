@@ -16,6 +16,8 @@
 
         public Cooperative Cooperative { get; set; }
 
+        public string TeacherId { get; set; }
+
         public CheUser Teacher { get; set; }
     }
 }

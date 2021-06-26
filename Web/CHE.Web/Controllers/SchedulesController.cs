@@ -33,6 +33,7 @@
         {
             var schedule = await this._schedulesService.GetByIdAsync<ScheduleViewModel>(id);
             var userId = this._userManager.GetUserId(this.User);
+
             this.ViewData["isAuthenticated"] = await this._cooperativesService
                                                 .CheckIfMemberAsync(userId, schedule.CooperativeId) ||
                                                await this._cooperativesService
