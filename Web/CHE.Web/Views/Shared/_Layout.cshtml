@@ -44,20 +44,7 @@
             <nav class="nav-menu d-none d-lg-block">
                 <ul>
                     <li class="active"><a asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
-                    @if (this.User.IsInRole(GlobalConstants.PARENT_ROLE))
-                    {
-                        <li class="drop-down">
-                            <a href="#">Cooperatives</a>
-                            <ul>
-                                <li><a asp-area="" asp-controller="Cooperatives" asp-action="All">See all</a></li>
-                                <li><a asp-area="Parent" asp-controller="Cooperatives" asp-action="Create">Create new</a></li>
-                            </ul>
-                        </li>
-                    }
-                    else
-                    {
-                        <li><a asp-area="" asp-controller="Cooperatives" asp-action="All">Cooperaives</a></li>
-                    }
+                    <li><a asp-area="" asp-controller="Cooperatives" asp-action="All">Cooperatives</a></li>
                     <li><a asp-area="" asp-controller="Teachers" asp-action="All">Teachers</a></li>
                     <partial name="_LoginPartial">
                 </ul>
