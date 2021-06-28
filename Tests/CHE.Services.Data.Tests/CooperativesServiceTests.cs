@@ -167,7 +167,7 @@
         }
 
         [Fact]
-        public async Task GetByIdAsync_ShouldWorkCorrectly()
+        public async Task GetByIdAsync_ShouldReturnCorrectCooperative()
         {
             var cooperative = new Cooperative
             {

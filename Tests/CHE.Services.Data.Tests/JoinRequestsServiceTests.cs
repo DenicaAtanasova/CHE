@@ -51,8 +51,6 @@
                 .GetByIdAsync<JoinRequestDetailsViewModel>(expectedRequest.Id);
 
             Assert.Equal(expectedRequest.Id, actualRequest.Id);
-            Assert.Equal(expectedRequest.CooperativeId, actualRequest.CooperativeId);
-            Assert.Equal(expectedRequest.ReceiverId, actualRequest.ReceiverId);
         }
 
         [Fact]
