@@ -82,25 +82,12 @@
             var requestId = await this._joinRequestsService.CreateAsync(content, cooperativeId, senderId);
             var joinRequestFromDb = await this._dbContext.JoinRequests.SingleOrDefaultAsync();
 
-            Assert.Equal(joinRequestFromDb.Id, requestId);
-        }
+            Assert.Equal(requestId, joinRequestFromDb.Id);
+            Assert.Equal(content, joinRequestFromDb.Content);
+            Assert.Equal(senderId, joinRequestFromDb.SenderId);
 
-        [Fact]
-        public async Task CreateAsync_ShouldSetCreatedOnDateToDateTimeUtcNow()
-        {
-            var content = "Content";
-            var cooperativeId = Guid.NewGuid().ToString();
-            var senderId = Guid.NewGuid().ToString();
-
-            await this._joinRequestsService.CreateAsync(content, cooperativeId, senderId);
-
-            var expectedDate = DateTime.UtcNow;
-            var actualDate = await this._dbContext.JoinRequests
-                .Where(x => x.CooperativeId == cooperativeId && x.SenderId == senderId)
-                .Select(x => x.CreatedOn)
-                .FirstOrDefaultAsync();
-
-            Assert.Equal(expectedDate, actualDate, new TimeSpan(days: 0, hours: 0, minutes: 0, seconds: 0, milliseconds: 1000));
+            var expectedCreatedOn = DateTime.UtcNow;
+            Assert.Equal(expectedCreatedOn, joinRequestFromDb.CreatedOn, new TimeSpan(days: 0, hours: 0, minutes: 0, seconds: 0, milliseconds: 1000));
         }
 
         [Fact]
@@ -148,14 +135,14 @@
 
             var teachersRequests = await this._joinRequestsService
                 .GetAllByTeacherAsync<JoinRequestAllViewModel>(serchedTeacher.Id);
-            var expectedrequestsList = requestsList.Where(x => x.ReceiverId == serchedTeacher.Id).ToList();
+            var expectedRequestsList = requestsList.Where(x => x.ReceiverId == serchedTeacher.Id).ToList();
 
-            Assert.Equal(expectedrequestsList.Count(), teachersRequests.Count());
+            Assert.Equal(expectedRequestsList.Count(), teachersRequests.Count());
 
             var index = 0;
             foreach (var request in teachersRequests)
             {
-                Assert.Equal(requestsList[index++].Id, request.Id);
+                Assert.Equal(expectedRequestsList[index++].Id, request.Id);
             }
         }
 
@@ -211,7 +198,7 @@
             var index = 0;
             foreach (var request in cooperativeRequests)
             {
-                Assert.Equal(requestsList[index++].Id, request.Id);
+                Assert.Equal(expectedRequestsList[index++].Id, request.Id);
             }
         }
     }
