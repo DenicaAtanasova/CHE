@@ -1,16 +1,17 @@
 ﻿namespace CHE.Services.Data
 {
+    using CHE.Data;
+    using CHE.Data.Models;
+    using CHE.Services.Mapping;
+    using CHE.Web.InputModels.Events;
+
+    using Microsoft.EntityFrameworkCore;
+
     using System;
     using System.Collections.Generic;
     using System.Globalization;
     using System.Linq;
     using System.Threading.Tasks;
-
-    using Microsoft.EntityFrameworkCore;
-
-    using CHE.Data;
-    using CHE.Data.Models;
-    using CHE.Services.Mapping;
 
     public class EventsService : IEventsService
     {
@@ -22,14 +23,11 @@
         }
 
         public async Task<TEntity> GetByIdAsync<TEntity>(string id)
-        {
-            var eventFromDb = await this._dbContext.Events
+            =>await this._dbContext.Events
+                .AsNoTracking()
                 .Where(x => x.Id == id)
                 .To<TEntity>()
                 .SingleOrDefaultAsync();
-
-            return eventFromDb;
-        }
 
         public async Task<IEnumerable<TEntity>> GetThreeMonthsEventsAsync<TEntity>(string scheduleId, string date)
         {
@@ -39,58 +37,42 @@
             var year = currentDate.Year;
 
             var eventsFromDb = await this._dbContext.Events
-                .Where(x => x.ScheduleId == scheduleId)
-                .Where(x => x.StartDate.Year == year && x.StartDate.Month > prevMonth && x.StartDate.Month < nextMonth)
+                .AsNoTracking()
+                .Where(x => x.ScheduleId == scheduleId  &&
+                            x.StartDate.Year == year && 
+                            x.StartDate.Month > prevMonth && 
+                            x.StartDate.Month < nextMonth)
                 .To<TEntity>()
-                .ToArrayAsync();
+                .ToListAsync();
 
             return eventsFromDb;
         } 
 
-        public async Task<bool> CreateAsync(string title, string descrition, DateTime startDate, DateTime endDate, bool isFullDay, string scheduleId)
+        public async Task<string> CreateAsync(EventCreateInputModel inputModel)
         {
-            var newEvent = new Event
-            {
-                Title = title,
-                Description = descrition,
-                StartDate = startDate,
-                EndDate = endDate,
-                ScheduleId = scheduleId,
-                IsFullDay = isFullDay,
-                CreatedOn = DateTime.UtcNow
-            };
+            var newEvent = inputModel.Map<EventCreateInputModel, Event>();
+            newEvent.CreatedOn = DateTime.UtcNow;
 
-            await this._dbContext.Events.AddAsync(newEvent);
-            var result = await this._dbContext.SaveChangesAsync() > 0;
+            this._dbContext.Events.Add(newEvent);
+            await this._dbContext.SaveChangesAsync();
 
-            return result;
+            return newEvent.Id;
         }
 
-        public async Task<bool> DeleteAsync(string id)
+        public async Task DeleteAsync(string id)
         {
-            var eventToDelete = await this._dbContext.Events.SingleOrDefaultAsync(x => x.Id == id);
-            this._dbContext.Remove(eventToDelete);
-
-            var result = await this._dbContext.SaveChangesAsync() > 0;
-
-            return result;
+            this._dbContext.Remove(new Event { Id = id});
+            await this._dbContext.SaveChangesAsync();
         }
 
-        public async Task<bool> UpdateAsync(string id, string title, string descrition, DateTime startDate, DateTime endDate, bool isFullDay)
+        public async Task UpdateAsync(EventUpdateInputModel inputModel)
         {
-            var eventToUpdate = await this._dbContext.Events
-               .SingleOrDefaultAsync(x => x.Id == id);
+            var eventToUpdate = inputModel.Map<EventUpdateInputModel, Event>();
 
-            eventToUpdate.Title = title;
-            eventToUpdate.Description = descrition;
-            eventToUpdate.StartDate = startDate;
-            eventToUpdate.EndDate = endDate;
             eventToUpdate.ModifiedOn = DateTime.UtcNow;
 
             this._dbContext.Update(eventToUpdate);
-            var result = await this._dbContext.SaveChangesAsync() > 0;
-
-            return result;
+            await this._dbContext.SaveChangesAsync();
         }
     }
 }

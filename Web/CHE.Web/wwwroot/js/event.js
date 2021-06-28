@@ -8,6 +8,7 @@ const eventIdTextbox = document.getElementById('event-id');
 const isFullDayTextbox = document.getElementById('is-full-day');
 const startTimeTextbox = document.getElementById('start-time');
 const endTimeTextbox = document.getElementById('end-time');
+const createdOnTextbox = document.getElementById('created-on');
 
 //modal actions
 
@@ -57,7 +58,8 @@ function _setDates() {
 
     let startDate = `${date} ${startTime}`;
     let endDate = `${date} ${endTime}`;
-
+    console.log(startTime);
+    console.log(startDate);
     return {
         startDate: startDate,
         endDate: endDate
@@ -72,7 +74,8 @@ function _setEvent(id) {
         isFullDay: isFullDayTextbox.checked,
         scheduleId: scheduleIdTextbox.value.trim(),
         startDate: _setDates().startDate,
-        endDate: _setDates().endDate
+        endDate: _setDates().endDate,
+        createdOn: createdOnTextbox.value
     };
 
     return event;
@@ -126,6 +129,7 @@ function loadEvent(id) {
                 isFullDayTextbox.checked = currentEvent.isFullDay;
                 startTimeTextbox.value = currentEvent.startDate.substring(11, 16);
                 endTimeTextbox.value = currentEvent.endDate.substring(11, 16);
+                createdOnTextbox.value = currentEvent.createdOn;
             });
     }
 

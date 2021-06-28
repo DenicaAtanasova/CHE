@@ -1,6 +1,7 @@
 ﻿namespace CHE.Services.Data
 {
-    using System;
+    using CHE.Web.InputModels.Events;
+
     using System.Collections.Generic;
     using System.Threading.Tasks;
 
@@ -10,10 +11,10 @@
 
         Task<IEnumerable<TEntity>> GetThreeMonthsEventsAsync<TEntity>(string scheduleId, string date);
 
-        Task<bool> CreateAsync(string title, string descrition, DateTime startDate, DateTime endDate, bool isFullDay, string scheduleId);
+        Task<string> CreateAsync(EventCreateInputModel inputModel);
 
-        Task<bool> DeleteAsync(string id);
+        Task DeleteAsync(string id);
 
-        Task<bool> UpdateAsync(string id, string title, string descrition, DateTime startDate, DateTime endDate, bool isFullDay);
+        Task UpdateAsync(EventUpdateInputModel inputModel);
     }
 }

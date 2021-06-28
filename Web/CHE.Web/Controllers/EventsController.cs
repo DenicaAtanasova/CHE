@@ -44,38 +44,32 @@
         }
 
         [HttpPost]
-        public async Task<ActionResult<EventInputModel>> CreateEvent(EventInputModel inputEvent)
+        public async Task<ActionResult<EventCreateInputModel>> Create(EventCreateInputModel inputModel)
         {
-            //TODO: return id ?
-            var createSuccessful = await this._eventsService
-                .CreateAsync(inputEvent.Title, inputEvent.Description, inputEvent.StartDate, inputEvent.EndDate, inputEvent.IsFullDay, inputEvent.ScheduleId);
-
-            if (!createSuccessful)
+            if (!ModelState.IsValid)
             {
                 return this.BadRequest();
             }
+
+            await this._eventsService
+                .CreateAsync(inputModel);
             
-            return this.CreatedAtAction(nameof(GetEvent), inputEvent);
+            return this.CreatedAtAction(nameof(GetEvent), inputModel);
         }
 
         [HttpDelete("{id}")]
-        public async Task<ActionResult> DeleteEvent(string id)
+        public async Task<ActionResult> Delete(string id)
         {
-            var deleteSuccessful = await this._eventsService.DeleteAsync(id);
-            if (deleteSuccessful)
-            {
-                return this.BadRequest();
-            }
-
+            await this._eventsService.DeleteAsync(id);
             return this.NoContent();
         }
 
         [HttpPut("{id}")]
-        public async Task<ActionResult> UpdateEvent(string id, EventInputModel updatedEvent)
+        public async Task<ActionResult> Update(EventUpdateInputModel inputModel)
         {
-            var updateSuccessful = await this._eventsService.UpdateAsync(id, updatedEvent.Title, updatedEvent.Description, updatedEvent.StartDate, updatedEvent.EndDate, updatedEvent.IsFullDay);
+            await this._eventsService.UpdateAsync(inputModel);
 
-            if (!updateSuccessful)
+            if (!ModelState.IsValid)
             {
                 return this.BadRequest();
             }

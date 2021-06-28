@@ -1,11 +1,13 @@
 ﻿namespace CHE.Web.InputModels.Events
 {
+    using CHE.Data.Models;
+    using CHE.Services.Mapping;
+    using CHE.Web.InputModels.Attributes.Validation;
+
     using System;
     using System.ComponentModel.DataAnnotations;
 
-    using CHE.Web.InputModels.Attributes.Validation;
-
-    public class EventInputModel
+    public class EventCreateInputModel : IMapTo<Event>
     {
         [Required]
         [StringLength(20)]
