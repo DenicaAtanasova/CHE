@@ -66,18 +66,19 @@
             };
 
             var cooperativeId = await this._cooperativesService.CreateAsync(creatorId, cooperative);
-            var expectedCreatedOnDate = DateTime.UtcNow;
             var cooperativeFromDb = await this._dbContext.Cooperatives.SingleOrDefaultAsync();
+            var expectedCreatedOnDate = DateTime.UtcNow;
 
-            Assert.Equal(cooperativeFromDb.Id, cooperativeId);
+            Assert.Equal(cooperativeId, cooperativeFromDb.Id);
             Assert.Equal(creatorId, cooperativeFromDb.CreatorId);
             Assert.Equal(cooperative.Name, cooperativeFromDb.Name);
             Assert.Equal(cooperative.Info, cooperativeFromDb.Info);
             Assert.Equal(FIRST_GRADE_ID, cooperativeFromDb.GradeId);
             Assert.Equal(ADDRESS_ID, cooperativeFromDb.AddressId);
-            Assert.Equal(expectedCreatedOnDate, cooperativeFromDb.CreatedOn,
-                new TimeSpan(days: 0, hours: 0, minutes: 0, seconds: 0, milliseconds: 1000));
             Assert.NotNull(cooperativeFromDb.Schedule);
+            Assert.Equal(expectedCreatedOnDate, 
+                cooperativeFromDb.CreatedOn,
+                new TimeSpan(days: 0, hours: 0, minutes: 0, seconds: 0, milliseconds: 1000));
         }
 
         [Fact]
@@ -106,14 +107,11 @@
             await this._dbContext.SaveChangesAsync();
             this._dbContext.Entry(cooperative).State = EntityState.Detached;
 
-            var updatedName = "updatedName";
-            var updatedInfo = "updatedInfo";
-
             var cooperativeUpdateModel = new CooperativeUpdateInputModel
             {
                 Id = cooperative.Id,
-                Name = updatedName,
-                Info = updatedInfo,
+                Name = "updatedName",
+                Info = "updatedInfo",
                 Grade = FIRST_GRADE,
                 Address = ADDRESS,
                 CreatorId = cooperative.CreatorId,
@@ -132,7 +130,10 @@
             Assert.Equal(cooperativeUpdateModel.CreatorId, updatedCooperative.CreatorId);
             Assert.Equal(FIRST_GRADE_ID, updatedCooperative.GradeId);
             Assert.Equal(ADDRESS_ID, updatedCooperative.AddressId);
-            Assert.Equal(expectedModifiedOnDate, updatedCooperative.ModifiedOn.Value, new TimeSpan(days: 0, hours: 0, minutes: 0, seconds: 0, milliseconds: 1000));
+            Assert.Equal(ADDRESS_ID, updatedCooperative.AddressId);
+            Assert.Equal(expectedModifiedOnDate, 
+                updatedCooperative.ModifiedOn.Value, 
+                new TimeSpan(days: 0, hours: 0, minutes: 0, seconds: 0, milliseconds: 1000));
         }
 
         [Fact]
@@ -384,7 +385,13 @@
                 {
                     Name = "Name4",
                     Info = "Info4",
-                    CreatorId = creatorId
+                    CreatorId = Guid.NewGuid().ToString()
+                },
+                new Cooperative
+                {
+                    Name = "Name5",
+                    Info = "Info5",
+                    CreatorId = Guid.NewGuid().ToString()
                 }
             };
 
@@ -394,12 +401,16 @@
             var cooperativesFromDb = await this._cooperativesService
                 .GetAllByCreatorAsync<CooperativeAllViewModel>(creatorId);
 
-            Assert.Equal(cooperatives.Count, cooperativesFromDb.Count());
+            var expectedCooperatives = cooperatives
+                .Where(x => x.CreatorId == creatorId)
+                .ToList();
+
+            Assert.Equal(expectedCooperatives.Count, cooperativesFromDb.Count());
 
             var index = 0;
             foreach (var cooperative in cooperativesFromDb)
             {
-                Assert.Equal(cooperatives[index++].Id, cooperative.Id);
+                Assert.Equal(expectedCooperatives[index++].Id, cooperative.Id);
             }
         }
 
