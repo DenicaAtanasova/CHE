@@ -1,18 +1,22 @@
 ﻿namespace CHE.Web.Areas.Parent.Controllers
 {
-    using System.Threading.Tasks;
+    using CHE.Data.Models;
+    using CHE.Services.Data;
+    using CHE.Web.InputModels.Cooperatives;
+    using CHE.Web.ViewModels;
+    using CHE.Web.ViewModels.Cooperatives;
+    using CHE.Web.ViewModels.JoinRequests;
 
     using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
 
-    using CHE.Data.Models;
-    using CHE.Services.Data;
-    using CHE.Web.InputModels.Cooperatives;
-    using CHE.Web.ViewModels.Cooperatives;
-    using CHE.Web.ViewModels.JoinRequests;
+    using System.Linq;
+    using System.Threading.Tasks;
 
     public class CooperativesController : ParentController
     {
+        private const int DEFAULT_PAGE_SIZE = 6;
+
         private readonly UserManager<CheUser> _userManager;
         private readonly ICooperativesService _cooperativesService;
         private readonly IJoinRequestsService _joinRequestsService;
@@ -112,6 +116,20 @@
             this.ViewData["scheduleId"] = cooperative.ScheduleId;
 
             return this.View(cooperative);
+        }
+
+        public async Task<IActionResult> All(int pageIndex = 1)
+        {
+            var userId = this._userManager.GetUserId(this.User);
+            var cooperatives = await this._cooperativesService
+                .GetAllByCreatorAsync<CooperativeAllViewModel>(userId, pageIndex, DEFAULT_PAGE_SIZE);
+
+            var count = await this._cooperativesService.CountAsync(userId);
+
+            var cooperativesList = PaginatedList<CooperativeAllViewModel>
+                .Create(cooperatives, count, pageIndex, DEFAULT_PAGE_SIZE);
+
+            return this.View(cooperativesList);
         }
     }
 }

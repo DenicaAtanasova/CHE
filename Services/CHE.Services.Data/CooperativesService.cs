@@ -100,12 +100,25 @@
             return cooperatives;
         }
 
-        public async Task<IEnumerable<TEntity>> GetAllByCreatorAsync<TEntity>(string userId) 
-            => await this._dbContext.Cooperatives
-                .AsNoTracking()
-                .Where(x => x.CreatorId == userId)
+        public async Task<IEnumerable<TEntity>> GetAllByCreatorAsync<TEntity>(
+            string userId,
+            int startIndex = 1,
+            int endIndex = 0)
+        {
+            var cooperatives = this._dbContext.Cooperatives
+                  .AsNoTracking()
+                  .Where(x => x.CreatorId == userId);
+
+            var count = endIndex == 0
+                ? await cooperatives.CountAsync()
+                : endIndex;
+
+            return await cooperatives
+                .Skip((startIndex - 1) * count)
+                .Take(count)
                 .To<TEntity>()
                 .ToListAsync();
+        }
 
         public async Task AddMemberAsync(string userId, string cooperativeId)
         {
@@ -145,6 +158,12 @@
         public async Task<bool> CheckIfCreatorAsync(string userId, string cooperativeId)
             => await this._dbContext.Cooperatives
                 .AnyAsync(x => x.CreatorId == userId && x.Id == cooperativeId);
+
+        public async Task<int> CountAsync(string userId)
+            => await this._dbContext.Cooperatives
+            .AsNoTracking()
+            .Where(x => x.CreatorId == userId)
+            .CountAsync();
 
         public async Task<int> CountAsync(
             string gradeFilter = null,

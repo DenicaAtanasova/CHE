@@ -24,7 +24,10 @@
             string cityFilter = null,
             string neighbourhoodFilter = null);
 
-        Task<IEnumerable<TEntity>> GetAllByCreatorAsync<TEntity>(string userId);
+        Task<IEnumerable<TEntity>> GetAllByCreatorAsync<TEntity>(
+            string userId,
+            int startIndex = 1,
+            int endIndex = 0);
 
         Task AddMemberAsync(string userId, string cooperativeId);
 
@@ -35,6 +38,8 @@
         Task<bool> CheckIfMemberAsync(string userId, string cooperativeId);
 
         Task<bool> CheckIfCreatorAsync(string userId, string cooperativeId);
+
+        Task<int> CountAsync(string userId);
 
         Task<int> CountAsync(
             string gradeFilter = null,

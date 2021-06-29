@@ -1,0 +1,49 @@
+﻿@using CHE.Web.ViewModels.Cooperatives;
+@model CHE.Web.ViewModels.PaginatedList<CooperativeAllViewModel>
+<!-- ======= Breadcrumbs ======= -->
+<section id="breadcrumbs" class="breadcrumbs">
+    <div class="container">
+        <ol>
+            <li><a asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
+            <li>Cooperatives</li>
+        </ol>
+        <h2>Cooperatives</h2>
+    </div>
+</section><!-- End Breadcrumbs -->
+<!-- ======= Services Section ======= -->
+<section id="services" class="services">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <a asp-area="Parent" asp-controller="Cooperatives" asp-action="Create" class="btn btn-che">Create new</a>
+                <a asp-area="" asp-controller="Cooperatives" asp-action="All" class="btn btn-che">See All</a>
+            </div>
+        </div>
+        <hr class="my-4">
+        <form method="get" asp-controller="Cooperatives" asp-action="All">
+            <div class="row">
+                @foreach (var cooperative in Model)
+                {
+                    <div class="card col-lg-4 col-md-6 d-flex align-items-stretch mt-4">
+                        <a asp-controller="Cooperatives" asp-action="Details" asp-route-id="@cooperative.Id">
+                            <div class="icon-box">
+                                <div class="icon"><i class="icofont-users-alt-5"></i></div>
+                                <h4>@cooperative.Name</h4>
+                                <p>@cooperative.Info</p>
+                            </div>
+                        </a>
+                        <div class="card-footer d-flex justify-content-between">
+                            <div><strong>Grade: </strong>@cooperative.Grade</div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </form>
+        <vc:pagination controller="Cooperatives"
+                       page-index="@Model.PageIndex"
+                       has-previous-page="@Model.HasPreviousPage"
+                       has-next-page="@Model.HasNextPage"
+                       filter="null">
+        </vc:pagination>
+    </div>
+</section><!-- End Services Section -->
