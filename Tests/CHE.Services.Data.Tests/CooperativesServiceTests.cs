@@ -256,6 +256,7 @@
         [Theory]
         [InlineData(0, 0, null, null, null)]
         [InlineData(-2, 0, null, null, null)]
+        [InlineData(0, -1, null, null, null)]
         [InlineData(1, 6, null, null, null)]
         [InlineData(0, 2, "First", null, null)]
         [InlineData(0, 6, null, "Sofia", null)]
@@ -269,7 +270,7 @@
             string cityFilter,
             string neighbourhoodFilter)
         {
-            var cooperatives = new List<Cooperative>
+            var cooperativesList = new List<Cooperative>
             {
                 new Cooperative
                 {
@@ -332,36 +333,40 @@
                     }
                 }
             };
-            await this._dbContext.AddRangeAsync(cooperatives);
+            await this._dbContext.AddRangeAsync(cooperativesList);
             await this._dbContext.SaveChangesAsync();
 
-            var cooperativesFromDb = await this._cooperativesService
+            var cooperatives = await this._cooperativesService
                 .GetAllAsync<CooperativeAllViewModel>(startIndex, endIndex, gradeFilter, cityFilter, neighbourhoodFilter);
 
             var count = endIndex == 0
                 ? await this._dbContext.Cooperatives.CountAsync()
                 : endIndex;
 
-            cooperatives = this.GetFilterCollection(cooperatives, gradeFilter, cityFilter, neighbourhoodFilter)
+            var expectedCooperatives = this.GetFilterCollection(cooperativesList, gradeFilter, cityFilter, neighbourhoodFilter)
                 .Skip((startIndex - 1) * count)
                 .Take(count)
                 .ToList();
 
-            Assert.Equal(cooperatives.Count, cooperativesFromDb.Count());
+            Assert.Equal(expectedCooperatives.Count, cooperatives.Count());
 
             var index = 0;
-            foreach (var cooperative in cooperativesFromDb)
+            foreach (var cooperative in cooperatives)
             {
-                Assert.Equal(cooperatives[index++].Id, cooperative.Id);
+                Assert.Equal(expectedCooperatives[index++].Id, cooperative.Id);
             }
         }
 
-        [Fact]
-        public async Task GetAllByCreatorAsync_ShouldWorkCorrectly()
+        [Theory]
+        [InlineData(0, 0)]
+        [InlineData(-1, 0)]
+        [InlineData(0, -1)]
+        [InlineData(0, 6)]
+        public async Task GetAllByCreatorAsync_ShouldWorkCorrectly(int startIndex, int endIndex)
         {
             var creatorId = Guid.NewGuid().ToString();
 
-            var cooperatives = new List<Cooperative>
+            var cooperativesList = new List<Cooperative>
             {
                 new Cooperative
                 {
@@ -395,20 +400,26 @@
                 }
             };
 
-            this._dbContext.Cooperatives.AddRange(cooperatives);
+            this._dbContext.Cooperatives.AddRange(cooperativesList);
             await this._dbContext.SaveChangesAsync();
 
-            var cooperativesFromDb = await this._cooperativesService
-                .GetAllByCreatorAsync<CooperativeAllViewModel>(creatorId);
+            var cooperatives = await this._cooperativesService
+                .GetAllByCreatorAsync<CooperativeAllViewModel>(creatorId, startIndex, endIndex);
 
-            var expectedCooperatives = cooperatives
+            var count = endIndex == 0
+                ? await this._dbContext.Cooperatives.CountAsync()
+                : endIndex;
+
+            var expectedCooperatives = cooperativesList
                 .Where(x => x.CreatorId == creatorId)
+                .Skip((startIndex - 1) * count)
+                .Take(count)
                 .ToList();
 
-            Assert.Equal(expectedCooperatives.Count, cooperativesFromDb.Count());
+            Assert.Equal(expectedCooperatives.Count, cooperatives.Count());
 
             var index = 0;
-            foreach (var cooperative in cooperativesFromDb)
+            foreach (var cooperative in cooperatives)
             {
                 Assert.Equal(expectedCooperatives[index++].Id, cooperative.Id);
             }
@@ -666,6 +677,48 @@
 
             var expectedCount = this.GetFilterCollection(cooperatives, gradeFilter, cityFilter, neighbourhoodFilter).Count();
             var count = await this._cooperativesService.CountAsync(gradeFilter, cityFilter, neighbourhoodFilter);
+            Assert.Equal(expectedCount, count);
+        }
+
+        [Fact]
+        public async Task CountAsync_ShouldWorkCorrectlyWithUserId()
+        {
+            var creatorId = Guid.NewGuid().ToString();
+
+            var cooperatives = new List<Cooperative>
+            {
+                new Cooperative
+                {
+                    Name = "Name1",
+                    Info = "Info1",
+                    CreatorId = creatorId
+                },
+                new Cooperative
+                {
+                    Name = "Name2",
+                    Info = "Info2",
+                    CreatorId = creatorId
+                },
+                new Cooperative
+                {
+                    Name = "Name3",
+                    Info = "Info3",
+                    CreatorId = creatorId
+                },
+                new Cooperative
+                {
+                    Name = "Name4",
+                    Info = "Info4",
+                    CreatorId = Guid.NewGuid().ToString()
+                }
+            };
+
+            this._dbContext.Cooperatives.AddRange(cooperatives);
+            await this._dbContext.SaveChangesAsync();
+
+            var count = await this._cooperativesService.CountAsync(creatorId);
+            var expectedCount = cooperatives.Where(x => x.CreatorId == creatorId).Count();
+
             Assert.Equal(expectedCount, count);
         }
 
