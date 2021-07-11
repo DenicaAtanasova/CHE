@@ -33,11 +33,11 @@
         {
             var schedule = await this._schedulesService.GetByIdAsync<ScheduleViewModel>(id);
             var userId = this._userManager.GetUserId(this.User);
+            var isMember = await this._cooperativesService.CheckIfMemberAsync(userId, schedule.CooperativeId);
+            var isCreator = await this._cooperativesService.CheckIfCreatorAsync(userId, schedule.CooperativeId);
 
-            this.ViewData["isAuthenticated"] = await this._cooperativesService
-                                                .CheckIfMemberAsync(userId, schedule.CooperativeId) ||
-                                               await this._cooperativesService
-                                                .CheckIfCreatorAsync(userId, schedule.CooperativeId);
+            this.ViewData["isMember"] = isMember;
+            this.ViewData["isCreator"] = isCreator;
             this.ViewData["id"] = schedule.CooperativeId;
             this.ViewData["scheduleId"] = schedule.Id;
 

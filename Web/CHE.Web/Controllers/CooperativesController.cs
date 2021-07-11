@@ -34,7 +34,6 @@
 
         public async Task<IActionResult> Details(string id)
         {
-            var us =this.User;
             if (id == null)
             {
                 return this.NotFound();
@@ -51,11 +50,6 @@
             this.ViewData["isCreator"] = isCreator;
             this.ViewData["id"] = currentCooperative.Id;
             this.ViewData["scheduleId"] = currentCooperative.ScheduleId;
-
-            if (this.User.Identity.Name == currentCooperative.CreatorUserName)
-            {
-                return this.View("DetailsCreator", currentCooperative);
-            }
 
             return this.View(currentCooperative);
         }
