@@ -2,6 +2,9 @@
     Layout = "/Views/Shared/_Layout.cshtml";
     var id = ViewData["id"];
     var scheduleId = ViewData["scheduleId"];
+
+    var isMember = (bool)this.ViewData["isMember"];
+    var isCreator = (bool)this.ViewData["isCreator"];
 }
 <!-- ======= Breadcrumbs ======= -->
 <section id="breadcrumbs" class="breadcrumbs">
@@ -22,21 +25,24 @@
             <div class="col-lg-9">
                 @RenderBody()
             </div>
-            <div class="col-lg-3">
-                <div class="sidebar">
-                    <h3 class="sidebar-title">Categories</h3>
-                    <div class="sidebar-item categories">
-                        <nav class="nav-coop">
-                            <ul>
-                                <li><a asp-area="" asp-controller="Cooperatives" asp-action="Details" asp-route-id="@id">Info</a></li>
-                                <li><a asp-area="Parent" asp-controller="Cooperatives" asp-action="Members" asp-route-id="@id">Memebers</a></li>
-                                <li><a asp-area="Parent" asp-controller="Cooperatives" asp-action="Requests" asp-route-id="@id">Join requests</a></li>
-                                <li><a asp-area="" asp-controller="Schedules" asp-action="Details" asp-route-id="@scheduleId">Schedule</a></li>
-                            </ul>
-                        </nav>
+            @if (isCreator || isMember)
+            {
+                <div class="col-lg-3">
+                    <div class="sidebar">
+                        <h3 class="sidebar-title">Categories</h3>
+                        <div class="sidebar-item categories">
+                            <nav class="nav-coop">
+                                <ul>
+                                    <li><a asp-area="" asp-controller="Cooperatives" asp-action="Details" asp-route-id="@id">Info</a></li>
+                                    <li><a asp-area="Parent" asp-controller="Cooperatives" asp-action="Members" asp-route-id="@id">Memebers</a></li>
+                                    <li><a asp-area="Parent" asp-controller="Cooperatives" asp-action="Requests" asp-route-id="@id">Join requests</a></li>
+                                    <li><a asp-area="" asp-controller="Schedules" asp-action="Details" asp-route-id="@scheduleId">Schedule</a></li>
+                                </ul>
+                            </nav>
+                        </div>
                     </div>
                 </div>
-            </div>
+            }
         </div>
     </div>
 </section>

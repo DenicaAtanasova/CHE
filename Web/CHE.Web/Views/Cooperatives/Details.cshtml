@@ -26,15 +26,12 @@
 </div>
 <hr class="my-4">
 <div class="col-lg-9">
-    @if (this.User.IsInRole(GlobalConstants.PARENT_ROLE))
+    @if (isMember)
     {
-        if (isMember)
-        {
-            <a class="btn btn-che" asp-area="" asp-controller="Cooperatives" asp-action="Leave" asp-route-CooperativeId="@Model.Id">Leave</a>
-        }
-        else
-        {
-            <a class="btn btn-che" asp-area="Parent" asp-controller="JoinRequests" asp-action="Send" asp-route-CooperativeId="@Model.Id">Join</a>
-        }
+        <a class="btn btn-che" asp-area="" asp-controller="Cooperatives" asp-action="Leave" asp-route-CooperativeId="@Model.Id">Leave</a>
+    }
+    else if (!this.User.IsInRole(GlobalConstants.TEACHER_ROLE))
+    {
+        <a class="btn btn-che" asp-area="Parent" asp-controller="JoinRequests" asp-action="Send" asp-route-CooperativeId="@Model.Id">Join</a>
     }
 </div>
