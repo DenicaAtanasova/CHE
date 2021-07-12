@@ -86,30 +86,39 @@
                     <a asp-controller="Cooperatives" asp-action="All" class="btn btn-che">Clear Filters</a>
                 </div>
             </div>
-            <hr class="my-4">
-            <div class="row">
-                @foreach (var cooperative in Model.Cooperatives)
-                {
-                    <div class="card col-lg-4 col-md-6 d-flex align-items-stretch mt-4">
-                        <a asp-controller="Cooperatives" asp-action="Details" asp-route-id="@cooperative.Id">
-                            <div class="icon-box">
-                                <div class="icon"><i class="icofont-users-alt-5"></i></div>
-                                <h4>@cooperative.Name</h4>
-                                <p>@cooperative.Info</p>
-                            </div>
-                        </a>
-                        <div class="card-footer d-flex justify-content-between">
-                            <div><strong>Grade: </strong>@cooperative.Grade</div>
-                        </div>
-                    </div>
-                }
-            </div>
         </form>
+        <hr class="my-4">
+        @if (@Model.Cooperatives.Count == 0)
+        {
+            <div class="row justify-content-center">
+                <h4>There are no coopertives!</h4>
+            </div>
+        }
+        else
+        {
+        <div class="row">
+            @foreach (var cooperative in Model.Cooperatives)
+            {
+                <div class="card col-lg-4 col-md-6 d-flex align-items-stretch mt-4">
+                    <a asp-controller="Cooperatives" asp-action="Details" asp-route-id="@cooperative.Id">
+                        <div class="icon-box">
+                            <div class="icon"><i class="icofont-users-alt-5"></i></div>
+                            <h4>@cooperative.Name</h4>
+                            <p>@cooperative.Info</p>
+                        </div>
+                    </a>
+                    <div class="card-footer d-flex justify-content-between">
+                        <div><strong>Grade: </strong>@cooperative.Grade</div>
+                    </div>
+                </div>
+            }
+        </div>
         <vc:pagination controller="Cooperatives"
                        page-index="@Model.Cooperatives.PageIndex"
                        has-previous-page="@Model.Cooperatives.HasPreviousPage"
                        has-next-page="@Model.Cooperatives.HasNextPage"
                        filter="@Model.Filter">
         </vc:pagination>
+        }
     </div>
 </section><!-- End Services Section -->
