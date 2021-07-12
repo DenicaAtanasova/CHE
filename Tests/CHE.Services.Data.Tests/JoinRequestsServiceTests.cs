@@ -73,15 +73,21 @@
         [Fact]
         public async Task CreateAsync_ShouldWorkCorrectly()
         {
-            var content = "Content";
-            var cooperativeId = Guid.NewGuid().ToString();
             var senderId = Guid.NewGuid().ToString();
+            var joinRequest = new JoinRequestInputModel
+            {
+                Content = "Content",
+                CooperativeId = Guid.NewGuid().ToString(),
+                ReceiverId = Guid.NewGuid().ToString()
+            };
 
-            var requestId = await this._joinRequestsService.CreateAsync(content, cooperativeId, senderId);
+            var requestId = await this._joinRequestsService.CreateAsync(senderId, joinRequest);
             var joinRequestFromDb = await this._dbContext.JoinRequests.SingleOrDefaultAsync();
 
             Assert.Equal(requestId, joinRequestFromDb.Id);
-            Assert.Equal(content, joinRequestFromDb.Content);
+            Assert.Equal(joinRequest.Content, joinRequestFromDb.Content);
+            Assert.Equal(joinRequest.CooperativeId, joinRequestFromDb.CooperativeId);
+            Assert.Equal(joinRequest.ReceiverId, joinRequestFromDb.ReceiverId);
             Assert.Equal(senderId, joinRequestFromDb.SenderId);
 
             var expectedCreatedOn = DateTime.UtcNow;

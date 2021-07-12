@@ -108,11 +108,7 @@
 
             if (!requestExists)
             {
-                await this._joinRequestsService.CreateAsync(
-                    inputModel.Content, 
-                    inputModel.CooperativeId, 
-                    senderId, 
-                    inputModel.ReceiverId);
+                await this._joinRequestsService.CreateAsync(senderId, inputModel);
             }
         }
 

@@ -1,5 +1,7 @@
 ﻿namespace CHE.Services.Data
 {
+    using CHE.Web.InputModels.JoinRequests;
+
     using System.Collections.Generic;
     using System.Threading.Tasks;
 
@@ -11,6 +13,6 @@
 
         Task<IEnumerable<TEntity>> GetAllByCooperativeAsync<TEntity>(string cooperativeId);
 
-        Task<string> CreateAsync(string requestContent, string cooperativeId, string senderId, string receiverId = null);
+        Task<string> CreateAsync(string senderId, JoinRequestInputModel inputModel);
     }
 }

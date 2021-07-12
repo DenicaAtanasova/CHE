@@ -10,6 +10,7 @@
     using CHE.Data;
     using CHE.Data.Models;
     using CHE.Services.Mapping;
+    using CHE.Web.InputModels.JoinRequests;
 
     public class JoinRequestsService : IJoinRequestsService
     {
@@ -43,16 +44,11 @@
                 .ToListAsync();
 
         //TODO: Check if reciever have to be null by default
-        public async Task<string> CreateAsync(string content, string cooperativeId, string senderId, string receiverId)
+        public async Task<string> CreateAsync(string senderId, JoinRequestInputModel inputModel)
         {
-            var request = new JoinRequest
-            {
-                Content = content,
-                SenderId = senderId,
-                ReceiverId = receiverId,
-                CooperativeId = cooperativeId,
-                CreatedOn = DateTime.UtcNow
-            };
+            var request = inputModel.Map<JoinRequestInputModel, JoinRequest>();
+            request.CreatedOn = DateTime.UtcNow;
+            request.SenderId = senderId;
 
             this._dbContext.JoinRequests.Add(request);
             await this._dbContext.SaveChangesAsync();
