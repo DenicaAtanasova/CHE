@@ -875,6 +875,7 @@ div.image {
 }
 
 .rating label {
+    font-style: normal;
     display: block;
     cursor: pointer;
     width: 50px;
