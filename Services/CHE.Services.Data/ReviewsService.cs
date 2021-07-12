@@ -1,15 +1,15 @@
 ﻿namespace CHE.Services.Data
 {
+    using CHE.Data;
+    using CHE.Data.Models;
+    using CHE.Services.Mapping;
+    using CHE.Web.InputModels.Reviews;
+    using Microsoft.EntityFrameworkCore;
+
     using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
-
-    using Microsoft.EntityFrameworkCore;
-
-    using CHE.Data;
-    using CHE.Data.Models;
-    using CHE.Services.Mapping;
 
     public class ReviewsService : IReviewsService
     {
@@ -21,38 +21,23 @@
             this._dbContext = dbContext;
         }
 
-        public async Task<bool> CreateAsync(string comment, int rating, string senderId, string receiverId)
+        public async Task<string> CreateAsync(string senderId, ReviewCreateInputModel inputModel)
         {
-            var reviewExisits = await this._dbContext.Reviews
-                .AnyAsync(x => x.ReceiverId == receiverId && x.SenderId == senderId);
-            if (reviewExisits)
-            {
-                return false;
-            }
-
-            var review = new Review
-            {
-                Comment = comment,
-                Rating = rating,
-                SenderId = senderId,
-                ReceiverId = receiverId,
-                CreatedOn = DateTime.UtcNow
-            };
+            var review = inputModel.Map<ReviewCreateInputModel, Review>();
+            review.CreatedOn = DateTime.UtcNow;
+            review.SenderId = senderId;
 
             await this._dbContext.Reviews.AddAsync(review);
-            var result = await this._dbContext.SaveChangesAsync() > 0;
+            await this._dbContext.SaveChangesAsync();
 
-            return result;
+            return review.Id;
         }
 
-        public async Task<IEnumerable<TEntity>> GetAllAsync<TEntity>(string teacherId)
-        {
-            var reviews = await this._dbContext.Reviews
-                .Where(x => x.ReceiverId == teacherId)
+        public async Task<IEnumerable<TEntity>> GetAllByReceiverAsync<TEntity>(string receiverId)
+            => await this._dbContext.Reviews
+                .AsNoTracking()
+                .Where(x => x.ReceiverId == receiverId)
                 .To<TEntity>()
-                .ToArrayAsync();
-
-            return reviews;
-        }
+                .ToListAsync();
     }
 }

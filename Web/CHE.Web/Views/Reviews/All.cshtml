@@ -1,35 +1,6 @@
 ﻿@model CHE.Web.ViewModels.Teachers.TeacherReviewsViewModel
+@{
+    Layout = "/Views/Shared/_LayoutTeacher.cshtml";
+}
 
-<!-- ======= Breadcrumbs ======= -->
-<section id="breadcrumbs" class="breadcrumbs">
-    <div class="container">
-        <ol>
-            <li><a asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
-            <li><a asp-area="" asp-controller="Teachers" asp-action="All">Teachers</a></li>
-            <li>Details</li>
-        </ol>
-        <h2>Details </h2>
-    </div>
-</section><!-- End Breadcrumbs -->
-
-<!-- ======= Requests Section ======= -->
-<section id="blog" class="blog">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-9">
-                <partial name="_ReviewsAllPartial" model="@Model.Reviews"/>
-            </div>
-            <div class="col-lg-3">
-                <div class="sidebar">
-                    <h3 class="sidebar-title">Categories</h3>
-                    <div class="sidebar-item categories">
-                        <ul>
-                            <li><a asp-area="" asp-controller="Teachers" asp-action="Details" asp-route-id="@Model.Id">Info</a></li>
-                            <li class="details-active"><a asp-area="" asp-controller="Reviews" asp-action="All" asp-route-id="@Model.Id">Reviews</a></li>
-                        </ul>
-                    </div><!-- End sidebar categories-->
-                </div><!-- End sidebar -->
-            </div><!-- End calendar sidebar -->
-        </div>
-    </div>
-</section><!-- End Requests Section -->
+<partial name="_ReviewsAllPartial" model="@Model.Reviews" />

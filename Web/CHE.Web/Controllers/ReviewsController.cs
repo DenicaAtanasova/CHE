@@ -1,12 +1,12 @@
 ﻿namespace CHE.Web.Controllers
 {
-    using System.Threading.Tasks;
-
-    using Microsoft.AspNetCore.Mvc;
-
     using CHE.Services.Data;
     using CHE.Web.ViewModels.Reviews;
     using CHE.Web.ViewModels.Teachers;
+
+    using Microsoft.AspNetCore.Mvc;
+
+    using System.Threading.Tasks;
 
     public class ReviewsController : Controller
     {
@@ -21,9 +21,10 @@
         {
             var reviewsList = new TeacherReviewsViewModel
             {
-                Id = id,
-                Reviews = await this._reviewsService.GetAllAsync<ReviewAllViewModel>(id)
+                Reviews = await this._reviewsService.GetAllByReceiverAsync<ReviewAllViewModel>(id)
             };
+
+            this.ViewData["id"] = id;
 
             return View(reviewsList);
         }

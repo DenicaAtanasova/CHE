@@ -28,7 +28,7 @@ namespace CHE.Web.Areas.Identity.Pages.Account.Manage
             var teacherId = this._userManager.GetUserId(this.User);
 
             this.Reviews = this._reviewsService
-                .GetAllAsync<ReviewAllViewModel>(teacherId).GetAwaiter().GetResult();
+                .GetAllByReceiverAsync<ReviewAllViewModel>(teacherId).GetAwaiter().GetResult();
         }
     }
 }

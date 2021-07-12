@@ -1,6 +1,7 @@
 ﻿namespace CHE.Services.Data
 {
     using CHE.Web.InputModels.JoinRequests;
+    using CHE.Web.InputModels.Reviews;
 
     using System.Collections.Generic;
     using System.Threading.Tasks;
@@ -18,5 +19,7 @@
         Task RejectRequestAsync(string requestId);
 
         Task SendRequestAsync(string senderId, JoinRequestInputModel inputModel);
+
+        Task SendReviewAsync(string senderId, ReviewCreateInputModel inputModel);
     }
 }

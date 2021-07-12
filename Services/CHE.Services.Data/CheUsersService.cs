@@ -5,7 +5,7 @@
     using CHE.Data.Models;
     using CHE.Services.Mapping;
     using CHE.Web.InputModels.JoinRequests;
-
+    using CHE.Web.InputModels.Reviews;
     using Microsoft.EntityFrameworkCore;
 
     using System;
@@ -18,15 +18,18 @@
         private readonly CheDbContext _dbContext;
         private readonly ICooperativesService _cooperativesService;
         private readonly IJoinRequestsService _joinRequestsService;
+        private readonly IReviewsService _reviewsService;
 
         public CheUsersService(
             CheDbContext dbContext, 
             ICooperativesService cooperativesService,
-            IJoinRequestsService joinRequestsService)
+            IJoinRequestsService joinRequestsService,
+            IReviewsService reviewsService)
         {
             this._dbContext = dbContext;
             this._cooperativesService = cooperativesService;
             this._joinRequestsService = joinRequestsService;
+            this._reviewsService = reviewsService;
         }
 
         public async Task<TEntity> GetByIdAsync<TEntity>(string id)
@@ -98,21 +101,31 @@
 
         public async Task SendRequestAsync(string senderId, JoinRequestInputModel inputModel)
         {
-            var requestId = await this._dbContext.JoinRequests
-                .AsNoTracking()
-                .Where(x => x.CooperativeId == inputModel.CooperativeId &&
-                            x.ReceiverId == inputModel.ReceiverId &&
-                            x.SenderId == senderId)
-                .Select(x => x.Id)
-                .SingleOrDefaultAsync();
+            var requestExists = await this._dbContext.JoinRequests
+                .AnyAsync(x => x.CooperativeId == inputModel.CooperativeId &&
+                               x.ReceiverId == inputModel.ReceiverId &&
+                               x.SenderId == senderId);
 
-            if (requestId is null)
+            if (!requestExists)
             {
                 await this._joinRequestsService.CreateAsync(
                     inputModel.Content, 
                     inputModel.CooperativeId, 
                     senderId, 
                     inputModel.ReceiverId);
+            }
+        }
+
+        //TODO: SendReview, RemoveReview, EditReview
+
+        public async Task SendReviewAsync(string senderId, ReviewCreateInputModel inputModel)
+        {
+            var reviewExists = await this._dbContext.Reviews
+                .AnyAsync(x => x.SenderId == senderId && x.ReceiverId == inputModel.ReceiverId);
+
+            if (!reviewExists)
+            {
+                await this._reviewsService.CreateAsync(senderId, inputModel);
             }
         }
 

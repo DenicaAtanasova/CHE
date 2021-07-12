@@ -1,8 +1,11 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace CHE.Web.InputModels.Reviews
+﻿namespace CHE.Web.InputModels.Reviews
 {
-    public class ReviewSendInputModel
+    using CHE.Data.Models;
+    using CHE.Services.Mapping;
+
+    using System.ComponentModel.DataAnnotations;
+
+    public class ReviewCreateInputModel : IMapTo<Review>
     {
         private const string RATING_ERR_MSG = "Rating must be between 1 and 5!";
         private const string COMMENT_ERR_MSG = "You must leave a comment!";
