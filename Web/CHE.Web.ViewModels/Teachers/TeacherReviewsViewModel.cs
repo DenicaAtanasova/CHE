@@ -8,8 +8,6 @@
 
     public class TeacherReviewsViewModel : IMapFrom<CheUser>
     {
-        public string Id { get; set; }
-
         public IEnumerable<ReviewAllViewModel> Reviews { get; set; }
     }
 }
