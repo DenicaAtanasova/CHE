@@ -20,7 +20,14 @@
             </div>
         </div>
         <hr class="my-4">
-        <form method="get" asp-controller="Cooperatives" asp-action="All">
+        @if (@Model.Count == 0)
+        {
+            <div class="row justify-content-center">
+                <h4>There are no coopertives!</h4>
+            </div>
+        }
+        else
+        {
             <div class="row">
                 @foreach (var cooperative in Model)
                 {
@@ -38,12 +45,12 @@
                     </div>
                 }
             </div>
-        </form>
-        <vc:pagination controller="Cooperatives"
-                       page-index="@Model.PageIndex"
-                       has-previous-page="@Model.HasPreviousPage"
-                       has-next-page="@Model.HasNextPage"
-                       filter="null">
-        </vc:pagination>
+            <vc:pagination controller="Cooperatives"
+                           page-index="@Model.PageIndex"
+                           has-previous-page="@Model.HasPreviousPage"
+                           has-next-page="@Model.HasNextPage"
+                           filter="null">
+            </vc:pagination>
+        }
     </div>
 </section><!-- End Services Section -->
