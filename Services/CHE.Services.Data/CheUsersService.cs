@@ -42,7 +42,9 @@
             string schoolLevelFilter = null)
         {
             var count = endIndex == 0
-                ? await this._dbContext.Users.CountAsync()
+                ? await this._dbContext.Users
+                    .Where(x => x.RoleName == GlobalConstants.TEACHER_ROLE)
+                    .CountAsync()
                 : endIndex;
 
             var filteredTeachers = this.FilterCollection(schoolLevelFilter);
@@ -123,7 +125,7 @@
             if (schoolLevelFilter != null)
             {
                 var schoolLevel = (SchoolLevel)Enum.Parse(typeof(SchoolLevel), schoolLevelFilter);
-                teachers = teachers.Where(x => x.Portfolio.SchoolLevel == schoolLevel);
+                return teachers.Where(x => x.Portfolio.SchoolLevel == schoolLevel);
             }
 
             return teachers;

@@ -1,16 +1,16 @@
 ﻿namespace CHE.Web.Controllers
 {
-    using System.Threading.Tasks;
-
-    using Microsoft.AspNetCore.Mvc;
-
     using CHE.Services.Data;
     using CHE.Web.ViewModels;
     using CHE.Web.ViewModels.Teachers;
 
+    using Microsoft.AspNetCore.Mvc;
+
+    using System.Threading.Tasks;
+
     public class TeachersController : Controller
     {
-        private const int DEFAULT_PAGE_SIZE = 18;
+        private const int DEFAULT_PAGE_SIZE = 6;
 
         private readonly ICheUsersService _teachersService;
 
