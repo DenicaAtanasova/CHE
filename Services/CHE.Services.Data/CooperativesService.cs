@@ -162,12 +162,9 @@
                     CooperativeId = cooperativeId,
                     CheUserId = cooperative.AdminId
                 });
-            this._dbContext.UserCooperatives.Remove(
-                new CheUserCooperative
-                {
-                    CooperativeId = cooperativeId,
-                    CheUserId = userId
-                });
+
+            var memberToRemove = cooperative.Members.FirstOrDefault(x => x.CheUserId == userId);
+            this._dbContext.UserCooperatives.Remove(memberToRemove);
 
             cooperative.AdminId = userId;
 
@@ -183,7 +180,6 @@
             => await this._dbContext.UserCooperatives
                 .AnyAsync(x => x.CheUserId == userId && x.CooperativeId == cooperativeId);
 
-        //TODO: Add tests
         public async Task<bool> CheckIfRequestExistsAsync(string cooperativeId, string senderId)
             => await this._dbContext.JoinRequests
             .AnyAsync(x => x.SenderId == senderId && x.CooperativeId == cooperativeId);

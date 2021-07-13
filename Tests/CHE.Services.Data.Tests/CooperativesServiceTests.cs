@@ -723,6 +723,100 @@
             Assert.Equal(expectedCount, count);
         }
 
+        [Fact]
+        public async Task CheckIfRequestExistsAsync_ShouldWorkCorrectly()
+        {
+            var cooperativeId = Guid.NewGuid().ToString();
+            var senderId = Guid.NewGuid().ToString();
+            this._dbContext.JoinRequests.Add(
+                new JoinRequest
+                {
+                    CooperativeId = cooperativeId,
+                    SenderId = senderId
+                });
+            await this._dbContext.SaveChangesAsync();
+
+            Assert.True(await this._cooperativesService
+                .CheckIfRequestExistsAsync(cooperativeId, senderId));
+
+            Assert.False(await this._cooperativesService
+                .CheckIfRequestExistsAsync(cooperativeId, Guid.NewGuid().ToString()));
+            Assert.False(await this._cooperativesService
+                .CheckIfRequestExistsAsync(Guid.NewGuid().ToString(), senderId));
+        }
+
+        [Fact]
+        public async Task ChangeAdminAsync_ShouldWorkCorrectly()
+        {
+            var admin = new CheUser
+            {
+                UserName = "Admin"
+            };
+
+            var newAdmin = new CheUser
+            {
+                UserName = "NewAdmin"
+            };
+
+            var cooperative = new Cooperative
+            {
+                Admin = admin,
+                Members = new List<CheUserCooperative>
+                {
+                    new CheUserCooperative
+                    {
+                        CheUser = newAdmin
+                    }
+                }
+            };
+
+            this._dbContext.Add(cooperative);
+            await this._dbContext.SaveChangesAsync();
+
+            await this._cooperativesService.ChangeAdminAsync(cooperative.Id, newAdmin.Id);
+            var cooperativeFromDb = await this._dbContext.Cooperatives.SingleOrDefaultAsync();
+
+            Assert.Equal(newAdmin.Id, cooperativeFromDb.AdminId);
+        }
+
+
+        [Fact]
+        public async Task ChangeAdminAsync_ShouldTurnCurrentAdminToMember()
+        {
+            var admin = new CheUser
+            {
+                UserName = "Admin"
+            };
+
+            var newAdmin = new CheUser
+            {
+                UserName = "NewAdmin"
+            };
+
+            var cooperative = new Cooperative
+            {
+                Admin = admin,
+                Members = new List<CheUserCooperative>
+                {
+                    new CheUserCooperative
+                    {
+                        CheUser = newAdmin
+                    }
+                }
+            };
+
+            this._dbContext.Add(cooperative);
+            await this._dbContext.SaveChangesAsync();
+
+            await this._cooperativesService.ChangeAdminAsync(cooperative.Id, newAdmin.Id);
+            var cooperativeFromDb = await this._dbContext.Cooperatives.SingleOrDefaultAsync();
+
+            var memberId = cooperativeFromDb.Members.SingleOrDefault().CheUserId;
+
+            Assert.Equal(admin.Id, memberId);
+        }
+
+
         private IEnumerable<Cooperative> GetFilterCollection(
             IEnumerable<Cooperative> cooperatives,
             string gradeFilter = null,
