@@ -405,7 +405,7 @@
             await this._dbContext.SaveChangesAsync();
 
             var cooperatives = await this._cooperativesService
-                .GetAllByCreatorAsync<CooperativeAllViewModel>(creatorId, startIndex, endIndex);
+                .GetAllByAdminAsync<CooperativeAllViewModel>(creatorId, startIndex, endIndex);
 
             var count = endIndex == 0
                 ? await this._dbContext.Cooperatives.CountAsync()

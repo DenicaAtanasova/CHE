@@ -139,7 +139,7 @@
         {
             var userId = this._userManager.GetUserId(this.User);
             var cooperatives = await this._cooperativesService
-                .GetAllByCreatorAsync<CooperativeAllViewModel>(userId, pageIndex, DEFAULT_PAGE_SIZE);
+                .GetAllByAdminOrMemberAsync<CooperativeAllViewModel>(userId, pageIndex, DEFAULT_PAGE_SIZE);
 
             var count = await this._cooperativesService.CountAsync(userId);
 

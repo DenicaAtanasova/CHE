@@ -24,7 +24,12 @@
             string cityFilter = null,
             string neighbourhoodFilter = null);
 
-        Task<IEnumerable<TEntity>> GetAllByCreatorAsync<TEntity>(
+        Task<IEnumerable<TEntity>> GetAllByAdminAsync<TEntity>(
+            string userId,
+            int startIndex = 1,
+            int endIndex = 0);
+
+        Task<IEnumerable<TEntity>> GetAllByAdminOrMemberAsync<TEntity>(
             string userId,
             int startIndex = 1,
             int endIndex = 0);

@@ -85,22 +85,14 @@
             string cityFilter = null,
             string neighbourhoodFilter = null)
         {
-            var count = endIndex == 0 
-                ? await this._dbContext.Cooperatives.CountAsync() 
-                : endIndex;
+            var count = await this.GetCollectionCount(this._dbContext.Cooperatives, endIndex);
 
-            var filteredCooperatives = this.GetFilterCollection(gradeFilter, cityFilter, neighbourhoodFilter);
+            var filteredCooperatives = this.GetFilteredCollection(gradeFilter, cityFilter, neighbourhoodFilter);
 
-            var cooperatives = await filteredCooperatives
-                .Skip((startIndex - 1) * count)
-                .Take(count)
-                .To<TEntity>()
-                .ToListAsync();
-
-            return cooperatives;
+            return await this.GetCollectionPerPage<TEntity>(filteredCooperatives, startIndex, count);
         }
 
-        public async Task<IEnumerable<TEntity>> GetAllByCreatorAsync<TEntity>(
+        public async Task<IEnumerable<TEntity>> GetAllByAdminAsync<TEntity>(
             string userId,
             int startIndex = 1,
             int endIndex = 0)
@@ -109,15 +101,23 @@
                   .AsNoTracking()
                   .Where(x => x.AdminId == userId);
 
-            var count = endIndex == 0
-                ? await cooperatives.CountAsync()
-                : endIndex;
+            var count = await this.GetCollectionCount(cooperatives, endIndex);
 
-            return await cooperatives
-                .Skip((startIndex - 1) * count)
-                .Take(count)
-                .To<TEntity>()
-                .ToListAsync();
+            return await this.GetCollectionPerPage<TEntity>(cooperatives, startIndex, count);
+        }
+
+        public async Task<IEnumerable<TEntity>> GetAllByAdminOrMemberAsync<TEntity>(
+            string userId,
+            int startIndex = 1,
+            int endIndex = 0)
+        {
+            var cooperatives = this._dbContext.Cooperatives
+                  .AsNoTracking()
+                  .Where(x => x.AdminId == userId || x.Members.Any(x => x.CheUserId == userId));
+
+            var count = await this.GetCollectionCount(cooperatives, endIndex);
+
+            return await this.GetCollectionPerPage<TEntity>(cooperatives, startIndex, count);
         }
 
         public async Task AddMemberAsync(string userId, string cooperativeId)
@@ -194,9 +194,9 @@
             string gradeFilter = null,
             string cityFilter = null,
             string neighbourhoodFilter = null)
-            => await this.GetFilterCollection(gradeFilter, cityFilter, neighbourhoodFilter).CountAsync();
+            => await this.GetFilteredCollection(gradeFilter, cityFilter, neighbourhoodFilter).CountAsync();
 
-        private IQueryable<Cooperative> GetFilterCollection(
+        private IQueryable<Cooperative> GetFilteredCollection(
             string gradeFilter = null,
             string cityFilter = null,
             string neighbourhoodFilter = null)
@@ -220,5 +220,20 @@
 
             return cooperatives;
         }
+
+        private async Task<int> GetCollectionCount(IQueryable<Cooperative> cooperatives, int endIndex)
+            => endIndex == 0
+                ? await cooperatives.CountAsync()
+                : endIndex;
+
+        private async Task<IEnumerable<TEntity>> GetCollectionPerPage<TEntity>(
+            IQueryable<Cooperative> cooperatives, 
+            int startIndex, 
+            int count)
+            => await cooperatives
+                .Skip((startIndex - 1) * count)
+                .Take(count)
+                .To<TEntity>()
+                .ToListAsync();
     }
 }
