@@ -33,7 +33,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Common", "Common", "{C04C00
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CHE.Common", "Common\CHE.Common\CHE.Common.csproj", "{70DB6FC4-9B2E-42AE-B2CF-0BE8D54AA287}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CHE.Services.Data.Tests", "Tests\CHE.Services.Data.Tests\CHE.Services.Data.Tests.csproj", "{8EE1D5A5-2A23-4B38-9EAA-31E25442C93F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CHE.Services.Data.Tests", "Tests\CHE.Services.Data.Tests\CHE.Services.Data.Tests.csproj", "{8EE1D5A5-2A23-4B38-9EAA-31E25442C93F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

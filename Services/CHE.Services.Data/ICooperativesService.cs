@@ -46,7 +46,7 @@
 
         Task<bool> CheckIfMemberAsync(string userId, string cooperativeId);
 
-        Task<bool> CheckIfRequestExistsAsync(string cooperativeId, string senderId);
+        Task<string> GetPendindRequestIdAsync(string cooperativeId, string senderId);
 
         Task<int> CountAsync(string userId);
 

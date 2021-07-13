@@ -36,8 +36,16 @@
         </div>
         <div class="row">
             <div class="col-md-5">
-                <a class="btn btn-che" asp-controller="JoinRequests" asp-action="Accept" asp-all-route-data="@data">Accept</a>
-                <a class="btn btn-che" asp-controller="JoinRequests" asp-action="Reject" asp-all-route-data="@data">Reject</a>
+                @if (Model.ReceiverId == null)
+                {
+                    <a class="btn btn-che" asp-controller="JoinRequests" asp-action="Accept" asp-all-route-data="@data">Edit</a>
+                    <a class="btn btn-che" asp-controller="JoinRequests" asp-action="Reject" asp-all-route-data="@data">Delete</a>
+                }
+                else
+                {
+                    <a class="btn btn-che" asp-controller="JoinRequests" asp-action="Accept" asp-all-route-data="@data">Accept</a>
+                    <a class="btn btn-che" asp-controller="JoinRequests" asp-action="Reject" asp-all-route-data="@data">Reject</a>
+                }
             </div>
         </div>
     </div>

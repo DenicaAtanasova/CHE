@@ -180,9 +180,11 @@
             => await this._dbContext.UserCooperatives
                 .AnyAsync(x => x.CheUserId == userId && x.CooperativeId == cooperativeId);
 
-        public async Task<bool> CheckIfRequestExistsAsync(string cooperativeId, string senderId)
+        public async Task<string> GetPendindRequestIdAsync(string cooperativeId, string senderId)
             => await this._dbContext.JoinRequests
-            .AnyAsync(x => x.SenderId == senderId && x.CooperativeId == cooperativeId);
+            .Where(x => x.SenderId == senderId && x.CooperativeId == cooperativeId)
+            .Select(x => x.Id)
+            .FirstOrDefaultAsync();
 
         public async Task<int> CountAsync(string userId)
             => await this._dbContext.Cooperatives

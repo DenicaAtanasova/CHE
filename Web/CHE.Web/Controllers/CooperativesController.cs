@@ -42,8 +42,8 @@
                 .CheckIfMemberAsync(userId, currentCooperative.Id);
             this.ViewData["isAdmin"] = await this._cooperativesService
                 .CheckIfAdminAsync(userId, currentCooperative.Id);
-            this.ViewData["requestExists"] = await this._cooperativesService
-                .CheckIfRequestExistsAsync(id, userId);
+            this.ViewData["pendingRequestId"] = await this._cooperativesService
+                .GetPendindRequestIdAsync(id, userId);
             this.ViewData["id"] = currentCooperative.Id;
             this.ViewData["scheduleId"] = currentCooperative.ScheduleId;
 

@@ -724,25 +724,23 @@
         }
 
         [Fact]
-        public async Task CheckIfRequestExistsAsync_ShouldWorkCorrectly()
+        public async Task GetPendindRequestIdAsync_ShouldWorkCorrectly()
         {
             var cooperativeId = Guid.NewGuid().ToString();
             var senderId = Guid.NewGuid().ToString();
-            this._dbContext.JoinRequests.Add(
-                new JoinRequest
-                {
-                    CooperativeId = cooperativeId,
-                    SenderId = senderId
-                });
+            var request = new JoinRequest
+            {
+                CooperativeId = cooperativeId,
+                SenderId = senderId
+            };
+
+            this._dbContext.JoinRequests.Add(request);
             await this._dbContext.SaveChangesAsync();
 
-            Assert.True(await this._cooperativesService
-                .CheckIfRequestExistsAsync(cooperativeId, senderId));
+            var pendingRequestId = await this._cooperativesService
+                .GetPendindRequestIdAsync(cooperativeId, senderId);
 
-            Assert.False(await this._cooperativesService
-                .CheckIfRequestExistsAsync(cooperativeId, Guid.NewGuid().ToString()));
-            Assert.False(await this._cooperativesService
-                .CheckIfRequestExistsAsync(Guid.NewGuid().ToString(), senderId));
+            Assert.Equal(request.Id, pendingRequestId);
         }
 
         [Fact]
@@ -779,7 +777,6 @@
             Assert.Equal(newAdmin.Id, cooperativeFromDb.AdminId);
         }
 
-
         [Fact]
         public async Task ChangeAdminAsync_ShouldTurnCurrentAdminToMember()
         {
@@ -815,7 +812,6 @@
 
             Assert.Equal(admin.Id, memberId);
         }
-
 
         private IEnumerable<Cooperative> GetFilterCollection(
             IEnumerable<Cooperative> cooperatives,

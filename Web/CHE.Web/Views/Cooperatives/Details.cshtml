@@ -3,7 +3,7 @@
     Layout = "/Views/Shared/_LayoutCooperative.cshtml";
     var isMember = (bool)this.ViewData["isMember"];
     var isAdmin = (bool)this.ViewData["isAdmin"];
-    var requestExists = (bool)this.ViewData["requestExists"];
+    var pendingRequestId = this.ViewData["pendingRequestId"];
 }
 
 <div>
@@ -36,20 +36,21 @@
 }
 else
 {
-    <div class="col-lg-9">
-        @if (isMember)
-        {
-            <a class="btn btn-che" asp-area="" asp-controller="Cooperatives" asp-action="Leave" asp-route-CooperativeId="@Model.Id">Leave</a>
-        }
-        else if (requestExists)
-        {
-            <h4>Pending request ...</h4>
-        }
-        else if (!this.User.IsInRole(GlobalConstants.TEACHER_ROLE))
-        {
-            <a class="btn btn-che" asp-area="Parent" asp-controller="JoinRequests" asp-action="Send" asp-route-CooperativeId="@Model.Id">Join</a>
-        }
-    </div>
+<div class="col-lg-9">
+    @if (isMember)
+    {
+        <a class="btn btn-che" asp-area="" asp-controller="Cooperatives" asp-action="Leave" asp-route-CooperativeId="@Model.Id">Leave</a>
+    }
+    else if (pendingRequestId != null)
+    {
+        <h4>Pending request ...</h4>
+        <a class="btn btn-che" asp-area="" asp-controller="JoinRequests" asp-action="Details" asp-route-id="@pendingRequestId">Details</a>
+    }
+    else if (!this.User.IsInRole(GlobalConstants.TEACHER_ROLE))
+    {
+        <a class="btn btn-che" asp-area="Parent" asp-controller="JoinRequests" asp-action="Send" asp-route-CooperativeId="@Model.Id">Join</a>
+    }
+</div>
 }
 
 
