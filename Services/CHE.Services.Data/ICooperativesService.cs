@@ -8,7 +8,7 @@
     public interface ICooperativesService
     {
         Task<string> CreateAsync(
-            string creatorId,
+            string adminId,
             CooperativeCreateInputModel inputModel);
 
         Task UpdateAsync(CooperativeUpdateInputModel inputModel);
@@ -35,11 +35,12 @@
 
         Task<IEnumerable<TEntity>> GetMembersAsync<TEntity>(string id);
 
-        Task<bool> CheckIfMemberAsync(string userId, string cooperativeId);
+        Task ChangeAdminAsync(string cooperativeId, string userId);
 
         Task<bool> CheckIfAdminAsync(string userId, string cooperativeId);
 
-        //TODO: Add change admin
+        Task<bool> CheckIfMemberAsync(string userId, string cooperativeId);
+
         Task<bool> CheckIfRequestExistsAsync(string cooperativeId, string senderId);
 
         Task<int> CountAsync(string userId);

@@ -83,12 +83,20 @@
             return this.RedirectToAction("All", "Cooperatives", new { area = "" });
         }
 
-        public async Task<IActionResult> RemoveMember(string memberId, string cooperativeId)
+        public async Task<IActionResult> MakeAdmin(string cooperativeId, string userId)
+        {
+            await this._cooperativesService.ChangeAdminAsync(cooperativeId, userId);
+            return this.RedirectToAction(
+                "Details", "Cooperatives", new { area = "", id = cooperativeId });
+        }
+
+        public async Task<IActionResult> RemoveMember(string cooperativeId, string memberId)
         {
             await this._cooperativesService
                 .RemoveMemberAsync(memberId, cooperativeId);
 
-            return this.RedirectToAction("Details", "Cooperatives", new { area = "", id = cooperativeId });
+            return this.RedirectToAction(
+                "Details", "Cooperatives", new { area = "", id = cooperativeId });
         }
 
         public async Task<IActionResult> Members(string id)

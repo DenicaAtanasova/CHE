@@ -29,12 +29,12 @@
         }
 
         public async Task<string> CreateAsync(
-            string creatorId,
+            string adminId,
             CooperativeCreateInputModel inputModel)
         {
             var cooperative = new Cooperative
             {
-                AdminId = creatorId,
+                AdminId = adminId,
                 Name = inputModel.Name,
                 Info = inputModel.Info,
                 CreatedOn = DateTime.UtcNow,
@@ -151,13 +151,37 @@
                 .To<TEntity>()
                 .ToListAsync();
 
-        public async Task<bool> CheckIfMemberAsync(string userId, string cooperativeId)
-            => await this._dbContext.UserCooperatives
-                .AnyAsync(x => x.CheUserId == userId && x.CooperativeId == cooperativeId);
+        //TODO: Add tests
+        public async Task ChangeAdminAsync(string cooperativeId, string userId)
+        {
+            var cooperative = await this._dbContext.Cooperatives
+                .SingleOrDefaultAsync(x => x.Id == cooperativeId);
+            this._dbContext.UserCooperatives.Add(
+                new CheUserCooperative
+                {
+                    CooperativeId = cooperativeId,
+                    CheUserId = cooperative.AdminId
+                });
+            this._dbContext.UserCooperatives.Remove(
+                new CheUserCooperative
+                {
+                    CooperativeId = cooperativeId,
+                    CheUserId = userId
+                });
+
+            cooperative.AdminId = userId;
+
+            this._dbContext.Cooperatives.Update(cooperative);
+            await this._dbContext.SaveChangesAsync();
+        }
 
         public async Task<bool> CheckIfAdminAsync(string userId, string cooperativeId)
             => await this._dbContext.Cooperatives
                 .AnyAsync(x => x.AdminId == userId && x.Id == cooperativeId);
+
+        public async Task<bool> CheckIfMemberAsync(string userId, string cooperativeId)
+            => await this._dbContext.UserCooperatives
+                .AnyAsync(x => x.CheUserId == userId && x.CooperativeId == cooperativeId);
 
         //TODO: Add tests
         public async Task<bool> CheckIfRequestExistsAsync(string cooperativeId, string senderId)
