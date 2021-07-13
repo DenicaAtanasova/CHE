@@ -5,5 +5,7 @@
     public interface ISchedulesService
     {
         Task<TEntity> GetByIdAsync<TEntity>(string id);
+
+        //TODO GetIdByCooperative, GetIdByTeacher
     }
 }

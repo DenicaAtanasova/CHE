@@ -44,7 +44,7 @@
                         <div class="form-group">
                             <select asp-for="CooperativeId" class="form-control">
                                 <option selected disabled>-- Choose cooperative --</option>
-                                <vc:cooperatives-list creator-username="@UserManager.GetUserId(this.User)"></vc:cooperatives-list>
+                                <vc:cooperatives-list user-id="@UserManager.GetUserId(this.User)"></vc:cooperatives-list>
                             </select>
                             <span asp-validation-for="CooperativeId" class="text-danger"></span>
                         </div>

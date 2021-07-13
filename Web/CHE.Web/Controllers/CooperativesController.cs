@@ -34,11 +34,6 @@
 
         public async Task<IActionResult> Details(string id)
         {
-            if (id == null)
-            {
-                return this.NotFound();
-            }
-
             var currentCooperative = await this._cooperativesService
                 .GetByIdAsync<CooperativeDetailsViewModel>(id);
 

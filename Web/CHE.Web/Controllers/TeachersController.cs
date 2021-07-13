@@ -12,19 +12,19 @@
     {
         private const int DEFAULT_PAGE_SIZE = 6;
 
-        private readonly ICheUsersService _usersService;
+        private readonly ICheUsersService _cheUsersService;
 
-        public TeachersController(ICheUsersService teachersService)
+        public TeachersController(ICheUsersService cheUsersService)
         {
-            this._usersService = teachersService;
+            this._cheUsersService = cheUsersService;
         }
 
         public async Task<IActionResult> All(TeacherAllFilterViewModel filter, int pageIndex = 1)
         {
-            var teachers = await this._usersService
+            var teachers = await this._cheUsersService
                     .GetAllAsync<TeacherAllViewModel>(pageIndex, DEFAULT_PAGE_SIZE, filter.SchoolLevel);
 
-            var count = await this._usersService.Count(filter.SchoolLevel);
+            var count = await this._cheUsersService.Count(filter.SchoolLevel);
 
             var teachersList = new TeacherAllListViewModel
             {
@@ -38,7 +38,7 @@
 
         public async Task<IActionResult> Details(string id)
         {
-            var currentTeacher = await this._usersService
+            var currentTeacher = await this._cheUsersService
                 .GetByIdAsync<TeacherDetailsViewModel>(id);
 
             this.ViewData["id"] = currentTeacher.Id;

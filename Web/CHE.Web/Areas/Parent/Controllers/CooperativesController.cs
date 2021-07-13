@@ -127,8 +127,10 @@
 
             var userId = this._userManager.GetUserId(this.User);
 
-            this.ViewData["isMember"] = await this._cooperativesService.CheckIfMemberAsync(userId, cooperative.Id);
-            this.ViewData["isAdmin"] = await this._cooperativesService.CheckIfAdminAsync(userId, cooperative.Id);
+            this.ViewData["isMember"] = await this._cooperativesService
+                .CheckIfMemberAsync(userId, cooperative.Id);
+            this.ViewData["isAdmin"] = await this._cooperativesService
+                .CheckIfAdminAsync(userId, cooperative.Id);
             this.ViewData["id"] = cooperative.Id;
             this.ViewData["scheduleId"] = cooperative.ScheduleId;
 

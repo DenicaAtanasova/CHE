@@ -30,8 +30,10 @@
         [HttpPost]
         public async Task<IActionResult> Send(ReviewCreateInputModel inputModel)
         {
-            if (!ModelState.IsValid)
+            if (!this.ModelState.IsValid)
             {
+                //not working
+                //return this.View(inputModel.ReceiverId);
                 return this.RedirectToAction(nameof(Send), new { id = inputModel.ReceiverId });
             }
 
