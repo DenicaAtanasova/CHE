@@ -20,9 +20,14 @@
                 <th scope="row">@(membersCount++)</th>
                 <td scope="row">@member.UserName</td>
                 <td scope="row">@member.Role</td>
-                @if (Model.CreatorUserName == this.User.Identity.Name)
+                @if (Model.AdminUserName == this.User.Identity.Name)
                 {
-                    <td><a class="btn btn-che btn-sm" asp-area="Parent" asp-controller="Cooperatives" asp-action="RemoveMember" asp-route-cooperativeId="@member.CooperativeId" asp-route-memberId="@member.UserId">Remove</a></td>
+                    <td><a class="btn btn-che btn-sm" 
+                           asp-area="Parent" 
+                           asp-controller="Cooperatives" 
+                           asp-action="RemoveMember" 
+                           asp-route-cooperativeId="@member.CooperativeId" 
+                           asp-route-memberId="@member.UserId">Remove</a></td>
                 }
             </tr>
         }

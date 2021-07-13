@@ -37,7 +37,7 @@
 
         Task<bool> CheckIfMemberAsync(string userId, string cooperativeId);
 
-        Task<bool> CheckIfCreatorAsync(string userId, string cooperativeId);
+        Task<bool> CheckIfAdminAsync(string userId, string cooperativeId);
 
         //TODO: Add change admin
         Task<bool> CheckIfRequestExistsAsync(string cooperativeId, string senderId);

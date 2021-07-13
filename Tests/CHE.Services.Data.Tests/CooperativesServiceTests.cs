@@ -15,6 +15,7 @@
     using System.Threading.Tasks;
 
     using Xunit;
+
     public class CooperativesServiceTests
     {
         private const string FIRST_GRADE = "First";
@@ -70,7 +71,7 @@
             var expectedCreatedOnDate = DateTime.UtcNow;
 
             Assert.Equal(cooperativeId, cooperativeFromDb.Id);
-            Assert.Equal(creatorId, cooperativeFromDb.CreatorId);
+            Assert.Equal(creatorId, cooperativeFromDb.AdminId);
             Assert.Equal(cooperative.Name, cooperativeFromDb.Name);
             Assert.Equal(cooperative.Info, cooperativeFromDb.Info);
             Assert.Equal(FIRST_GRADE_ID, cooperativeFromDb.GradeId);
@@ -100,7 +101,7 @@
                     City = "Varna",
                     Neighbourhood = "Levski"
                 },
-                CreatorId = Guid.NewGuid().ToString()
+                AdminId = Guid.NewGuid().ToString()
             };
 
             this._dbContext.Cooperatives.Add(cooperative);
@@ -114,7 +115,7 @@
                 Info = "updatedInfo",
                 Grade = FIRST_GRADE,
                 Address = ADDRESS,
-                CreatorId = cooperative.CreatorId,
+                CreatorId = cooperative.AdminId,
                 CreatedOn = cooperative.CreatedOn
             };
 
@@ -127,7 +128,7 @@
 
             Assert.Equal(cooperativeUpdateModel.Name, updatedCooperative.Name);
             Assert.Equal(cooperativeUpdateModel.Info, updatedCooperative.Info);
-            Assert.Equal(cooperativeUpdateModel.CreatorId, updatedCooperative.CreatorId);
+            Assert.Equal(cooperativeUpdateModel.CreatorId, updatedCooperative.AdminId);
             Assert.Equal(FIRST_GRADE_ID, updatedCooperative.GradeId);
             Assert.Equal(ADDRESS_ID, updatedCooperative.AddressId);
             Assert.Equal(ADDRESS_ID, updatedCooperative.AddressId);
@@ -153,7 +154,7 @@
                     City = "Varna",
                     Neighbourhood = "Levski"
                 },
-                CreatorId = Guid.NewGuid().ToString()
+                AdminId = Guid.NewGuid().ToString()
             };
 
             this._dbContext.Cooperatives.Add(cooperative);
@@ -183,7 +184,7 @@
                     City = "Varna",
                     Neighbourhood = "Levski"
                 },
-                CreatorId = Guid.NewGuid().ToString()
+                AdminId = Guid.NewGuid().ToString()
             };
 
             this._dbContext.Cooperatives.Add(cooperative);
@@ -372,31 +373,31 @@
                 {
                     Name = "Name1",
                     Info = "Info1",
-                    CreatorId = creatorId
+                    AdminId = creatorId
                 },
                 new Cooperative
                 {
                     Name = "Name2",
                     Info = "Info2",
-                    CreatorId = creatorId
+                    AdminId = creatorId
                 },
                 new Cooperative
                 {
                     Name = "Name3",
                     Info = "Info3",
-                    CreatorId = creatorId
+                    AdminId = creatorId
                 },
                 new Cooperative
                 {
                     Name = "Name4",
                     Info = "Info4",
-                    CreatorId = Guid.NewGuid().ToString()
+                    AdminId = Guid.NewGuid().ToString()
                 },
                 new Cooperative
                 {
                     Name = "Name5",
                     Info = "Info5",
-                    CreatorId = Guid.NewGuid().ToString()
+                    AdminId = Guid.NewGuid().ToString()
                 }
             };
 
@@ -411,7 +412,7 @@
                 : endIndex;
 
             var expectedCooperatives = cooperativesList
-                .Where(x => x.CreatorId == creatorId)
+                .Where(x => x.AdminId == creatorId)
                 .Skip((startIndex - 1) * count)
                 .Take(count)
                 .ToList();
@@ -543,23 +544,23 @@
         }
 
         [Fact]
-        public async Task CheckIfCreatorAsync_ShouldWorkCorrectly()
+        public async Task CheckIfAdminAsync_ShouldWorkCorrectly()
         {
             var creatorId = Guid.NewGuid().ToString();
             var cooperative = new Cooperative
             {
                 Name = "CoopName",
                 Info = "CoopInfo",
-                CreatorId = creatorId
+                AdminId = creatorId
             };
 
             this._dbContext.Cooperatives.Add(cooperative);
             await this._dbContext.SaveChangesAsync();
 
             Assert.True(await this._cooperativesService
-                .CheckIfCreatorAsync(creatorId, cooperative.Id));
+                .CheckIfAdminAsync(creatorId, cooperative.Id));
             Assert.False(await this._cooperativesService
-                .CheckIfCreatorAsync(Guid.NewGuid().ToString(), cooperative.Id));
+                .CheckIfAdminAsync(Guid.NewGuid().ToString(), cooperative.Id));
         }
 
         [Fact]
@@ -691,25 +692,25 @@
                 {
                     Name = "Name1",
                     Info = "Info1",
-                    CreatorId = creatorId
+                    AdminId = creatorId
                 },
                 new Cooperative
                 {
                     Name = "Name2",
                     Info = "Info2",
-                    CreatorId = creatorId
+                    AdminId = creatorId
                 },
                 new Cooperative
                 {
                     Name = "Name3",
                     Info = "Info3",
-                    CreatorId = creatorId
+                    AdminId = creatorId
                 },
                 new Cooperative
                 {
                     Name = "Name4",
                     Info = "Info4",
-                    CreatorId = Guid.NewGuid().ToString()
+                    AdminId = Guid.NewGuid().ToString()
                 }
             };
 
@@ -717,7 +718,7 @@
             await this._dbContext.SaveChangesAsync();
 
             var count = await this._cooperativesService.CountAsync(creatorId);
-            var expectedCount = cooperatives.Where(x => x.CreatorId == creatorId).Count();
+            var expectedCount = cooperatives.Where(x => x.AdminId == creatorId).Count();
 
             Assert.Equal(expectedCount, count);
         }

@@ -1,13 +1,13 @@
 ﻿namespace CHE.Web.Controllers
 {
-    using System.Threading.Tasks;
-
-    using Microsoft.AspNetCore.Mvc;
-    using Microsoft.AspNetCore.Identity;
-
     using CHE.Data.Models;
     using CHE.Services.Data;
     using CHE.Web.ViewModels.Schedules;
+
+    using Microsoft.AspNetCore.Identity;
+    using Microsoft.AspNetCore.Mvc;
+
+    using System.Threading.Tasks;
 
     public class SchedulesController : Controller
     {
@@ -33,11 +33,11 @@
         {
             var schedule = await this._schedulesService.GetByIdAsync<ScheduleViewModel>(id);
             var userId = this._userManager.GetUserId(this.User);
-            var isMember = await this._cooperativesService.CheckIfMemberAsync(userId, schedule.CooperativeId);
-            var isCreator = await this._cooperativesService.CheckIfCreatorAsync(userId, schedule.CooperativeId);
 
-            this.ViewData["isMember"] = isMember;
-            this.ViewData["isCreator"] = isCreator;
+            this.ViewData["isMember"] = await this._cooperativesService
+                .CheckIfMemberAsync(userId, schedule.CooperativeId);
+            this.ViewData["isAdmin"] = await this._cooperativesService
+                .CheckIfAdminAsync(userId, schedule.CooperativeId);
             this.ViewData["id"] = schedule.CooperativeId;
             this.ViewData["scheduleId"] = schedule.Id;
 

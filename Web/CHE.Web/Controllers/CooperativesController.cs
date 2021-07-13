@@ -45,8 +45,8 @@
             var userId = this._userManager.GetUserId(this.User);
             this.ViewData["isMember"] = await this._cooperativesService
                 .CheckIfMemberAsync(userId, currentCooperative.Id);
-            this.ViewData["isCreator"] = await this._cooperativesService
-                .CheckIfCreatorAsync(userId, currentCooperative.Id);
+            this.ViewData["isAdmin"] = await this._cooperativesService
+                .CheckIfAdminAsync(userId, currentCooperative.Id);
             this.ViewData["requestExists"] = await this._cooperativesService
                 .CheckIfRequestExistsAsync(id, userId);
             this.ViewData["id"] = currentCooperative.Id;

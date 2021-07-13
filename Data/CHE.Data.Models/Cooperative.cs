@@ -23,9 +23,9 @@
 
         public Grade Grade { get; set; }
 
-        public string CreatorId { get; set; }
+        public string AdminId { get; set; }
 
-        public CheUser Creator { get; set; }
+        public CheUser Admin { get; set; }
 
         public Schedule Schedule { get; set; }
 

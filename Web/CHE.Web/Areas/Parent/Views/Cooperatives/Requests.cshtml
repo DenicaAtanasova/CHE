@@ -18,9 +18,13 @@
             <tr>
                 <th scope="row">@(requestsCount++)</th>
                 <td colspan="2">@request.SenderUserName</td>
-                @if (Model.CreatorUserName == this.User.Identity.Name)
+                @if (Model.AdminUserName == this.User.Identity.Name)
                 {
-                    <td><a class="btn btn-che btn-sm" asp-area="" asp-controller="JoinRequests" asp-action="Details" asp-route-id="@request.Id">Details</a></td>
+                    <td><a class="btn btn-che btn-sm" 
+                           asp-area="" 
+                           asp-controller="JoinRequests" 
+                           asp-action="Details" 
+                           asp-route-id="@request.Id">Details</a></td>
                 }
             </tr>
         }

@@ -12,7 +12,7 @@
 
         public string ScheduleId { get; set; }
 
-        public string CreatorUserName { get; set; }
+        public string AdminUserName { get; set; }
 
         public IEnumerable<JoinRequestAllViewModel> JoinRequestsReceived { get; set; }
     }

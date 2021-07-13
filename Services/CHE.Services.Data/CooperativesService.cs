@@ -34,7 +34,7 @@
         {
             var cooperative = new Cooperative
             {
-                CreatorId = creatorId,
+                AdminId = creatorId,
                 Name = inputModel.Name,
                 Info = inputModel.Info,
                 CreatedOn = DateTime.UtcNow,
@@ -55,7 +55,7 @@
             var cooperativeToUpdate = new Cooperative { Id = inputModel.Id };
             cooperativeToUpdate.Name = inputModel.Name;
             cooperativeToUpdate.Info = inputModel.Info;
-            cooperativeToUpdate.CreatorId = inputModel.CreatorId;
+            cooperativeToUpdate.AdminId = inputModel.CreatorId;
             cooperativeToUpdate.CreatedOn = inputModel.CreatedOn;
             cooperativeToUpdate.GradeId = await this._gradesService.GetGardeIdAsync(inputModel.Grade);
             cooperativeToUpdate.ModifiedOn = DateTime.UtcNow;
@@ -107,7 +107,7 @@
         {
             var cooperatives = this._dbContext.Cooperatives
                   .AsNoTracking()
-                  .Where(x => x.CreatorId == userId);
+                  .Where(x => x.AdminId == userId);
 
             var count = endIndex == 0
                 ? await cooperatives.CountAsync()
@@ -155,10 +155,11 @@
             => await this._dbContext.UserCooperatives
                 .AnyAsync(x => x.CheUserId == userId && x.CooperativeId == cooperativeId);
 
-        public async Task<bool> CheckIfCreatorAsync(string userId, string cooperativeId)
+        public async Task<bool> CheckIfAdminAsync(string userId, string cooperativeId)
             => await this._dbContext.Cooperatives
-                .AnyAsync(x => x.CreatorId == userId && x.Id == cooperativeId);
+                .AnyAsync(x => x.AdminId == userId && x.Id == cooperativeId);
 
+        //TODO: Add tests
         public async Task<bool> CheckIfRequestExistsAsync(string cooperativeId, string senderId)
             => await this._dbContext.JoinRequests
             .AnyAsync(x => x.SenderId == senderId && x.CooperativeId == cooperativeId);
@@ -166,7 +167,7 @@
         public async Task<int> CountAsync(string userId)
             => await this._dbContext.Cooperatives
             .AsNoTracking()
-            .Where(x => x.CreatorId == userId)
+            .Where(x => x.AdminId == userId)
             .CountAsync();
 
         public async Task<int> CountAsync(

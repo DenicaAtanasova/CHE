@@ -1,6 +1,7 @@
 ﻿namespace CHE.Web.ViewModels.Cooperatives
 {
     using AutoMapper;
+
     using CHE.Data.Models;
     using CHE.Services.Mapping;
 
@@ -18,7 +19,7 @@
 
         public int MembersCount { get; set; }
 
-        public string CreatorUserName { get; set; }
+        public string AdminUserName { get; set; }
 
         public CooperativeAddressViewModel Address { get; set; }
 

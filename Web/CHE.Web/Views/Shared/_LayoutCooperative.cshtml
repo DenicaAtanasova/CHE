@@ -4,7 +4,7 @@
     var scheduleId = ViewData["scheduleId"];
 
     var isMember = (bool)this.ViewData["isMember"];
-    var isCreator = (bool)this.ViewData["isCreator"];
+    var isAdmin = (bool)this.ViewData["isAdmin"];
 }
 <!-- ======= Breadcrumbs ======= -->
 <section id="breadcrumbs" class="breadcrumbs">
@@ -25,7 +25,7 @@
             <div class="col-lg-9">
                 @RenderBody()
             </div>
-            @if (isCreator || isMember)
+            @if (isAdmin || isMember)
             {
                 <div class="col-lg-3">
                     <div class="sidebar">

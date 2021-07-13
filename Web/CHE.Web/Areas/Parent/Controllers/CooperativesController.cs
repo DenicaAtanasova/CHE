@@ -10,7 +10,6 @@
     using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
 
-    using System.Linq;
     using System.Threading.Tasks;
 
     public class CooperativesController : ParentController
@@ -100,11 +99,11 @@
                 .GetMembersAsync<CooperativeUserDetailsViewModel>(id);
 
             var userId = this._userManager.GetUserId(this.User);
-            var isMember = await this._cooperativesService.CheckIfMemberAsync(userId, cooperative.Id);
-            var isCreator = await this._cooperativesService.CheckIfCreatorAsync(userId, cooperative.Id);
 
-            this.ViewData["isMember"] = isMember;
-            this.ViewData["isCreator"] = isCreator;
+            this.ViewData["isMember"] = await this._cooperativesService
+                .CheckIfMemberAsync(userId, cooperative.Id);
+            this.ViewData["isAdmin"] = await this._cooperativesService
+                .CheckIfAdminAsync(userId, cooperative.Id);
             this.ViewData["id"] = cooperative.Id;
             this.ViewData["scheduleId"] = cooperative.ScheduleId;
 
@@ -119,11 +118,9 @@
                 .GetAllByCooperativeAsync<JoinRequestAllViewModel>(id);
 
             var userId = this._userManager.GetUserId(this.User);
-            var isMember = await this._cooperativesService.CheckIfMemberAsync(userId, cooperative.Id);
-            var isCreator = await this._cooperativesService.CheckIfCreatorAsync(userId, cooperative.Id);
 
-            this.ViewData["isMember"] = isMember;
-            this.ViewData["isCreator"] = isCreator;
+            this.ViewData["isMember"] = await this._cooperativesService.CheckIfMemberAsync(userId, cooperative.Id);
+            this.ViewData["isAdmin"] = await this._cooperativesService.CheckIfAdminAsync(userId, cooperative.Id);
             this.ViewData["id"] = cooperative.Id;
             this.ViewData["scheduleId"] = cooperative.ScheduleId;
 
