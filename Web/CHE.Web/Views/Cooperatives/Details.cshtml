@@ -3,6 +3,7 @@
     Layout = "/Views/Shared/_LayoutCooperative.cshtml";
     var isMember = (bool)this.ViewData["isMember"];
     var isCreator = (bool)this.ViewData["isCreator"];
+    var requestExists = (bool)this.ViewData["requestExists"];
 }
 
 <div>
@@ -39,6 +40,10 @@ else
         @if (isMember)
         {
             <a class="btn btn-che" asp-area="" asp-controller="Cooperatives" asp-action="Leave" asp-route-CooperativeId="@Model.Id">Leave</a>
+        }
+        else if (requestExists)
+        {
+            <h4>Pending request ...</h4>
         }
         else if (!this.User.IsInRole(GlobalConstants.TEACHER_ROLE))
         {

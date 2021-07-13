@@ -1,16 +1,16 @@
 ﻿namespace CHE.Services.Data
 {
+    using CHE.Data;
+    using CHE.Data.Models;
+    using CHE.Services.Mapping;
+    using CHE.Web.InputModels.Cooperatives;
+
     using Microsoft.EntityFrameworkCore;
 
     using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
-
-    using CHE.Data;
-    using CHE.Data.Models;
-    using CHE.Services.Mapping;
-    using CHE.Web.InputModels.Cooperatives;
 
     public class CooperativesService : ICooperativesService
     {
@@ -158,6 +158,10 @@
         public async Task<bool> CheckIfCreatorAsync(string userId, string cooperativeId)
             => await this._dbContext.Cooperatives
                 .AnyAsync(x => x.CreatorId == userId && x.Id == cooperativeId);
+
+        public async Task<bool> CheckIfRequestExistsAsync(string cooperativeId, string senderId)
+            => await this._dbContext.JoinRequests
+            .AnyAsync(x => x.SenderId == senderId && x.CooperativeId == cooperativeId);
 
         public async Task<int> CountAsync(string userId)
             => await this._dbContext.Cooperatives

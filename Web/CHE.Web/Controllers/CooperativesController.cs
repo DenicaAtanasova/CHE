@@ -1,15 +1,15 @@
 ﻿namespace CHE.Web.Controllers
 {
-    using System.Threading.Tasks;
-
-    using Microsoft.AspNetCore.Mvc;
-    using Microsoft.AspNetCore.Authorization;
-    using Microsoft.AspNetCore.Identity;
-
+    using CHE.Data.Models;
+    using CHE.Services.Data;
     using CHE.Web.ViewModels;
     using CHE.Web.ViewModels.Cooperatives;
-    using CHE.Services.Data;
-    using CHE.Data.Models;
+
+    using Microsoft.AspNetCore.Authorization;
+    using Microsoft.AspNetCore.Identity;
+    using Microsoft.AspNetCore.Mvc;
+
+    using System.Threading.Tasks;
 
     public class CooperativesController : Controller
     {
@@ -43,11 +43,12 @@
                 .GetByIdAsync<CooperativeDetailsViewModel>(id);
 
             var userId = this._userManager.GetUserId(this.User);
-            var isMember = await this._cooperativesService.CheckIfMemberAsync(userId, currentCooperative.Id);
-            var isCreator = await this._cooperativesService.CheckIfCreatorAsync(userId, currentCooperative.Id);
-
-            this.ViewData["isMember"] = isMember;
-            this.ViewData["isCreator"] = isCreator;
+            this.ViewData["isMember"] = await this._cooperativesService
+                .CheckIfMemberAsync(userId, currentCooperative.Id);
+            this.ViewData["isCreator"] = await this._cooperativesService
+                .CheckIfCreatorAsync(userId, currentCooperative.Id);
+            this.ViewData["requestExists"] = await this._cooperativesService
+                .CheckIfRequestExistsAsync(id, userId);
             this.ViewData["id"] = currentCooperative.Id;
             this.ViewData["scheduleId"] = currentCooperative.ScheduleId;
 
