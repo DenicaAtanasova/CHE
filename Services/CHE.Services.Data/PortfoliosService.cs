@@ -1,17 +1,16 @@
 ﻿namespace CHE.Services.Data
 {
-    using System;
-    using System.Linq;
-    using System.Threading.Tasks;
-
-    using Microsoft.EntityFrameworkCore;
-    using Microsoft.AspNetCore.Http;
-
     using CHE.Data;
     using CHE.Data.Models;
     using CHE.Services.Mapping;
 
+    using Microsoft.EntityFrameworkCore;
+    using Microsoft.AspNetCore.Http;
+
+    using System;
     using System.Collections.Generic;
+    using System.Linq;
+    using System.Threading.Tasks;
 
     public class PortfoliosService : IPortfoliosService
     {
@@ -36,11 +35,43 @@
             return portfolio;
         }
 
-        public async Task<bool> UpdateAsync<TEntity>(string teacherId, TEntity portfolio, IFormFile imageFile)
+        public IEnumerable<string> GetAllSchoolLevels(string currentSchoolLevel)
+        {
+            var schoolLevelList = Enum.GetValues(typeof(SchoolLevel))
+                .Cast<SchoolLevel>()
+                .Where(x => x.ToString() != "Unknown")
+                .Select(x => x.ToString());
+
+            if (!string.IsNullOrEmpty(currentSchoolLevel))
+            {
+                schoolLevelList = schoolLevelList
+                    .Where(x => x.ToString() == currentSchoolLevel);
+            }
+
+            return schoolLevelList;
+        }
+
+        public async Task<string> CreateAsync(string userId)
+        {
+            var portfolio = new Portfolio
+            {
+                OwnerId = userId,
+                CreatedOn = DateTime.UtcNow
+            };
+
+            this._dbContext.Portfolios.Add(portfolio);
+            await this._dbContext.SaveChangesAsync();
+
+            //TODO: Add image
+
+            return portfolio.Id;
+        }
+
+        public async Task<bool> UpdateAsync<TEntity>(string userId, TEntity portfolio, IFormFile imageFile)
         {
             var updatedPortfolio = portfolio.Map<TEntity, Portfolio>();
             var portfolioFromDb = await this._dbContext.Portfolios
-                .SingleOrDefaultAsync(x => x.OwnerId == teacherId);
+                .SingleOrDefaultAsync(x => x.OwnerId == userId);
 
             this._dbContext.Entry(portfolioFromDb).State = EntityState.Detached;
 
@@ -58,22 +89,6 @@
             var result = await this._dbContext.SaveChangesAsync() > 0;
 
             return result;
-        }
-
-        public IEnumerable<string> GetAllSchoolLevels(string currentSchoolLevel)
-        {
-            var schoolLevelList = Enum.GetValues(typeof(SchoolLevel))
-                .Cast<SchoolLevel>()
-                .Where(x => x.ToString() != "Unknown")
-                .Select(x => x.ToString());
-
-            if (!string.IsNullOrEmpty(currentSchoolLevel))
-            {
-                schoolLevelList = schoolLevelList
-                    .Where(x => x.ToString() == currentSchoolLevel);
-            }
-
-            return schoolLevelList;
         }
     }
 }

@@ -1,7 +1,5 @@
 ﻿namespace CHE.Services.Data
 {
-    using CHE.Data.Models;
-
     using Microsoft.AspNetCore.Http;
 
     using System.Collections.Generic;
@@ -11,8 +9,10 @@
     {
         Task<TEntity> GetByUserIdAsync<TEntity>(string username);
 
-        Task<bool> UpdateAsync<TEntity>(string teacherId, TEntity portfolio, IFormFile imageFile);
-
         IEnumerable<string> GetAllSchoolLevels(string currentSchoolLevel);
+
+        Task<string> CreateAsync(string userId);
+
+        Task<bool> UpdateAsync<TEntity>(string userId, TEntity portfolio, IFormFile imageFile);
     }
 }

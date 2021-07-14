@@ -1,12 +1,8 @@
 ﻿namespace CHE.Web.Areas.Identity.Pages.Account
 {
-    using System;
-    using System.Collections.Generic;
-    using System.ComponentModel.DataAnnotations;
-    using System.Linq;
-    using System.Text;
-    using System.Text.Encodings.Web;
-    using System.Threading.Tasks;
+    using CHE.Common;
+    using CHE.Data.Models;
+    using CHE.Services.Data;
 
     using Microsoft.AspNetCore.Authentication;
     using Microsoft.AspNetCore.Authorization;
@@ -17,30 +13,35 @@
     using Microsoft.AspNetCore.WebUtilities;
     using Microsoft.Extensions.Logging;
 
-    using CHE.Data.Models;
-    using CHE.Common;
+    using System;
+    using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations;
+    using System.Linq;
+    using System.Text;
+    using System.Text.Encodings.Web;
+    using System.Threading.Tasks;
 
     [AllowAnonymous]
     public class RegisterModel : PageModel
     {
-        private const string DEFAULT_IMAGE_CAPTION = "Teacher_Avatar.png";
-        private const string DEFAULT_IMAGE_URL= @"https://chestorage.blob.core.windows.net/uploads/Teacher_Avatar.png";
-
         private readonly SignInManager<CheUser> _signInManager;
         private readonly UserManager<CheUser> _userManager;
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
+        private readonly IPortfoliosService _portfoliosService;
 
         public RegisterModel(
             UserManager<CheUser> userManager,
             SignInManager<CheUser> signInManager,
             ILogger<RegisterModel> logger,
-            IEmailSender emailSender)
+            IEmailSender emailSender,
+            IPortfoliosService portfoliosService)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _logger = logger;
             _emailSender = emailSender;
+            this._portfoliosService = portfoliosService;
         }
 
         [BindProperty]
@@ -90,20 +91,16 @@
             if (ModelState.IsValid)
             {
                 var user = new CheUser { UserName = Input.Username, Email = Input.Email, RoleName = Input.Role };
+                var result = await _userManager.CreateAsync(user, Input.Password);
+
                 if (Input.Role == GlobalConstants.TEACHER_ROLE)
                 {
-                    user.Portfolio = new Portfolio 
-                    {
-                        CreatedOn = DateTime.UtcNow,
-                        Image = new Image 
-                        {
-                            Caption = DEFAULT_IMAGE_CAPTION,
-                            Url = DEFAULT_IMAGE_URL
-                        } 
-                    };
+                    await this._portfoliosService.CreateAsync(user.Id);
+
+                    //TODO: Add create to schedule service
                     user.Schedule = new Schedule { CreatedOn = DateTime.UtcNow};
                 }
-                var result = await _userManager.CreateAsync(user, Input.Password);
+
                 if (result.Succeeded)
                 {
                     var assignRole = await _userManager.AddToRoleAsync(user, Input.Role);
@@ -141,7 +138,6 @@
                 }
             }
 
-            // If we got this far, something failed, redisplay form
             return Page();
         }
     }
