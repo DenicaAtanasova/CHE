@@ -1,7 +1,7 @@
 ﻿@model CHE.Web.InputModels.JoinRequests.JoinRequestUpdateInputModel
 @{
     var data = new Dictionary<string, string>
-    {
+{
         { "cooperativeId", Model.CooperativeId },
         { "requestId", Model.Id }
     };
@@ -25,9 +25,10 @@
                 <form method="post" asp-area="Parent" asp-controller="JoinRequests" asp-action="Update">
                     <h4>Send join request</h4>
                     <hr />
-                    <input asp-for="CooperativeId" type="hidden" />
+                    <input asp-for="CooperativeId" hidden />
                     <input asp-for="CreatedOn" type="datetime" hidden />
                     <input asp-for="SenderId" hidden />
+                    <input asp-for="CooperativeName" hidden />
                     <div class="form-group">
                         <label asp-for="Content"></label>
                         <textarea asp-for="Content" class="form-control"></textarea>
@@ -35,6 +36,9 @@
                     </div>
                     <div class="form-group">
                         <button type="submit" class="btn btn-che">Save changes</button>
+                        <button type="button" class="btn btn-che" data-toggle="modal" data-target="#deleteConfirm">
+                            Delete
+                        </button>
                         <a class="btn btn-che" asp-controller="JoinRequests" asp-action="Delete" asp-all-route-data="@data">Delete</a>
                     </div>
                 </form>
@@ -42,6 +46,28 @@
         </div>
     </div>
 </section>
+
+<!-- ======= Modal ======= -->
+<div class="modal fade" id="deleteConfirm" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Delete request for:</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <h5>Cooperative: <strong>@Model.CooperativeName</strong></h5>
+            </div>
+            <div class="modal-footer">
+                <a class="btn btn-che" asp-area="Parent" asp-controller="JoinRequest" asp-action="Delete" asp-route-id="@Model.Id">Delete</a>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End modal -->
 
 @section Scripts{
     <partial name="_ValidationScriptsPartial" />

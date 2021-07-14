@@ -17,6 +17,9 @@
         public string CooperativeId { get; set; }
 
         [Required]
+        public string CooperativeName { get; set; }
+
+        [Required]
         public DateTime CreatedOn { get; set; }
 
         public string SenderId { get; set; }

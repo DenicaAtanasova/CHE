@@ -55,7 +55,7 @@
             var cooperativeToUpdate = new Cooperative { Id = inputModel.Id };
             cooperativeToUpdate.Name = inputModel.Name;
             cooperativeToUpdate.Info = inputModel.Info;
-            cooperativeToUpdate.AdminId = inputModel.CreatorId;
+            cooperativeToUpdate.AdminId = inputModel.AdminId;
             cooperativeToUpdate.CreatedOn = inputModel.CreatedOn;
             cooperativeToUpdate.GradeId = await this._gradesService.GetGardeIdAsync(inputModel.Grade);
             cooperativeToUpdate.ModifiedOn = DateTime.UtcNow;

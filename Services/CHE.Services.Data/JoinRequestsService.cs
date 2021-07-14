@@ -65,9 +65,10 @@
             await this._dbContext.SaveChangesAsync();
         }
 
-        public Task DeleteAsync(string id)
+        public async Task DeleteAsync(string id)
         {
-            throw new NotImplementedException();
+            this._dbContext.JoinRequests.Remove(new JoinRequest { Id = id });
+            await this._dbContext.SaveChangesAsync();
         }
     }
 }
