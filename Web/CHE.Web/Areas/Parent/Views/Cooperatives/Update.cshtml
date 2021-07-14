@@ -1,8 +1,4 @@
-﻿@using Microsoft.AspNetCore.Identity
-@using CHE.Data.Models
-
-@inject UserManager<CheUser> UserManager
-@model CHE.Web.InputModels.Cooperatives.CooperativeUpdateInputModel
+﻿@model CHE.Web.InputModels.Cooperatives.CooperativeUpdateInputModel
 <!-- ======= Breadcrumbs ======= -->
 <section id="breadcrumbs" class="breadcrumbs">
     <div class="container">
@@ -23,8 +19,8 @@
             <hr />
             <div class="row">
                 <div class="col-md-6">
-                    <input asp-for="CreatorId" value="@UserManager.GetUserId(User)" class="form-control" hidden />
-                    <input asp-for="CreatedOn" type="datetime" value="@Model.CreatedOn" class="form-control" hidden />
+                    <input asp-for="AdminId" hidden />
+                    <input asp-for="CreatedOn" type="datetime" hidden />
                     <div class="form-group">
                         <label asp-for="Name"></label>
                         <input asp-for="Name" class="form-control" />

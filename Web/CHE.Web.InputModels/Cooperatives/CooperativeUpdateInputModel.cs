@@ -13,7 +13,7 @@
     {
         public string Id { get; set; }
 
-        public string CreatorId { get; set; }
+        public string AdminId { get; set; }
 
         public DateTime CreatedOn { get; set; }
 
