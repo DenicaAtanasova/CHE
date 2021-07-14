@@ -20,7 +20,6 @@
         private readonly CheDbContext _dbContext;
         private readonly IJoinRequestsService _joinRequestsService;
 
-
         public JoinRequestsServiceTests()
         {
             var options = new DbContextOptionsBuilder<CheDbContext>()
@@ -68,30 +67,6 @@
                 .GetByIdAsync<JoinRequestDetailsViewModel>(Guid.NewGuid().ToString());
 
             Assert.Null(actualRequest);
-        }
-
-        [Fact]
-        public async Task CreateAsync_ShouldWorkCorrectly()
-        {
-            var senderId = Guid.NewGuid().ToString();
-            var joinRequest = new JoinRequestCreateInputModel
-            {
-                Content = "Content",
-                CooperativeId = Guid.NewGuid().ToString(),
-                ReceiverId = Guid.NewGuid().ToString()
-            };
-
-            var requestId = await this._joinRequestsService.CreateAsync(senderId, joinRequest);
-            var joinRequestFromDb = await this._dbContext.JoinRequests.SingleOrDefaultAsync();
-
-            Assert.Equal(requestId, joinRequestFromDb.Id);
-            Assert.Equal(joinRequest.Content, joinRequestFromDb.Content);
-            Assert.Equal(joinRequest.CooperativeId, joinRequestFromDb.CooperativeId);
-            Assert.Equal(joinRequest.ReceiverId, joinRequestFromDb.ReceiverId);
-            Assert.Equal(senderId, joinRequestFromDb.SenderId);
-
-            var expectedCreatedOn = DateTime.UtcNow;
-            Assert.Equal(expectedCreatedOn, joinRequestFromDb.CreatedOn, new TimeSpan(days: 0, hours: 0, minutes: 0, seconds: 0, milliseconds: 1000));
         }
 
         [Fact]
@@ -204,6 +179,95 @@
             {
                 Assert.Equal(expectedRequestsList[index++].Id, request.Id);
             }
+        }
+
+        [Fact]
+        public async Task CreateAsync_ShouldWorkCorrectly()
+        {
+            var senderId = Guid.NewGuid().ToString();
+            var joinRequest = new JoinRequestCreateInputModel
+            {
+                Content = "Content",
+                CooperativeId = Guid.NewGuid().ToString(),
+                ReceiverId = Guid.NewGuid().ToString()
+            };
+
+            var requestId = await this._joinRequestsService.CreateAsync(senderId, joinRequest);
+            var joinRequestFromDb = await this._dbContext.JoinRequests.SingleOrDefaultAsync();
+
+            Assert.Equal(requestId, joinRequestFromDb.Id);
+            Assert.Equal(joinRequest.Content, joinRequestFromDb.Content);
+            Assert.Equal(joinRequest.CooperativeId, joinRequestFromDb.CooperativeId);
+            Assert.Equal(joinRequest.ReceiverId, joinRequestFromDb.ReceiverId);
+            Assert.Equal(senderId, joinRequestFromDb.SenderId);
+
+            var expectedCreatedOn = DateTime.UtcNow;
+            Assert.Equal(expectedCreatedOn, 
+                         joinRequestFromDb.CreatedOn, 
+                         new TimeSpan(days: 0, hours: 0, minutes: 0, seconds: 0, milliseconds: 1000));
+        }
+
+        [Fact]
+        public async Task UpdateAsync_ShouldWorkCorrectly()
+        {
+            var cooperativeId = Guid.NewGuid().ToString();
+            var senderId = Guid.NewGuid().ToString();
+            var joinRequest = new JoinRequest
+            {
+                Content = "Content",
+                CooperativeId = cooperativeId,
+                SenderId = senderId
+            };
+
+            this._dbContext.JoinRequests.Add(joinRequest);
+            await this._dbContext.SaveChangesAsync(); 
+            this._dbContext.Entry(joinRequest).State = EntityState.Detached;
+
+            var requestUpdateModel = new JoinRequestUpdateInputModel
+            {
+                Id = joinRequest.Id,
+                Content = "Updated Content",
+                CooperativeId = cooperativeId,
+                SenderId = senderId,
+                CreatedOn = joinRequest.CreatedOn
+            };
+
+            await this._joinRequestsService.UpdateAsync(requestUpdateModel);
+            var expectedModifiedOnDate = DateTime.UtcNow;
+            var joinRequestFromDb = await this._dbContext.JoinRequests
+                .SingleOrDefaultAsync();
+
+            Assert.Equal(requestUpdateModel.Content, joinRequestFromDb.Content);
+            Assert.Equal(joinRequest.CooperativeId, joinRequestFromDb.CooperativeId);
+            Assert.Equal(senderId, joinRequestFromDb.SenderId);
+            Assert.Equal(joinRequest.CreatedOn, joinRequestFromDb.CreatedOn);
+
+            Assert.Equal(expectedModifiedOnDate, 
+                         joinRequestFromDb.ModifiedOn.Value, 
+                         new TimeSpan(days: 0, hours: 0, minutes: 0, seconds: 0, milliseconds: 1000));
+        }
+
+        [Fact]
+        public async Task DeleteAsync_ShouldWorkCorrectly()
+        {
+            var cooperativeId = Guid.NewGuid().ToString();
+            var senderId = Guid.NewGuid().ToString();
+            var joinRequest = new JoinRequest
+            {
+                Content = "Content",
+                CooperativeId = cooperativeId,
+                SenderId = senderId
+            };
+
+            this._dbContext.JoinRequests.Add(joinRequest);
+            await this._dbContext.SaveChangesAsync();
+            Assert.NotEmpty(this._dbContext.JoinRequests);
+
+            this._dbContext.Entry(joinRequest).State = EntityState.Detached;
+
+            await this._joinRequestsService.DeleteAsync(joinRequest.Id);
+
+            Assert.Empty(this._dbContext.JoinRequests);
         }
     }
 }
