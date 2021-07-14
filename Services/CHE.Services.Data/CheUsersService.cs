@@ -99,7 +99,7 @@
             await this._dbContext.SaveChangesAsync();
         }
 
-        public async Task SendRequestAsync(string senderId, JoinRequestInputModel inputModel)
+        public async Task SendRequestAsync(string senderId, JoinRequestCreateInputModel inputModel)
         {
             var requestExists = await this._dbContext.JoinRequests
                 .AnyAsync(x => x.CooperativeId == inputModel.CooperativeId &&

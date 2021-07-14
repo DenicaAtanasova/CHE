@@ -19,7 +19,7 @@
 
         Task RejectRequestAsync(string requestId);
 
-        Task SendRequestAsync(string senderId, JoinRequestInputModel inputModel);
+        Task SendRequestAsync(string senderId, JoinRequestCreateInputModel inputModel);
 
         Task SendReviewAsync(string senderId, ReviewCreateInputModel inputModel);
     }
