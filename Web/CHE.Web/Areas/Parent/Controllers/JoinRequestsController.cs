@@ -25,14 +25,12 @@
             this._joinRequestsService = joinRequestsService;
         }
 
-        public IActionResult Send(string cooperativeId, string receiverId)
-        {
-            return this.View(new JoinRequestCreateInputModel
+        public IActionResult Send(string cooperativeId, string receiverId) =>
+            this.View(new JoinRequestCreateInputModel
             {
                 CooperativeId = cooperativeId,
                 ReceiverId = receiverId
             });
-        }
 
         [HttpPost]
         public async Task<IActionResult> Send(JoinRequestCreateInputModel inputModel)
@@ -50,12 +48,9 @@
             return RedirectToAction("Details", "Cooperatives", new { area = "", id = inputModel.CooperativeId});
         }
 
-        public async Task<IActionResult> Update(string id)
-        {
-            var joinRequest = await this._joinRequestsService.GetByIdAsync<JoinRequestUpdateInputModel>(id);
-
-            return this.View(joinRequest);
-        }
+        public async Task<IActionResult> Update(string id) => 
+            this.View(await this._joinRequestsService
+                .GetByIdAsync<JoinRequestUpdateInputModel>(id));
 
         [HttpPost]
         public async Task<IActionResult> Update(JoinRequestUpdateInputModel inputModel)

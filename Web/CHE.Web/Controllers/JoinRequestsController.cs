@@ -1,12 +1,12 @@
 ﻿namespace CHE.Web.Controllers
 {
-    using System.Threading.Tasks;
+    using CHE.Services.Data;
+    using CHE.Web.ViewModels.JoinRequests;
 
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
 
-    using CHE.Web.ViewModels.JoinRequests;
-    using CHE.Services.Data;
+    using System.Threading.Tasks;
 
     [Authorize]
     public class JoinRequestsController : Controller
@@ -22,13 +22,9 @@
             this._cheUsersService = cheUsersService;
         }
 
-        public async Task<IActionResult> TeacherAll(string teacherId)
-        {
-            var requests = await this._joinRequestsService
-                .GetAllByTeacherAsync<JoinRequestAllViewModel>(teacherId);
-
-            return this.View(requests);
-        }
+        public async Task<IActionResult> TeacherAll(string teacherId) =>
+            this.View(await this._joinRequestsService
+                .GetAllByTeacherAsync<JoinRequestAllViewModel>(teacherId));
 
         public async Task<IActionResult> Details(string id)
         {
@@ -37,7 +33,8 @@
                 return this.NotFound();
             }
 
-            var request = await this._joinRequestsService.GetByIdAsync<JoinRequestDetailsViewModel>(id);
+            var request = await this._joinRequestsService
+                .GetByIdAsync<JoinRequestDetailsViewModel>(id);
 
             return this.View(request);
         }
