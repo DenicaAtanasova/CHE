@@ -1,14 +1,14 @@
 ﻿namespace CHE.Web.Controllers
 {
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Threading.Tasks;
-
-    using Microsoft.AspNetCore.Mvc;
-
     using CHE.Services.Data;
     using CHE.Web.ViewModels.Events;
     using CHE.Web.InputModels.Events;
+
+    using Microsoft.AspNetCore.Mvc;
+
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Threading.Tasks;
 
     [Route("scheduler/[controller]")]
     [ApiController]
@@ -22,12 +22,8 @@
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<EventViewModel>> GetEvent(string id)
-        {
-            var currentEvent = await this._eventsService.GetByIdAsync<EventViewModel>(id);
-
-            return currentEvent;
-        }
+        public async Task<ActionResult<EventViewModel>> GetEvent(string id) =>
+            await this._eventsService.GetByIdAsync<EventViewModel>(id);
 
         [HttpGet("date/{date}")]
         public async Task<ActionResult<Dictionary<string, EventViewModel[]>>> GetThreeMonthsEvents(string date)

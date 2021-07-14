@@ -30,10 +30,7 @@
             this._joinRequestsService = joinRequestsService;
         }
 
-        public IActionResult Create()
-        {
-            return View();
-        }
+        public IActionResult Create() => this.View();
 
         [HttpPost]
         public async Task<IActionResult> Create(CooperativeCreateInputModel model)

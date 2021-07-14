@@ -22,17 +22,15 @@
             _userManager = userManager;
         }
 
-        public IActionResult Send(string teacherId)
-        {
-            return this.View(new ReviewCreateInputModel { ReceiverId = teacherId });
-        }
+        public IActionResult Send(string teacherId) =>
+            this.View(new ReviewCreateInputModel { ReceiverId = teacherId });
 
         [HttpPost]
         public async Task<IActionResult> Send(ReviewCreateInputModel inputModel)
         {
             if (!this.ModelState.IsValid)
             {
-                //not working
+                //TODO: check why this is not working
                 //return this.View(inputModel.ReceiverId);
                 return this.RedirectToAction(nameof(Send), new { id = inputModel.ReceiverId });
             }
