@@ -1,25 +1,25 @@
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Hosting;
-
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-using Microsoft.EntityFrameworkCore;
-
-using System.Reflection;
-
-using CHE.Data;
-using CHE.Data.Models;
-using CHE.Data.Seedeing;
-using CHE.Services.Data;
-using CHE.Services.Mapping;
-using CHE.Web.ViewModels;
-
-using CHE.Web.InputModels.Cooperatives;
-
 namespace CHE.Web
 {
+    using CHE.Data;
+    using CHE.Data.Models;
+    using CHE.Data.Seedeing;
+    using CHE.Services.Data;
+    using CHE.Services.Mapping;
+    using CHE.Web.ViewModels;
+    using CHE.Web.InputModels.Cooperatives;
+    using CHE.Web.Areas.Identity.Pages.Account.Manage.Services;
+
+    using Microsoft.AspNetCore.Builder;
+    using Microsoft.AspNetCore.Identity;
+    using Microsoft.AspNetCore.Hosting;
+
+    using Microsoft.Extensions.Configuration;
+    using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.Hosting;
+    using Microsoft.EntityFrameworkCore;
+
+    using System.Reflection;
+
     public class Startup
     {
         private readonly IConfiguration configuration;
@@ -66,6 +66,7 @@ namespace CHE.Web
             services.AddTransient<ISchedulesService, SchedulesService>();
             services.AddTransient<IEventsService, EventsService>();
             services.AddTransient<IAddressesService, AddressesService>();
+            services.AddTransient<IAccountNavScheduleService, AccountNavScheduleService>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

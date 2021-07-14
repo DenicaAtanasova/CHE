@@ -6,6 +6,9 @@
     {
         Task<TEntity> GetByIdAsync<TEntity>(string id);
 
-        //TODO GetIdByCooperative, GetIdByTeacher
+        //TODO: Add Tests
+        Task<string> GetIdByUserAsync(string userId);
+
+        //TODO GetIdByCooperative
     }
 }

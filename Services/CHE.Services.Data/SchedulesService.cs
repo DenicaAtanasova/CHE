@@ -23,5 +23,11 @@
                 .Where(x => x.Id == id)
                 .To<TEntity>()
                 .SingleOrDefaultAsync();
+
+        public async Task<string> GetIdByUserAsync(string userId)
+            => await this._dbContext.Schedules
+            .Where(x => x.TeacherId == userId)
+            .Select(x => x.Id)
+            .FirstOrDefaultAsync();
     }
 }

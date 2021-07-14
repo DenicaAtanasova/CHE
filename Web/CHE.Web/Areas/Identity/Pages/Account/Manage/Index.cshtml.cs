@@ -1,15 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
-using CHE.Data.Models;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
-
-namespace CHE.Web.Areas.Identity.Pages.Account.Manage
+﻿namespace CHE.Web.Areas.Identity.Pages.Account.Manage
 {
+    using CHE.Data.Models;
+    using CHE.Services.Data;
+
+    using Microsoft.AspNetCore.Identity;
+    using Microsoft.AspNetCore.Mvc;
+    using Microsoft.AspNetCore.Mvc.RazorPages;
+
+    using System;
+    using System.ComponentModel.DataAnnotations;
+    using System.Threading.Tasks;
+
     public partial class IndexModel : PageModel
     {
         private readonly UserManager<CheUser> _userManager;
@@ -42,7 +43,6 @@ namespace CHE.Web.Areas.Identity.Pages.Account.Manage
         {
             var userName = await _userManager.GetUserNameAsync(user);
             var phoneNumber = await _userManager.GetPhoneNumberAsync(user);
-
             Username = userName;
 
             Input = new InputModel

@@ -1,9 +1,8 @@
-﻿@using Microsoft.AspNetCore.Identity
-@using CHE.Data.Models
-@inject UserManager<CheUser> UserManager
-@{ 
-    var user = await UserManager.GetUserAsync(this.User);
-    var scheduleId = "";
+﻿@using CHE.Web.Areas.Identity.Pages.Account.Manage.Services
+@inject IAccountNavScheduleService AccountNavScheduleService
+@{
+    var scheduleId = await AccountNavScheduleService.GetScheduleIdByUserAsync(this.User);
+    var a = this.User;
 }
 
 <nav class="nav-coop">
