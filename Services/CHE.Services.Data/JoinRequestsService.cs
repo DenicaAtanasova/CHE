@@ -1,16 +1,16 @@
 ﻿namespace CHE.Services.Data
 {
-    using System;
-    using System.Linq;
-    using System.Threading.Tasks;
-    using System.Collections.Generic;
-
-    using Microsoft.EntityFrameworkCore;
-
     using CHE.Data;
     using CHE.Data.Models;
     using CHE.Services.Mapping;
     using CHE.Web.InputModels.JoinRequests;
+
+    using Microsoft.EntityFrameworkCore;
+
+    using System;
+    using System.Linq;
+    using System.Threading.Tasks;
+    using System.Collections.Generic;
 
     public class JoinRequestsService : IJoinRequestsService
     {
@@ -22,28 +22,27 @@
             this._dbContext = dbContext;
         }
 
-        public async Task<TEntity> GetByIdAsync<TEntity>(string id)
-            => await this._dbContext.JoinRequests
+        public async Task<TEntity> GetByIdAsync<TEntity>(string id) =>
+            await this._dbContext.JoinRequests
                 .AsNoTracking()
                 .Where(x => x.Id == id)
                 .To<TEntity>()
                 .SingleOrDefaultAsync();
 
-        public async Task<IEnumerable<TEntity>> GetAllByTeacherAsync<TEntity>(string teacherId)
-            => await this._dbContext.JoinRequests
+        public async Task<IEnumerable<TEntity>> GetAllByTeacherAsync<TEntity>(string teacherId) =>
+            await this._dbContext.JoinRequests
                 .AsNoTracking()
                 .Where(x => x.ReceiverId == teacherId)
                 .To<TEntity>()
                 .ToListAsync();
 
-        public async Task<IEnumerable<TEntity>> GetAllByCooperativeAsync<TEntity>(string cooperativeId)
-            => await this._dbContext.JoinRequests
+        public async Task<IEnumerable<TEntity>> GetAllByCooperativeAsync<TEntity>(string cooperativeId) =>
+            await this._dbContext.JoinRequests
                 .AsNoTracking()
                 .Where(x => x.CooperativeId == cooperativeId)
                 .To<TEntity>()
                 .ToListAsync();
 
-        //TODO: Check if reciever have to be null by default
         public async Task<string> CreateAsync(string senderId, JoinRequestCreateInputModel inputModel)
         {
             var request = inputModel.Map<JoinRequestCreateInputModel, JoinRequest>();
