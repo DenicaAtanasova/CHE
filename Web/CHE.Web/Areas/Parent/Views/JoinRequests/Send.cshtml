@@ -1,8 +1,4 @@
-﻿@using Microsoft.AspNetCore.Identity
-@using CHE.Data.Models
-
-@inject UserManager<CheUser> UserManager
-@model CHE.Web.InputModels.JoinRequests.JoinRequestInputModel
+﻿@model CHE.Web.InputModels.JoinRequests.JoinRequestInputModel
 <!-- ======= Breadcrumbs ======= -->
 <section id="breadcrumbs" class="breadcrumbs">
     <div class="container">
@@ -44,7 +40,7 @@
                         <div class="form-group">
                             <select asp-for="CooperativeId" class="form-control">
                                 <option selected disabled>-- Choose cooperative --</option>
-                                <vc:cooperatives-list user-id="@UserManager.GetUserId(this.User)"></vc:cooperatives-list>
+                                <vc:cooperatives-list user="@this.User"></vc:cooperatives-list>
                             </select>
                             <span asp-validation-for="CooperativeId" class="text-danger"></span>
                         </div>
