@@ -63,5 +63,23 @@
 
             Assert.Null(actualRequest);
         }
+
+        [Fact]
+        public async Task GetIdByUserAsync_ShouldWorkCorrectly()
+        {
+            var teacherId = Guid.NewGuid().ToString();
+            var schedule = new Schedule
+            {
+                CooperativeId = Guid.NewGuid().ToString(),
+                TeacherId = teacherId
+            };
+
+            this._dbContext.Schedules.Add(schedule);
+            await this._dbContext.SaveChangesAsync();
+
+            var scheduleId = await this._schedulesService.GetIdByUserAsync(teacherId);
+
+            Assert.Equal(schedule.Id, scheduleId);
+        }
     }
 }

@@ -17,17 +17,17 @@
             this._dbContext = dbContext;
         }
 
-        public async Task<TEntity> GetByIdAsync<TEntity>(string id)
-            => await this._dbContext.Schedules
+        public async Task<TEntity> GetByIdAsync<TEntity>(string id) => 
+            await this._dbContext.Schedules
                 .AsNoTracking()
                 .Where(x => x.Id == id)
                 .To<TEntity>()
                 .SingleOrDefaultAsync();
 
-        public async Task<string> GetIdByUserAsync(string userId)
-            => await this._dbContext.Schedules
-            .Where(x => x.TeacherId == userId)
-            .Select(x => x.Id)
-            .FirstOrDefaultAsync();
+        public async Task<string> GetIdByUserAsync(string userId) =>
+            await this._dbContext.Schedules
+                .Where(x => x.TeacherId == userId)
+                .Select(x => x.Id)
+                .FirstOrDefaultAsync();
     }
 }
