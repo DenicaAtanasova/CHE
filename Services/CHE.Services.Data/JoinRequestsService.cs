@@ -44,9 +44,9 @@
                 .ToListAsync();
 
         //TODO: Check if reciever have to be null by default
-        public async Task<string> CreateAsync(string senderId, JoinRequestInputModel inputModel)
+        public async Task<string> CreateAsync(string senderId, JoinRequestCreateInputModel inputModel)
         {
-            var request = inputModel.Map<JoinRequestInputModel, JoinRequest>();
+            var request = inputModel.Map<JoinRequestCreateInputModel, JoinRequest>();
             request.CreatedOn = DateTime.UtcNow;
             request.SenderId = senderId;
 
@@ -54,6 +54,20 @@
             await this._dbContext.SaveChangesAsync();
 
             return request.Id;
+        }
+
+        public async Task UpdateAsync(JoinRequestUpdateInputModel inputModel)
+        {
+            var joinRequest = inputModel.Map<JoinRequestUpdateInputModel, JoinRequest>();
+            joinRequest.ModifiedOn = DateTime.UtcNow;
+
+            this._dbContext.JoinRequests.Update(joinRequest);
+            await this._dbContext.SaveChangesAsync();
+        }
+
+        public Task DeleteAsync(string id)
+        {
+            throw new NotImplementedException();
         }
     }
 }

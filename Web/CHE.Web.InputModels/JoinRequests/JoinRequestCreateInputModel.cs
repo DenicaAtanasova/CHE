@@ -5,7 +5,7 @@
 
     using System.ComponentModel.DataAnnotations;
 
-    public class JoinRequestInputModel : IMapTo<JoinRequest>
+    public class JoinRequestCreateInputModel : IMapTo<JoinRequest>
     {
         [Required]
         public string Content { get; set; }

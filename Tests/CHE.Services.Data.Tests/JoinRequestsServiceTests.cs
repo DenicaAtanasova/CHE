@@ -31,7 +31,7 @@
             this._joinRequestsService = new JoinRequestsService(this._dbContext);
 
             AutoMapperConfig.RegisterMappings(
-                typeof(JoinRequestInputModel).Assembly,
+                typeof(JoinRequestCreateInputModel).Assembly,
                 typeof(JoinRequestDetailsViewModel).Assembly);
         }
 
@@ -74,7 +74,7 @@
         public async Task CreateAsync_ShouldWorkCorrectly()
         {
             var senderId = Guid.NewGuid().ToString();
-            var joinRequest = new JoinRequestInputModel
+            var joinRequest = new JoinRequestCreateInputModel
             {
                 Content = "Content",
                 CooperativeId = Guid.NewGuid().ToString(),

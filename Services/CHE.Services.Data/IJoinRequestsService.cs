@@ -13,6 +13,10 @@
 
         Task<IEnumerable<TEntity>> GetAllByCooperativeAsync<TEntity>(string cooperativeId);
 
-        Task<string> CreateAsync(string senderId, JoinRequestInputModel inputModel);
+        Task<string> CreateAsync(string senderId, JoinRequestCreateInputModel inputModel);
+
+        Task UpdateAsync(JoinRequestUpdateInputModel inputModel);
+
+        Task DeleteAsync(string id);
     }
 }
