@@ -31,7 +31,14 @@
         [Route("scheduler/{id}")]
         public async Task<IActionResult> Details(string id)
         {
-            var schedule = await this._schedulesService.GetByIdAsync<ScheduleViewModel>(id);
+            var schedule = await this._schedulesService
+                .GetByIdAsync<ScheduleViewModel>(id);
+
+            if (schedule == null)
+            {
+                return this.NotFound();
+            }
+
             var userId = this._userManager.GetUserId(this.User);
 
             this.ViewData["isMember"] = await this._cooperativesService

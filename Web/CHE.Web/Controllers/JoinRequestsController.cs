@@ -28,13 +28,13 @@
 
         public async Task<IActionResult> Details(string id)
         {
-            if (id == null)
+            var request = await this._joinRequestsService
+                .GetByIdAsync<JoinRequestDetailsViewModel>(id);
+
+            if (request == null)
             {
                 return this.NotFound();
             }
-
-            var request = await this._joinRequestsService
-                .GetByIdAsync<JoinRequestDetailsViewModel>(id);
 
             return this.View(request);
         }

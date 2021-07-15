@@ -41,6 +41,11 @@
             var currentTeacher = await this._cheUsersService
                 .GetByIdAsync<TeacherDetailsViewModel>(id);
 
+            if (currentTeacher != null)
+            {
+                return this.NotFound();
+            }
+
             this.ViewData["id"] = currentTeacher.Id;
 
             return this.View(currentTeacher);

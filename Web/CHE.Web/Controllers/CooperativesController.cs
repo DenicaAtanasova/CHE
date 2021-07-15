@@ -37,6 +37,11 @@
             var currentCooperative = await this._cooperativesService
                 .GetByIdAsync<CooperativeDetailsViewModel>(id);
 
+            if (currentCooperative == null)
+            {
+                return this.NotFound();
+            }
+
             var userId = this._userManager.GetUserId(this.User);
             this.ViewData["isMember"] = await this._cooperativesService
                 .CheckIfMemberAsync(userId, currentCooperative.Id);
