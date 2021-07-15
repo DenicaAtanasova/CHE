@@ -129,6 +129,12 @@
                     else
                     {
                         await _signInManager.SignInAsync(user, isPersistent: false);
+
+                        if (Input.Role == GlobalConstants.TEACHER_ROLE)
+                        {
+                            return LocalRedirect("~/Identity/Account/Manage/Portfolio");
+                        }
+
                         return LocalRedirect(returnUrl);
                     }
                 }
