@@ -1,7 +1,8 @@
 ﻿namespace CHE.Web.ViewComponents
 {
-    using Microsoft.AspNetCore.Mvc;
     using CHE.Web.ViewModels;
+
+    using Microsoft.AspNetCore.Mvc;
 
     public class StarRatingViewComponent : ViewComponent
     {

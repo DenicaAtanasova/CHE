@@ -1,10 +1,8 @@
 ﻿namespace CHE.Web.ViewComponents
 {
     using CHE.Services.Data;
-    using Microsoft.AspNetCore.Mvc;
 
-    using System;
-    using System.Threading.Tasks;
+    using Microsoft.AspNetCore.Mvc;
 
     public class SchoolLevelListViewComponent : ViewComponent
     {
