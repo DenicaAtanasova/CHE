@@ -63,4 +63,12 @@
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
+    <script>
+        $(document).ready(function () {
+            $('.custom-file-input').on('change', function () {
+                var fileName = $(this).val().split('\\').pop();
+                $(this).prev('.custom-file-label').html(fileName);
+            });
+        });
+    </script>
 }
