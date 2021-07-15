@@ -5,7 +5,7 @@
     using System.Collections.Generic;
     using System.Threading.Tasks;
 
-    public interface IPortfoliosService
+    public interface IProfilesService
     {
         Task<TEntity> GetByUserIdAsync<TEntity>(string username);
 

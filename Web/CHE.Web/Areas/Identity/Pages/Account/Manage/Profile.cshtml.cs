@@ -13,14 +13,14 @@ namespace CHE.Web.Areas.Identity.Pages.Account.Manage
     using CHE.Common;
 
     [Authorize(Roles = GlobalConstants.TEACHER_ROLE)]
-    public class PortfolioModel : PageModel
+    public class ProfileModel : PageModel
     {
         private readonly UserManager<CheUser> _userManager;
-        private readonly IPortfoliosService _portfoliosService;
+        private readonly IProfilesService _portfoliosService;
 
-        public PortfolioModel(
+        public ProfileModel(
             UserManager<CheUser> userManager,
-            IPortfoliosService portfoliosService)
+            IProfilesService portfoliosService)
         {
             this._userManager = userManager;
             this._portfoliosService = portfoliosService;
@@ -30,13 +30,13 @@ namespace CHE.Web.Areas.Identity.Pages.Account.Manage
         public string StatusMessage { get; set; }
 
         [BindProperty]
-        public PortfolioInputModel Input { get; set; }
+        public ProfileInputModel Input { get; set; }
 
         public async Task<IActionResult> OnGetAsync()
         {
             var userId = this._userManager.GetUserId(this.User);
             this.Input = await this._portfoliosService
-                .GetByUserIdAsync<PortfolioInputModel>(userId);
+                .GetByUserIdAsync<ProfileInputModel>(userId);
 
             if (this.Input == null)
             {

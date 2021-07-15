@@ -9,7 +9,7 @@
     using CHE.Data.Models;
     using CHE.Services.Mapping;
 
-    public class PortfolioInputModel : IMapExplicitly
+    public class ProfileInputModel : IMapExplicitly
     {
         [Display(Name = "First name")]
         public string FirstName { get; set; }
@@ -32,7 +32,7 @@
 
         public void CreateMappings(IProfileExpression configuration)
         {
-            configuration.CreateMap<Portfolio, PortfolioInputModel>()
+            configuration.CreateMap<Data.Models.Profile, ProfileInputModel>()
                 .ForMember(dest => dest.Image, opt => opt.Ignore())
                 .ReverseMap()
                 .ForMember(dest => dest.Image, opt => opt.Ignore());

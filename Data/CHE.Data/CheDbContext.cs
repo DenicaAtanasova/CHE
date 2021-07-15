@@ -20,7 +20,7 @@
 
         public DbSet<Grade> Grades { get; set; }
 
-        public DbSet<Portfolio> Portfolios { get; set; }
+        public DbSet<Profile> Profiles { get; set; }
 
         public DbSet<JoinRequest> JoinRequests { get; set; }
 

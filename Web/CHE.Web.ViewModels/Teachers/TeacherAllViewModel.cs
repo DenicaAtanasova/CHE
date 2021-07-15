@@ -31,8 +31,8 @@
                                                         0:
                                                         Math.Round(src.ReviewsReceived.Average(x => x.Rating), 1)))
                 .ForMember(dest => dest.ReviewsCount, opt => opt.MapFrom(src => src.ReviewsReceived.Count))
-                .ForMember(dest => dest.ImageUrl, opt => opt.MapFrom(src => src.Portfolio.Image.Url))
-                .ForMember(dest => dest.SchoolLevel, opt => opt.MapFrom(src => src.Portfolio.SchoolLevel.ToString()));
+                .ForMember(dest => dest.ImageUrl, opt => opt.MapFrom(src => src.Profile.Image.Url))
+                .ForMember(dest => dest.SchoolLevel, opt => opt.MapFrom(src => src.Profile.SchoolLevel.ToString()));
         }
     }
 }

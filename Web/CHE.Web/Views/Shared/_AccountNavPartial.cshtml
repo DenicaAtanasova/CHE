@@ -12,7 +12,7 @@
         <li><a asp-area="Identity" asp-page="/Account/Manage/ChangePassword">Password</a></li>
         @if (this.User.IsInRole("Teacher"))
         {
-            <li><a asp-area="Identity" asp-page="/Account/Manage/Portfolio">Portfolio</a></li>
+            <li><a asp-area="Identity" asp-page="/Account/Manage/Profile">Profile</a></li>
             <li><a asp-area="Identity" asp-page="/Account/Manage/JoinRequest">Join requests</a></li>
             <li><a asp-area="Identity" asp-page="/Account/Manage/Review">Reviews</a></li>
             <li><a asp-area="" asp-controller="Schedules" asp-action="Details" asp-route-id="@scheduleId">Schedule</a></li>

@@ -12,12 +12,12 @@
     using System.Linq;
     using System.Threading.Tasks;
 
-    public class PortfoliosService : IPortfoliosService
+    public class ProfilesService : IProfilesService
     {
         private readonly CheDbContext _dbContext;
         private readonly IImagesService _imagesService;
 
-        public PortfoliosService(
+        public ProfilesService(
             CheDbContext dbContext,
             IImagesService imagesService)
         {
@@ -27,7 +27,7 @@
 
         public async Task<TEntity> GetByUserIdAsync<TEntity>(string userId)
         {
-            var portfolio = await this._dbContext.Portfolios
+            var portfolio = await this._dbContext.Profiles
                 .Where(x => x.Owner.Id == userId)
                 .To<TEntity>()
                 .SingleOrDefaultAsync();
@@ -54,13 +54,13 @@
         //TODO: Add tests
         public async Task<string> CreateAsync(string userId)
         {
-            var portfolio = new Portfolio
+            var portfolio = new Profile
             {
                 OwnerId = userId,
                 CreatedOn = DateTime.UtcNow
             };
 
-            this._dbContext.Portfolios.Add(portfolio);
+            this._dbContext.Profiles.Add(portfolio);
             await this._dbContext.SaveChangesAsync();
 
             await this._imagesService.CreateAvatarAsync(portfolio.Id);
@@ -70,8 +70,8 @@
 
         public async Task<bool> UpdateAsync<TEntity>(string userId, TEntity portfolio, IFormFile imageFile)
         {
-            var updatedPortfolio = portfolio.Map<TEntity, Portfolio>();
-            var portfolioFromDb = await this._dbContext.Portfolios
+            var updatedPortfolio = portfolio.Map<TEntity, Profile>();
+            var portfolioFromDb = await this._dbContext.Profiles
                 .SingleOrDefaultAsync(x => x.OwnerId == userId);
 
             this._dbContext.Entry(portfolioFromDb).State = EntityState.Detached;

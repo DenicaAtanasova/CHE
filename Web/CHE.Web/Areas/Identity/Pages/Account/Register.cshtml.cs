@@ -28,20 +28,20 @@
         private readonly UserManager<CheUser> _userManager;
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
-        private readonly IPortfoliosService _portfoliosService;
+        private readonly IProfilesService _profilesService;
 
         public RegisterModel(
             UserManager<CheUser> userManager,
             SignInManager<CheUser> signInManager,
             ILogger<RegisterModel> logger,
             IEmailSender emailSender,
-            IPortfoliosService portfoliosService)
+            IProfilesService profilesService)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _logger = logger;
             _emailSender = emailSender;
-            this._portfoliosService = portfoliosService;
+            this._profilesService = profilesService;
         }
 
         [BindProperty]
@@ -95,7 +95,7 @@
 
                 if (Input.Role == GlobalConstants.TEACHER_ROLE)
                 {
-                    await this._portfoliosService.CreateAsync(user.Id);
+                    await this._profilesService.CreateAsync(user.Id);
 
                     //TODO: Add create to schedule service
                     user.Schedule = new Schedule { CreatedOn = DateTime.UtcNow};
@@ -132,7 +132,7 @@
 
                         if (Input.Role == GlobalConstants.TEACHER_ROLE)
                         {
-                            return LocalRedirect("~/Identity/Account/Manage/Portfolio");
+                            return LocalRedirect("~/Identity/Account/Manage/Profile");
                         }
 
                         return LocalRedirect(returnUrl);

@@ -2,7 +2,7 @@
 {
     using Common.Models;
 
-    public class Portfolio : BaseModel<string>
+    public class Profile : BaseModel<string>
     {
         public string FirstName { get; set; }
 

@@ -16,7 +16,7 @@
 
         public string RoleName { get; set; }
 
-        public Portfolio Portfolio { get; set; }
+        public Profile Profile { get; set; }
 
         public ICollection<CheUserCooperative> Cooperatives { get; set; }
 

@@ -9,8 +9,8 @@
 
         public string Caption { get; set; }
 
-        public string PortfolioId { get; set; }
+        public string ProfileId { get; set; }
 
-        public Portfolio Portfolio { get; set; }
+        public Profile Profile { get; set; }
     }
 }

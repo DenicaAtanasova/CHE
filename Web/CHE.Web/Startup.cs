@@ -62,7 +62,7 @@ namespace CHE.Web
             services.AddTransient<IGradesService, GradesService>();
             services.AddTransient<IJoinRequestsService, JoinRequestsService>();
             services.AddTransient<ICheUsersService, CheUsersService>();
-            services.AddTransient<IPortfoliosService, PortfoliosService>();
+            services.AddTransient<IProfilesService, ProfilesService>();
             services.AddTransient<IReviewsService, ReviewsService>();
             services.AddTransient<IImagesService, ImagesService>();
             services.AddTransient<ISchedulesService, SchedulesService>();

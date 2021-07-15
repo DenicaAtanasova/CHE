@@ -8,16 +8,16 @@
 
     public class SchoolLevelListViewComponent : ViewComponent
     {
-        private readonly IPortfoliosService _portfoliosService;
+        private readonly IProfilesService _profilesService;
 
-        public SchoolLevelListViewComponent(IPortfoliosService portfoliosService)
+        public SchoolLevelListViewComponent(IProfilesService profilesService)
         {
-            this._portfoliosService = portfoliosService;
+            this._profilesService = profilesService;
         }
 
         public IViewComponentResult Invoke(string currentSchoolLevel)
         {
-            var schoolLevelList = this._portfoliosService.GetAllSchoolLevels(currentSchoolLevel);
+            var schoolLevelList = this._profilesService.GetAllSchoolLevels(currentSchoolLevel);
 
             return this.View(schoolLevelList);
         }

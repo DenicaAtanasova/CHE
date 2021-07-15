@@ -134,7 +134,7 @@
             if (schoolLevelFilter != null)
             {
                 var schoolLevel = (SchoolLevel)Enum.Parse(typeof(SchoolLevel), schoolLevelFilter);
-                return teachers.Where(x => x.Portfolio.SchoolLevel == schoolLevel);
+                return teachers.Where(x => x.Profile.SchoolLevel == schoolLevel);
             }
 
             return teachers;

@@ -2,10 +2,9 @@
 {
     using AutoMapper;
 
-    using CHE.Data.Models;
     using CHE.Services.Mapping;
 
-    public class TeacherPortfolioDetailsViewModel : IMapExplicitly
+    public class TeacherProfileDetailsViewModel : IMapExplicitly
     {
         public string FirstName { get; set; }
 
@@ -25,7 +24,7 @@
 
         public void CreateMappings(IProfileExpression configuration)
         {
-            configuration.CreateMap<Portfolio, TeacherPortfolioDetailsViewModel>()
+            configuration.CreateMap<Data.Models.Profile, TeacherProfileDetailsViewModel>()
                 .ForMember(dest => dest.SchoolLevel, opt => opt.MapFrom(src => src.SchoolLevel.ToString()));
         }
     }

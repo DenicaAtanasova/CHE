@@ -7,6 +7,6 @@
     {
         public string Id { get; set; }
 
-        public TeacherPortfolioDetailsViewModel Portfolio { get; set; }
+        public TeacherProfileDetailsViewModel Profile { get; set; }
     }
 }

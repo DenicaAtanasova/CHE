@@ -27,13 +27,13 @@
             this._dbContext = dbContext;
         }
 
-        public async Task<string> CreateAvatarAsync(string portfolioId)
+        public async Task<string> CreateAvatarAsync(string profileId)
         {
             var image = new Image
             {
                 Caption = DEFAULT_IMAGE_CAPTION,
                 Url = DEFAULT_IMAGE_URL,
-                PortfolioId = portfolioId,
+                ProfileId = profileId,
                 CreatedOn = DateTime.UtcNow
             };
 
@@ -43,10 +43,10 @@
             return image.Id;
         }
 
-        public async Task<string> UpdateAsync(IFormFile imageFile, string portfolioId)
+        public async Task<string> UpdateAsync(IFormFile imageFile, string profileId)
         {
             var currentImage = await this._dbContext.Images
-                .Where(x => x.PortfolioId == portfolioId)
+                .Where(x => x.ProfileId == profileId)
                 .Select(x => new
                 {
                     Id = x.Id,
@@ -64,16 +64,16 @@
 
             this.DeleteImage(currentImage.Id);
 
-            return await this.CreateImageAsync(imageFile.FileName, url, portfolioId);
+            return await this.CreateImageAsync(imageFile.FileName, url, profileId);
         }
 
-        private async Task<string> CreateImageAsync(string fileName, string url, string portfolioId)
+        private async Task<string> CreateImageAsync(string fileName, string url, string profileId)
         {
             var image = new Image
             {
                 Caption = fileName,
                 Url = url,
-                PortfolioId = portfolioId,
+                ProfileId = profileId,
                 CreatedOn = DateTime.UtcNow
             };
 
