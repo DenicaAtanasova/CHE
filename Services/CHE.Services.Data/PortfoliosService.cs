@@ -51,6 +51,7 @@
             return schoolLevelList;
         }
 
+        //TODO: Add tests
         public async Task<string> CreateAsync(string userId)
         {
             var portfolio = new Portfolio
@@ -62,7 +63,7 @@
             this._dbContext.Portfolios.Add(portfolio);
             await this._dbContext.SaveChangesAsync();
 
-            //TODO: Add image
+            await this._imagesService.CreateAvatarAsync(portfolio.Id);
 
             return portfolio.Id;
         }
@@ -74,12 +75,7 @@
                 .SingleOrDefaultAsync(x => x.OwnerId == userId);
 
             this._dbContext.Entry(portfolioFromDb).State = EntityState.Detached;
-
-            if (imageFile != null)
-            {
-                //TODO: check result
-                await this._imagesService.UpdateAsync(imageFile, portfolioFromDb.Id);
-            }
+           
             updatedPortfolio.Id = portfolioFromDb.Id;
             updatedPortfolio.CreatedOn = portfolioFromDb.CreatedOn;
             updatedPortfolio.OwnerId = portfolioFromDb.OwnerId;
@@ -87,6 +83,11 @@
 
             this._dbContext.Update(updatedPortfolio);
             var result = await this._dbContext.SaveChangesAsync() > 0;
+
+            if (imageFile != null)
+            {
+                await this._imagesService.UpdateAsync(imageFile, portfolioFromDb.Id);
+            }
 
             return result;
         }

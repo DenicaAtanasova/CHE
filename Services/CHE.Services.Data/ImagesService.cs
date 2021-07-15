@@ -1,88 +1,89 @@
 ﻿namespace CHE.Services.Data
 {
+    using CHE.Data;
+    using CHE.Data.Models;
+    using CHE.Services.Storage;
+
     using Microsoft.AspNetCore.Http;
     using Microsoft.EntityFrameworkCore;
-    using Microsoft.Extensions.Configuration;
-    using Microsoft.WindowsAzure.Storage;
-    using Microsoft.WindowsAzure.Storage.Blob;
 
+    using System;
+    using System.Linq;
     using System.Threading.Tasks;
-
-    using CHE.Data;
 
     public class ImagesService : IImagesService
     {
-        private const string CONTAINER_NAME = "uploads";
         private const string DEFAULT_IMAGE_CAPTION = "Teacher_Avatar.png";
+        private const string DEFAULT_IMAGE_URL = @"https://chestorage.blob.core.windows.net/uploads/Teacher_Avatar.png";
 
-        private readonly string accessKey;
-        private readonly IConfiguration _configuration;
+        private readonly IFileStorage _cloudStorageService;
         private readonly CheDbContext _dbContext;
 
-        public ImagesService(IConfiguration configuration,
+        public ImagesService(
+            IFileStorage cloudStorageService,
             CheDbContext dbContext)
         {
-            this._configuration = configuration;
+            this._cloudStorageService = cloudStorageService;
             this._dbContext = dbContext;
-            this.accessKey = this._configuration.GetConnectionString("BlobConnection");
         }
 
-        public async Task<bool> UpdateAsync(IFormFile imageFile, string portfolioId)
+        public async Task<string> CreateAvatarAsync(string portfolioId)
         {
-            var imageToUpdate = await this._dbContext.Images
-                .SingleOrDefaultAsync(x => x.PortfolioId == portfolioId);
-
-            if (imageToUpdate.Caption != DEFAULT_IMAGE_CAPTION)
+            var image = new Image
             {
-                await this.DeleteInBlobAsync(imageToUpdate.Url, imageToUpdate.Caption);
+                Caption = DEFAULT_IMAGE_CAPTION,
+                Url = DEFAULT_IMAGE_URL,
+                PortfolioId = portfolioId,
+                CreatedOn = DateTime.UtcNow
+            };
+
+            this._dbContext.Images.Add(image);
+            await this._dbContext.SaveChangesAsync();
+
+            return image.Id;
+        }
+
+        public async Task<string> UpdateAsync(IFormFile imageFile, string portfolioId)
+        {
+            var currentImage = await this._dbContext.Images
+                .Where(x => x.PortfolioId == portfolioId)
+                .Select(x => new
+                {
+                    Id = x.Id,
+                    Caption = x.Caption
+                })
+                .FirstOrDefaultAsync();
+
+            if (currentImage.Caption != DEFAULT_IMAGE_CAPTION)
+            {
+                await this._cloudStorageService.DeleteAsync(currentImage.Caption);
             }
-            
-            var url = await this.UploadToBlobAsync(imageFile);
 
-            imageToUpdate.Url = url;
-            imageToUpdate.Caption = imageFile.FileName;
+            var url = await this._cloudStorageService
+                .UploadAsync(imageFile.FileName, imageFile.OpenReadStream());
 
-            var entity = this._dbContext.Update(imageToUpdate);
+            this.DeleteImage(currentImage.Id);
 
-            return true;
+            return await this.CreateImageAsync(imageFile.FileName, url, portfolioId);
         }
 
-        private async Task<string> UploadToBlobAsync(IFormFile imageFile)
+        private async Task<string> CreateImageAsync(string fileName, string url, string portfolioId)
         {
-            var cloudBlockBlob = this.GetCloudBlockBlob(imageFile.FileName);
-            cloudBlockBlob.Properties.ContentType = imageFile.ContentType;
+            var image = new Image
+            {
+                Caption = fileName,
+                Url = url,
+                PortfolioId = portfolioId,
+                CreatedOn = DateTime.UtcNow
+            };
 
-            var imageStream = imageFile.OpenReadStream();
-            await cloudBlockBlob.UploadFromStreamAsync(imageStream);
+            this._dbContext.Images.Add(image);
+            await this._dbContext.SaveChangesAsync();
 
-            var url = cloudBlockBlob.Uri.AbsoluteUri;
-
-            return url;
+            return image.Id;
         }
 
-        private async Task<bool> DeleteInBlobAsync(string url, string fileName)
-        {
-            var cloudBlockBlob = this.GetCloudBlockBlob(fileName);
-            var result = await cloudBlockBlob.DeleteIfExistsAsync();
-
-            return result;
-        }
-
-        private CloudBlockBlob GetCloudBlockBlob(string fileName)
-        {
-            var cloudStorageAccount = CloudStorageAccount.Parse(accessKey);
-            var cloudBlobClient = cloudStorageAccount.CreateCloudBlobClient();
-            var cloudBlobContainer = cloudBlobClient.GetContainerReference(CONTAINER_NAME);
-            //var isContainerCreated = await cloudBlobContainer.CreateIfNotExistsAsync();
-            //if (isContainerCreated)
-            //{
-            //    await cloudBlobContainer
-            //        .SetPermissionsAsync(new BlobContainerPermissions { PublicAccess = BlobContainerPublicAccessType.Blob });
-            //}
-
-            var cloudBlockBlob = cloudBlobContainer.GetBlockBlobReference(fileName);
-
-            return cloudBlockBlob;
-        }
+        private void DeleteImage(string imageId) =>
+            this._dbContext.Images.Remove(new Image { Id = imageId });
     }
 }

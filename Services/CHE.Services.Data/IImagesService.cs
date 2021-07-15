@@ -5,6 +5,8 @@
 
     public interface IImagesService
     {
-        Task<bool> UpdateAsync(IFormFile imageFile, string portfolioId);
+        Task<string> UpdateAsync(IFormFile imageFile, string portfolioId);
+
+        Task<string> CreateAvatarAsync(string portfolioId);
     }
 }
