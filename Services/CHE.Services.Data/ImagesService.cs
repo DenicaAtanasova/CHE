@@ -60,11 +60,11 @@
             }
 
             var url = await this._cloudStorageService
-                .UploadAsync(imageFile.FileName, imageFile.OpenReadStream());
+                .UploadAsync(profileId, imageFile.OpenReadStream());
 
             this.DeleteImage(currentImage.Id);
 
-            return await this.CreateImageAsync(imageFile.FileName, url, profileId);
+            return await this.CreateImageAsync(profileId, url, profileId);
         }
 
         private async Task<string> CreateImageAsync(string fileName, string url, string profileId)
