@@ -57,16 +57,32 @@
 
         public async Task UpdateAsync(JoinRequestUpdateInputModel inputModel)
         {
-            var joinRequest = inputModel.Map<JoinRequestUpdateInputModel, JoinRequest>();
-            joinRequest.ModifiedOn = DateTime.UtcNow;
+            var joinRequestToUpdate = await this._dbContext.JoinRequests
+                .SingleOrDefaultAsync(x => x.Id == inputModel.Id);
 
-            this._dbContext.JoinRequests.Update(joinRequest);
+            if (joinRequestToUpdate == null)
+            {
+                return;
+            }
+
+            joinRequestToUpdate.Content = inputModel.Content;
+            joinRequestToUpdate.ModifiedOn = DateTime.UtcNow;
+
+            this._dbContext.JoinRequests.Update(joinRequestToUpdate);
             await this._dbContext.SaveChangesAsync();
         }
 
         public async Task DeleteAsync(string id)
         {
-            this._dbContext.JoinRequests.Remove(new JoinRequest { Id = id });
+            var request = await this._dbContext.JoinRequests
+                .SingleOrDefaultAsync(x => x.Id == id);
+
+            if (request == null)
+            {
+                return;
+            }
+
+            this._dbContext.JoinRequests.Remove(request);
             await this._dbContext.SaveChangesAsync();
         }
     }

@@ -101,6 +101,14 @@
 
         public async Task SendRequestAsync(string senderId, JoinRequestCreateInputModel inputModel)
         {
+            var cooperativeExists = await this._dbContext.Cooperatives
+                .AnyAsync(x => x.Id == inputModel.CooperativeId);
+
+            if (!cooperativeExists)
+            {
+                return;
+            }
+
             var requestExists = await this._dbContext.JoinRequests
                 .AnyAsync(x => x.CooperativeId == inputModel.CooperativeId &&
                                x.ReceiverId == inputModel.ReceiverId &&

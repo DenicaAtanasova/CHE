@@ -1,13 +1,12 @@
 ﻿namespace CHE.Web.InputModels.Cooperatives
 {
-    using System;
-    using System.ComponentModel.DataAnnotations;
-
     using AutoMapper;
 
     using CHE.Data.Models;
     using CHE.Services.Mapping;
     using CHE.Web.InputModels.Attributes.Validation;
+
+    using System.ComponentModel.DataAnnotations;
 
     public class CooperativeUpdateInputModel : IMapExplicitly
     {

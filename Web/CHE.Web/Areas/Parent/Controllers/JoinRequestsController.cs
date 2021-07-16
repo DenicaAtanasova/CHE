@@ -48,9 +48,18 @@
             return RedirectToAction("Details", "Cooperatives", new { area = "", id = inputModel.CooperativeId});
         }
 
-        public async Task<IActionResult> Update(string id) => 
-            this.View(await this._joinRequestsService
-                .GetByIdAsync<JoinRequestUpdateInputModel>(id));
+        public async Task<IActionResult> Update(string id)
+        {
+            var request = await this._joinRequestsService
+                .GetByIdAsync<JoinRequestUpdateInputModel>(id);
+
+            if (request == null)
+            {
+                return this.NotFound();
+            }
+
+            return this.View(request);
+        }
 
         [HttpPost]
         public async Task<IActionResult> Update(JoinRequestUpdateInputModel inputModel)
