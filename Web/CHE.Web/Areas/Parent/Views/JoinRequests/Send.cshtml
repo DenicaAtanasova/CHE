@@ -34,6 +34,7 @@
                     </div>
                     @if (Model.CooperativeId == null)
                     {
+                        <input asp-for="ReceiverId" type="hidden" />
                         <div class="form-group">
                             <select asp-for="CooperativeId" class="form-control">
                                 <option selected disabled>-- Choose cooperative --</option>
