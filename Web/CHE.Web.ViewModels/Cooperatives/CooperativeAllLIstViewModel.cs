@@ -1,7 +1,7 @@
-﻿using System.Collections.Generic;
-
-namespace CHE.Web.ViewModels.Cooperatives
+﻿namespace CHE.Web.ViewModels.Cooperatives
 {
+    using System.Collections.Generic;
+
     public class CooperativeAllListViewModel
     {
         public PaginatedList<CooperativeAllViewModel> Cooperatives { get; set; }

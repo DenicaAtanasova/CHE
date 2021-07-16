@@ -227,9 +227,7 @@
             {
                 Id = joinRequest.Id,
                 Content = "Updated Content",
-                CooperativeId = cooperativeId,
-                SenderId = senderId,
-                CreatedOn = joinRequest.CreatedOn
+                CooperativeId = cooperativeId
             };
 
             await this._joinRequestsService.UpdateAsync(requestUpdateModel);
