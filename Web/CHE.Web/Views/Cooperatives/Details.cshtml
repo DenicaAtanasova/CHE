@@ -36,21 +36,21 @@
 }
 else
 {
-<div class="col-lg-9">
-    @if (isMember)
-    {
-        <a class="btn btn-che" asp-area="" asp-controller="Cooperatives" asp-action="Leave" asp-route-CooperativeId="@Model.Id">Leave</a>
-    }
-    else if (pendingRequestId != null)
-    {
-        <h4>Pending request ...</h4>
-        <a class="btn btn-che" asp-area="Parent" asp-controller="JoinRequests" asp-action="Update" asp-route-id="@pendingRequestId">Edit</a>
-    }
-    else if (!this.User.IsInRole(GlobalConstants.TEACHER_ROLE))
-    {
-        <a class="btn btn-che" asp-area="Parent" asp-controller="JoinRequests" asp-action="Send" asp-route-CooperativeId="@Model.Id">Join</a>
-    }
-</div>
+    <div class="col-lg-9">
+        @if (isMember)
+        {
+            <a class="btn btn-che" asp-area="" asp-controller="Cooperatives" asp-action="Leave" asp-route-CooperativeId="@Model.Id">Leave</a>
+        }
+        else if (pendingRequestId != null)
+        {
+            <h4>Pending request ...</h4>
+            <a class="btn btn-che" asp-area="Parent" asp-controller="JoinRequests" asp-action="Update" asp-route-id="@pendingRequestId">Edit</a>
+        }
+        else if (!this.User.IsInRole(GlobalConstants.TEACHER_ROLE))
+        {
+            <a class="btn btn-che" asp-area="Parent" asp-controller="JoinRequests" asp-action="Send" asp-route-CooperativeId="@Model.Id">Join</a>
+        }
+    </div>
 }
 
 

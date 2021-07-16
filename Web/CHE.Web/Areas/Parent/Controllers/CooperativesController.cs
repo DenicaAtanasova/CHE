@@ -109,14 +109,7 @@
             cooperative.Members = await this._cooperativesService
                 .GetMembersAsync<CooperativeUserDetailsViewModel>(id);
 
-            var userId = this._userManager.GetUserId(this.User);
-
-            this.ViewData["isMember"] = await this._cooperativesService
-                .CheckIfMemberAsync(userId, cooperative.Id);
-            this.ViewData["isAdmin"] = await this._cooperativesService
-                .CheckIfAdminAsync(userId, cooperative.Id);
             this.ViewData["id"] = cooperative.Id;
-            this.ViewData["scheduleId"] = cooperative.ScheduleId;
 
             return this.View(cooperative);
         }
@@ -134,14 +127,7 @@
             cooperative.JoinRequestsReceived = await this._joinRequestsService
                 .GetAllByCooperativeAsync<JoinRequestAllViewModel>(id);
 
-            var userId = this._userManager.GetUserId(this.User);
-
-            this.ViewData["isMember"] = await this._cooperativesService
-                .CheckIfMemberAsync(userId, cooperative.Id);
-            this.ViewData["isAdmin"] = await this._cooperativesService
-                .CheckIfAdminAsync(userId, cooperative.Id);
             this.ViewData["id"] = cooperative.Id;
-            this.ViewData["scheduleId"] = cooperative.ScheduleId;
 
             return this.View(cooperative);
         }
