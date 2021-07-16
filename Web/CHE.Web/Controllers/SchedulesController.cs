@@ -10,7 +10,7 @@
     public class SchedulesController : Controller
     {
         private const string COOPERATIVE_LAYOUT = "/Views/Shared/_LayoutCooperative.cshtml";
-        private const string TEACHER_LAYOUT = "/Areas/Identity/Pages/Account/Manage/_Layout.cshtml";
+        private const string ACCOUNT_LAYOUT = "/Areas/Identity/Pages/Account/Manage/_Layout.cshtml";
 
         private readonly ISchedulesService _schedulesService;
 
@@ -38,7 +38,7 @@
             }
             else
             {
-                this.ViewData["layout"] = TEACHER_LAYOUT;
+                this.ViewData["layout"] = ACCOUNT_LAYOUT;
             }
 
             return View(schedule);

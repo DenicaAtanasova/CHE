@@ -1,6 +1,24 @@
-﻿@model CHE.Web.ViewModels.Teachers.TeacherReviewsViewModel
+﻿@model CHE.Web.ViewModels.Reviews.ReviewAllListViewModel
 @{
-    Layout = "/Views/Shared/_LayoutTeacher.cshtml";
+    Layout = (string)this.ViewData["layout"];
+    var reviewsCount = 1;
 }
-
-<partial name="_ReviewsAllPartial" model="@Model.Reviews" />
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Rating</th>
+            <th scope="col">Comment</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var review in Model.Reviews)
+        {
+            <tr>
+                <th scope="row">@(reviewsCount++)</th>
+                <td scope="row">@review.Rating / 5</td>
+                <td scope="row">@review.Comment</td>
+            </tr>
+        }
+    </tbody>
+</table>
