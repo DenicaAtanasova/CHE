@@ -93,20 +93,20 @@
                 var user = new CheUser { UserName = Input.Username, Email = Input.Email, RoleName = Input.Role };
                 var result = await _userManager.CreateAsync(user, Input.Password);
 
-                if (Input.Role == GlobalConstants.TEACHER_ROLE)
-                {
-                    await this._profilesService.CreateAsync(user.Id);
-
-                    //TODO: Add create to schedule service
-                    user.Schedule = new Schedule { CreatedOn = DateTime.UtcNow};
-                }
-
                 if (result.Succeeded)
                 {
                     var assignRole = await _userManager.AddToRoleAsync(user, Input.Role);
                     if (!assignRole.Succeeded)
                     {
                         return Page();
+                    }
+
+                    if (await _userManager.IsInRoleAsync(user, GlobalConstants.TEACHER_ROLE))
+                    {
+                        await this._profilesService.CreateAsync(user.Id);
+
+                        //TODO: Add create to schedule service
+                        user.Schedule = new Schedule { CreatedOn = DateTime.UtcNow };
                     }
 
                     _logger.LogInformation("User created a new account with password.");

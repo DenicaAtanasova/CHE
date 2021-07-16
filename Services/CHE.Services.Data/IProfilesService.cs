@@ -1,5 +1,6 @@
 ﻿namespace CHE.Services.Data
 {
+    using CHE.Web.InputModels.Portfolios;
     using Microsoft.AspNetCore.Http;
 
     using System.Collections.Generic;
@@ -13,6 +14,6 @@
 
         Task<string> CreateAsync(string userId);
 
-        Task<bool> UpdateAsync<TEntity>(string userId, TEntity portfolio, IFormFile imageFile);
+        Task UpdateAsync(string userId, ProfileInputModel inputModel, IFormFile imageFile);
     }
 }

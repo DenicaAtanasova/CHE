@@ -1,29 +1,29 @@
 namespace CHE.Web.Areas.Identity.Pages.Account.Manage
 {
-    using System.Threading.Tasks;
-
-    using Microsoft.AspNetCore.Mvc;
-    using Microsoft.AspNetCore.Mvc.RazorPages;
-    using Microsoft.AspNetCore.Identity;
-    using Microsoft.AspNetCore.Authorization;
-
-    using CHE.Web.InputModels.Portfolios;
+    using CHE.Common;
     using CHE.Data.Models;
     using CHE.Services.Data;
-    using CHE.Common;
+    using CHE.Web.InputModels.Portfolios;
+
+    using Microsoft.AspNetCore.Authorization;
+    using Microsoft.AspNetCore.Identity;
+    using Microsoft.AspNetCore.Mvc;
+    using Microsoft.AspNetCore.Mvc.RazorPages;
+
+    using System.Threading.Tasks;
 
     [Authorize(Roles = GlobalConstants.TEACHER_ROLE)]
     public class ProfileModel : PageModel
     {
         private readonly UserManager<CheUser> _userManager;
-        private readonly IProfilesService _portfoliosService;
+        private readonly IProfilesService _profilesService;
 
         public ProfileModel(
             UserManager<CheUser> userManager,
-            IProfilesService portfoliosService)
+            IProfilesService profilesService)
         {
             this._userManager = userManager;
-            this._portfoliosService = portfoliosService;
+            this._profilesService = profilesService;
         }
 
         [TempData]
@@ -35,7 +35,7 @@ namespace CHE.Web.Areas.Identity.Pages.Account.Manage
         public async Task<IActionResult> OnGetAsync()
         {
             var userId = this._userManager.GetUserId(this.User);
-            this.Input = await this._portfoliosService
+            this.Input = await this._profilesService
                 .GetByUserIdAsync<ProfileInputModel>(userId);
 
             if (this.Input == null)
@@ -54,15 +54,9 @@ namespace CHE.Web.Areas.Identity.Pages.Account.Manage
             }
 
             var userId = this._userManager.GetUserId(this.User);
-            var updateSuccessful = await this._portfoliosService.UpdateAsync(userId, Input, Input.Image);
+            await this._profilesService.UpdateAsync(userId, Input, Input.Image);
 
-            if (!updateSuccessful)
-            {
-                return this.Page();
-
-            }
-            return RedirectToPage("./Index");
-            
+            return RedirectToPage("./Index");            
         }
     }
 }

@@ -1,13 +1,12 @@
 ﻿namespace CHE.Web.InputModels.Portfolios
 {
-    using System.ComponentModel.DataAnnotations;
-
-    using Microsoft.AspNetCore.Http;
-
     using AutoMapper;
 
-    using CHE.Data.Models;
     using CHE.Services.Mapping;
+    
+    using Microsoft.AspNetCore.Http;
+    
+    using System.ComponentModel.DataAnnotations;
 
     public class ProfileInputModel : IMapExplicitly
     {
@@ -33,8 +32,6 @@
         public void CreateMappings(IProfileExpression configuration)
         {
             configuration.CreateMap<Data.Models.Profile, ProfileInputModel>()
-                .ForMember(dest => dest.Image, opt => opt.Ignore())
-                .ReverseMap()
                 .ForMember(dest => dest.Image, opt => opt.Ignore());
         }
     }

@@ -3,6 +3,7 @@
     using CHE.Data;
     using CHE.Data.Models;
     using CHE.Services.Mapping;
+    using CHE.Web.InputModels.Portfolios;
 
     using Microsoft.EntityFrameworkCore;
     using Microsoft.AspNetCore.Http;
@@ -25,15 +26,12 @@
             this._imagesService = imagesService;
         }
 
-        public async Task<TEntity> GetByUserIdAsync<TEntity>(string userId)
-        {
-            var portfolio = await this._dbContext.Profiles
+        public async Task<TEntity> GetByUserIdAsync<TEntity>(string userId) =>
+            await this._dbContext.Profiles
+                .AsNoTracking()
                 .Where(x => x.Owner.Id == userId)
                 .To<TEntity>()
                 .SingleOrDefaultAsync();
-
-            return portfolio;
-        }
 
         public IEnumerable<string> GetAllSchoolLevels(string currentSchoolLevel)
         {
@@ -68,28 +66,34 @@
             return portfolio.Id;
         }
 
-        public async Task<bool> UpdateAsync<TEntity>(string userId, TEntity portfolio, IFormFile imageFile)
+        public async Task UpdateAsync(string userId, ProfileInputModel inputModel, IFormFile imageFile)
         {
-            var updatedPortfolio = portfolio.Map<TEntity, Profile>();
-            var portfolioFromDb = await this._dbContext.Profiles
+            var profileToUpdate = await this._dbContext.Profiles
                 .SingleOrDefaultAsync(x => x.OwnerId == userId);
 
-            this._dbContext.Entry(portfolioFromDb).State = EntityState.Detached;
-           
-            updatedPortfolio.Id = portfolioFromDb.Id;
-            updatedPortfolio.CreatedOn = portfolioFromDb.CreatedOn;
-            updatedPortfolio.OwnerId = portfolioFromDb.OwnerId;
-            updatedPortfolio.ModifiedOn = DateTime.UtcNow;
+            if (profileToUpdate == null)
+            {
+                return;
+            }
 
-            this._dbContext.Update(updatedPortfolio);
-            var result = await this._dbContext.SaveChangesAsync() > 0;
+            profileToUpdate.FirstName = inputModel.FirstName;
+            profileToUpdate.LastName = inputModel.LastName;
+            profileToUpdate.Education = inputModel.Education;
+            profileToUpdate.Experience = inputModel.Experience;
+            profileToUpdate.Skills = inputModel.Skills;
+            profileToUpdate.Interests = inputModel.Interests;
+            profileToUpdate.Skills = inputModel.Skills;
+            profileToUpdate.SchoolLevel = Enum.Parse<SchoolLevel>(inputModel.SchoolLevel);
+            profileToUpdate.ModifiedOn = DateTime.UtcNow;
+
+            this._dbContext.Update(profileToUpdate);
+
+            await this._dbContext.SaveChangesAsync();
 
             if (imageFile != null)
             {
-                await this._imagesService.UpdateAsync(imageFile, portfolioFromDb.Id);
+                await this._imagesService.UpdateAsync(imageFile, profileToUpdate.Id);
             }
-
-            return result;
         }
     }
 }

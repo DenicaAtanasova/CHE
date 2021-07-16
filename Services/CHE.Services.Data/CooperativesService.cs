@@ -83,8 +83,8 @@
             await this._dbContext.SaveChangesAsync();
         }
 
-        public async Task<TEntity> GetByIdAsync<TEntity>(string id)
-            => await this._dbContext.Cooperatives
+        public async Task<TEntity> GetByIdAsync<TEntity>(string id) =>
+            await this._dbContext.Cooperatives
                 .AsNoTracking()
                 .Where(x => x.Id == id)
                 .To<TEntity>()
@@ -158,8 +158,8 @@
             await this._dbContext.SaveChangesAsync();
         }
 
-        public async Task<IEnumerable<TEntity>> GetMembersAsync<TEntity>(string id)
-            => await this._dbContext.UserCooperatives
+        public async Task<IEnumerable<TEntity>> GetMembersAsync<TEntity>(string id) =>
+            await this._dbContext.UserCooperatives
                 .AsNoTracking()
                 .Where(x => x.CooperativeId == id)
                 .To<TEntity>()
@@ -198,31 +198,32 @@
             await this._dbContext.SaveChangesAsync();
         }
 
-        public async Task<bool> CheckIfAdminAsync(string userId, string cooperativeId)
-            => await this._dbContext.Cooperatives
+        public async Task<bool> CheckIfAdminAsync(string userId, string cooperativeId) =>
+            await this._dbContext.Cooperatives
                 .AnyAsync(x => x.AdminId == userId && x.Id == cooperativeId);
 
-        public async Task<bool> CheckIfMemberAsync(string userId, string cooperativeId)
-            => await this._dbContext.UserCooperatives
+        public async Task<bool> CheckIfMemberAsync(string userId, string cooperativeId) =>
+            await this._dbContext.UserCooperatives
                 .AnyAsync(x => x.CheUserId == userId && x.CooperativeId == cooperativeId);
 
-        public async Task<string> GetPendindRequestIdAsync(string cooperativeId, string senderId)
-            => await this._dbContext.JoinRequests
-            .Where(x => x.SenderId == senderId && x.CooperativeId == cooperativeId)
-            .Select(x => x.Id)
-            .FirstOrDefaultAsync();
+        public async Task<string> GetPendindRequestIdAsync(string cooperativeId, string senderId) =>
+            await this._dbContext.JoinRequests
+                .AsNoTracking()
+                .Where(x => x.SenderId == senderId && x.CooperativeId == cooperativeId)
+                .Select(x => x.Id)
+                .FirstOrDefaultAsync();
 
-        public async Task<int> CountAsync(string userId)
-            => await this._dbContext.Cooperatives
-            .AsNoTracking()
-            .Where(x => x.AdminId == userId)
-            .CountAsync();
+        public async Task<int> CountAsync(string userId) =>
+            await this._dbContext.Cooperatives
+                .AsNoTracking()
+                .Where(x => x.AdminId == userId)
+                .CountAsync();
 
         public async Task<int> CountAsync(
             string gradeFilter = null,
             string cityFilter = null,
-            string neighbourhoodFilter = null)
-            => await this.GetFilteredCollection(gradeFilter, cityFilter, neighbourhoodFilter).CountAsync();
+            string neighbourhoodFilter = null) => 
+                await this.GetFilteredCollection(gradeFilter, cityFilter, neighbourhoodFilter).CountAsync();
 
         private IQueryable<Cooperative> GetFilteredCollection(
             string gradeFilter = null,
@@ -257,8 +258,8 @@
         private async Task<IEnumerable<TEntity>> GetCollectionPerPage<TEntity>(
             IQueryable<Cooperative> cooperatives, 
             int startIndex, 
-            int count)
-            => await cooperatives
+            int count) =>
+            await cooperatives
                 .Skip((startIndex - 1) * count)
                 .Take(count)
                 .To<TEntity>()
