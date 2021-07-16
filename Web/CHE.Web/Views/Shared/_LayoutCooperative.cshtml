@@ -1,5 +1,4 @@
-﻿@using CHE.Web.Services
-@inject CooperativeLayoutService LayoutService
+﻿@inject CooperativeLayoutService LayoutService
 @{
     Layout = "/Views/Shared/_Layout.cshtml";
     var cooperativeId = (string)ViewData["id"];
@@ -37,7 +36,7 @@
                                 <ul>
                                     <li><a asp-area="" asp-controller="Cooperatives" asp-action="Details" asp-route-id="@cooperativeId">Info</a></li>
                                     <li><a asp-area="Parent" asp-controller="Cooperatives" asp-action="Members" asp-route-id="@cooperativeId">Memebers</a></li>
-                                    <li><a asp-area="Parent" asp-controller="Cooperatives" asp-action="Requests" asp-route-id="@cooperativeId">Join requests</a></li>
+                                    <li><a asp-area="Parent" asp-controller="JoinRequests" asp-action="All" asp-route-cooperativeId="@cooperativeId">Join requests</a></li>
                                     <li><a asp-area="" asp-controller="Schedules" asp-action="Details" asp-route-id="@scheduleId">Schedule</a></li>
                                 </ul>
                             </nav>

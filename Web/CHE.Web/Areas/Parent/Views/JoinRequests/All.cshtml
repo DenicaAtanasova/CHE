@@ -1,0 +1,38 @@
+﻿@model CHE.Web.ViewModels.JoinRequests.JoinRequestCooperativeAllListViewModel
+@inject CooperativeLayoutService cooperativeService
+@{
+    Layout = "/Views/Shared/_LayoutCooperative.cshtml";
+
+    var cooperativeId = Model.CooperativeId;
+    var isAdmin = await this.cooperativeService.IsAdminAsync(this.User, cooperativeId);
+    var requestsCount = 1;
+}
+
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Username</th>
+            <th scope="col" colspan="2">Handle</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var request in Model.JoinRequests)
+        {
+            <tr>
+                <th scope="row">@(requestsCount++)</th>
+                <td colspan="2">@request.SenderUserName</td>
+                @if (isAdmin)
+                {
+                    <td>
+                        <a class="btn btn-che btn-sm"
+                           asp-area=""
+                           asp-controller="JoinRequests"
+                           asp-action="Details"
+                           asp-route-id="@request.Id">Details</a>
+                    </td>
+                }
+            </tr>
+        }
+    </tbody>
+</table>

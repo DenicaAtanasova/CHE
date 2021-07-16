@@ -18,16 +18,13 @@
 
         private readonly UserManager<CheUser> _userManager;
         private readonly ICooperativesService _cooperativesService;
-        private readonly IJoinRequestsService _joinRequestsService;
 
         public CooperativesController(
             UserManager<CheUser> userManager,
-            ICooperativesService cooperativesService,
-            IJoinRequestsService joinRequestsService)
+            ICooperativesService cooperativesService)
         {
             this._userManager = userManager;
             this._cooperativesService = cooperativesService;
-            this._joinRequestsService = joinRequestsService;
         }
 
         public IActionResult Create() => this.View();
@@ -108,24 +105,6 @@
 
             cooperative.Members = await this._cooperativesService
                 .GetMembersAsync<CooperativeUserDetailsViewModel>(id);
-
-            this.ViewData["id"] = cooperative.Id;
-
-            return this.View(cooperative);
-        }
-
-        public async Task<IActionResult> Requests(string id)
-        {
-            var cooperative = await this._cooperativesService
-                .GetByIdAsync<CooperativeJoinRequestsViewModel>(id);
-
-            if (cooperative == null)
-            {
-                return this.NotFound();
-            }
-
-            cooperative.JoinRequestsReceived = await this._joinRequestsService
-                .GetAllByCooperativeAsync<JoinRequestAllViewModel>(id);
 
             this.ViewData["id"] = cooperative.Id;
 

@@ -3,6 +3,7 @@
     using CHE.Data.Models;
     using CHE.Services.Data;
     using CHE.Web.InputModels.JoinRequests;
+    using CHE.Web.ViewModels.JoinRequests;
 
     using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
@@ -25,6 +26,18 @@
             this._joinRequestsService = joinRequestsService;
         }
 
+        public async Task<IActionResult> All(string cooperativeId)
+        {
+            this.ViewData["id"] = cooperativeId;
+
+            return this.View(new JoinRequestCooperativeAllListViewModel
+            {
+                CooperativeId = cooperativeId,
+                JoinRequests = await this._joinRequestsService
+                .GetAllByCooperativeAsync<JoinRequestCooperativeAllViewModel>(cooperativeId)
+            });
+        }
+            
         public IActionResult Send(string cooperativeId, string receiverId) =>
             this.View(new JoinRequestCreateInputModel
             {
