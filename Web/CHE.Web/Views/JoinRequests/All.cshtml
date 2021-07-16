@@ -1,6 +1,6 @@
-﻿@page
-@model CHE.Web.Areas.Identity.Pages.Account.Manage.JoinRequestModel
+﻿@model CHE.Web.ViewModels.JoinRequests.JoinRequestTeacherAllListVIewModel
 @{
+    Layout = "/Areas/Identity/Pages/Account/Manage/_Layout.cshtml";
     var requestsCount = 1;
 }
 
@@ -13,7 +13,7 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var request in Model.Input)
+        @foreach (var request in Model.JoinRequests)
         {
             <tr>
                 <th scope="row">@(requestsCount++)</th>

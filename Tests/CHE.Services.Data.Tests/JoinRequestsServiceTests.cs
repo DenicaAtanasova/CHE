@@ -113,7 +113,7 @@
             await this._dbContext.SaveChangesAsync();
 
             var teachersRequests = await this._joinRequestsService
-                .GetAllByTeacherAsync<JoinRequestAllViewModel>(serchedTeacher.Id);
+                .GetAllByTeacherAsync<JoinRequestTeacherAllVIewModel>(serchedTeacher.Id);
             var expectedRequestsList = requestsList.Where(x => x.ReceiverId == serchedTeacher.Id).ToList();
 
             Assert.Equal(expectedRequestsList.Count(), teachersRequests.Count());
@@ -169,7 +169,7 @@
             await this._dbContext.SaveChangesAsync();
 
             var cooperativeRequests = await this._joinRequestsService
-                .GetAllByCooperativeAsync<JoinRequestAllViewModel>(serchedCooperative.Id);
+                .GetAllByCooperativeAsync<JoinRequestCooperativeAllViewModel>(serchedCooperative.Id);
             var expectedRequestsList = requestsList.Where(x => x.CooperativeId == serchedCooperative.Id).ToList();
 
             Assert.Equal(expectedRequestsList.Count(), cooperativeRequests.Count());

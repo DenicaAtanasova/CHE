@@ -1,9 +1,9 @@
-﻿namespace CHE.Web.ViewModels.Teachers
+﻿namespace CHE.Web.ViewModels.JoinRequests
 {
     using CHE.Data.Models;
     using CHE.Services.Mapping;
 
-    public class TeacherJoinRequestVIewModel : IMapFrom<JoinRequest>
+    public class JoinRequestTeacherAllVIewModel : IMapFrom<JoinRequest>
     {
         public string Id { get; set; }
 
