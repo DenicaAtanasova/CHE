@@ -39,7 +39,7 @@
         public async Task<IEnumerable<TEntity>> GetAllByCooperativeAsync<TEntity>(string cooperativeId) =>
             await this._dbContext.JoinRequests
                 .AsNoTracking()
-                .Where(x => x.CooperativeId == cooperativeId)
+                .Where(x => x.CooperativeId == cooperativeId && x.ReceiverId == null)
                 .To<TEntity>()
                 .ToListAsync();
 
