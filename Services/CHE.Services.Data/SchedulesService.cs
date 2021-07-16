@@ -26,8 +26,16 @@
 
         public async Task<string> GetIdByUserAsync(string userId) =>
             await this._dbContext.Schedules
+                .AsNoTracking()
                 .Where(x => x.TeacherId == userId)
                 .Select(x => x.Id)
-                .FirstOrDefaultAsync();
+                .SingleOrDefaultAsync();
+
+        public async Task<string> GetIdByCooperativeAsync(string cooperativeId) =>
+            await this._dbContext.Schedules
+                .AsNoTracking()
+                .Where(x => x.CooperativeId == cooperativeId)
+                .Select(x => x.Id)
+                .SingleOrDefaultAsync();
     }
 }

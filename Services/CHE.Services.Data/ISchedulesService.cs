@@ -8,6 +8,6 @@
 
         Task<string> GetIdByUserAsync(string userId);
 
-        //TODO GetIdByCooperative
+        Task<string> GetIdByCooperativeAsync(string cooperativeId);
     }
 }

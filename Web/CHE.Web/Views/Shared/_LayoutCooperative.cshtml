@@ -1,10 +1,12 @@
-﻿@{
+﻿@using CHE.Web.Services
+@inject CooperativeLayoutService LayoutService
+@{
     Layout = "/Views/Shared/_Layout.cshtml";
-    var id = ViewData["id"];
-    var scheduleId = ViewData["scheduleId"];
+    var cooperativeId = (string)ViewData["id"];
+    var scheduleId = await this.LayoutService.GetScheduleIdByCooperativeAsync(cooperativeId);
 
-    var isMember = (bool)this.ViewData["isMember"];
-    var isAdmin = (bool)this.ViewData["isAdmin"];
+    var isMember = await this.LayoutService.IsMemberAsync(this.User, cooperativeId);
+    var isAdmin = await this.LayoutService.IsAdminAsync(this.User, cooperativeId);
 }
 <!-- ======= Breadcrumbs ======= -->
 <section id="breadcrumbs" class="breadcrumbs">
@@ -33,9 +35,9 @@
                         <div class="sidebar-item categories">
                             <nav class="nav-coop">
                                 <ul>
-                                    <li><a asp-area="" asp-controller="Cooperatives" asp-action="Details" asp-route-id="@id">Info</a></li>
-                                    <li><a asp-area="Parent" asp-controller="Cooperatives" asp-action="Members" asp-route-id="@id">Memebers</a></li>
-                                    <li><a asp-area="Parent" asp-controller="Cooperatives" asp-action="Requests" asp-route-id="@id">Join requests</a></li>
+                                    <li><a asp-area="" asp-controller="Cooperatives" asp-action="Details" asp-route-id="@cooperativeId">Info</a></li>
+                                    <li><a asp-area="Parent" asp-controller="Cooperatives" asp-action="Members" asp-route-id="@cooperativeId">Memebers</a></li>
+                                    <li><a asp-area="Parent" asp-controller="Cooperatives" asp-action="Requests" asp-route-id="@cooperativeId">Join requests</a></li>
                                     <li><a asp-area="" asp-controller="Schedules" asp-action="Details" asp-route-id="@scheduleId">Schedule</a></li>
                                 </ul>
                             </nav>

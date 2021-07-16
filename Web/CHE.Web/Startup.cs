@@ -68,6 +68,7 @@ namespace CHE.Web
             services.AddTransient<IEventsService, EventsService>();
             services.AddTransient<IAddressesService, AddressesService>();
             services.AddTransient<AccountNavScheduleService>();
+            services.AddTransient<CooperativeLayoutService>();
             services.AddTransient<IFileStorage>(provider => 
                 new CloudStorageService(this.configuration.GetConnectionString("BlobConnection")));
         }
