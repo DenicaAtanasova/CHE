@@ -29,6 +29,13 @@
                 .To<TEntity>()
                 .SingleOrDefaultAsync();
 
+        public async Task<string> GetPendindRequestIdAsync(string cooperativeId, string senderId) =>
+            await this._dbContext.JoinRequests
+                .AsNoTracking()
+                .Where(x => x.SenderId == senderId && x.CooperativeId == cooperativeId)
+                .Select(x => x.Id)
+                .FirstOrDefaultAsync();
+
         public async Task<IEnumerable<TEntity>> GetAllByTeacherAsync<TEntity>(string teacherId) =>
             await this._dbContext.JoinRequests
                 .AsNoTracking()

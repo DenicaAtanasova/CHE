@@ -19,17 +19,20 @@
         private readonly ICooperativesService _cooperativesService;
         private readonly IGradesService _gradesService;
         private readonly IAddressesService _addressesService;
+        private readonly IJoinRequestsService _joinRequestsService;
 
         public CooperativesController(
             UserManager<CheUser> userManager,
             ICooperativesService cooperativesService,
             IGradesService gradesService,
-            IAddressesService addressesService)
+            IAddressesService addressesService,
+            IJoinRequestsService joinRequestsService)
         {
             this._userManager = userManager;
             this._cooperativesService = cooperativesService;
             this._gradesService = gradesService;
             this._addressesService = addressesService;
+            this._joinRequestsService = joinRequestsService;
         }
 
         public async Task<IActionResult> Details(string id)
@@ -47,7 +50,7 @@
                 .CheckIfMemberAsync(userId, currentCooperative.Id);
             this.ViewData["isAdmin"] = await this._cooperativesService
                 .CheckIfAdminAsync(userId, currentCooperative.Id);
-            this.ViewData["pendingRequestId"] = await this._cooperativesService
+            this.ViewData["pendingRequestId"] = await this._joinRequestsService
                 .GetPendindRequestIdAsync(id, userId);
             this.ViewData["id"] = currentCooperative.Id;
             this.ViewData["scheduleId"] = currentCooperative.ScheduleId;

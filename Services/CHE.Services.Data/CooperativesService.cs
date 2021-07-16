@@ -206,13 +206,6 @@
             await this._dbContext.UserCooperatives
                 .AnyAsync(x => x.CheUserId == userId && x.CooperativeId == cooperativeId);
 
-        public async Task<string> GetPendindRequestIdAsync(string cooperativeId, string senderId) =>
-            await this._dbContext.JoinRequests
-                .AsNoTracking()
-                .Where(x => x.SenderId == senderId && x.CooperativeId == cooperativeId)
-                .Select(x => x.Id)
-                .FirstOrDefaultAsync();
-
         public async Task<int> CountAsync(string userId) =>
             await this._dbContext.Cooperatives
                 .AsNoTracking()

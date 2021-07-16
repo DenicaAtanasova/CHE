@@ -267,5 +267,25 @@
 
             Assert.Empty(this._dbContext.JoinRequests);
         }
+
+        [Fact]
+        public async Task GetPendindRequestIdAsync_ShouldWorkCorrectly()
+        {
+            var cooperativeId = Guid.NewGuid().ToString();
+            var senderId = Guid.NewGuid().ToString();
+            var request = new JoinRequest
+            {
+                CooperativeId = cooperativeId,
+                SenderId = senderId
+            };
+
+            this._dbContext.JoinRequests.Add(request);
+            await this._dbContext.SaveChangesAsync();
+
+            var pendingRequestId = await this._joinRequestsService
+                .GetPendindRequestIdAsync(cooperativeId, senderId);
+
+            Assert.Equal(request.Id, pendingRequestId);
+        }
     }
 }
