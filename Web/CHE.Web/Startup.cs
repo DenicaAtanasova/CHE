@@ -6,21 +6,20 @@ namespace CHE.Web
     using CHE.Services.Data;
     using CHE.Services.Mapping;
     using CHE.Services.Storage;
-    using CHE.Web.ViewModels;
     using CHE.Web.InputModels.Cooperatives;
-    using CHE.Web.Areas.Identity.Pages.Account.Manage.Services;
+    using CHE.Web.Services;
+    using CHE.Web.ViewModels;
 
     using Microsoft.AspNetCore.Builder;
-    using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Hosting;
+    using Microsoft.AspNetCore.Identity;
 
+    using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
-    using Microsoft.EntityFrameworkCore;
 
     using System.Reflection;
-    using Microsoft.Extensions.Options;
 
     public class Startup
     {
@@ -68,7 +67,7 @@ namespace CHE.Web
             services.AddTransient<ISchedulesService, SchedulesService>();
             services.AddTransient<IEventsService, EventsService>();
             services.AddTransient<IAddressesService, AddressesService>();
-            services.AddTransient<IAccountNavScheduleService, AccountNavScheduleService>();
+            services.AddTransient<AccountNavScheduleService>();
             services.AddTransient<IFileStorage>(provider => 
                 new CloudStorageService(this.configuration.GetConnectionString("BlobConnection")));
         }

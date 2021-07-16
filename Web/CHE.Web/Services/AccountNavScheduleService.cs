@@ -1,4 +1,4 @@
-﻿namespace CHE.Web.Areas.Identity.Pages.Account.Manage.Services
+﻿namespace CHE.Web.Services
 {
     using CHE.Data.Models;
     using CHE.Services.Data;
@@ -8,27 +8,22 @@
     using System.Security.Claims;
     using System.Threading.Tasks;
 
-    public class AccountNavScheduleService : IAccountNavScheduleService
+    public class AccountNavScheduleService
     {
         private readonly UserManager<CheUser> _userManager;
         private readonly ISchedulesService _schedulesService;
 
         public AccountNavScheduleService(UserManager<CheUser> userManager, ISchedulesService schedulesService)
         {
-            this._userManager = userManager;
-            this._schedulesService = schedulesService;
+            _userManager = userManager;
+            _schedulesService = schedulesService;
         }
 
         public async Task<string> GetScheduleIdByUserAsync(ClaimsPrincipal user)
         {
-            var userId = this._userManager.GetUserId(user);
+            var userId = _userManager.GetUserId(user);
 
-            return await this._schedulesService.GetIdByUserAsync(userId);
+            return await _schedulesService.GetIdByUserAsync(userId);
         }
-    }
-
-    public interface IAccountNavScheduleService
-    {
-        Task<string> GetScheduleIdByUserAsync(ClaimsPrincipal user);
     }
 }

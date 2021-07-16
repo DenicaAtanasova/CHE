@@ -1,5 +1,5 @@
-﻿@using CHE.Web.Areas.Identity.Pages.Account.Manage.Services
-@inject IAccountNavScheduleService AccountNavScheduleService
+﻿@using CHE.Web.Services
+@inject AccountNavScheduleService AccountNavScheduleService
 @{
     var scheduleId = await AccountNavScheduleService.GetScheduleIdByUserAsync(this.User);
     var a = this.User;
