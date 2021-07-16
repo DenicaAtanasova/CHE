@@ -41,7 +41,7 @@
             }
 
             var userId = this._userManager.GetUserId(this.User);
-             await this._cooperativesService
+            await this._cooperativesService
                 .CreateAsync(userId, model);
 
             return this.RedirectToAction("All", "Cooperatives", new { area = ""});
@@ -51,6 +51,11 @@
         {
             var cooperativeToEdit = await this._cooperativesService
                 .GetByIdAsync<CooperativeUpdateInputModel>(id);
+
+            if (cooperativeToEdit == null)
+            {
+                return this.NotFound();
+            }
 
             return this.View(cooperativeToEdit);
         }
@@ -70,11 +75,6 @@
 
         public async Task<IActionResult> Delete(string id)
         {
-            if (id == null)
-            {
-                return this.NotFound();
-            }
-
             await this._cooperativesService.DeleteAsync(id);
 
             return this.RedirectToAction("All", "Cooperatives", new { area = "" });
@@ -100,6 +100,12 @@
         {
             var cooperative = await this._cooperativesService
                 .GetByIdAsync<CooperativeMembersViewModel>(id);
+
+            if (cooperative == null)
+            {
+                return this.NotFound();
+            }
+
             cooperative.Members = await this._cooperativesService
                 .GetMembersAsync<CooperativeUserDetailsViewModel>(id);
 
@@ -119,6 +125,12 @@
         {
             var cooperative = await this._cooperativesService
                 .GetByIdAsync<CooperativeJoinRequestsViewModel>(id);
+
+            if (cooperative == null)
+            {
+                return this.NotFound();
+            }
+
             cooperative.JoinRequestsReceived = await this._joinRequestsService
                 .GetAllByCooperativeAsync<JoinRequestAllViewModel>(id);
 

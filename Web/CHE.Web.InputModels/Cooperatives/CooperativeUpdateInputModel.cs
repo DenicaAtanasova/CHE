@@ -13,10 +13,6 @@
     {
         public string Id { get; set; }
 
-        public string AdminId { get; set; }
-
-        public DateTime CreatedOn { get; set; }
-
         [Required]
         [StringLength(20)]
         public string Name { get; set; }

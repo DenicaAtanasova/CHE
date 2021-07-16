@@ -52,11 +52,16 @@
         public async Task UpdateAsync(
             CooperativeUpdateInputModel inputModel)
         {
-            var cooperativeToUpdate = new Cooperative { Id = inputModel.Id };
+            var cooperativeToUpdate = await this._dbContext.Cooperatives
+                .SingleOrDefaultAsync(x => x.Id == inputModel.Id);
+
+            if (cooperativeToUpdate == null)
+            {
+                return;
+            }
+
             cooperativeToUpdate.Name = inputModel.Name;
             cooperativeToUpdate.Info = inputModel.Info;
-            cooperativeToUpdate.AdminId = inputModel.AdminId;
-            cooperativeToUpdate.CreatedOn = inputModel.CreatedOn;
             cooperativeToUpdate.GradeId = await this._gradesService.GetGardeIdAsync(inputModel.Grade);
             cooperativeToUpdate.ModifiedOn = DateTime.UtcNow;
             cooperativeToUpdate.AddressId = await this._addressesService.GetAddressIdAsync(inputModel.Address);
@@ -67,7 +72,14 @@
 
         public async Task DeleteAsync(string id)
         {
-            this._dbContext.Remove(new Cooperative { Id = id });
+            var cooperativeFromDb = await this._dbContext.Cooperatives.SingleOrDefaultAsync(x => x.Id == id);
+
+            if (cooperativeFromDb == null)
+            {
+                return;
+            }
+
+            this._dbContext.Remove(cooperativeFromDb);
             await this._dbContext.SaveChangesAsync();
         }
 
@@ -134,13 +146,15 @@
 
         public async Task RemoveMemberAsync(string memberId, string cooperativeId)
         {
-            this._dbContext.UserCooperatives.Remove(
-                new CheUserCooperative
-                {
-                    CooperativeId = cooperativeId,
-                    CheUserId = memberId
-                });
+            var member = await this._dbContext.UserCooperatives
+                .SingleOrDefaultAsync(x => x.CheUserId == memberId && x.CooperativeId == cooperativeId);
 
+            if (member == null)
+            {
+                return;
+            }
+
+            this._dbContext.UserCooperatives.Remove(member);
             await this._dbContext.SaveChangesAsync();
         }
 
@@ -151,20 +165,32 @@
                 .To<TEntity>()
                 .ToListAsync();
 
-        //TODO: Add tests
         public async Task ChangeAdminAsync(string cooperativeId, string userId)
         {
             var cooperative = await this._dbContext.Cooperatives
                 .SingleOrDefaultAsync(x => x.Id == cooperativeId);
+
+            if (cooperative == null)
+            {
+                return;
+            }
+
+            var newAdmin = cooperative.Members
+                .SingleOrDefault(x => x.CheUserId == userId);
+
+            if (newAdmin == null)
+            {
+                return;
+            }
+
+            this._dbContext.UserCooperatives.Remove(newAdmin);
+
             this._dbContext.UserCooperatives.Add(
                 new CheUserCooperative
                 {
                     CooperativeId = cooperativeId,
                     CheUserId = cooperative.AdminId
                 });
-
-            var memberToRemove = cooperative.Members.FirstOrDefault(x => x.CheUserId == userId);
-            this._dbContext.UserCooperatives.Remove(memberToRemove);
 
             cooperative.AdminId = userId;
 

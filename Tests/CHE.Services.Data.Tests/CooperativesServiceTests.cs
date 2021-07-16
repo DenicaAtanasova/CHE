@@ -114,9 +114,7 @@
                 Name = "updatedName",
                 Info = "updatedInfo",
                 Grade = FIRST_GRADE,
-                Address = ADDRESS,
-                AdminId = cooperative.AdminId,
-                CreatedOn = cooperative.CreatedOn
+                Address = ADDRESS
             };
 
             await this._cooperativesService
@@ -128,7 +126,6 @@
 
             Assert.Equal(cooperativeUpdateModel.Name, updatedCooperative.Name);
             Assert.Equal(cooperativeUpdateModel.Info, updatedCooperative.Info);
-            Assert.Equal(cooperativeUpdateModel.AdminId, updatedCooperative.AdminId);
             Assert.Equal(FIRST_GRADE_ID, updatedCooperative.GradeId);
             Assert.Equal(ADDRESS_ID, updatedCooperative.AddressId);
             Assert.Equal(ADDRESS_ID, updatedCooperative.AddressId);
