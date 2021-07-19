@@ -14,11 +14,21 @@
     <tbody>
         @foreach (var review in Model.Reviews)
         {
-            <tr>
-                <th scope="row">@(reviewsCount++)</th>
-                <td scope="row">@review.Rating / 5</td>
-                <td scope="row">@review.Comment</td>
-            </tr>
+        <tr>
+            <th scope="row">@(reviewsCount++)</th>
+            <td scope="row">@review.Rating / 5</td>
+            <td scope="row">@review.Comment</td>
+            @if (this.User.Identity.Name == review.SenderUserName)
+            {
+                <td>
+                    <a class="btn btn-che btn-sm"
+                       asp-area=""
+                       asp-controller="Reviews"
+                       asp-action="Edit"
+                       asp-route-id="@review.Id">Edit</a>
+                </td>
+            }
+        </tr>
         }
     </tbody>
 </table>

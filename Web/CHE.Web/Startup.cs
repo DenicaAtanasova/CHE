@@ -7,7 +7,6 @@ namespace CHE.Web
     using CHE.Services.Mapping;
     using CHE.Services.Storage;
     using CHE.Web.InputModels.Cooperatives;
-    using CHE.Web.Services;
     using CHE.Web.ViewModels;
 
     using Microsoft.AspNetCore.Builder;
@@ -67,8 +66,6 @@ namespace CHE.Web
             services.AddTransient<ISchedulesService, SchedulesService>();
             services.AddTransient<IEventsService, EventsService>();
             services.AddTransient<IAddressesService, AddressesService>();
-            services.AddTransient<AccountNavScheduleService>();
-            services.AddTransient<CooperativeLayoutService>();
             services.AddTransient<IFileStorage>(provider => 
                 new CloudStorageService(this.configuration.GetConnectionString("BlobConnection")));
         }

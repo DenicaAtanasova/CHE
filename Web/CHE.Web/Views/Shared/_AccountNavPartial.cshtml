@@ -1,21 +1,11 @@
-﻿@using CHE.Web.Services
-@inject AccountNavScheduleService AccountNavScheduleService
-@{
-    var scheduleId = await AccountNavScheduleService.GetScheduleIdByUserAsync(this.User);
-    var a = this.User;
-}
-
-<nav class="nav-coop">
+﻿<nav class="nav-coop">
     <ul>
         <li><a asp-area="Identity" asp-page="/Account/Manage/Index">Info</a></li>
         <li><a asp-area="Identity" asp-page="/Account/Manage/Email">Email</a></li>
         <li><a asp-area="Identity" asp-page="/Account/Manage/ChangePassword">Password</a></li>
         @if (this.User.IsInRole(GlobalConstants.TEACHER_ROLE))
         {
-            <li><a asp-area="Identity" asp-page="/Account/Manage/Profile">Profile</a></li>
-            <li><a asp-area="" asp-controller="Reviews" asp-action="All">Reviews</a></li>
-            <li><a asp-area="" asp-controller="JoinRequests" asp-action="All">Join Requests</a></li>
-            <li><a asp-area="" asp-controller="Schedules" asp-action="Details" asp-route-id="@scheduleId">Schedule</a></li>
+            <vc:account-nav user="@User"></vc:account-nav>
         }
         <li><a asp-area="Identity" asp-page="/Account/Manage/PersonalData">Personal data</a></li>
     </ul>
