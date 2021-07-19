@@ -10,8 +10,7 @@
         [Required]
         public string City { get; set; }
 
+        [Required]
         public string Neighbourhood { get; set; }
-
-        public string Street { get; set; }
     }
 }
