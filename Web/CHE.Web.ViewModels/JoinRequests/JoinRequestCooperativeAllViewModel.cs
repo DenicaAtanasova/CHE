@@ -8,5 +8,7 @@
         public string Id { get; set; }
 
         public string SenderUserName { get; set; }
+
+        public string CooperativeAdminUserName { get; set; }
     }
 }

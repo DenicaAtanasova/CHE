@@ -29,7 +29,6 @@
         public async Task<IActionResult> All(string cooperativeId)
         {
             this.ViewData["id"] = cooperativeId;
-
             return this.View(new JoinRequestCooperativeAllListViewModel
             {
                 CooperativeId = cooperativeId,

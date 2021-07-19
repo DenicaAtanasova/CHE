@@ -1,10 +1,8 @@
 ﻿@model CHE.Web.ViewModels.JoinRequests.JoinRequestCooperativeAllListViewModel
-@inject CooperativeLayoutService cooperativeService
 @{
     Layout = "/Views/Shared/_LayoutCooperative.cshtml";
 
     var cooperativeId = Model.CooperativeId;
-    var isAdmin = await this.cooperativeService.IsAdminAsync(this.User, cooperativeId);
     var requestsCount = 1;
 }
 
@@ -22,7 +20,7 @@
             <tr>
                 <th scope="row">@(requestsCount++)</th>
                 <td colspan="2">@request.SenderUserName</td>
-                @if (isAdmin)
+                @if (request.CooperativeAdminUserName == User.Identity.Name)
                 {
                     <td>
                         <a class="btn btn-che btn-sm"

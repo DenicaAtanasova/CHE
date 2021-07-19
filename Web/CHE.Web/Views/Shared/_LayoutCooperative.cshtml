@@ -1,11 +1,6 @@
-﻿@inject CooperativeLayoutService LayoutService
-@{
+﻿@{
     Layout = "/Views/Shared/_Layout.cshtml";
     var cooperativeId = (string)ViewData["id"];
-    var scheduleId = await this.LayoutService.GetScheduleIdByCooperativeAsync(cooperativeId);
-
-    var isMember = await this.LayoutService.IsMemberAsync(this.User, cooperativeId);
-    var isAdmin = await this.LayoutService.IsAdminAsync(this.User, cooperativeId);
 }
 <!-- ======= Breadcrumbs ======= -->
 <section id="breadcrumbs" class="breadcrumbs">
@@ -26,26 +21,8 @@
             <div class="col-lg-9">
                 @RenderBody()
             </div>
-            @if (isAdmin || isMember)
-            {
-                <div class="col-lg-3">
-                    <div class="sidebar">
-                        <h3 class="sidebar-title">Categories</h3>
-                        <div class="sidebar-item categories">
-                            <nav class="nav-coop">
-                                <ul>
-                                    <li><a asp-area="" asp-controller="Cooperatives" asp-action="Details" asp-route-id="@cooperativeId">Info</a></li>
-                                    <li><a asp-area="Parent" asp-controller="Cooperatives" asp-action="Members" asp-route-id="@cooperativeId">Memebers</a></li>
-                                    <li><a asp-area="Parent" asp-controller="JoinRequests" asp-action="All" asp-route-cooperativeId="@cooperativeId">Join requests</a></li>
-                                    <li><a asp-area="" asp-controller="Schedules" asp-action="Details" asp-route-id="@scheduleId">Schedule</a></li>
-                                </ul>
-                            </nav>
-                        </div>
-                    </div>
-                </div>
-            }
+            <vc:cooperative-layout-nav cooperative-id="@cooperativeId" user="@User"/>
         </div>
     </div>
 </section>
 @RenderSection("Scripts", required: false)
-<!-- End Details Section -->
