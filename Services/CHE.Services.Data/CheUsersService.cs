@@ -1,5 +1,5 @@
 ﻿namespace CHE.Services.Data
-{ 
+{
     using CHE.Common;
     using CHE.Data;
     using CHE.Data.Models;
@@ -22,7 +22,7 @@
         private readonly IReviewsService _reviewsService;
 
         public CheUsersService(
-            CheDbContext dbContext, 
+            CheDbContext dbContext,
             ICooperativesService cooperativesService,
             IJoinRequestsService joinRequestsService,
             IReviewsService reviewsService)
@@ -41,8 +41,8 @@
                 .SingleOrDefaultAsync();
 
         public async Task<IEnumerable<TEntity>> GetAllAsync<TEntity>(
-            int startIndex = 1, 
-            int endIndex = 0, 
+            int startIndex = 1,
+            int endIndex = 0,
             string schoolLevelFilter = null)
         {
             var count = endIndex == 0
@@ -62,7 +62,7 @@
             return teachers;
         }
 
-        public async Task<int> Count(string schoolLevelFilter)
+        public async Task<int> CountAsync(string schoolLevelFilter)
         {
             var filteredTachers = this.FilterCollection(schoolLevelFilter);
 
@@ -73,7 +73,7 @@
         {
             var request = await this._dbContext.JoinRequests
                 .SingleOrDefaultAsync(x => x.Id == requestId);
-            
+
             // request is send from parent to cooperative
             if (request.ReceiverId == null)
             {

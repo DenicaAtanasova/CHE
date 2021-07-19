@@ -46,14 +46,13 @@
             }
 
             var userId = this._userManager.GetUserId(this.User);
-            this.ViewData["isMember"] = await this._cooperativesService
-                .CheckIfMemberAsync(userId, currentCooperative.Id);
-            this.ViewData["isAdmin"] = await this._cooperativesService
+            currentCooperative.IsAdmin = await this._cooperativesService
                 .CheckIfAdminAsync(userId, currentCooperative.Id);
-            this.ViewData["pendingRequestId"] = await this._joinRequestsService
+            currentCooperative.IsMember = await this._cooperativesService
+                .CheckIfMemberAsync(userId, currentCooperative.Id);
+            currentCooperative.PendingRequestId = await this._joinRequestsService
                 .GetPendindRequestIdAsync(id, userId);
             this.ViewData["id"] = currentCooperative.Id;
-            this.ViewData["scheduleId"] = currentCooperative.ScheduleId;
 
             return this.View(currentCooperative);
         }

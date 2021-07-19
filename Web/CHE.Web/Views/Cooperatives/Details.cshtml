@@ -1,9 +1,6 @@
 ﻿@model CHE.Web.ViewModels.Cooperatives.CooperativeDetailsViewModel
 @{
     Layout = "/Views/Shared/_LayoutCooperative.cshtml";
-    var isMember = (bool)this.ViewData["isMember"];
-    var isAdmin = (bool)this.ViewData["isAdmin"];
-    var pendingRequestId = this.ViewData["pendingRequestId"];
 }
 
 <div>
@@ -27,7 +24,7 @@
     </div>
 </div>
 <hr class="my-4">
-@if (isAdmin)
+@if (Model.IsAdmin)
 {
     <a class="btn btn-che" asp-area="Parent" asp-controller="Cooperatives" asp-action="Update" asp-route-id="@Model.Id">Update</a>
     <button type="button" class="btn btn-che" data-toggle="modal" data-target="#deleteConfirm">
@@ -37,14 +34,14 @@
 else
 {
     <div class="col-lg-9">
-        @if (isMember)
+        @if (Model.IsMember)
         {
             <a class="btn btn-che" asp-area="" asp-controller="Cooperatives" asp-action="Leave" asp-route-CooperativeId="@Model.Id">Leave</a>
         }
-        else if (pendingRequestId != null)
+        else if (Model.PendingRequestId != null)
         {
             <h4>Pending request ...</h4>
-            <a class="btn btn-che" asp-area="Parent" asp-controller="JoinRequests" asp-action="Update" asp-route-id="@pendingRequestId">Edit</a>
+            <a class="btn btn-che" asp-area="Parent" asp-controller="JoinRequests" asp-action="Update" asp-route-id="@Model.PendingRequestId">Edit</a>
         }
         else if (!this.User.IsInRole(GlobalConstants.TEACHER_ROLE))
         {

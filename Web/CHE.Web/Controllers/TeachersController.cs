@@ -24,7 +24,7 @@
             var teachers = await this._cheUsersService
                     .GetAllAsync<TeacherAllViewModel>(pageIndex, DEFAULT_PAGE_SIZE, filter.SchoolLevel);
 
-            var count = await this._cheUsersService.Count(filter.SchoolLevel);
+            var count = await this._cheUsersService.CountAsync(filter.SchoolLevel);
 
             var teachersList = new TeacherAllListViewModel
             {

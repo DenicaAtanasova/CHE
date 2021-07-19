@@ -13,7 +13,7 @@
         //TODO: Rename if used only for teachers
         Task<IEnumerable<TEntity>> GetAllAsync<TEntity>(int startIndex, int endIndex, string schoolLevelFilter);
 
-        Task<int> Count(string schoolLevelFilter);
+        Task<int> CountAsync(string schoolLevelFilter);
 
         Task AcceptRequestAsync(string requestId);
 

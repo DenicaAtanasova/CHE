@@ -21,6 +21,12 @@
 
         public string AdminUserName { get; set; }
 
+        public bool IsAdmin { get; set; }
+
+        public bool IsMember { get; set; }
+
+        public string PendingRequestId { get; set; }
+
         public CooperativeAddressViewModel Address { get; set; }
 
         public void CreateMappings(IProfileExpression configuration)
