@@ -1,20 +1,21 @@
 ﻿@model CHE.Web.ViewModels.StarRatingViewModel
 
-<div class="full-star">
-    @for (int i = 1; i <= Model.FullStarCount; i++)
-    {
-        <span></span>
-    }
-</div>
-<div class="half-star">
-    @for (int i = 1; i <= Model.HalfStarCount; i++)
-    {
-        <span></span>
-    }
-</div>
-<div class="empty-star">
-    @for (int i = 1; i <= Model.EmptyStarCount; i++)
-    {
-        <span></span>
-    }
-</div>
+    <box-icon name='star-half' type='solid'></box-icon>
+    <div class="full-star">
+        @for (int i = 1; i <= Model.FullStarCount; i++)
+        {
+            <i class="fas fa-star"></i>
+        }
+    </div>
+    <div class="half-star">
+        @for (int i = 1; i <= Model.HalfStarCount; i++)
+        {
+            <i class="fas fa-star-half"></i>
+        }
+    </div>
+    <div class="empty-star">
+        @for (int i = 1; i <= Model.EmptyStarCount; i++)
+        {
+        <i class="fas fa-star"></i>
+        }
+    </div>

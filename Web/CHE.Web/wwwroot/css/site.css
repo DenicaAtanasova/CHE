@@ -915,27 +915,21 @@ div.image {
     display: inline;
 }
 
-.full-star span::before {
-    content: '\f000';
-    font-family: Icofont;
+.full-star > i{
     color: #e9c914;
     margin: 3px;
 }
 
-.half-star span::before {
-    content: '\f089';
-    font-family: fontAwesome;
+.half-star > i{
     color: #e9c914;
     margin: 3px;
 }
 
-.empty-star span::before {
-    content: '\f000';
-    font-family: Icofont;
+.empty-star > i{
     color: #10101052;
     margin: 3px;
 }
-*
+
 /*--------------------------------------------------------------
 # Our Clients
 --------------------------------------------------------------*/
