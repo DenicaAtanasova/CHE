@@ -70,13 +70,25 @@
             builder.Entity<Schedule>()
                 .HasOne(s => s.Cooperative)
                 .WithOne(c => c.Schedule)
-                .HasForeignKey<Schedule>(c => c.CooperativeId)
+                .HasForeignKey<Schedule>(s => s.CooperativeId)
                 .OnDelete(DeleteBehavior.Cascade);
 
             builder.Entity<Schedule>()
                 .HasOne(s => s.Teacher)
-                .WithOne(c => c.Schedule)
-                .HasForeignKey<Schedule>(c => c.TeacherId)
+                .WithOne(t => t.Schedule)
+                .HasForeignKey<Schedule>(s => s.TeacherId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            builder.Entity<Profile>()
+                .HasOne(p => p.Owner)
+                .WithOne(o => o.Profile)
+                .HasForeignKey<Profile>(p => p.OwnerId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            builder.Entity<Image>()
+                .HasOne(i => i.Profile)
+                .WithOne(p => p.Image)
+                .HasForeignKey<Image>(i => i.ProfileId)
                 .OnDelete(DeleteBehavior.Cascade);
 
             builder.Entity<Event>()
