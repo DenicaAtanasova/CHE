@@ -1,10 +1,11 @@
 ﻿namespace CHE.Services.Data
 {
     using CHE.Data;
+    using CHE.Data.Models;
     using CHE.Services.Mapping;
 
     using Microsoft.EntityFrameworkCore;
-
+    using System;
     using System.Linq;
     using System.Threading.Tasks;
 
@@ -37,5 +38,19 @@
                 .Where(x => x.CooperativeId == cooperativeId)
                 .Select(x => x.Id)
                 .SingleOrDefaultAsync();
+
+        public async Task<string> CreateAsync(string userId)
+        {
+            var schedule = new Schedule
+            {
+                TeacherId = userId,
+                CreatedOn = DateTime.UtcNow
+            };
+
+            this._dbContext.Schedules.Add(schedule);
+            await this._dbContext.SaveChangesAsync();
+
+            return schedule.Id;
+        }
     }
 }

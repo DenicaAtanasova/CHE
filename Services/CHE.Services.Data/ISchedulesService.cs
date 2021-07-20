@@ -9,5 +9,7 @@
         Task<string> GetIdByUserAsync(string userId);
 
         Task<string> GetIdByCooperativeAsync(string cooperativeId);
+
+        Task<string> CreateAsync(string userId);
     }
 }

@@ -29,19 +29,22 @@
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
         private readonly IProfilesService _profilesService;
+        private readonly ISchedulesService _schedulesService;
 
         public RegisterModel(
             UserManager<CheUser> userManager,
             SignInManager<CheUser> signInManager,
             ILogger<RegisterModel> logger,
             IEmailSender emailSender,
-            IProfilesService profilesService)
+            IProfilesService profilesService,
+            ISchedulesService schedulesService)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _logger = logger;
             _emailSender = emailSender;
             this._profilesService = profilesService;
+            this._schedulesService = schedulesService;
         }
 
         [BindProperty]
@@ -104,9 +107,7 @@
                     if (await _userManager.IsInRoleAsync(user, GlobalConstants.TEACHER_ROLE))
                     {
                         await this._profilesService.CreateAsync(user.Id);
-
-                        //TODO: Add create to schedule service
-                        user.Schedule = new Schedule { CreatedOn = DateTime.UtcNow };
+                        await this._schedulesService.CreateAsync(user.Id);
                     }
 
                     _logger.LogInformation("User created a new account with password.");
