@@ -8,7 +8,8 @@
 
     using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
-
+    using System;
+    using System.Linq;
     using System.Threading.Tasks;
 
     public class TeachersController : Controller
@@ -18,18 +19,15 @@
         private readonly ICheUsersService _cheUsersService;
         private readonly IReviewsService _reviewsService;
         private readonly IAddressesService _addressesService;
-        private readonly IProfilesService _profilesService;
 
         public TeachersController(
             ICheUsersService cheUsersService,
             IReviewsService reviewsService,
-            IAddressesService addressesService,
-            IProfilesService profilesService)
+            IAddressesService addressesService)
         {
             this._cheUsersService = cheUsersService;
             this._reviewsService = reviewsService;
             this._addressesService = addressesService;
-            this._profilesService = profilesService;
         }
 
         public async Task<IActionResult> All(FilterViewModel filter, int pageIndex = 1)
@@ -40,7 +38,10 @@
             var count = await this._cheUsersService.CountAsync(filter.Level);
 
             filter.LevelDisplayName = "school level";
-            filter.Levels = this._profilesService.GetAllSchoolLevels();
+            filter.Levels = Enum.GetValues(typeof(SchoolLevel))
+                .Cast<SchoolLevel>()
+                //.Where(x => x.ToString() != "Unknown")
+                .Select(x => x.ToString());
             filter.Cities = await this._addressesService.GetAllCitiesAsync();
             filter.Neighbourhoods = await this._addressesService.GetAllNeighbourhoodsAsync();
 
