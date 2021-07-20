@@ -1,27 +1,23 @@
 ﻿namespace CHE.Web.Areas.Parent.Controllers
 {
-    using CHE.Data.Models;
     using CHE.Services.Data;
+    using CHE.Web.Infrastructure;
     using CHE.Web.InputModels.JoinRequests;
     using CHE.Web.ViewModels.JoinRequests;
 
-    using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
 
     using System.Threading.Tasks;
 
     public class JoinRequestsController : ParentController
     {
-        private readonly UserManager<CheUser> _userManager;
         private readonly ICheUsersService _usersService;
         private readonly IJoinRequestsService _joinRequestsService;
 
         public JoinRequestsController(
-            UserManager<CheUser> userManager,
             ICheUsersService usersService,
             IJoinRequestsService joinRequestsService)
         {
-            this._userManager = userManager;
             this._usersService = usersService;
             this._joinRequestsService = joinRequestsService;
         }
@@ -52,7 +48,7 @@
                 return this.View();
             }
 
-            var senderId = this._userManager.GetUserId(this.User);
+            var senderId = this.User.GetId();
 
             await this._usersService
                 .SendRequestAsync(senderId, inputModel);

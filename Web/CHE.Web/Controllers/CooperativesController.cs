@@ -1,12 +1,11 @@
 ﻿namespace CHE.Web.Controllers
 {
-    using CHE.Data.Models;
     using CHE.Services.Data;
+    using CHE.Web.Infrastructure;
     using CHE.Web.ViewModels;
     using CHE.Web.ViewModels.Cooperatives;
 
     using Microsoft.AspNetCore.Authorization;
-    using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
 
     using System.Threading.Tasks;
@@ -15,20 +14,17 @@
     {
         private const int DEFAULT_PAGE_SIZE = 6;
 
-        private readonly UserManager<CheUser> _userManager;
         private readonly ICooperativesService _cooperativesService;
         private readonly IGradesService _gradesService;
         private readonly IAddressesService _addressesService;
         private readonly IJoinRequestsService _joinRequestsService;
 
         public CooperativesController(
-            UserManager<CheUser> userManager,
             ICooperativesService cooperativesService,
             IGradesService gradesService,
             IAddressesService addressesService,
             IJoinRequestsService joinRequestsService)
         {
-            this._userManager = userManager;
             this._cooperativesService = cooperativesService;
             this._gradesService = gradesService;
             this._addressesService = addressesService;
@@ -45,7 +41,7 @@
                 return this.NotFound();
             }
 
-            var userId = this._userManager.GetUserId(this.User);
+            var userId = this.User.GetId();
             currentCooperative.IsAdmin = await this._cooperativesService
                 .CheckIfAdminAsync(userId, currentCooperative.Id);
             currentCooperative.IsMember = await this._cooperativesService
@@ -81,7 +77,7 @@
         [Authorize]
         public async Task<IActionResult> Leave(string cooperativeId)
         {
-            var userId = this._userManager.GetUserId(this.User);
+            var userId = this.User.GetId();
             await this._cooperativesService
                 .RemoveMemberAsync(userId, cooperativeId);
 

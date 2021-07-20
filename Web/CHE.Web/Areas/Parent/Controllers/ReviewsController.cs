@@ -1,26 +1,22 @@
 ﻿namespace CHE.Web.Areas.Parent.Controllers
 {
-    using CHE.Data.Models;
     using CHE.Services.Data;
+    using CHE.Web.Infrastructure;
     using CHE.Web.InputModels.Reviews;
 
-    using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
 
     using System.Threading.Tasks;
 
     public class ReviewsController : ParentController
     {
-        private readonly UserManager<CheUser> _userManager;
         private readonly ICheUsersService _cheUsersService;
         private readonly IReviewsService _reviewsService;
 
         public ReviewsController(
-            UserManager<CheUser> userManager,
             ICheUsersService cheUsersService,
             IReviewsService reviewsService)
         {
-            this._userManager = userManager;
             this._cheUsersService = cheUsersService;
             this._reviewsService = reviewsService;
         }
@@ -38,7 +34,7 @@
                 return this.RedirectToAction(nameof(Send), new { id = inputModel.ReceiverId });
             }
 
-            var senderId = _userManager.GetUserId(User);
+            var senderId = this.User.GetId();
             await _cheUsersService.SendReviewAsync(senderId, inputModel);
 
             return this.RedirectToAction("All", "Teachers", new { area = "" });

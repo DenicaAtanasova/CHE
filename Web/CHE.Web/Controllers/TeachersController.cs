@@ -2,8 +2,10 @@
 {
     using CHE.Data.Models;
     using CHE.Services.Data;
+    using CHE.Web.Infrastructure;
     using CHE.Web.ViewModels;
     using CHE.Web.ViewModels.Teachers;
+
     using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
 
@@ -15,16 +17,13 @@
 
         private readonly ICheUsersService _cheUsersService;
         private readonly IReviewsService _reviewsService;
-        private readonly UserManager<CheUser> _userManager;
 
         public TeachersController(
             ICheUsersService cheUsersService,
-            IReviewsService reviewsService,
-            UserManager<CheUser> userManager)
+            IReviewsService reviewsService)
         {
             this._cheUsersService = cheUsersService;
             this._reviewsService = reviewsService;
-            this._userManager = userManager;
         }
 
         public async Task<IActionResult> All(TeacherAllFilterViewModel filter, int pageIndex = 1)
@@ -54,7 +53,7 @@
                 return this.NotFound();
             }
 
-            var userId = this._userManager.GetUserId(this.User);
+            var userId = this.User.GetId();
             currentTeacher.SentReviewId = await this._reviewsService.GetSentReviewIdAsync(id, userId);
             this.ViewData["id"] = currentTeacher.Id;
 

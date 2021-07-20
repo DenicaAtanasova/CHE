@@ -1,13 +1,11 @@
 ﻿namespace CHE.Web.Areas.Parent.Controllers
 {
-    using CHE.Data.Models;
     using CHE.Services.Data;
+    using CHE.Web.Infrastructure;
     using CHE.Web.InputModels.Cooperatives;
     using CHE.Web.ViewModels;
     using CHE.Web.ViewModels.Cooperatives;
-    using CHE.Web.ViewModels.JoinRequests;
 
-    using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
 
     using System.Threading.Tasks;
@@ -16,14 +14,11 @@
     {
         private const int DEFAULT_PAGE_SIZE = 6;
 
-        private readonly UserManager<CheUser> _userManager;
         private readonly ICooperativesService _cooperativesService;
 
         public CooperativesController(
-            UserManager<CheUser> userManager,
             ICooperativesService cooperativesService)
         {
-            this._userManager = userManager;
             this._cooperativesService = cooperativesService;
         }
 
@@ -37,7 +32,7 @@
                 return this.View();
             }
 
-            var userId = this._userManager.GetUserId(this.User);
+            var userId = this.User.GetId();
             await this._cooperativesService
                 .CreateAsync(userId, model);
 
@@ -113,7 +108,7 @@
 
         public async Task<IActionResult> All(int pageIndex = 1)
         {
-            var userId = this._userManager.GetUserId(this.User);
+            var userId = this.User.GetId();
             var cooperatives = await this._cooperativesService
                 .GetAllByAdminOrMemberAsync<CooperativeAllViewModel>(userId, pageIndex, DEFAULT_PAGE_SIZE);
 

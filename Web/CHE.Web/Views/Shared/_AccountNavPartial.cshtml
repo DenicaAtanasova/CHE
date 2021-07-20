@@ -5,7 +5,7 @@
         <li><a asp-area="Identity" asp-page="/Account/Manage/ChangePassword">Password</a></li>
         @if (this.User.IsInRole(GlobalConstants.TEACHER_ROLE))
         {
-            <vc:account-nav user="@User"></vc:account-nav>
+            <vc:account-nav user-id="@User.GetId()"></vc:account-nav>
         }
         <li><a asp-area="Identity" asp-page="/Account/Manage/PersonalData">Personal data</a></li>
     </ul>
