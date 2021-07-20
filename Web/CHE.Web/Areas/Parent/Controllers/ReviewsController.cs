@@ -69,5 +69,11 @@
 
             return RedirectToAction("Details", "Teachers", new { area = "", id = inputModel.ReceiverId });
         }
+
+        public async Task<IActionResult> Delete(string reviewId, string receiverId)
+        {
+            await this._reviewsService.DeleteAsync(reviewId);
+            return RedirectToAction("Details", "Teachers", new { area = "", id = receiverId });
+        }
     }
 }

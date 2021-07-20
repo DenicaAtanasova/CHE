@@ -1,4 +1,11 @@
 ﻿@model CHE.Web.InputModels.Reviews.ReviewUpdateInputModel
+@{
+    var data = new Dictionary<string, string>
+    {
+        { "receiverId", Model.ReceiverId },
+        { "reviewId", Model.Id }
+    };
+}
 <!-- ======= Breadcrumbs ======= -->
 <section id="breadcrumbs" class="breadcrumbs">
     <div class="container">
@@ -66,7 +73,13 @@
                 <h5>Name: <strong>@Model.ReceiverUserName</strong></h5>
             </div>
             <div class="modal-footer">
-                <a class="btn btn-che" asp-area="Parent" asp-controller="Reviews" asp-action="Delete" asp-route-id="@Model.Id">Delete</a>
+                <a class="btn btn-che"
+                   asp-area="Parent"
+                   asp-controller="Reviews"
+                   asp-action="Delete"
+                   asp-all-route-data="@data">
+                   Delete
+                </a>
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
             </div>
         </div>
