@@ -77,6 +77,13 @@
                 .AsNoTracking()
                 .Where(x => x.ReceiverId == receiverId)
                 .To<TEntity>()
-                .ToListAsync();        
+                .ToListAsync();
+
+        public async Task<string> GetSentReviewIdAsync(string receiverId, string senderId) =>
+            await this._dbContext.Reviews
+                .AsNoTracking()
+                .Where(x => x.SenderId == senderId && x.ReceiverId == receiverId)
+                .Select(x => x.Id)
+                .FirstOrDefaultAsync();
     }
 }

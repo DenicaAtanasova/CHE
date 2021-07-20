@@ -1,9 +1,10 @@
 ﻿namespace CHE.Web.Controllers
 {
+    using CHE.Data.Models;
     using CHE.Services.Data;
     using CHE.Web.ViewModels;
     using CHE.Web.ViewModels.Teachers;
-
+    using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
 
     using System.Threading.Tasks;
@@ -13,10 +14,17 @@
         private const int DEFAULT_PAGE_SIZE = 6;
 
         private readonly ICheUsersService _cheUsersService;
+        private readonly IReviewsService _reviewsService;
+        private readonly UserManager<CheUser> _userManager;
 
-        public TeachersController(ICheUsersService cheUsersService)
+        public TeachersController(
+            ICheUsersService cheUsersService,
+            IReviewsService reviewsService,
+            UserManager<CheUser> userManager)
         {
             this._cheUsersService = cheUsersService;
+            this._reviewsService = reviewsService;
+            this._userManager = userManager;
         }
 
         public async Task<IActionResult> All(TeacherAllFilterViewModel filter, int pageIndex = 1)
@@ -46,6 +54,8 @@
                 return this.NotFound();
             }
 
+            var userId = this._userManager.GetUserId(this.User);
+            currentTeacher.SentReviewId = await this._reviewsService.GetSentReviewIdAsync(id, userId);
             this.ViewData["id"] = currentTeacher.Id;
 
             return this.View(currentTeacher);
