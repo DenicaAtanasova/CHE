@@ -17,21 +17,32 @@
 
         private readonly ICheUsersService _cheUsersService;
         private readonly IReviewsService _reviewsService;
+        private readonly IAddressesService _addressesService;
+        private readonly IProfilesService _profilesService;
 
         public TeachersController(
             ICheUsersService cheUsersService,
-            IReviewsService reviewsService)
+            IReviewsService reviewsService,
+            IAddressesService addressesService,
+            IProfilesService profilesService)
         {
             this._cheUsersService = cheUsersService;
             this._reviewsService = reviewsService;
+            this._addressesService = addressesService;
+            this._profilesService = profilesService;
         }
 
-        public async Task<IActionResult> All(TeacherAllFilterViewModel filter, int pageIndex = 1)
+        public async Task<IActionResult> All(FilterViewModel filter, int pageIndex = 1)
         {
             var teachers = await this._cheUsersService
-                    .GetAllAsync<TeacherAllViewModel>(pageIndex, DEFAULT_PAGE_SIZE, filter.SchoolLevel);
+                    .GetAllAsync<TeacherAllViewModel>(pageIndex, DEFAULT_PAGE_SIZE, filter.Level);
 
-            var count = await this._cheUsersService.CountAsync(filter.SchoolLevel);
+            var count = await this._cheUsersService.CountAsync(filter.Level);
+
+            filter.LevelDisplayName = "school level";
+            filter.Levels = this._profilesService.GetAllSchoolLevels();
+            filter.Cities = await this._addressesService.GetAllCitiesAsync();
+            filter.Neighbourhoods = await this._addressesService.GetAllNeighbourhoodsAsync();
 
             var teachersList = new TeacherAllListViewModel
             {

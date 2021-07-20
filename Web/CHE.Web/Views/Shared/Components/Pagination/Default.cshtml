@@ -9,6 +9,7 @@
             <li class="page-item">
                 <a class="btn btn-default @prevDisabled"
                         asp-controller="@Model.Controller" asp-action="All"
+                        asp-route-filter="@Model.Filter"
                         asp-route-pageIndex="@(Model.PageIndex - 1)">
                     Previous
                 </a>
@@ -18,6 +19,7 @@
                 <li class="page-item">
                     <a class="btn page-link"
                         asp-controller="@Model.Controller" asp-action="All"
+                        asp-route-filter="@Model.Filter"
                         asp-route-pageIndex="@(Model.PageIndex - 1)">
                         @(Model.PageIndex - 1)
                     </a>

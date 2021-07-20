@@ -1,0 +1,60 @@
+﻿@model CHE.Web.ViewModels.FilterViewModel
+<div class="row">
+    <div class="col-lg-4">
+        <div class="form-group">
+            <label asp-for="@Model.Level">Filter by @Model.LevelDisplayName</label>
+            <select asp-for="@Model.Level" class="form-control">
+                @if (Model.Level== null)
+                {
+                    <option selected disabled>-- Choose @Model.LevelDisplayName --</option>
+                }
+                else
+                {
+                    <option selected>@Model.Level</option>
+                }
+                @foreach (var grade in Model.Levels.Where(x => x != Model.Level))
+                {
+                    <option>@grade</option>
+                }
+            </select>
+        </div>
+    </div>
+    <div class="col-lg-4">
+        <div class="form-group">
+            <label asp-for="@Model.City">Filter by city</label>
+            <select asp-for="@Model.City" class="form-control">
+                @if (Model.City == null)
+                {
+                    <option selected disabled>-- Choose city --</option>
+                }
+                else
+                {
+                    <option selected>@Model.City</option>
+                }
+                @foreach (var city in Model.Cities.Where(x => x != Model.City))
+                {
+                    <option>@city</option>
+                }
+            </select>
+        </div>
+    </div>
+    <div class="col-lg-4">
+        <div class="form-group">
+            <label asp-for="@Model.Neighbourhood">Filter by neighbourhood</label>
+            <select asp-for="@Model.Neighbourhood" class="form-control">
+                @if (Model.Neighbourhood == null)
+                {
+                    <option selected disabled>-- Choose neighbourhood --</option>
+                }
+                else
+                {
+                    <option selected>@Model.Neighbourhood</option>
+                }
+                @foreach (var neighbourhood in Model.Neighbourhoods.Where(x => x != Model.Neighbourhood))
+                {
+                    <option>@neighbourhood</option>
+                }
+            </select>
+        </div>
+    </div>
+</div>

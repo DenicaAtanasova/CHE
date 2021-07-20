@@ -10,6 +10,6 @@
 
         public bool HasNextPage { get; set; }
 
-        public IFilter Filter { get; set; }
+        public FilterViewModel Filter { get; set; }
     }
 }

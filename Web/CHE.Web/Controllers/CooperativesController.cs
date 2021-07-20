@@ -54,21 +54,23 @@
             return this.View(currentCooperative);
         }
 
-        public async Task<IActionResult> All(CooperativeAllFilterViewModel filter, int pageIndex = 1)
+        public async Task<IActionResult> All(FilterViewModel filter, int pageIndex = 1)
         {
             var cooperatives = await this._cooperativesService
-                    .GetAllAsync<CooperativeAllViewModel>(pageIndex, DEFAULT_PAGE_SIZE, filter.Grade, filter.City, filter.Neighbourhood);
+                    .GetAllAsync<CooperativeAllViewModel>(pageIndex, DEFAULT_PAGE_SIZE, filter.Level, filter.City, filter.Neighbourhood);
 
-            var count = await this._cooperativesService.CountAsync(filter.Grade, filter.City, filter.Neighbourhood);
+            var count = await this._cooperativesService.CountAsync(filter.Level, filter.City, filter.Neighbourhood);
+
+            filter.LevelDisplayName = "grade";
+            filter.Levels = await this._gradesService.GetAllValuesAsync();
+            filter.Cities = await this._addressesService.GetAllCitiesAsync();
+            filter.Neighbourhoods = await this._addressesService.GetAllNeighbourhoodsAsync();
 
             var cooperativesList = new CooperativesAllListViewModel
             {
                 Cooperatives = PaginatedList<CooperativeAllViewModel>
                 .Create(cooperatives, count, pageIndex, DEFAULT_PAGE_SIZE),
-                Filter = filter, 
-                Grades = await this._gradesService.GetAllValuesAsync(),
-                Cities = await this._addressesService.GetAllCitiesAsync(),
-                Neighbourhoods = await this._addressesService.GetAllNeighbourhoodsAsync()
+                Filter = filter
             };
 
             return this.View(cooperativesList);

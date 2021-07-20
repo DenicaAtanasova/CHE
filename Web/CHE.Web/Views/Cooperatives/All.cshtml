@@ -20,66 +20,8 @@
             </div>
         </div>
         <hr class="my-4">
-        <form method="get" asp-controller="Cooperatives" asp-action="All">
-            <div class="row">
-                <div class="col-lg-4">
-                    <div class="form-group">
-                        <label asp-for="@Model.Filter.Grade">Filter by grade</label>
-                        <select asp-for="@Model.Filter.Grade" class="form-control">
-                            @if (Model.Filter.Grade == null)
-                            {
-                                <option selected disabled>-- Choose grade --</option>
-                            }
-                            else
-                            {
-                                <option selected>@Model.Filter.Grade</option>
-                            }
-                            @foreach (var grade in Model.Grades.Where(x => x != Model.Filter.Grade))
-                            {
-                                <option>@grade</option>
-                            }
-                        </select>
-                    </div>
-                </div>
-                <div class="col-lg-4">
-                    <div class="form-group">
-                        <label asp-for="@Model.Filter.City">Filter by city</label>
-                        <select asp-for="@Model.Filter.City" class="form-control">
-                            @if (Model.Filter.City == null)
-                            {
-                                <option selected disabled>-- Choose city --</option>
-                            }
-                            else
-                            {
-                                <option selected>@Model.Filter.City</option>
-                            }
-                            @foreach (var city in Model.Cities.Where(x => x != Model.Filter.City))
-                            {
-                                <option>@city</option>
-                            }
-                        </select>
-                    </div>
-                </div>
-                <div class="col-lg-4">
-                    <div class="form-group">
-                        <label asp-for="@Model.Filter.Neighbourhood">Filter by neighbourhood</label>
-                        <select asp-for="@Model.Filter.Neighbourhood" class="form-control">
-                            @if (Model.Filter.Neighbourhood == null)
-                            {
-                                <option selected disabled>-- Choose neighbourhood --</option>
-                            }
-                            else
-                            {
-                                <option selected>@Model.Filter.Neighbourhood</option>
-                            }
-                            @foreach (var neighbourhood in Model.Neighbourhoods.Where(x => x != Model.Filter.Neighbourhood))
-                            {
-                                <option>@neighbourhood</option>
-                            }
-                        </select>
-                    </div>
-                </div>
-            </div>
+        <form method="get" asp-controller="Cooperatives" asp-action="All">           
+            <partial name="_FilterPartial" model="@Model.Filter"/>
             <div class="row">
                 <div class="col-md-12">
                     <button type="submit" class="btn btn-che">Filter</button>

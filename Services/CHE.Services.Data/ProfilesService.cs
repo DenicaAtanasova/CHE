@@ -36,21 +36,11 @@
                 .To<TEntity>()
                 .SingleOrDefaultAsync();
 
-        public IEnumerable<string> GetAllSchoolLevels(string currentSchoolLevel)
-        {
-            var schoolLevelList = Enum.GetValues(typeof(SchoolLevel))
+        public IEnumerable<string> GetAllSchoolLevels() =>
+            Enum.GetValues(typeof(SchoolLevel))
                 .Cast<SchoolLevel>()
                 .Where(x => x.ToString() != "Unknown")
                 .Select(x => x.ToString());
-
-            if (!string.IsNullOrEmpty(currentSchoolLevel))
-            {
-                schoolLevelList = schoolLevelList
-                    .Where(x => x.ToString() == currentSchoolLevel);
-            }
-
-            return schoolLevelList;
-        }
 
         //TODO: Add tests
         public async Task<string> CreateAsync(string userId)

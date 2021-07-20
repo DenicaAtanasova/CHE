@@ -10,7 +10,7 @@
     {
         Task<TEntity> GetByUserIdAsync<TEntity>(string username);
 
-        IEnumerable<string> GetAllSchoolLevels(string currentSchoolLevel);
+        IEnumerable<string> GetAllSchoolLevels();
 
         Task<string> CreateAsync(string userId);
 

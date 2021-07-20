@@ -11,7 +11,7 @@
             int pageIndex, 
             bool hasPreviousPage, 
             bool hasNextPage, 
-            IFilter filter)
+            FilterViewModel filter)
         {
             var paginationModel = new PaginationViewModel 
             {
