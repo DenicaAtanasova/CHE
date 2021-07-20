@@ -1,6 +1,6 @@
 ﻿namespace CHE.Services.Data
 {
-    using CHE.Web.InputModels.Portfolios;
+    using CHE.Web.InputModels.Profiles;
     using Microsoft.AspNetCore.Http;
 
     using System.Collections.Generic;

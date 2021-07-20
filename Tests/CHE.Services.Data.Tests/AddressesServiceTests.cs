@@ -3,7 +3,7 @@ namespace CHE.Services.Data.Tests
 {
     using CHE.Data;
     using CHE.Data.Models;
-    using CHE.Web.InputModels.Cooperatives;
+    using CHE.Web.InputModels.Addresses;
 
     using Microsoft.EntityFrameworkCore;
 
@@ -68,7 +68,7 @@ namespace CHE.Services.Data.Tests
             await this._dbContext.SaveChangesAsync();
 
             var addressId = await this._addressesService.GetAddressIdAsync(
-                new CooperativeAddressInputModel
+                new AddressInputModel
                 {
                     City = testCity,
                     Neighbourhood = testNeighbourhood
@@ -100,7 +100,7 @@ namespace CHE.Services.Data.Tests
             await this._dbContext.SaveChangesAsync();
 
             var addressId = await this._addressesService.GetAddressIdAsync(
-                new CooperativeAddressInputModel
+                new AddressInputModel
                 {
                     City = testCity,
                     Neighbourhood = testNeighbourhood

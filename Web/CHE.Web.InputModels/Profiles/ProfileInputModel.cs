@@ -1,11 +1,12 @@
-﻿namespace CHE.Web.InputModels.Portfolios
+﻿namespace CHE.Web.InputModels.Profiles
 {
     using AutoMapper;
 
     using CHE.Services.Mapping;
-    
+    using CHE.Web.InputModels.Addresses;
+
     using Microsoft.AspNetCore.Http;
-    
+
     using System.ComponentModel.DataAnnotations;
 
     public class ProfileInputModel : IMapExplicitly
@@ -28,6 +29,8 @@
         public string SchoolLevel { get; set; }
 
         public IFormFile Image { get; set; }
+
+        public AddressInputModel Address { get; set; }
 
         public void CreateMappings(IProfileExpression configuration)
         {

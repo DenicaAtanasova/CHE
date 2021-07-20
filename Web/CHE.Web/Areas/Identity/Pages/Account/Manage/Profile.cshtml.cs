@@ -3,7 +3,7 @@ namespace CHE.Web.Areas.Identity.Pages.Account.Manage
     using CHE.Common;
     using CHE.Data.Models;
     using CHE.Services.Data;
-    using CHE.Web.InputModels.Portfolios;
+    using CHE.Web.InputModels.Profiles;
 
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Identity;

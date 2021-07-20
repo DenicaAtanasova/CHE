@@ -2,8 +2,7 @@
 {
     using CHE.Data;
     using CHE.Data.Models;
-    using CHE.Services.Mapping;
-    using CHE.Web.InputModels.Cooperatives;
+    using CHE.Web.InputModels.Addresses;
     using Microsoft.EntityFrameworkCore;
 
     using System.Collections.Generic;
@@ -19,7 +18,7 @@
             this._dbContext = dbContext;
         }
 
-        public async Task<string> GetAddressIdAsync(CooperativeAddressInputModel address)
+        public async Task<string> GetAddressIdAsync(AddressInputModel address)
         {
             var addressId = await this._dbContext.Addresses
                 .AsNoTracking()

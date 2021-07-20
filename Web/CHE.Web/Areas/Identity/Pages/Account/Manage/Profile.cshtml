@@ -12,6 +12,11 @@
                     <span asp-validation-for="Input.FirstName" class="text-danger"></span>
                 </div>
                 <div class="form-group">
+                    <label asp-for="Input.Address.City"></label>
+                    <input asp-for="Input.Address.City" class="form-control" />
+                    <span asp-validation-for="Input.Address.City" class="text-danger"></span>
+                </div>
+                <div class="form-group">
                     <label asp-for="Input.Education"></label>
                     <input asp-for="Input.Education" class="form-control" />
                     <span asp-validation-for="Input.Education" class="text-danger"></span>
@@ -32,6 +37,11 @@
                     <label asp-for="Input.LastName"></label>
                     <input asp-for="Input.LastName" class="form-control" />
                     <span asp-validation-for="Input.LastName" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Input.Address.Neighbourhood"></label>
+                    <input asp-for="Input.Address.Neighbourhood" class="form-control" />
+                    <span asp-validation-for="Input.Address.Neighbourhood" class="text-danger"></span>
                 </div>
                 <div class="form-group">
                     <label asp-for="Input.SchoolLevel"></label>

@@ -23,5 +23,9 @@
         public CheUser Owner { get; set; }
 
         public Image Image { get; set; }
+
+        public string AddressId { get; set; }
+
+        public Address Address { get; set; }
     }
 }

@@ -3,8 +3,10 @@
     using CHE.Data;
     using CHE.Data.Models;
     using CHE.Services.Mapping;
+    using CHE.Web.InputModels.Addresses;
     using CHE.Web.InputModels.Cooperatives;
     using CHE.Web.ViewModels.Cooperatives;
+
     using Microsoft.EntityFrameworkCore;
 
     using Moq;
@@ -21,7 +23,7 @@
         private const string FIRST_GRADE = "First";
         private readonly string FIRST_GRADE_ID = Guid.NewGuid().ToString();
 
-        private readonly CooperativeAddressInputModel ADDRESS = new CooperativeAddressInputModel
+        private readonly AddressInputModel ADDRESS = new AddressInputModel
         {
             City = "Sofia",
             Neighbourhood = "Dianabad"

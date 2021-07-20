@@ -3,7 +3,7 @@
     using CHE.Data;
     using CHE.Data.Models;
     using CHE.Services.Mapping;
-    using CHE.Web.InputModels.Portfolios;
+    using CHE.Web.InputModels.Profiles;
 
     using Microsoft.EntityFrameworkCore;
     using Microsoft.AspNetCore.Http;
@@ -17,13 +17,16 @@
     {
         private readonly CheDbContext _dbContext;
         private readonly IImagesService _imagesService;
+        private readonly IAddressesService _addressesService;
 
         public ProfilesService(
             CheDbContext dbContext,
-            IImagesService imagesService)
+            IImagesService imagesService,
+            IAddressesService addressesService)
         {
             this._dbContext = dbContext;
             this._imagesService = imagesService;
+            this._addressesService = addressesService;
         }
 
         public async Task<TEntity> GetByUserIdAsync<TEntity>(string userId) =>
@@ -85,6 +88,8 @@
             profileToUpdate.Skills = inputModel.Skills;
             profileToUpdate.SchoolLevel = Enum.Parse<SchoolLevel>(inputModel.SchoolLevel);
             profileToUpdate.ModifiedOn = DateTime.UtcNow;
+            profileToUpdate.AddressId = await this._addressesService
+                .GetAddressIdAsync(inputModel.Address);
 
             this._dbContext.Update(profileToUpdate);
 

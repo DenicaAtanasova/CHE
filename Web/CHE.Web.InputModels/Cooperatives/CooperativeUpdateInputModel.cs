@@ -4,6 +4,7 @@
 
     using CHE.Data.Models;
     using CHE.Services.Mapping;
+    using CHE.Web.InputModels.Addresses;
     using CHE.Web.InputModels.Attributes.Validation;
 
     using System.ComponentModel.DataAnnotations;
@@ -23,7 +24,7 @@
         [Grade]
         public string Grade { get; set; }
 
-        public CooperativeAddressInputModel Address { get; set; }
+        public AddressInputModel Address { get; set; }
 
         public void CreateMappings(IProfileExpression configuration)
         {
