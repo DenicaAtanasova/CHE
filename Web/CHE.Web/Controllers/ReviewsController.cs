@@ -23,7 +23,7 @@
         {
             this._userManager = userManager;
             this._reviewsService = reviewsService;
-        } 
+        }
 
         public async Task<IActionResult> All(string id)
         {

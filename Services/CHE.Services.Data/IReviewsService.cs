@@ -9,6 +9,12 @@
     {
         Task<string> CreateAsync(string senderId, ReviewCreateInputModel inputModel);
 
+        Task UpdateAsync(ReviewUpdateInputModel inputModel);
+
+        Task DeleteAsync(string id);
+
+        Task<TEntity> GetByIdAsync<TEntity>(string id);
+
         Task<IEnumerable<TEntity>> GetAllByReceiverAsync<TEntity>(string receiverId);
     }
 }

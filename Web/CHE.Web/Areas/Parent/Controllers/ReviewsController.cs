@@ -11,15 +11,18 @@
 
     public class ReviewsController : ParentController
     {
-        private readonly ICheUsersService _cheUsersService;
         private readonly UserManager<CheUser> _userManager;
+        private readonly ICheUsersService _cheUsersService;
+        private readonly IReviewsService _reviewsService;
 
         public ReviewsController(
+            UserManager<CheUser> userManager,
             ICheUsersService cheUsersService,
-            UserManager<CheUser> userManager)
+            IReviewsService reviewsService)
         {
+            this._userManager = userManager;
             this._cheUsersService = cheUsersService;
-            _userManager = userManager;
+            this._reviewsService = reviewsService;
         }
 
         public IActionResult Send(string teacherId) =>
@@ -38,7 +41,33 @@
             var senderId = _userManager.GetUserId(User);
             await _cheUsersService.SendReviewAsync(senderId, inputModel);
 
-            return this.RedirectToAction("All", "Teachers", new { area = ""});
+            return this.RedirectToAction("All", "Teachers", new { area = "" });
+        }
+
+        public async Task<IActionResult> Update(string id)
+        {
+            var review = await this._reviewsService
+                .GetByIdAsync<ReviewUpdateInputModel>(id);
+
+            if (review == null)
+            {
+                return this.NotFound();
+            }
+
+            return this.View(review);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Update(ReviewUpdateInputModel inputModel)
+        {
+            if (!ModelState.IsValid)
+            {
+                return this.View(inputModel.Id);
+            }
+
+            await this._reviewsService.UpdateAsync(inputModel);
+
+            return RedirectToAction("Details", "Teachers", new { area = "", id = inputModel.ReceiverId });
         }
     }
 }

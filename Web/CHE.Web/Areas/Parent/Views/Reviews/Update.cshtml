@@ -1,4 +1,4 @@
-﻿@model CHE.Web.InputModels.Reviews.ReviewCreateInputModel
+﻿@model CHE.Web.InputModels.Reviews.ReviewUpdateInputModel
 <!-- ======= Breadcrumbs ======= -->
 <section id="breadcrumbs" class="breadcrumbs">
     <div class="container">
@@ -13,18 +13,17 @@
 
     </div>
 </section><!-- End Breadcrumbs -->
-
 <!-- ======= Create Section ======= -->
 <section id="services" class="services">
     <div class="container">
         <div class="row">
             <div class="col-lg-6">
-                <form method="post" asp-controller="Reviews" asp-action="Send">
+                <form method="post" asp-controller="Reviews" asp-action="Update">
                     <h4>Send review</h4>
                     <hr />
                     <input asp-for="ReceiverId" type="hidden" />
                     <div class="form-group">
-                        <h6><label asp-for="Rating"></label><span id="rating-value">: 0 / 5</span></h6>
+                        <h6><label asp-for="Rating"></label><span id="rating-value">: @Model.Rating / 5</span></h6>
                         <div class="rating">
                             <input type="radio" asp-for="Rating" id="star1" value="5"><label for="star1"></label>
                             <input type="radio" asp-for="Rating" id="star2" value="4"><label for="star2"></label>
@@ -41,7 +40,10 @@
                     </div>
                     <div class="row">
                         <div class="col-lg-6">
-                            <button type="submit" class="btn btn-che">Send</button>
+                            <button type="submit" class="btn btn-che">Save changes</button>
+                            <button type="button" class="btn btn-che" data-toggle="modal" data-target="#deleteConfirm">
+                                Delete
+                            </button>
                         </div>
                     </div>
                 </form>
@@ -50,6 +52,27 @@
     </div>
 </section>
 
+<!-- ======= Modal ======= -->
+<div class="modal fade" id="deleteConfirm" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Delete review for:</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <h5>Name: <strong>@Model.ReceiverUserName</strong></h5>
+            </div>
+            <div class="modal-footer">
+                <a class="btn btn-che" asp-area="Parent" asp-controller="Reviews" asp-action="Delete" asp-route-id="@Model.Id">Delete</a>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End modal -->
 @section Scripts{
     <partial name="_ValidationScriptsPartial" />
     <script src="~/js/rating.js"></script>

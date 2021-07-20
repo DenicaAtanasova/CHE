@@ -52,6 +52,7 @@
                 .CheckIfMemberAsync(userId, currentCooperative.Id);
             currentCooperative.PendingRequestId = await this._joinRequestsService
                 .GetPendindRequestIdAsync(id, userId);
+
             this.ViewData["id"] = currentCooperative.Id;
 
             return this.View(currentCooperative);

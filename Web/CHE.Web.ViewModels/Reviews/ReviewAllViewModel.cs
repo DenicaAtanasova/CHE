@@ -5,12 +5,12 @@
 
     public class ReviewAllViewModel : IMapFrom<Review>
     {
+        public string Id { get; set; }
+
         public string Comment { get; set; }
 
         public int Rating { get; set; }
 
         public string SenderUserName { get; set; }
-
-        public string ReceiverId { get; set; }
     }
 }

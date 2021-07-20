@@ -28,17 +28,55 @@
             review.CreatedOn = DateTime.UtcNow;
             review.SenderId = senderId;
 
-            await this._dbContext.Reviews.AddAsync(review);
+            this._dbContext.Reviews.Add(review);
             await this._dbContext.SaveChangesAsync();
 
             return review.Id;
         }
+        public async Task UpdateAsync(ReviewUpdateInputModel inputModel)
+        {
+            var reviewToUpdate = await this._dbContext.Reviews
+                .SingleOrDefaultAsync(x => x.Id == inputModel.Id);
+
+            if (reviewToUpdate == null)
+            {
+                return;
+            }
+
+            reviewToUpdate.Comment = inputModel.Comment;
+            reviewToUpdate.Rating = inputModel.Rating;
+            reviewToUpdate.ModifiedOn = DateTime.UtcNow;
+
+            this._dbContext.Reviews.Update(reviewToUpdate);
+            await this._dbContext.SaveChangesAsync();
+        }
+
+        public async Task DeleteAsync(string id)
+        {
+            var review = await this._dbContext.Reviews
+                .SingleOrDefaultAsync(x => x.Id == id);
+
+            if (review == null)
+            {
+                return;
+            }
+
+            this._dbContext.Reviews.Remove(review);
+            await this._dbContext.SaveChangesAsync();
+        }
+
+        public async Task<TEntity> GetByIdAsync<TEntity>(string id) =>
+            await this._dbContext.Reviews
+                .AsNoTracking()
+                .Where(x => x.Id == id)
+                .To<TEntity>()
+                .SingleOrDefaultAsync();
 
         public async Task<IEnumerable<TEntity>> GetAllByReceiverAsync<TEntity>(string receiverId)
             => await this._dbContext.Reviews
                 .AsNoTracking()
                 .Where(x => x.ReceiverId == receiverId)
                 .To<TEntity>()
-                .ToListAsync();
+                .ToListAsync();        
     }
 }
