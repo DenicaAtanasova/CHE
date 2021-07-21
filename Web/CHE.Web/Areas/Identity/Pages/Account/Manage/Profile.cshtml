@@ -1,7 +1,10 @@
 ﻿@page
 @model CHE.Web.Areas.Identity.Pages.Account.Manage.ProfileModel
+@{
+    ViewData["currentPage"] = "Profile";
+}
 
-<div >
+<div>
     <partial name="_StatusMessage" model="Model.StatusMessage" />
     <form id="portfolio-form" method="post" enctype="multipart/form-data">
         <div class="row">
@@ -66,7 +69,7 @@
                     </div>
                 </div>
             </div>
-        </div>      
+        </div>
         <button id="update-profile-button" type="submit" class="btn btn-che">Save</button>
     </form>
 </div>

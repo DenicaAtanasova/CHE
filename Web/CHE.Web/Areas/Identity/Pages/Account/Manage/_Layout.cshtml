@@ -1,5 +1,6 @@
 ﻿@{
     Layout = "/Views/Shared/_Layout.cshtml";
+    var currentPage = (string)ViewData["currentPage"];
 }
 
 <!-- ======= Breadcrumbs ======= -->
@@ -7,9 +8,17 @@
     <div class="container">
         <ol>
             <li><a asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
-            <li>Account</li>
+            @if (currentPage == "Account")
+            {
+                <li>Account</li>
+            }
+            else
+            {
+                <li><a asp-area="Identity" asp-page="/Account/Manage/Index">Account</a></li>
+                <li>@currentPage</li>
+            }
         </ol>
-        <h2>Account </h2>
+        <h2>@currentPage </h2>
     </div>
 </section><!-- End Breadcrumbs -->
 <!-- ======= Schedule Section ======= -->

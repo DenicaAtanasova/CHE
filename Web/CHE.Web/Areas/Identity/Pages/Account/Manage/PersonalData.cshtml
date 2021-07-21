@@ -1,5 +1,9 @@
 ﻿@page
 @model PersonalDataModel
+@{
+    ViewData["currentPage"] = "Personal data";
+}
+
 <div class="col-lg-5">
     <p>Your account contains personal data that you have given us. This page allows you to download or delete that data.</p>
     <p>
@@ -11,7 +15,7 @@
     <p>
         <a id="delete" asp-page="DeletePersonalData" class="btn btn-che">Delete</a>
     </p>
-    </div>
+</div>
 <div class="col-lg-4">
 </div>
 

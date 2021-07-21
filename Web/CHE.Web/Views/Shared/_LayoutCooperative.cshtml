@@ -1,6 +1,7 @@
 ﻿@{
     Layout = "/Views/Shared/_Layout.cshtml";
     var cooperativeId = (string)ViewData["id"];
+    var currentPage = (string)ViewData["currentPage"];
 }
 <!-- ======= Breadcrumbs ======= -->
 <section id="breadcrumbs" class="breadcrumbs">
@@ -8,9 +9,17 @@
         <ol>
             <li><a asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
             <li><a asp-area="" asp-controller="Cooperatives" asp-action="All">Cooperatives</a></li>
-            <li>Details</li>
+            @if (currentPage == "Details")
+            {
+                <li>Details</li>
+            }
+            else
+            {
+                <li><a asp-area="" asp-controller="Cooperatives" asp-action="Details" asp-route-id="@cooperativeId">Details</a></li>
+                <li>@currentPage</li>
+            }
         </ol>
-        <h2>Details </h2>
+        <h2>@currentPage</h2>
     </div>
 </section>
 <!-- End Breadcrumbs -->
