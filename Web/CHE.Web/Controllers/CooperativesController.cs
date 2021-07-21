@@ -41,13 +41,16 @@
                 return this.NotFound();
             }
 
-            var userId = this.User.GetId();
-            currentCooperative.IsAdmin = await this._cooperativesService
-                .CheckIfAdminAsync(userId, currentCooperative.Id);
-            currentCooperative.IsMember = await this._cooperativesService
-                .CheckIfMemberAsync(userId, currentCooperative.Id);
-            currentCooperative.PendingRequestId = await this._joinRequestsService
-                .GetPendindRequestIdAsync(id, userId);
+            if (this.User.Identity.IsAuthenticated)
+            {
+                var userId = this.User.GetId();
+                currentCooperative.IsAdmin = await this._cooperativesService
+                    .CheckIfAdminAsync(userId, currentCooperative.Id);
+                currentCooperative.IsMember = await this._cooperativesService
+                    .CheckIfMemberAsync(userId, currentCooperative.Id);
+                currentCooperative.PendingRequestId = await this._joinRequestsService
+                    .GetPendindRequestIdAsync(id, userId);
+            }          
 
             this.ViewData["id"] = currentCooperative.Id;
 

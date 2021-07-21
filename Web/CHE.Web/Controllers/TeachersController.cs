@@ -6,8 +6,8 @@
     using CHE.Web.ViewModels;
     using CHE.Web.ViewModels.Teachers;
 
-    using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
+
     using System;
     using System.Linq;
     using System.Threading.Tasks;
@@ -65,8 +65,13 @@
                 return this.NotFound();
             }
 
-            var userId = this.User.GetId();
-            currentTeacher.SentReviewId = await this._reviewsService.GetSentReviewIdAsync(id, userId);
+            if (this.User.Identity.IsAuthenticated)
+            {
+                var userId = this.User.GetId();
+                currentTeacher.SentReviewId = await this._reviewsService
+                    .GetSentReviewIdAsync(id, userId);
+            }
+            
             this.ViewData["id"] = currentTeacher.Id;
 
             return this.View(currentTeacher);
