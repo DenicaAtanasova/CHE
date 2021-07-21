@@ -9,7 +9,6 @@
     {
         public string Id { get; init; }
 
-        public string ScheduleId { get; init; }
 
         public string AdminUserName { get; init; }
 

@@ -23,7 +23,7 @@
         private const string FIRST_GRADE = "First";
         private readonly string FIRST_GRADE_ID = Guid.NewGuid().ToString();
 
-        private readonly AddressInputModel ADDRESS = new AddressInputModel
+        private readonly CooperativeAddressInputModel  ADDRESS = new CooperativeAddressInputModel
         {
             City = "Sofia",
             Neighbourhood = "Dianabad"
@@ -45,7 +45,7 @@
                 .ReturnsAsync(FIRST_GRADE_ID);
 
             var addressesService = new Mock<IAddressesService>();
-            addressesService.Setup(x => x.GetAddressIdAsync(ADDRESS))
+            addressesService.Setup(x => x.GetAddressIdAsync(ADDRESS.City, ADDRESS.Neighbourhood))
                 .ReturnsAsync(ADDRESS_ID);
 
             this._cooperativesService = new CooperativesService(this._dbContext, gradesService.Object, addressesService.Object);

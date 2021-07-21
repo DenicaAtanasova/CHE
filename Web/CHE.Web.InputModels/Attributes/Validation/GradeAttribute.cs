@@ -1,11 +1,14 @@
 ﻿namespace CHE.Web.InputModels.Attributes.Validation
 {
+    using System;
     using System.ComponentModel.DataAnnotations;
     using System.Linq;
 
+    using static DataErrorMessages;
+
+    [AttributeUsage(AttributeTargets.Field | AttributeTargets.Property, AllowMultiple = true, Inherited = true)]
     public class GradeAttribute : ValidationAttribute
     {
-        private const string ERROR_MESSAGE = "Grade must be between first and eighth.";
         private readonly string[] VALID_GRADES = 
         {
             "First",
@@ -18,8 +21,6 @@
             "Eighth"
         };
 
-        public string GetErrorMessage() => ERROR_MESSAGE;
-
         protected override ValidationResult IsValid(object value, ValidationContext validationContext)
         {
             var gradeValue = value as string;
@@ -28,7 +29,7 @@
                 return ValidationResult.Success;
             }
 
-            return new ValidationResult(GetErrorMessage());
+            return new ValidationResult(GradeErroMessage);
         }
     }
 }

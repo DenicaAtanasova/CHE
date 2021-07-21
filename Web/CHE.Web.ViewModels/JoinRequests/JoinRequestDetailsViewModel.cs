@@ -11,8 +11,6 @@
 
         public string SenderUserName { get; init; }
 
-        public string ReceiverId { get; init; }
-
         public string CooperativeId { get; init; }
 
         public string CooperativeName { get; init; }

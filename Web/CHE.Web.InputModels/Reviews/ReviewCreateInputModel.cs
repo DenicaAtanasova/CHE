@@ -5,16 +5,20 @@
 
     using System.ComponentModel.DataAnnotations;
 
+    using static DataConstants.Review;
+    using static DataErrorMessages;
+
     public class ReviewCreateInputModel : IMapTo<Review>
     {
-        private const string RATING_ERR_MSG = "Rating must be between 1 and 5!";
-        private const string COMMENT_ERR_MSG = "You must leave a comment!";
-
-        [Required(ErrorMessage = COMMENT_ERR_MSG)]
+        [Required]
+        [StringLength(
+            CommentMaxLength,
+            MinimumLength = CommentMinLength,
+            ErrorMessage = StringLengthErroMessage)]
         public string Comment { get; init; }
 
         [Required]
-        [Range(1,5, ErrorMessage = RATING_ERR_MSG)]
+        [Range(RatingMinValue, RatingMaxValue, ErrorMessage = RangeErroMessage)]
         public int Rating { get; init; }
 
         public string ReceiverId { get; init; }

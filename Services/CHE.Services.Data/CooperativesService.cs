@@ -40,7 +40,8 @@
                 CreatedOn = DateTime.UtcNow,
                 GradeId = await this._gradesService.GetGardeIdAsync(inputModel.Grade),
                 Schedule = new Schedule { CreatedOn = DateTime.UtcNow },
-                AddressId = await this._addressesService.GetAddressIdAsync(inputModel.Address)
+                AddressId = await this._addressesService
+                    .GetAddressIdAsync(inputModel.Address.City, inputModel.Address.Neighbourhood)
             };
 
             this._dbContext.Add(cooperative);
@@ -64,7 +65,8 @@
             cooperativeToUpdate.Info = inputModel.Info;
             cooperativeToUpdate.GradeId = await this._gradesService.GetGardeIdAsync(inputModel.Grade);
             cooperativeToUpdate.ModifiedOn = DateTime.UtcNow;
-            cooperativeToUpdate.AddressId = await this._addressesService.GetAddressIdAsync(inputModel.Address);
+            cooperativeToUpdate.AddressId = await this._addressesService
+                .GetAddressIdAsync(inputModel.Address.City, inputModel.Address.Neighbourhood);
 
             this._dbContext.Cooperatives.Update(cooperativeToUpdate);
             await this._dbContext.SaveChangesAsync();

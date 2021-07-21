@@ -8,7 +8,5 @@
         public string City { get; init; }
 
         public string Neighbourhood { get; init; }
-
-        public string Street { get; init; }
     }
 }

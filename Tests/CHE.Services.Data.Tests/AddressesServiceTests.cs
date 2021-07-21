@@ -1,9 +1,7 @@
-﻿
-namespace CHE.Services.Data.Tests
+﻿namespace CHE.Services.Data.Tests
 {
     using CHE.Data;
     using CHE.Data.Models;
-    using CHE.Web.InputModels.Addresses;
 
     using Microsoft.EntityFrameworkCore;
 
@@ -67,12 +65,8 @@ namespace CHE.Services.Data.Tests
 
             await this._dbContext.SaveChangesAsync();
 
-            var addressId = await this._addressesService.GetAddressIdAsync(
-                new AddressInputModel
-                {
-                    City = testCity,
-                    Neighbourhood = testNeighbourhood
-                });
+            var addressId = await this._addressesService
+                .GetAddressIdAsync(testCity, testNeighbourhood);
 
             Assert.Equal(testedAddress.Id, addressId);
         }
@@ -99,12 +93,8 @@ namespace CHE.Services.Data.Tests
 
             await this._dbContext.SaveChangesAsync();
 
-            var addressId = await this._addressesService.GetAddressIdAsync(
-                new AddressInputModel
-                {
-                    City = testCity,
-                    Neighbourhood = testNeighbourhood
-                });
+            var addressId = await this._addressesService
+                .GetAddressIdAsync(testCity, testNeighbourhood);
 
             var expectedAddress = await _dbContext.Addresses
                 .SingleOrDefaultAsync(x => x.City == testCity && x.Neighbourhood == testNeighbourhood);

@@ -73,7 +73,7 @@
             profileToUpdate.SchoolLevel = Enum.Parse<SchoolLevel>(inputModel.SchoolLevel);
             profileToUpdate.ModifiedOn = DateTime.UtcNow;
             profileToUpdate.AddressId = await this._addressesService
-                .GetAddressIdAsync(inputModel.Address);
+                .GetAddressIdAsync(inputModel.Address.City, inputModel.Address.Neighbourhood);
 
             this._dbContext.Update(profileToUpdate);
 

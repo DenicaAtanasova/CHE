@@ -2,7 +2,7 @@
 {
     using CHE.Data;
     using CHE.Data.Models;
-    using CHE.Web.InputModels.Addresses;
+
     using Microsoft.EntityFrameworkCore;
 
     using System.Collections.Generic;
@@ -18,18 +18,18 @@
             this._dbContext = dbContext;
         }
 
-        public async Task<string> GetAddressIdAsync(AddressInputModel address)
+        public async Task<string> GetAddressIdAsync(string city, string neighbourhood)
         {
             var addressId = await this._dbContext.Addresses
                 .AsNoTracking()
-                .Where(x => x.City == address.City &&
-                            x.Neighbourhood == address.Neighbourhood)
+                .Where(x => x.City == city &&
+                            x.Neighbourhood == neighbourhood)
                 .Select(x => x.Id)
                 .SingleOrDefaultAsync();
 
             if (addressId is null)
             {
-                return await this.CreateAsync(address.City, address.Neighbourhood);
+                return await this.CreateAsync(city, neighbourhood);
             }
 
             return addressId;

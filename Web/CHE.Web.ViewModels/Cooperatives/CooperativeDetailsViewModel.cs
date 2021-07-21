@@ -9,8 +9,6 @@
     {
         public string Id { get; init; }
 
-        public string ScheduleId { get; init; }
-
         public string Name { get; init; }
 
         public string Info { get; init; }

@@ -5,16 +5,25 @@
 
     using System.ComponentModel.DataAnnotations;
 
+    using static DataConstants.JoinRequst;
+    using static DataErrorMessages;
+
     public class JoinRequestUpdateInputModel : IMapFrom<JoinRequest>
     {
+        [Required]
         public string Id { get; init; }
 
         [Required]
+        [StringLength(
+            ContentMaxLength,
+            MinimumLength = ContentMinLength,
+            ErrorMessage = StringLengthErroMessage)]
         public string Content { get; init; }
 
         [Required]
         public string CooperativeId { get; init; }
 
+        [Required]
         public string CooperativeName { get; init; }
     }
 }

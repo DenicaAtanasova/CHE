@@ -4,27 +4,36 @@
 
     using CHE.Data.Models;
     using CHE.Services.Mapping;
-    using CHE.Web.InputModels.Addresses;
     using CHE.Web.InputModels.Attributes.Validation;
 
     using System.ComponentModel.DataAnnotations;
+
+    using static DataConstants.Cooperative;
+    using static DataErrorMessages;
 
     public class CooperativeUpdateInputModel : IMapExplicitly
     {
         public string Id { get; init; }
 
         [Required]
-        [StringLength(20)]
+        [StringLength(
+             NameMaxLength,
+             MinimumLength = NameMinLength,
+             ErrorMessage = StringLengthErroMessage)]
         public string Name { get; init; }
 
         [Required]
+        [StringLength(
+            InfoMaxLength,
+            MinimumLength = InfoMinLength,
+            ErrorMessage = StringLengthErroMessage)]
         public string Info { get; init; }
 
         [Required]
         [Grade]
         public string Grade { get; init; }
 
-        public AddressInputModel Address { get; init; }
+        public CooperativeAddressInputModel Address { get; init; }
 
         public void CreateMappings(IProfileExpression configuration)
         {

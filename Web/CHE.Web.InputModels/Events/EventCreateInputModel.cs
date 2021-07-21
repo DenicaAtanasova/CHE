@@ -7,12 +7,21 @@
     using System;
     using System.ComponentModel.DataAnnotations;
 
+    using static DataConstants.Event;
+    using static DataErrorMessages;
+
     public class EventCreateInputModel : IMapTo<Event>
     {
         [Required]
-        [StringLength(20)]
+        [StringLength(
+            TitleMaxLength,
+            ErrorMessage = StringLengthErroMessage)]
         public string Title { get; init; }
 
+        [Required]
+        [StringLength(
+            DescriptionMaxLength,
+            ErrorMessage = StringLengthErroMessage)]
         public string Description { get; init; }
 
         public DateTime StartDate { get; init; }

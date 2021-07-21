@@ -1,7 +1,5 @@
 ﻿namespace CHE.Services.Data
 {
-    using CHE.Web.InputModels.Addresses;
-
     using System.Collections.Generic;
     using System.Threading.Tasks;
 
@@ -11,6 +9,6 @@
 
         Task<IEnumerable<string>> GetAllNeighbourhoodsAsync();
 
-        Task<string> GetAddressIdAsync(AddressInputModel address);
+        Task<string> GetAddressIdAsync(string city, string neighbourhood);
     }
 }
