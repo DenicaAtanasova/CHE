@@ -5,16 +5,16 @@
 
     public class JoinRequestDetailsViewModel : IMapFrom<JoinRequest>
     {
-        public string Id { get; set; }
+        public string Id { get; init; }
 
-        public string Content { get; set; }
+        public string Content { get; init; }
 
-        public string SenderUserName { get; set; }
+        public string SenderUserName { get; init; }
 
-        public string ReceiverId { get; set; }
+        public string ReceiverId { get; init; }
 
-        public string CooperativeId { get; set; }
+        public string CooperativeId { get; init; }
 
-        public string CooperativeName { get; set; }
+        public string CooperativeName { get; init; }
     }
 }

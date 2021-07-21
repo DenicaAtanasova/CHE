@@ -7,14 +7,14 @@
 
     public class JoinRequestUpdateInputModel : IMapFrom<JoinRequest>
     {
-        public string Id { get; set; }
+        public string Id { get; init; }
 
         [Required]
-        public string Content { get; set; }
+        public string Content { get; init; }
 
         [Required]
-        public string CooperativeId { get; set; }
+        public string CooperativeId { get; init; }
 
-        public string CooperativeName { get; set; }
+        public string CooperativeName { get; init; }
     }
 }

@@ -43,47 +43,26 @@
             return image.Id;
         }
 
-        public async Task<string> UpdateAsync(IFormFile imageFile, string profileId)
+        public async Task UpdateAsync(IFormFile imageFile, string profileId)
         {
             var currentImage = await this._dbContext.Images
-                .Where(x => x.ProfileId == profileId)
-                .Select(x => new
-                {
-                    Id = x.Id,
-                    Caption = x.Caption
-                })
-                .FirstOrDefaultAsync();
+                .SingleOrDefaultAsync(x => x.ProfileId == profileId);
+
+            if (currentImage == null)
+            {
+                return;
+            }
 
             if (currentImage.Caption != DEFAULT_IMAGE_CAPTION)
             {
                 await this._cloudStorageService.DeleteAsync(currentImage.Caption);
             }
 
-            var url = await this._cloudStorageService
+            currentImage.Url = await this._cloudStorageService
                 .UploadAsync(profileId, imageFile.OpenReadStream());
 
-            this.DeleteImage(currentImage.Id);
-
-            return await this.CreateImageAsync(profileId, url, profileId);
-        }
-
-        private async Task<string> CreateImageAsync(string fileName, string url, string profileId)
-        {
-            var image = new Image
-            {
-                Caption = fileName,
-                Url = url,
-                ProfileId = profileId,
-                CreatedOn = DateTime.UtcNow
-            };
-
-            this._dbContext.Images.Add(image);
+            this._dbContext.Images.Update(currentImage);
             await this._dbContext.SaveChangesAsync();
-
-            return image.Id;
         }
-
-        private void DeleteImage(string imageId) =>
-            this._dbContext.Images.Remove(new Image { Id = imageId });
     }
 }

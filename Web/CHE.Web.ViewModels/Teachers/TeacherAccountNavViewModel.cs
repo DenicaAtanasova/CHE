@@ -2,6 +2,6 @@
 {
     public class TeacherAccountNavViewModel
     {
-        public string ScheduleId { get; set; }
+        public string ScheduleId { get; init; }
     }
 }

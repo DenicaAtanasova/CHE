@@ -27,7 +27,7 @@
 
         public CheUser Admin { get; set; }
 
-        public Schedule Schedule { get; set; }
+        public Schedule Schedule { get; init; }
 
         public ICollection<CheUserCooperative> Members { get; set; }
 

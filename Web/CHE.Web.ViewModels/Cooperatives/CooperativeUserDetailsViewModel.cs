@@ -7,13 +7,13 @@
 
     public class CooperativeUserDetailsViewModel : IMapExplicitly
     {
-        public string UserId { get; set; }
+        public string UserId { get; init; }
 
-        public string UserName { get; set; }
+        public string UserName { get; init; }
 
-        public string Role { get; set; }
+        public string Role { get; init; }
 
-        public string CooperativeId { get; set; }
+        public string CooperativeId { get; init; }
 
         public void CreateMappings(IProfileExpression configuration)
         {

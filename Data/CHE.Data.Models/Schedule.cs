@@ -12,12 +12,12 @@
 
         public ICollection<Event> Events { get; set; }
 
-        public string CooperativeId { get; set; }
+        public string CooperativeId { get; init; }
 
-        public Cooperative Cooperative { get; set; }
+        public Cooperative Cooperative { get; init; }
 
-        public string TeacherId { get; set; }
+        public string TeacherId { get; init; }
 
-        public CheUser Teacher { get; set; }
+        public CheUser Teacher { get; init; }
     }
 }

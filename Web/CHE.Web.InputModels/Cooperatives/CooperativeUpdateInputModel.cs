@@ -11,20 +11,20 @@
 
     public class CooperativeUpdateInputModel : IMapExplicitly
     {
-        public string Id { get; set; }
+        public string Id { get; init; }
 
         [Required]
         [StringLength(20)]
-        public string Name { get; set; }
+        public string Name { get; init; }
 
         [Required]
-        public string Info { get; set; }
+        public string Info { get; init; }
 
         [Required]
         [Grade]
-        public string Grade { get; set; }
+        public string Grade { get; init; }
 
-        public AddressInputModel Address { get; set; }
+        public AddressInputModel Address { get; init; }
 
         public void CreateMappings(IProfileExpression configuration)
         {

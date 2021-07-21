@@ -7,11 +7,11 @@
 
     public class CooperativeMembersViewModel : IMapFrom<Cooperative>
     {
-        public string Id { get; set; }
+        public string Id { get; init; }
 
-        public string ScheduleId { get; set; }
+        public string ScheduleId { get; init; }
 
-        public string AdminUserName { get; set; }
+        public string AdminUserName { get; init; }
 
         public IEnumerable<CooperativeUserDetailsViewModel> Members { get; set; }
     }

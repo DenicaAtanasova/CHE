@@ -6,22 +6,21 @@
     using CHE.Services.Mapping;
 
     using System;
-    using System.Collections.Generic;
     using System.Linq;
 
     public class TeacherAllViewModel : IMapExplicitly
     {
-        public string Id { get; set; }
+        public string Id { get; init; }
 
-        public string UserName { get; set; }
+        public string UserName { get; init; }
 
-        public double Rating { get; set; }
+        public double Rating { get; init; }
 
-        public int ReviewsCount { get; set; }
+        public int ReviewsCount { get; init; }
 
-        public string ImageUrl { get; set; }
+        public string ImageUrl { get; init; }
 
-        public string SchoolLevel { get; set; }
+        public string SchoolLevel { get; init; }
 
         public void CreateMappings(IProfileExpression configuration)
         {

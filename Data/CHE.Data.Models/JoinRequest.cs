@@ -10,12 +10,12 @@
 
         public CheUser Sender { get; set; }
 
-        public string ReceiverId { get; set; }
+        public string ReceiverId { get; init; }
 
-        public CheUser Receiver { get; set; }
+        public CheUser Receiver { get; init; }
 
-        public string CooperativeId { get; set; }
+        public string CooperativeId { get; init; }
 
-        public Cooperative Cooperative { get; set; }
+        public Cooperative Cooperative { get; init; }
     }
 }

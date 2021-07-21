@@ -7,18 +7,18 @@
 
     public class EventViewModel : IMapFrom<Event>
     {
-        public string Id { get; set; }
+        public string Id { get; init; }
         
-        public string Title { get; set; }
+        public string Title { get; init; }
 
-        public string Description { get; set; }
+        public string Description { get; init; }
 
-        public DateTime StartDate { get; set; }
+        public DateTime StartDate { get; init; }
 
-        public DateTime EndDate { get; set; }
+        public DateTime EndDate { get; init; }
 
-        public bool IsFullDay { get; set; }
+        public bool IsFullDay { get; init; }
 
-        public DateTime CreatedOn { get; set; }
+        public DateTime CreatedOn { get; init; }
     }
 }

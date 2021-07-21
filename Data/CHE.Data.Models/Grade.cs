@@ -11,7 +11,7 @@
         }
 
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public string Id { get; set; }
+        public string Id { get; init; }
 
         public string Value { get; set; }
 

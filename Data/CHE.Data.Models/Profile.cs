@@ -18,11 +18,11 @@
 
         public SchoolLevel SchoolLevel { get; set; }
 
-        public string OwnerId { get; set; }
+        public string OwnerId { get; init; }
 
-        public CheUser Owner { get; set; }
+        public CheUser Owner { get; init; }
 
-        public Image Image { get; set; }
+        public Image Image { get; init; }
 
         public string AddressId { get; set; }
 

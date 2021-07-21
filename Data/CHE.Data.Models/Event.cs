@@ -15,8 +15,8 @@
 
         public bool IsFullDay { get; set; }
 
-        public string ScheduleId { get; set; }
+        public string ScheduleId { get; init; }
 
-        public Schedule Schedule { get; set; }
+        public Schedule Schedule { get; init; }
     }
 }

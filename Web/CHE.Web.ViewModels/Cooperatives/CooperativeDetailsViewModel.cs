@@ -7,19 +7,19 @@
 
     public class CooperativeDetailsViewModel : IMapExplicitly
     {
-        public string Id { get; set; }
+        public string Id { get; init; }
 
-        public string ScheduleId { get; set; }
+        public string ScheduleId { get; init; }
 
-        public string Name { get; set; }
+        public string Name { get; init; }
 
-        public string Info { get; set; }
+        public string Info { get; init; }
 
-        public string Grade { get; set; }
+        public string Grade { get; init; }
 
-        public int MembersCount { get; set; }
+        public int MembersCount { get; init; }
 
-        public string AdminUserName { get; set; }
+        public string AdminUserName { get; init; }
 
         public bool IsAdmin { get; set; }
 
@@ -27,7 +27,7 @@
 
         public string PendingRequestId { get; set; }
 
-        public CooperativeAddressViewModel Address { get; set; }
+        public CooperativeAddressViewModel Address { get; init; }
 
         public void CreateMappings(IProfileExpression configuration)
         {

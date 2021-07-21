@@ -5,10 +5,10 @@
 
     public class TeacherDetailsViewModel : IMapFrom<CheUser>
     {
-        public string Id { get; set; }
+        public string Id { get; init; }
 
         public string SentReviewId { get; set; }
 
-        public TeacherProfileDetailsViewModel Profile { get; set; }
+        public TeacherProfileDetailsViewModel Profile { get; init; }
     }
 }

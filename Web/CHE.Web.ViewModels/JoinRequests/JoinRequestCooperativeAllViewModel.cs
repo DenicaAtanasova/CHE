@@ -5,10 +5,10 @@
 
     public class JoinRequestCooperativeAllViewModel : IMapFrom<JoinRequest>
     {
-        public string Id { get; set; }
+        public string Id { get; init; }
 
-        public string SenderUserName { get; set; }
+        public string SenderUserName { get; init; }
 
-        public string CooperativeAdminUserName { get; set; }
+        public string CooperativeAdminUserName { get; init; }
     }
 }

@@ -12,25 +12,25 @@
     public class ProfileInputModel : IMapExplicitly
     {
         [Display(Name = "First name")]
-        public string FirstName { get; set; }
+        public string FirstName { get; init; }
 
         [Display(Name = "Last name")]
-        public string LastName { get; set; }
+        public string LastName { get; init; }
 
-        public string Education { get; set; }
+        public string Education { get; init; }
 
-        public string Experience { get; set; }
+        public string Experience { get; init; }
 
-        public string Skills { get; set; }
+        public string Skills { get; init; }
 
-        public string Interests { get; set; }
+        public string Interests { get; init; }
 
         [Display(Name = "School level")]
-        public string SchoolLevel { get; set; }
+        public string SchoolLevel { get; init; }
 
-        public IFormFile Image { get; set; }
+        public IFormFile Image { get; init; }
 
-        public AddressInputModel Address { get; set; }
+        public AddressInputModel Address { get; init; }
 
         public void CreateMappings(IProfileExpression configuration)
         {

@@ -8,9 +8,9 @@
     public class AddressInputModel : IMapFrom<Address>
     {
         [Required]
-        public string City { get; set; }
+        public string City { get; init; }
 
         [Required]
-        public string Neighbourhood { get; set; }
+        public string Neighbourhood { get; init; }
     }
 }

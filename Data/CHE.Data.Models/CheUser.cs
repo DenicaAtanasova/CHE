@@ -14,9 +14,9 @@
             this.ReviewsReceived = new HashSet<Review>();
         }
 
-        public string RoleName { get; set; }
+        public string RoleName { get; init; }
 
-        public Profile Profile { get; set; }
+        public Profile Profile { get; init; }
 
         public ICollection<CheUserCooperative> Cooperatives { get; set; }
 
@@ -28,6 +28,6 @@
 
         public ICollection<Review> ReviewsReceived { get; set; }
 
-        public Schedule Schedule { get; set; }
+        public Schedule Schedule { get; init; }
     }
 }

@@ -5,10 +5,10 @@
 
     public class CooperativeAddressViewModel : IMapFrom<Address>
     {
-        public string City { get; set; }
+        public string City { get; init; }
 
-        public string Neighbourhood { get; set; }
+        public string Neighbourhood { get; init; }
 
-        public string Street { get; set; }
+        public string Street { get; init; }
     }
 }

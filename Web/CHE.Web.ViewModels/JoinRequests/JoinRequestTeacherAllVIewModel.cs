@@ -5,8 +5,8 @@
 
     public class JoinRequestTeacherAllVIewModel : IMapFrom<JoinRequest>
     {
-        public string Id { get; set; }
+        public string Id { get; init; }
 
-        public string CooperativeName { get; set; }
+        public string CooperativeName { get; init; }
     }
 }

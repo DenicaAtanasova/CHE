@@ -11,12 +11,12 @@
         private const string COMMENT_ERR_MSG = "You must leave a comment!";
 
         [Required(ErrorMessage = COMMENT_ERR_MSG)]
-        public string Comment { get; set; }
+        public string Comment { get; init; }
 
         [Required]
         [Range(1,5, ErrorMessage = RATING_ERR_MSG)]
-        public int Rating { get; set; }
+        public int Rating { get; init; }
 
-        public string ReceiverId { get; set; }
+        public string ReceiverId { get; init; }
     }
 }

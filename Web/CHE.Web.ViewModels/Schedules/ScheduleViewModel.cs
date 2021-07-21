@@ -5,10 +5,10 @@
 
     public class ScheduleViewModel : IMapFrom<Schedule>
     {
-        public string Id { get; set; }
+        public string Id { get; init; }
 
-        public string CooperativeId { get; set; }
+        public string CooperativeId { get; init; }
 
-        public string TeacherId { get; set; }
+        public string TeacherId { get; init; }
     }
 }

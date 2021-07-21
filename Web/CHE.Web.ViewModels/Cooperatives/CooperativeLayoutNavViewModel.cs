@@ -2,12 +2,12 @@
 {
     public class CooperativeLayoutNavViewModel
     {
-        public string CooperativeId { get; set; }
+        public string CooperativeId { get; init; }
 
-        public string ScheduleId { get; set; }
+        public string ScheduleId { get; init; }
 
-        public bool IsAdmin { get; set; }
+        public bool IsAdmin { get; init; }
 
-        public bool IsMember { get; set; }
+        public bool IsMember { get; init; }
     }
 }

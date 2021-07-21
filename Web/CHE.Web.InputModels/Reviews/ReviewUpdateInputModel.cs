@@ -10,17 +10,17 @@
         private const string RATING_ERR_MSG = "Rating must be between 1 and 5!";
         private const string COMMENT_ERR_MSG = "You must leave a comment!";
 
-        public string Id { get; set; }
+        public string Id { get; init; }
 
         [Required(ErrorMessage = COMMENT_ERR_MSG)]
-        public string Comment { get; set; }
+        public string Comment { get; init; }
 
         [Required]
         [Range(1,5, ErrorMessage = RATING_ERR_MSG)]
-        public int Rating { get; set; }
+        public int Rating { get; init; }
 
-        public string ReceiverId { get; set; }
+        public string ReceiverId { get; init; }
 
-        public string ReceiverUserName { get; set; }
+        public string ReceiverUserName { get; init; }
     }
 }
