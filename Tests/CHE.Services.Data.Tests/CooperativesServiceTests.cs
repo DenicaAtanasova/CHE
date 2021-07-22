@@ -3,7 +3,6 @@
     using CHE.Data;
     using CHE.Data.Models;
     using CHE.Services.Mapping;
-    using CHE.Web.InputModels.Addresses;
     using CHE.Web.InputModels.Cooperatives;
     using CHE.Web.ViewModels.Cooperatives;
 

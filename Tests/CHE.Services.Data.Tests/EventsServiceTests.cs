@@ -82,11 +82,10 @@
                 Title = "Updated title",
                 StartDate = DateTime.UtcNow,
                 EndDate = DateTime.UtcNow.AddMinutes(30),
-                ScheduleId = schduleId,
-                CreatedOn = newEvent.CreatedOn
+                ScheduleId = schduleId
             };
 
-            await this._eventsService.UpdateAsync(eventUpdateModel);
+            await this._eventsService.UpdateAsync(newEvent.Id, eventUpdateModel);
             var expectedModifiedOnDate = DateTime.UtcNow;
             var updatedEvent = await this._dbContext.Events
                 .SingleOrDefaultAsync(x => x.Id == newEvent.Id);

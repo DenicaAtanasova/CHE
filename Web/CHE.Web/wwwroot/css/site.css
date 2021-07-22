@@ -2286,6 +2286,10 @@ div.image {
     margin: auto;
 }
 
+.add-event-day {
+    margin-top: 15px;
+}
+
 .calendar {
     background: #fff;
     width: 53em;

@@ -15,6 +15,6 @@
 
         Task DeleteAsync(string id);
 
-        Task UpdateAsync(EventUpdateInputModel inputModel);
+        Task UpdateAsync(string id, EventUpdateInputModel inputModel);
     }
 }

@@ -65,13 +65,23 @@
             await this._dbContext.SaveChangesAsync();
         }
 
-        public async Task UpdateAsync(EventUpdateInputModel inputModel)
+        public async Task UpdateAsync(string id, EventUpdateInputModel inputModel)
         {
-            var eventToUpdate = inputModel.Map<EventUpdateInputModel, Event>();
+            var eventToUpdate = await this._dbContext.Events
+                .SingleOrDefaultAsync(x => x.Id == id);
 
+            if (eventToUpdate == null)
+            {
+                return;
+            }
+
+            eventToUpdate.Title = inputModel.Title;
+            eventToUpdate.Description = inputModel.Description;
+            eventToUpdate.StartDate = inputModel.StartDate;
+            eventToUpdate.EndDate = inputModel.EndDate;
             eventToUpdate.ModifiedOn = DateTime.UtcNow;
 
-            this._dbContext.Update(eventToUpdate);
+            this._dbContext.Events.Update(eventToUpdate);
             await this._dbContext.SaveChangesAsync();
         }
     }

@@ -7,25 +7,34 @@
     using System;
     using System.ComponentModel.DataAnnotations;
 
-    public class EventUpdateInputModel : IMapTo<Event>
+    using static DataConstants.Event;
+    using static DataErrorMessages;
+
+    public class EventUpdateInputModel : IMapFrom<Event>
     {
         public string Id { get; init; }
 
         [Required]
-        [StringLength(20)]
+        [StringLength(
+           TitleMaxLength,
+           ErrorMessage = StringLengthErroMessage)]
         public string Title { get; init; }
 
+        [Required]
+        [StringLength(
+            DescriptionMaxLength,
+            ErrorMessage = StringLengthErroMessage)]
         public string Description { get; init; }
 
+        [Required]
         public DateTime StartDate { get; init; }
 
+        [Required]
         [DateAfter(nameof(StartDate))]
         public DateTime EndDate { get; init; }
 
-        public bool IsFullDay { get; init; }
-
         public string ScheduleId { get; init; }
 
-        public DateTime CreatedOn { get; init; }
+        public string ScheduleCooperativeId { get; init; }
     }
 }

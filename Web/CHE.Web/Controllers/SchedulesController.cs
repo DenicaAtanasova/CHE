@@ -3,10 +3,12 @@
     using CHE.Services.Data;
     using CHE.Web.ViewModels.Schedules;
 
+    using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
 
     using System.Threading.Tasks;
 
+    [Authorize]
     public class SchedulesController : Controller
     {
         private const string COOPERATIVE_LAYOUT = "/Views/Shared/_LayoutCooperative.cshtml";
@@ -14,12 +16,13 @@
 
         private readonly ISchedulesService _schedulesService;
 
-        public SchedulesController(ISchedulesService schedulesService)
+        public SchedulesController(
+            ISchedulesService schedulesService)
         {
             this._schedulesService = schedulesService;
         }
 
-        [Route("scheduler/{id}")]
+        [Route("Schedule/{id}")]
         public async Task<IActionResult> Details(string id)
         {
             var schedule = await this._schedulesService
@@ -32,13 +35,13 @@
 
             this.ViewData["id"] = schedule.CooperativeId;
 
-            if (schedule.TeacherId == null)
+            if (schedule.CooperativeId == null)
             {
-                this.ViewData["layout"] = COOPERATIVE_LAYOUT;
+                this.ViewData["layout"] = ACCOUNT_LAYOUT;
             }
             else
             {
-                this.ViewData["layout"] = ACCOUNT_LAYOUT;
+                this.ViewData["layout"] = COOPERATIVE_LAYOUT;
             }
 
             return View(schedule);

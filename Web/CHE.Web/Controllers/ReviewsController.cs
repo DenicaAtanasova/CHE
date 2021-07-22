@@ -4,10 +4,12 @@
     using CHE.Web.Infrastructure;
     using CHE.Web.ViewModels.Reviews;
 
+    using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
 
     using System.Threading.Tasks;
 
+    [Authorize]
     public class ReviewsController : Controller
     {
         private const string ACCOUNT_LAYOUT = "/Areas/Identity/Pages/Account/Manage/_Layout.cshtml";

@@ -24,13 +24,15 @@
             ErrorMessage = StringLengthErroMessage)]
         public string Description { get; init; }
 
+        [Required]
         public DateTime StartDate { get; init; }
 
+        [Required]
         [DateAfter(nameof(StartDate))]
         public DateTime EndDate { get; init; }
 
-        public bool IsFullDay { get; init; }
-
         public string ScheduleId { get; init; }
+
+        public string CooperativeId { get; init; }
     }
 }

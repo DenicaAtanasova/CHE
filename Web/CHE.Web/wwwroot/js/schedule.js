@@ -12,7 +12,7 @@ class CALENDAR {
             currentDay: this.getFirstElementInsideIdByClassName('calendar-left-side-day'),
             currentWeekDay: this.getFirstElementInsideIdByClassName('calendar-left-side-day-of-week'),
             prevYear: this.getFirstElementInsideIdByClassName('calendar-change-year-slider-prev'),
-            nextYear: this.getFirstElementInsideIdByClassName('calendar-change-year-slider-next')
+            nextYear: this.getFirstElementInsideIdByClassName('calendar-change-year-slider-next'),
         };
 
         this.date = +new Date();
@@ -39,18 +39,19 @@ class CALENDAR {
         let calendar = this.getCalendar();
         let date = calendar.active.formatted;
         let events = data[date];
-
         const tBody = document.getElementById('events');
         tBody.innerHTML = '';
         const button = document.createElement('button');
+        const anchor = document.createElement('a');
         if (events != undefined) {
             events.forEach(event => {
-                let updateButton = button.cloneNode(false);
+                const updateUri = `/Schedule/Events/Update/${event.id}`;
+                let updateButton = anchor.cloneNode(false);
                 updateButton.className = 'update-event-btn';
                 updateButton.setAttribute('data-toggle', 'tooltip');
                 updateButton.setAttribute('data-placement', 'top');
                 updateButton.setAttribute('title', 'update');
-                updateButton.setAttribute('onclick', `loadEvent(\"${event.id}\")`);
+                updateButton.setAttribute('href', updateUri);
 
                 let deleteButton = button.cloneNode(false);
                 deleteButton.className = 'delete-event-btn';
@@ -134,11 +135,8 @@ class CALENDAR {
 
         let scheduleId = document.getElementById('schedule-id').value.trim();
         let date = calendar.active.formatted;
-        const response = await fetch(`${uri}/date/${date}`, {
-            method: 'GET',
-            headers: {
-                'x-scheduleId': scheduleId
-            }
+        const response = await fetch(`${uri}/GetThreeMonthsEvents/${date}?scheduleId=${scheduleId}`, {
+            method: 'GET'
         });
         const events = await response.json();
 
@@ -154,7 +152,15 @@ class CALENDAR {
 
         let daysTemplate = "";
         days.forEach(day => {
-            daysTemplate += `<li class="${day.currentMonth ? '' : 'another-month'}${day.today ? ' active-day ' : ''}${day.selected ? 'selected-day' : ''}${day.hasEvent ? ' event-day' : ''}" data-day="${day.dayNumber}" data-month="${day.month}" data-year="${day.year}"></li>`
+            daysTemplate += `<li class="${day.currentMonth ?
+                '' :
+                'another-month'}${day.today ?
+                    ' active-day ' :
+                    ''}${day.selected ?
+                    'selected-day' :
+                    ''}${day.hasEvent ?
+                    ' event-day' :
+                    ''}" data-day="${day.dayNumber}" data-month="${day.month}" data-year="${day.year}"></li>`
         });
 
         this.elements.days.innerHTML = daysTemplate;
@@ -268,7 +274,7 @@ class CALENDAR {
 
     getFirstElementInsideIdByClassName(className) {
         return document.getElementById(this.options.id).getElementsByClassName(className)[0];
-    }
+    }   
 }
 
 let calendar;
@@ -284,3 +290,13 @@ function draw() {
 };
 
 export { draw };
+
+function deleteEvent(id) {
+    fetch(`${uri}/Delete/${id}`, {
+        method: 'DELETE'
+    })
+        .then(() => draw())
+        .catch(error => console.error('Unable to delete event.', error));
+}
+
+window.deleteEvent = deleteEvent;

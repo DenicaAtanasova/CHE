@@ -56,7 +56,7 @@
         {
             public const int TitleMaxLength = 30;
 
-            public const int DescriptionMaxLength = 100;
+            public const int DescriptionMaxLength = 200;
         }
     }
 }
