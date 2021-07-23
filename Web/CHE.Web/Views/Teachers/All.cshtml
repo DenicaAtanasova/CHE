@@ -27,19 +27,19 @@
         <div class="row">
             @foreach (var teacher in Model.Teachers)
             {
-                <div class="card col-lg-4 col-md-6 d-flex align-items-stretch mt-4">
+                <div class="card col-xl-3 col-lg-4 col-sm-6 d-flex align-items-stretch mt-4">
                     <a asp-controller="Teachers" asp-action="Details" asp-route-id="@teacher.Id">
                         <div class="icon-box">
                             <div class="icon">
                                 <img class="card-img-top" src="@teacher.ImageUrl" alt="">
                             </div>
                             <h4>@teacher.UserName</h4>
-                            <div>
-                            </div>
-                            <vc:star-rating rating="@teacher.Rating"></vc:star-rating>
-                            <div class="d-flex justify-content-between">
-                                <div class="card-text"><h6>Rating: @teacher.Rating / 5</h6></div>
-                                <div class="card-text"><h6>Reviews: @teacher.ReviewsCount</h6></div>
+                            <div class="rating-star">
+                                <vc:star-rating rating="@teacher.Rating"></vc:star-rating>
+                                <div class="d-flex justify-content-between">
+                                    <div class="card-text"><h6>Rating: @teacher.Rating / 5</h6></div>
+                                    <div class="card-text"><h6>Reviews: @teacher.ReviewsCount</h6></div>
+                                </div>
                             </div>
                         </div>
                     </a>

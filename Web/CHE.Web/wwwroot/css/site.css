@@ -569,19 +569,7 @@ div.image img {
     text-decoration: none;
 }
 
-@media (max-height: 768px), (max-width: 1200px) {
-    #hero {
-        margin-bottom: 60px;
-    }
-
-    #hero .carousel-container {
-        padding-bottom: 0;
-    }
-
-    #hero .carousel-indicators li {
-        margin-bottom: 0;
-    }
-
+@media (max-height: 768px), (max-width: 1199px) {
     .coop-layout,
     .account-layout {
         display: flex;
@@ -614,36 +602,27 @@ div.image img {
         flex-direction: column;
         /*width: 53em;*/
     }
-    .left-side {
-        /*width: 520px;*/
-    }
+   
     .calendar calendar-days {
         width: calc(460px / 7);
     }
 }
 
-@media (min-width: 1024px) {
+@media (min-width: 991px) {
     .right-side {
         width: 520px;
     }
 
-    #hero p {
-        width: 50%;
-    }
-
-    #hero .carousel-control-prev, #hero .carousel-control-next {
-        width: 5%;
-    }
     .left-side {
         width: 320px;
     }
 }
 
-@media (min-width: 1200px) {
-    .calendar{
+/*@media (min-width: 1200px) {*/
+    /*.calendar{
         width: 55em;
-    }
-}
+    }*/
+/*}*/
 
 
 /*--------------------------------------------------------------
@@ -815,7 +794,7 @@ section {
     text-align: center;
     box-shadow: 5px 5px 10px #888888;
     border: 1px solid #ededed;
-    padding: 80px 20px;
+    padding: 50px 20px 20px;
     transition: all ease-in-out 0.3s;
 }
 
@@ -2557,4 +2536,8 @@ a.schedule {
 
 .btn.focus, .btn:focus {
     box-shadow: 0 0 0 0.2rem #ccc;
+}
+
+.rating-star{
+    margin-top: 50px;
 }
