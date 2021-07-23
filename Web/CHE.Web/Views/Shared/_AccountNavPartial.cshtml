@@ -1,12 +1,16 @@
-﻿<nav class="nav-coop">
+﻿<nav class="nav-coop nav-acount">
     <ul>
+        <div class="parent-nav">
         <li><a asp-area="Identity" asp-page="/Account/Manage/Index">Info</a></li>
         <li><a asp-area="Identity" asp-page="/Account/Manage/Email">Email</a></li>
         <li><a asp-area="Identity" asp-page="/Account/Manage/ChangePassword">Change password</a></li>
+        <li><a asp-area="Identity" asp-page="/Account/Manage/PersonalData">Personal data</a></li>
+        </div>
         @if (this.User.IsInRole(GlobalConstants.TEACHER_ROLE))
         {
-            <vc:account-nav user-id="@User.GetId()"></vc:account-nav>
+            <div class="teacher-nav">
+                <vc:account-nav user-id="@User.GetId()"></vc:account-nav>
+            </div>
         }
-        <li><a asp-area="Identity" asp-page="/Account/Manage/PersonalData">Personal data</a></li>
     </ul>
 </nav>

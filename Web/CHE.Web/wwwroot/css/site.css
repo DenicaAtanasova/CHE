@@ -232,7 +232,7 @@ div.image img {
 .nav-menu a:hover,
 .nav-menu .active > a,
 .nav-menu li:hover > a,
-.nav-coop .active > a {
+.nav-coop .active > a, {
     color: #e96b56;
     text-decoration: none;
 }
@@ -574,13 +574,29 @@ div.image img {
         margin-bottom: 60px;
     }
 
-        #hero .carousel-container {
-            padding-bottom: 0;
-        }
+    #hero .carousel-container {
+        padding-bottom: 0;
+    }
 
-        #hero .carousel-indicators li {
-            margin-bottom: 0;
-        }
+    #hero .carousel-indicators li {
+        margin-bottom: 0;
+    }
+
+    .coop-layout,
+    .account-layout {
+        display: flex;
+        flex-direction: column-reverse;
+        margin-bottom: 50px;
+    }
+
+    .sidebar {
+        max-width: 100%;
+    }
+
+    .blog .sidebar .nav-acount ul {
+        display: flex;
+        justify-content: space-between;
+    }
 }
 
 @media (max-width: 768px) {
@@ -588,12 +604,29 @@ div.image img {
         height: 90vh;
     }
 
-        #hero .carousel-item {
-            height: 90vh;
-        }
+    #hero .carousel-item {
+        height: 90vh;
+    }
+}
+
+@media (max-width: 990px){
+    .calendar {
+        flex-direction: column;
+        /*width: 53em;*/
+    }
+    .left-side {
+        /*width: 520px;*/
+    }
+    .calendar calendar-days {
+        width: calc(460px / 7);
+    }
 }
 
 @media (min-width: 1024px) {
+    .right-side {
+        width: 520px;
+    }
+
     #hero p {
         width: 50%;
     }
@@ -601,7 +634,17 @@ div.image img {
     #hero .carousel-control-prev, #hero .carousel-control-next {
         width: 5%;
     }
+    .left-side {
+        width: 320px;
+    }
 }
+
+@media (min-width: 1200px) {
+    .calendar{
+        width: 55em;
+    }
+}
+
 
 /*--------------------------------------------------------------
 # Sections General
@@ -1907,7 +1950,7 @@ div.image {
 
 .blog .sidebar {
     padding: 30px;
-    margin: 0 0 60px 20px;
+    margin: 0 10px 20px 10px;
     box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
 }
 
@@ -2284,6 +2327,7 @@ div.image {
 .calendar .add-event-day .add-event-day-field-btn,
 .calendar .calendar-days li:after {
     margin: auto;
+    left: 30%;
 }
 
 .add-event-day {
@@ -2291,12 +2335,16 @@ div.image {
 }
 
 .calendar {
+    display: flex;
     background: #fff;
-    width: 53em;
-    height: 33em;
+    /*width: 53em;*/
+    /*height: 33em;*/
     border-radius: 10px;
-    overflow: hidden;
     /*box-shadow: 5px 5px 10px #888888;*/
+}
+
+.calendar > div {
+    flex-grow: 1;
 }
 
 .calendar .calendar-left-side-day-of-week,
@@ -2318,16 +2366,18 @@ div.image {
 .calendar .calendar-left-side-day-of-week,
 .calendar .calendar-week {
     text-transform: uppercase;
+    display: flex;
+    justify-content: space-around;
 }
 
 .calendar .right-side,
 .calendar .left-side {
-    padding: 30px;
+    padding: 20px;
     height: 100%;
 }
 
 .calendar .left-side {
-    width: 320px;
+    /*width: 320px;*/
     background: #e96b56;
     float: left;
 }
@@ -2374,7 +2424,7 @@ div.image {
 }
 
 .calendar .right-side {
-    width: 520px;
+    /*width: 520px;*/
     float: right;
 }
 
@@ -2397,6 +2447,10 @@ div.image {
     font-size: 0;
 }
 
+.calendar-month {
+    display: flex;
+}
+
 .calendar .calendar-days li,
 .calendar .calendar-week li,
 .calendar .calendar-month li {
@@ -2407,7 +2461,7 @@ div.image {
 }
 
 .calendar .calendar-month li {
-    width: calc(460px / 12);
+    width: calc(100% / 12);
     height: 30px;
     line-height: 30px;
     color: #868686;
@@ -2420,7 +2474,7 @@ div.image {
 }
 
 .calendar .calendar-days li {
-    width: calc(460px / 7);
+    width: calc(100% / 7);
     height: 50px;
     line-height: 50px;
 }
