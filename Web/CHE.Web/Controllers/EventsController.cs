@@ -7,7 +7,6 @@
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
 
-    using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
     using System;
@@ -29,7 +28,7 @@
         }
 
         [HttpGet("{date}")]
-        public async Task<ActionResult<Dictionary<string, EventViewModel[]>>> GetThreeMonthsEvents(string date, string scheduleId)
+        public async Task<IActionResult> GetThreeMonthsEvents(string date, string scheduleId)
         {
             var threeMonthsEvents = await this._eventsService.GetThreeMonthsEventsAsync<EventViewModel>(scheduleId, date);
 
@@ -37,7 +36,7 @@
                 .GroupBy(x => x.StartDate.Date)
                 .ToDictionary(x => x.Key.Date.ToString("d-M-yyyy"), x => x.ToArray());
 
-            return this.Json(groupedEvents);
+            return this.Ok(groupedEvents);
         }
 
         [HttpDelete("{id}")]
@@ -67,15 +66,18 @@
             return this.RedirectToAction("Details", "Schedules", new { id = inputModel.ScheduleId});
         }
 
-        public async Task<IActionResult> Add(string scheduleId)
+        public async Task<IActionResult> Add(string currentDate, string scheduleId)
         {
             var schedule = await this._schedulesService
                 .GetByIdAsync<EventScheduleViewModel>(scheduleId);
 
+            var date = DateTime.ParseExact(currentDate, "d-M-yyyy", CultureInfo.InvariantCulture);
             return this.View(new EventCreateInputModel
             {
                 ScheduleId = scheduleId,
-                CooperativeId = schedule.CooperativeId
+                CooperativeId = schedule.CooperativeId,
+                StartDate = date,
+                EndDate = date
             });
         }
 

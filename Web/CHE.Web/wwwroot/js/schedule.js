@@ -38,6 +38,12 @@ class CALENDAR {
     _displayEvents(data) {
         let calendar = this.getCalendar();
         let date = calendar.active.formatted;
+
+        let scheduleId = document.getElementById('schedule-id').value.trim();
+        let addUri = `/Schedule/Events/Add?currentDate=${date}&scheduleId=${scheduleId}`;
+        let addBtn = document.getElementById('add-button');
+        addBtn.setAttribute('href', addUri);
+
         let events = data[date];
         const tBody = document.getElementById('events');
         tBody.innerHTML = '';
