@@ -17,15 +17,6 @@
         private readonly CheDbContext _dbContext;
         private readonly IAddressesService _addressesService;
 
-        private readonly IEnumerable<Address> _addressesList = new List<Address>
-            {
-                new Address{City = "Varna", Neighbourhood = "Levski"},
-                new Address{City = "Varna", Neighbourhood = "Asparuhovo"},
-                new Address{City = "Razgrad", Neighbourhood = "H2O"},
-                new Address{City = "Razgrad", Neighbourhood = "Levski"},
-                new Address{City = "Sofia", Neighbourhood = "Levski"},
-            };
-
         public AddressesServiceTests()
         {
             var options = new DbContextOptionsBuilder<CheDbContext>()
@@ -37,7 +28,7 @@
         }
 
         [Fact]
-        public async Task GetAddressIdAsync_ShouldWorkCorrectlyWithExistingAddress()
+        public async Task GetAddressIdAsync_ShouldReturnExistingAddressId()
         {
             var testCity = "Varna";
             var testNeighbourhood = "Levski";
@@ -72,7 +63,7 @@
         }
 
         [Fact]
-        public async Task GetAddressIdAsync_ShouldWorkCorrectlyWithoutExistingAddress()
+        public async Task GetAddressIdAsync_ShouldReturnNewAddressId()
         {
             var testCity = "Varna";
             var testNeighbourhood = "Levski";
@@ -103,13 +94,22 @@
         }
 
         [Fact]
-        public async Task GetAllCitiesAsync_ShouldWorkCorrectly()
+        public async Task GetAllCitiesAsync_ShouldReturnAllDistinctCities()
         {
-            this._dbContext.Addresses.AddRange(_addressesList);
+            var addressesList = new List<Address>
+            {
+                new Address{City = "Varna", Neighbourhood = "Levski"},
+                new Address{City = "Varna", Neighbourhood = "Asparuhovo"},
+                new Address{City = "Razgrad", Neighbourhood = "H2O"},
+                new Address{City = "Razgrad", Neighbourhood = "Levski"},
+                new Address{City = "Sofia", Neighbourhood = "Levski"},
+            };
+
+            this._dbContext.Addresses.AddRange(addressesList);
             await this._dbContext.SaveChangesAsync();
 
             var cities = await this._addressesService.GetAllCitiesAsync();
-            var expectedCitiesList = _addressesList
+            var expectedCitiesList = addressesList
                 .Select(x => x.City)
                 .Distinct();
 
@@ -117,13 +117,22 @@
         }
 
         [Fact]
-        public async Task GetAllNeighbourhoodsAsync_ShouldWorkCorrectly()
+        public async Task GetAllNeighbourhoodsAsync_ShouldReturnAllDistinctNeighbourhoods()
         {
-            this._dbContext.Addresses.AddRange(_addressesList);
+            var addressesList = new List<Address>
+            {
+                new Address{City = "Varna", Neighbourhood = "Levski"},
+                new Address{City = "Varna", Neighbourhood = "Asparuhovo"},
+                new Address{City = "Razgrad", Neighbourhood = "H2O"},
+                new Address{City = "Razgrad", Neighbourhood = "Levski"},
+                new Address{City = "Sofia", Neighbourhood = "Levski"},
+            };
+
+            this._dbContext.Addresses.AddRange(addressesList);
             await this._dbContext.SaveChangesAsync();
 
             var neighbourhoods = await this._addressesService.GetAllNeighbourhoodsAsync();
-            var expectedNeighbourhoodsList = _addressesList
+            var expectedNeighbourhoodsList = addressesList
                 .Select(x => x.Neighbourhood)
                 .Distinct();
 
