@@ -329,6 +329,7 @@
         [InlineData(-2, 0, null, null, null)]
         [InlineData(0, -1, null, null, null)]
         [InlineData(1, 6, null, null, null)]
+        [InlineData(6, 6, null, null, null)]
         [InlineData(0, 2, "First", null, null)]
         [InlineData(0, 6, null, "Sofia", null)]
         [InlineData(1, 6, null, null, "Levski")]
@@ -433,7 +434,8 @@
         [InlineData(-1, 0)]
         [InlineData(0, -1)]
         [InlineData(0, 6)]
-        public async Task GetAllAdminAsync_ShouldWorkCorrectly(int startIndex, int endIndex)
+        [InlineData(6, 6)]
+        public async Task GetAllByUserAsync_ShouldReturnCorrectCollectionWhenUserIsAdmin(int startIndex, int endIndex)
         {
             var creatorId = Guid.NewGuid().ToString();
 
@@ -496,9 +498,84 @@
             }
         }
 
-        //TODO: Test if member exists?
+        [Theory]
+        [InlineData(0, 0)]
+        [InlineData(-1, 0)]
+        [InlineData(0, -1)]
+        [InlineData(0, 6)]
+        [InlineData(6, 6)]
+        public async Task GetAllByUserAsync_ShouldReturnCorrectCollectionWhenUserIsAdminOrMember(int startIndex, int endIndex)
+        {
+            var userId = Guid.NewGuid().ToString();
+
+            var cooperativesList = new List<Cooperative>
+            {
+                new Cooperative
+                {
+                    Name = "Name1",
+                    Info = "Info1",
+                    AdminId = userId
+                },
+                new Cooperative
+                {
+                    Name = "Name2",
+                    Info = "Info2",
+                    AdminId = userId
+                },
+                new Cooperative
+                {
+                    Name = "Name3",
+                    Info = "Info3",
+                    AdminId = Guid.NewGuid().ToString(),
+                    Members = new List<CheUserCooperative>
+                    {
+                        new CheUserCooperative
+                        {
+                            CheUserId = userId
+                        }
+                    }
+                },
+                new Cooperative
+                {
+                    Name = "Name4",
+                    Info = "Info4",
+                    AdminId = Guid.NewGuid().ToString()
+                },
+                new Cooperative
+                {
+                    Name = "Name5",
+                    Info = "Info5",
+                    AdminId = Guid.NewGuid().ToString()
+                }
+            };
+
+            this._dbContext.Cooperatives.AddRange(cooperativesList);
+            await this._dbContext.SaveChangesAsync();
+
+            var cooperatives = await this._cooperativesService
+                .GetAllByUserAsync<CooperativeAllViewModel>(userId, CooperativeUser.Admin | CooperativeUser.Member, startIndex, endIndex);
+
+            var count = endIndex == 0
+                ? await this._dbContext.Cooperatives.CountAsync()
+                : endIndex;
+
+            var expectedCooperatives = cooperativesList
+                .Where(x => x.AdminId == userId || x.Members.Any(x => x.CheUserId == userId))
+                .Skip((startIndex - 1) * count)
+                .Take(count)
+                .ToList();
+
+            Assert.Equal(expectedCooperatives.Count, cooperatives.Count());
+
+            var index = 0;
+            foreach (var cooperative in cooperatives)
+            {
+                Assert.Equal(expectedCooperatives[index++].Id, cooperative.Id);
+            }
+        }
+
         [Fact]
-        public async Task AddMemberAsync_ShouldWorkCorrectly()
+        public async Task AddMemberAsync_ShouldAddMemberToCooperative()
         {
             var memberId = Guid.NewGuid().ToString();
             var cooperativeId = Guid.NewGuid().ToString();
@@ -512,26 +589,36 @@
         }
 
         [Fact]
-        public async Task RemoveMemberAsync_ShouldWorkCorrectly()
+        public async Task RemoveMemberAsync_ShouldRemoveFromCooperative()
         {
             var memberId = Guid.NewGuid().ToString();
             var cooperativeId = Guid.NewGuid().ToString();
 
-            var member = new CheUserCooperative
+            var members = new List<CheUserCooperative>
             {
-                CooperativeId = cooperativeId,
-                CheUserId = memberId
+                new CheUserCooperative
+                {
+                    CooperativeId = cooperativeId,
+                    CheUserId = memberId
+                },
+                new CheUserCooperative
+                {
+                    CooperativeId = Guid.NewGuid().ToString(),
+                    CheUserId = Guid.NewGuid().ToString()
+                },
             };
-            this._dbContext.UserCooperatives.Add(member);
+
+            this._dbContext.UserCooperatives.AddRange(members);
 
             await this._dbContext.SaveChangesAsync();
-            this._dbContext.Entry(member).State = EntityState.Detached;
 
             await this._cooperativesService.RemoveMemberAsync(memberId, cooperativeId);
 
-            var expectedMembersCount = 0;
+            var memberFromDb = await this._dbContext.UserCooperatives
+                .SingleOrDefaultAsync(x => x.CooperativeId == cooperativeId && x.CheUserId == memberId);
 
-            Assert.Equal(expectedMembersCount, this._dbContext.UserCooperatives.Count());
+            Assert.NotEmpty(this._dbContext.UserCooperatives);
+            Assert.Null(memberFromDb);
         }
 
         [Fact]
@@ -562,30 +649,38 @@
                 .CheckIfMemberAsync(searchedMemberId, cooperative.Id));
             Assert.False(await this._cooperativesService
                 .CheckIfMemberAsync(Guid.NewGuid().ToString(), cooperative.Id));
+            Assert.False(await this._cooperativesService
+                .CheckIfMemberAsync(searchedMemberId, Guid.NewGuid().ToString()));
+            Assert.False(await this._cooperativesService
+                .CheckIfMemberAsync(Guid.NewGuid().ToString(), Guid.NewGuid().ToString()));
         }
 
         [Fact]
         public async Task CheckIfAdminAsync_ShouldWorkCorrectly()
         {
-            var creatorId = Guid.NewGuid().ToString();
+            var adminId = Guid.NewGuid().ToString();
             var cooperative = new Cooperative
             {
                 Name = "CoopName",
                 Info = "CoopInfo",
-                AdminId = creatorId
+                AdminId = adminId
             };
 
             this._dbContext.Cooperatives.Add(cooperative);
             await this._dbContext.SaveChangesAsync();
 
             Assert.True(await this._cooperativesService
-                .CheckIfAdminAsync(creatorId, cooperative.Id));
+                .CheckIfAdminAsync(adminId, cooperative.Id));
             Assert.False(await this._cooperativesService
                 .CheckIfAdminAsync(Guid.NewGuid().ToString(), cooperative.Id));
+            Assert.False(await this._cooperativesService
+                .CheckIfAdminAsync(adminId, Guid.NewGuid().ToString()));
+            Assert.False(await this._cooperativesService
+                .CheckIfAdminAsync(Guid.NewGuid().ToString(), Guid.NewGuid().ToString()));
         }
 
         [Fact]
-        public async Task CountAsync_ShouldWorkCorrectlyWithoutArgs()
+        public async Task CountAsync_ShouldReturnCorrectCountWithoutArgs()
         {
             var cooperatives = new List<Cooperative>
             {
@@ -625,7 +720,7 @@
         [InlineData(null, null, "Levski")]
         [InlineData("First", "Sofia", null)]
         [InlineData("First", "Sofia", "Levski")]
-        public async Task CountAsync_ShouldWorkCorrectlyWithArgs(
+        public async Task CountAsync_ShouldReturnCorrectCountWithArgs(
             string gradeFilter,
             string cityFilter,
             string neighbourhoodFilter)
@@ -703,9 +798,9 @@
         }
 
         [Fact]
-        public async Task CountAsync_ShouldWorkCorrectlyWithUserId()
+        public async Task CountByUserAsync_ShouldWorkCorrectlyWithUserId()
         {
-            var creatorId = Guid.NewGuid().ToString();
+            var userId = Guid.NewGuid().ToString();
 
             var cooperatives = new List<Cooperative>
             {
@@ -713,24 +808,37 @@
                 {
                     Name = "Name1",
                     Info = "Info1",
-                    AdminId = creatorId
+                    AdminId = userId
                 },
                 new Cooperative
                 {
                     Name = "Name2",
                     Info = "Info2",
-                    AdminId = creatorId
+                    AdminId = userId
                 },
                 new Cooperative
                 {
                     Name = "Name3",
                     Info = "Info3",
-                    AdminId = creatorId
+                    AdminId = Guid.NewGuid().ToString(),
+                    Members = new List<CheUserCooperative>
+                    {
+                        new CheUserCooperative
+                        {
+                            CheUserId = userId
+                        }
+                    }
                 },
                 new Cooperative
                 {
                     Name = "Name4",
                     Info = "Info4",
+                    AdminId = Guid.NewGuid().ToString()
+                },
+                new Cooperative
+                {
+                    Name = "Name5",
+                    Info = "Info5",
                     AdminId = Guid.NewGuid().ToString()
                 }
             };
@@ -738,8 +846,10 @@
             this._dbContext.Cooperatives.AddRange(cooperatives);
             await this._dbContext.SaveChangesAsync();
 
-            var count = await this._cooperativesService.CountByUserAsync(creatorId);
-            var expectedCount = cooperatives.Where(x => x.AdminId == creatorId).Count();
+            var count = await this._cooperativesService.CountByUserAsync(userId);
+            var expectedCount = cooperatives
+                .Where(x => x.AdminId == userId || x.Members.Any(x => x.CheUserId == userId))
+                .Count();
 
             Assert.Equal(expectedCount, count);
         }
@@ -747,24 +857,24 @@
         [Fact]
         public async Task ChangeAdminAsync_ShouldWorkCorrectly()
         {
-            var admin = new CheUser
+            var currentAdmin = new CheUser
             {
                 UserName = "Admin"
             };
 
-            var newAdmin = new CheUser
+            var futureAdmin = new CheUser
             {
                 UserName = "NewAdmin"
             };
 
             var cooperative = new Cooperative
             {
-                Admin = admin,
+                Admin = currentAdmin,
                 Members = new List<CheUserCooperative>
                 {
                     new CheUserCooperative
                     {
-                        CheUser = newAdmin
+                        CheUser = futureAdmin
                     }
                 }
             };
@@ -772,33 +882,33 @@
             this._dbContext.Add(cooperative);
             await this._dbContext.SaveChangesAsync();
 
-            await this._cooperativesService.ChangeAdminAsync(cooperative.Id, newAdmin.Id);
+            await this._cooperativesService.ChangeAdminAsync(futureAdmin.Id, cooperative.Id);
             var cooperativeFromDb = await this._dbContext.Cooperatives.SingleOrDefaultAsync();
 
-            Assert.Equal(newAdmin.Id, cooperativeFromDb.AdminId);
+            Assert.Equal(futureAdmin.Id, cooperativeFromDb.AdminId);
         }
 
         [Fact]
         public async Task ChangeAdminAsync_ShouldTurnCurrentAdminToMember()
         {
-            var admin = new CheUser
+            var currentAdmin = new CheUser
             {
                 UserName = "Admin"
             };
 
-            var newAdmin = new CheUser
+            var futureAdmin = new CheUser
             {
                 UserName = "NewAdmin"
             };
 
             var cooperative = new Cooperative
             {
-                Admin = admin,
+                Admin = currentAdmin,
                 Members = new List<CheUserCooperative>
                 {
                     new CheUserCooperative
                     {
-                        CheUser = newAdmin
+                        CheUser = futureAdmin
                     }
                 }
             };
@@ -806,12 +916,10 @@
             this._dbContext.Add(cooperative);
             await this._dbContext.SaveChangesAsync();
 
-            await this._cooperativesService.ChangeAdminAsync(cooperative.Id, newAdmin.Id);
+            await this._cooperativesService.ChangeAdminAsync(futureAdmin.Id, cooperative.Id);
             var cooperativeFromDb = await this._dbContext.Cooperatives.SingleOrDefaultAsync();
 
-            var memberId = cooperativeFromDb.Members.SingleOrDefault().CheUserId;
-
-            Assert.Equal(admin.Id, memberId);
+            Assert.Contains(cooperativeFromDb.Members, x => x.CheUserId == currentAdmin.Id);
         }
 
         private IEnumerable<Cooperative> GetFilteredCollection(
