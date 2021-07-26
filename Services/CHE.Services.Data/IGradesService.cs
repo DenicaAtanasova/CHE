@@ -7,6 +7,6 @@
     {
         Task<string> GetGardeIdAsync(string value);
 
-        Task<IEnumerable<string>> GetAllValuesAsync(string currentGrade = null);
+        Task<IEnumerable<string>> GetAllAsync(string currentGrade = null);
     }
 }

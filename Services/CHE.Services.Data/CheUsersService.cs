@@ -121,8 +121,6 @@
             }
         }
 
-        //TODO: SendReview, RemoveReview, EditReview
-
         public async Task SendReviewAsync(string senderId, ReviewCreateInputModel inputModel)
         {
             var reviewExists = await this._dbContext.Reviews

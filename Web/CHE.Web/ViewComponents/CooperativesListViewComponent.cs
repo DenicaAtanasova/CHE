@@ -1,6 +1,7 @@
 ﻿namespace CHE.Web.ViewComponents
 {
     using CHE.Services.Data;
+    using CHE.Web.InputModels.Cooperatives;
     using CHE.Web.ViewModels.JoinRequests;
 
     using Microsoft.AspNetCore.Mvc;
@@ -19,7 +20,7 @@
         public async Task<IViewComponentResult> InvokeAsync(string userId)
         {
             var cooperativesList = await this._cooperativesService
-                .GetAllByAdminAsync<JoinRequestCooperativeSendViewModel>(userId);
+                .GetAllByUserAsync<JoinRequestCooperativeSendViewModel>(userId, CooperativeUser.Admin);
 
             return this.View(cooperativesList);
         }

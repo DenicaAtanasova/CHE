@@ -24,7 +24,7 @@
                 .Select(x => x.Id)
                 .SingleOrDefaultAsync();
 
-        public async Task<IEnumerable<string>> GetAllValuesAsync(string currentGrade = null)
+        public async Task<IEnumerable<string>> GetAllAsync(string currentGrade = null)
             => await this._dbContext.Grades
                 .AsNoTracking()    
                 .Where(x => x.Value != currentGrade)

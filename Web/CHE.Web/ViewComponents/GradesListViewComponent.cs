@@ -15,7 +15,7 @@
 
         public async Task<IViewComponentResult> InvokeAsync(string currentGrade = null)
         {
-            var gradesList = await _gradesService.GetAllValuesAsync(currentGrade);
+            var gradesList = await _gradesService.GetAllAsync(currentGrade);
 
             return this.View(gradesList);
         }

@@ -85,7 +85,7 @@
             this._dbContext.Grades.AddRange(grades);
             await this._dbContext.SaveChangesAsync();
 
-            var gradesValues = await this._gradesService.GetAllValuesAsync();
+            var gradesValues = await this._gradesService.GetAllAsync();
 
             Assert.Equal(gradesList, gradesValues);
         }
@@ -121,7 +121,7 @@
                 .Where(x => x != currentGrade);
 
             var actualGradesValues = await this._gradesService
-                .GetAllValuesAsync(currentGrade);
+                .GetAllAsync(currentGrade);
 
             Assert.Equal(expectedGradesValues, actualGradesValues);
         }

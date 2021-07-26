@@ -55,7 +55,7 @@
         }
 
         [Fact]
-        public async Task CreateAsync_ShouldWorkCorrectly()
+        public async Task CreateAsync_ShouldCreateNewCooperative()
         {
             var creatorId = Guid.NewGuid().ToString();
 
@@ -84,7 +84,7 @@
         }
 
         [Fact]
-        public async Task UpdateAsync_ShouldWorkCorrectly()
+        public async Task UpdateAsync_ShouldUpdateCooperative()
         {
             var creatorId = Guid.NewGuid().ToString();
 
@@ -129,14 +129,59 @@
             Assert.Equal(cooperativeUpdateModel.Info, updatedCooperative.Info);
             Assert.Equal(FIRST_GRADE_ID, updatedCooperative.GradeId);
             Assert.Equal(ADDRESS_ID, updatedCooperative.AddressId);
-            Assert.Equal(ADDRESS_ID, updatedCooperative.AddressId);
             Assert.Equal(expectedModifiedOnDate, 
                 updatedCooperative.ModifiedOn.Value, 
                 new TimeSpan(days: 0, hours: 0, minutes: 0, seconds: 0, milliseconds: 1000));
         }
 
         [Fact]
-        public async Task DeleteAsync_ShouldWorkCorrectly()
+        public async Task UpdateAsync_ShouldDoNothingWithIncorrectId()
+        {
+            var creatorId = Guid.NewGuid().ToString();
+
+            var cooperative = new Cooperative
+            {
+                Name = "CoopName",
+                Info = "CoopInfo",
+                Grade = new Grade
+                {
+                    NumValue = 2,
+                    Value = "Second"
+                },
+                Address = new Address
+                {
+                    City = "Varna",
+                    Neighbourhood = "Levski"
+                },
+                AdminId = Guid.NewGuid().ToString()
+            };
+
+            this._dbContext.Cooperatives.Add(cooperative);
+            await this._dbContext.SaveChangesAsync();
+
+            var cooperativeUpdateModel = new CooperativeUpdateInputModel
+            {
+                Id = Guid.NewGuid().ToString(),
+                Name = "updatedName",
+                Info = "updatedInfo",
+                Grade = FIRST_GRADE,
+                Address = ADDRESS
+            };
+
+            await this._cooperativesService
+                .UpdateAsync(cooperativeUpdateModel);
+
+            var cooperativeFromDb = await this._dbContext.Cooperatives
+                .SingleOrDefaultAsync(x => x.Id == cooperative.Id);
+
+            Assert.Equal(cooperative.Name, cooperativeFromDb.Name);
+            Assert.Equal(cooperative.Info, cooperativeFromDb.Info);
+            Assert.Equal(cooperative.GradeId, cooperativeFromDb.GradeId);
+            Assert.Equal(cooperative.AddressId, cooperativeFromDb.AddressId);
+        }
+
+        [Fact]
+        public async Task DeleteAsync_ShouldDeleteTheCooperative()
         {
             var cooperative = new Cooperative
             {
@@ -162,7 +207,34 @@
             await this._cooperativesService.DeleteAsync(cooperative.Id);
 
             Assert.Empty(this._dbContext.Cooperatives);
-            Assert.Empty(this._dbContext.Schedules);
+        }
+
+        [Fact]
+        public async Task DeleteAsync_ShouldDoNothingWithIncorrectId()
+        {
+            var cooperative = new Cooperative
+            {
+                Name = "CoopName",
+                Info = "CoopInfo",
+                Grade = new Grade
+                {
+                    NumValue = 2,
+                    Value = "Second"
+                },
+                Address = new Address
+                {
+                    City = "Varna",
+                    Neighbourhood = "Levski"
+                },
+                AdminId = Guid.NewGuid().ToString()
+            };
+
+            this._dbContext.Cooperatives.Add(cooperative);
+            await this._dbContext.SaveChangesAsync();
+
+            await this._cooperativesService.DeleteAsync(Guid.NewGuid().ToString());
+
+            Assert.NotEmpty(this._dbContext.Cooperatives);
         }
 
         [Fact]
@@ -212,7 +284,7 @@
         }
 
         [Fact]
-        public async Task GetAllAsync_ShouldWorkCorrectlyWithoutArgs()
+        public async Task GetAllAsync_ShouldReturnCorrectCollectionWithoutArgs()
         {
             var cooperatives = new List<Cooperative>
             {
@@ -262,12 +334,12 @@
         [InlineData(1, 6, null, null, "Levski")]
         [InlineData(0, 6, "First", "Sofia", null)]
         [InlineData(1, 6, "First", "Sofia", "Levski")]
-        public async Task GetAllAsync_ShouldWorkCorrectlyWithArgs(
+        public async Task GetAllAsync_ShouldReturnCorrectCollectionWithArgs(
             int startIndex,
             int endIndex,
-            string gradeFilter,
-            string cityFilter,
-            string neighbourhoodFilter)
+            string grade,
+            string city,
+            string neighbourhood)
         {
             var cooperativesList = new List<Cooperative>
             {
@@ -336,13 +408,13 @@
             await this._dbContext.SaveChangesAsync();
 
             var cooperatives = await this._cooperativesService
-                .GetAllAsync<CooperativeAllViewModel>(startIndex, endIndex, gradeFilter, cityFilter, neighbourhoodFilter);
+                .GetAllAsync<CooperativeAllViewModel>(startIndex, endIndex, grade, city, neighbourhood);
 
             var count = endIndex == 0
                 ? await this._dbContext.Cooperatives.CountAsync()
                 : endIndex;
 
-            var expectedCooperatives = this.GetFilterCollection(cooperativesList, gradeFilter, cityFilter, neighbourhoodFilter)
+            var expectedCooperatives = this.GetFilteredCollection(cooperativesList, grade, city, neighbourhood)
                 .Skip((startIndex - 1) * count)
                 .Take(count)
                 .ToList();
@@ -361,7 +433,7 @@
         [InlineData(-1, 0)]
         [InlineData(0, -1)]
         [InlineData(0, 6)]
-        public async Task GetAllByCreatorAsync_ShouldWorkCorrectly(int startIndex, int endIndex)
+        public async Task GetAllAdminAsync_ShouldWorkCorrectly(int startIndex, int endIndex)
         {
             var creatorId = Guid.NewGuid().ToString();
 
@@ -403,7 +475,7 @@
             await this._dbContext.SaveChangesAsync();
 
             var cooperatives = await this._cooperativesService
-                .GetAllByAdminAsync<CooperativeAllViewModel>(creatorId, startIndex, endIndex);
+                .GetAllByUserAsync<CooperativeAllViewModel>(creatorId, CooperativeUser.Admin, startIndex, endIndex);
 
             var count = endIndex == 0
                 ? await this._dbContext.Cooperatives.CountAsync()
@@ -460,55 +532,6 @@
             var expectedMembersCount = 0;
 
             Assert.Equal(expectedMembersCount, this._dbContext.UserCooperatives.Count());
-        }
-
-        [Fact]
-        public async Task GetMembersAsync_ShouldWorkCorrectly()
-        {
-            var members = new List<CheUserCooperative>
-            {
-                new CheUserCooperative
-                {
-                    CheUser = new CheUser
-                    {
-                        UserName = "UserName1"
-                    }
-                },
-                new CheUserCooperative
-                {
-                    CheUser = new CheUser
-                    {
-                        UserName = "UserName2"
-                    }
-                },
-                new CheUserCooperative
-                {
-                    CheUser = new CheUser
-                    {
-                        UserName = "UserName3"
-                    }
-                },
-            };
-
-            var cooperative = new Cooperative
-            {
-                Name = "CoopName",
-                Info = "CoopInfo",
-                Members = members,
-            };
-
-            this._dbContext.Cooperatives.Add(cooperative);
-            await this._dbContext.SaveChangesAsync();
-
-            var memebersFromDb = await this._cooperativesService.GetMembersAsync<CooperativeUserDetailsViewModel>(cooperative.Id);
-
-            Assert.Equal(members.Count, memebersFromDb.Count());
-
-            var index = 0;
-            foreach (var member in memebersFromDb)
-            {
-                Assert.Equal(members[index++].CheUserId, member.UserId);
-            }
         }
 
         [Fact]
@@ -674,7 +697,7 @@
             await this._dbContext.SaveChangesAsync();
 
 
-            var expectedCount = this.GetFilterCollection(cooperatives, gradeFilter, cityFilter, neighbourhoodFilter).Count();
+            var expectedCount = this.GetFilteredCollection(cooperatives, gradeFilter, cityFilter, neighbourhoodFilter).Count();
             var count = await this._cooperativesService.CountAsync(gradeFilter, cityFilter, neighbourhoodFilter);
             Assert.Equal(expectedCount, count);
         }
@@ -715,7 +738,7 @@
             this._dbContext.Cooperatives.AddRange(cooperatives);
             await this._dbContext.SaveChangesAsync();
 
-            var count = await this._cooperativesService.CountAsync(creatorId);
+            var count = await this._cooperativesService.CountByUserAsync(creatorId);
             var expectedCount = cooperatives.Where(x => x.AdminId == creatorId).Count();
 
             Assert.Equal(expectedCount, count);
@@ -791,25 +814,25 @@
             Assert.Equal(admin.Id, memberId);
         }
 
-        private IEnumerable<Cooperative> GetFilterCollection(
+        private IEnumerable<Cooperative> GetFilteredCollection(
             IEnumerable<Cooperative> cooperatives,
-            string gradeFilter = null,
-            string cityFilter = null,
-            string neighbourhoodFilter = null)
+            string grade = null,
+            string city = null,
+            string neighbourhood = null)
         {
-            if (gradeFilter != null)
+            if (grade != null)
             {
-                cooperatives = cooperatives.Where(x => x.Grade.Value == gradeFilter).ToList();
+                cooperatives = cooperatives.Where(x => x.Grade.Value == grade).ToList();
             }
 
-            if (cityFilter != null)
+            if (city != null)
             {
-                cooperatives = cooperatives.Where(x => x.Address.City == cityFilter).ToList();
+                cooperatives = cooperatives.Where(x => x.Address.City == city).ToList();
             }
 
-            if (neighbourhoodFilter != null)
+            if (neighbourhood != null)
             {
-                cooperatives = cooperatives.Where(x => x.Address.Neighbourhood == neighbourhoodFilter).ToList();
+                cooperatives = cooperatives.Where(x => x.Address.Neighbourhood == neighbourhood).ToList();
             }
 
             return cooperatives;

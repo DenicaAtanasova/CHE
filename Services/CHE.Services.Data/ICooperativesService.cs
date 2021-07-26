@@ -24,13 +24,9 @@
             string cityFilter = null,
             string neighbourhoodFilter = null);
 
-        Task<IEnumerable<TEntity>> GetAllByAdminAsync<TEntity>(
+        Task<IEnumerable<TEntity>> GetAllByUserAsync<TEntity>(
             string userId,
-            int startIndex = 1,
-            int endIndex = 0);
-
-        Task<IEnumerable<TEntity>> GetAllByAdminOrMemberAsync<TEntity>(
-            string userId,
+            CooperativeUser userType,
             int startIndex = 1,
             int endIndex = 0);
 
@@ -38,15 +34,13 @@
 
         Task RemoveMemberAsync(string memberId, string cooperativeId);
 
-        Task<IEnumerable<TEntity>> GetMembersAsync<TEntity>(string id);
-
-        Task ChangeAdminAsync(string cooperativeId, string userId);
+        Task ChangeAdminAsync(string userId, string cooperativeId);
 
         Task<bool> CheckIfAdminAsync(string userId, string cooperativeId);
 
         Task<bool> CheckIfMemberAsync(string userId, string cooperativeId);
 
-        Task<int> CountAsync(string userId);
+        Task<int> CountByUserAsync(string userId);
 
         Task<int> CountAsync(
             string gradeFilter = null,

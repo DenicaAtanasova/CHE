@@ -41,15 +41,15 @@
 
         public async Task<IActionResult> Update(string id)
         {
-            var cooperativeToEdit = await this._cooperativesService
+            var cooperativeToUpdate = await this._cooperativesService
                 .GetByIdAsync<CooperativeUpdateInputModel>(id);
 
-            if (cooperativeToEdit == null)
+            if (cooperativeToUpdate == null)
             {
                 return this.NotFound();
             }
 
-            return this.View(cooperativeToEdit);
+            return this.View(cooperativeToUpdate);
         }
 
         [HttpPost]
@@ -62,7 +62,8 @@
 
             await this._cooperativesService.UpdateAsync(model);
 
-            return this.RedirectToAction("Details", "Cooperatives", new { area = "", id = model.Id });
+            return this.RedirectToAction(
+                "Details", "Cooperatives", new { area = "", id = model.Id });
         }
 
         public async Task<IActionResult> Delete(string id)
@@ -74,7 +75,7 @@
 
         public async Task<IActionResult> MakeAdmin(string cooperativeId, string userId)
         {
-            await this._cooperativesService.ChangeAdminAsync(cooperativeId, userId);
+            await this._cooperativesService.ChangeAdminAsync(userId, cooperativeId);
             return this.RedirectToAction(
                 "Details", "Cooperatives", new { area = "", id = cooperativeId });
         }
@@ -98,9 +99,6 @@
                 return this.NotFound();
             }
 
-            cooperative.Members = await this._cooperativesService
-                .GetMembersAsync<CooperativeUserDetailsViewModel>(id);
-
             this.ViewData["id"] = cooperative.Id;
 
             return this.View(cooperative);
@@ -110,9 +108,9 @@
         {
             var userId = this.User.GetId();
             var cooperatives = await this._cooperativesService
-                .GetAllByAdminOrMemberAsync<CooperativeAllViewModel>(userId, pageIndex, DEFAULT_PAGE_SIZE);
+                .GetAllByUserAsync<CooperativeAllViewModel>(userId, CooperativeUser.Admin | CooperativeUser.Member, pageIndex, DEFAULT_PAGE_SIZE);
 
-            var count = await this._cooperativesService.CountAsync(userId);
+            var count = await this._cooperativesService.CountByUserAsync(userId);
 
             var cooperativesList = PaginatedList<CooperativeAllViewModel>
                 .Create(cooperatives, count, pageIndex, DEFAULT_PAGE_SIZE);

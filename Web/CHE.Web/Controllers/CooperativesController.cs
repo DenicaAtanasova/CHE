@@ -65,14 +65,14 @@
             var count = await this._cooperativesService.CountAsync(filter.Level, filter.City, filter.Neighbourhood);
 
             filter.LevelDisplayName = "grade";
-            filter.Levels = await this._gradesService.GetAllValuesAsync();
+            filter.Levels = await this._gradesService.GetAllAsync();
             filter.Cities = await this._addressesService.GetAllCitiesAsync();
             filter.Neighbourhoods = await this._addressesService.GetAllNeighbourhoodsAsync();
 
             var cooperativesList = new CooperativesAllListViewModel
             {
                 Cooperatives = PaginatedList<CooperativeAllViewModel>
-                .Create(cooperatives, count, pageIndex, DEFAULT_PAGE_SIZE),
+                    .Create(cooperatives, count, pageIndex, DEFAULT_PAGE_SIZE),
                 Filter = filter
             };
 
