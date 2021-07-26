@@ -1,14 +1,11 @@
 ﻿namespace CHE.Web.InputModels.Reviews
 {
-    using CHE.Data.Models;
-    using CHE.Services.Mapping;
-
     using System.ComponentModel.DataAnnotations;
 
     using static DataConstants.Review;
     using static DataErrorMessages;
 
-    public class ReviewCreateInputModel : IMapTo<Review>
+    public class ReviewCreateInputModel
     {
         [Required]
         [StringLength(

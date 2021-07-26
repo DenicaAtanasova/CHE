@@ -1,7 +1,5 @@
 ﻿namespace CHE.Services.Data
-{
-    using CHE.Web.InputModels.Profiles;
-
+{ 
     using Microsoft.AspNetCore.Http;
 
     using System.Threading.Tasks;
@@ -12,6 +10,16 @@
 
         Task<string> CreateAsync(string userId);
 
-        Task UpdateAsync(string userId, ProfileInputModel inputModel, IFormFile imageFile);
+        Task UpdateAsync(string userId,
+            string firstName,
+            string lastName,
+            string education,
+            string experience,
+            string skills,
+            string interests,
+            string schoolLevel,
+            string city,
+            string neighbourhood,
+            IFormFile imageFile);
     }
 }

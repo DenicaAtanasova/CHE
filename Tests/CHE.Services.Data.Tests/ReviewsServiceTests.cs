@@ -37,20 +37,18 @@
         public async Task CreateAsync_ShouldWorkCorrectly()
         {
             var senderId = Guid.NewGuid().ToString();
-            var review = new ReviewCreateInputModel
-            {
-                Comment = "Comment",
-                Rating = 5,
-                ReceiverId = Guid.NewGuid().ToString()
-            };
+            var receiverId = Guid.NewGuid().ToString();
+            var comment = "Comment";
+            var rating = 5;
 
-            var reviewId = await this._ReviewsService.CreateAsync(senderId, review);
+            var reviewId = await this._ReviewsService.CreateAsync(senderId, receiverId, comment, rating);
             var reviewFromDb = await this._dbContext.Reviews.SingleOrDefaultAsync();
 
             Assert.Equal(reviewId, reviewFromDb.Id);
-            Assert.Equal(review.Comment, reviewFromDb.Comment);
-            Assert.Equal(review.ReceiverId, reviewFromDb.ReceiverId);
             Assert.Equal(senderId, reviewFromDb.SenderId);
+            Assert.Equal(receiverId, reviewFromDb.ReceiverId);
+            Assert.Equal(comment, reviewFromDb.Comment);
+            Assert.Equal(rating, reviewFromDb.Rating);
 
             var expectedCreatedOn = DateTime.UtcNow;
             Assert.Equal(expectedCreatedOn, reviewFromDb.CreatedOn, new TimeSpan(days: 0, hours: 0, minutes: 0, seconds: 0, milliseconds: 1000));

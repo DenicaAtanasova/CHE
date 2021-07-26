@@ -1,6 +1,7 @@
 ﻿namespace CHE.Web.Areas.Parent.Controllers
 {
     using CHE.Services.Data;
+    using CHE.Services.Data.Models;
     using CHE.Web.Infrastructure;
     using CHE.Web.InputModels.Cooperatives;
     using CHE.Web.ViewModels;
@@ -33,8 +34,13 @@
             }
 
             var userId = this.User.GetId();
-            await this._cooperativesService
-                .CreateAsync(userId, model);
+            await this._cooperativesService.CreateAsync(
+                userId, 
+                model.Name, 
+                model.Info, 
+                model.Grade, 
+                model.Address.City, 
+                model.Address.Neighbourhood);
 
             return this.RedirectToAction("All", "Cooperatives", new { area = ""});
         }
@@ -60,7 +66,13 @@
                 return this.View(model.Id);
             }
 
-            await this._cooperativesService.UpdateAsync(model);
+            await this._cooperativesService.UpdateAsync(
+                model.Id, 
+                model.Name, 
+                model.Info, 
+                model.Grade, 
+                model.Address.City, 
+                model.Address.Neighbourhood);
 
             return this.RedirectToAction(
                 "Details", "Cooperatives", new { area = "", id = model.Id });

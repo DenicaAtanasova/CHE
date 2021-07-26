@@ -3,7 +3,6 @@
     using CHE.Data;
     using CHE.Data.Models;
     using CHE.Services.Mapping;
-    using CHE.Web.InputModels.Events;
 
     using Microsoft.EntityFrameworkCore;
 
@@ -38,9 +37,9 @@
 
             var eventsFromDb = await this._dbContext.Events
                 .AsNoTracking()
-                .Where(x => x.ScheduleId == scheduleId  &&
-                            x.StartDate.Year == year && 
-                            x.StartDate.Month > prevMonth && 
+                .Where(x => x.ScheduleId == scheduleId &&
+                            x.StartDate.Year == year &&
+                            x.StartDate.Month > prevMonth &&
                             x.StartDate.Month < nextMonth)
                 .To<TEntity>()
                 .ToListAsync();
@@ -48,10 +47,22 @@
             return eventsFromDb;
         } 
 
-        public async Task<string> CreateAsync(EventCreateInputModel inputModel)
+        public async Task<string> CreateAsync(
+            string title,
+            string description,
+            DateTime startDate,
+            DateTime endDate,
+            string scheduleId)
         {
-            var newEvent = inputModel.Map<EventCreateInputModel, Event>();
-            newEvent.CreatedOn = DateTime.UtcNow;
+            var newEvent = new Event
+            {
+                Title = title,
+                Description = description,
+                StartDate = startDate,
+                EndDate = endDate,
+                ScheduleId = scheduleId,
+                CreatedOn = DateTime.UtcNow
+            };
 
             this._dbContext.Events.Add(newEvent);
             await this._dbContext.SaveChangesAsync();
@@ -65,7 +76,12 @@
             await this._dbContext.SaveChangesAsync();
         }
 
-        public async Task UpdateAsync(string id, EventUpdateInputModel inputModel)
+        public async Task UpdateAsync(
+            string id,
+            string title,
+            string description,
+            DateTime startDate,
+            DateTime endDate)
         {
             var eventToUpdate = await this._dbContext.Events
                 .SingleOrDefaultAsync(x => x.Id == id);
@@ -75,10 +91,10 @@
                 return;
             }
 
-            eventToUpdate.Title = inputModel.Title;
-            eventToUpdate.Description = inputModel.Description;
-            eventToUpdate.StartDate = inputModel.StartDate;
-            eventToUpdate.EndDate = inputModel.EndDate;
+            eventToUpdate.Title = title;
+            eventToUpdate.Description = description;
+            eventToUpdate.StartDate = startDate;
+            eventToUpdate.EndDate = endDate;
             eventToUpdate.ModifiedOn = DateTime.UtcNow;
 
             this._dbContext.Events.Update(eventToUpdate);

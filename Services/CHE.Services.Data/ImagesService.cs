@@ -13,8 +13,8 @@
 
     public class ImagesService : IImagesService
     {
-        private const string DEFAULT_IMAGE_CAPTION = "Teacher_Avatar.png";
-        private const string DEFAULT_IMAGE_URL = @"https://chestorage.blob.core.windows.net/uploads/Teacher_Avatar.png";
+        private const string DefaultImageCaption = "Teacher_Avatar.png";
+        private const string DefaultImageUrl = @"https://chestorage.blob.core.windows.net/uploads/Teacher_Avatar.png";
 
         private readonly IFileStorage _cloudStorageService;
         private readonly CheDbContext _dbContext;
@@ -31,8 +31,8 @@
         {
             var image = new Image
             {
-                Caption = DEFAULT_IMAGE_CAPTION,
-                Url = DEFAULT_IMAGE_URL,
+                Caption = DefaultImageCaption,
+                Url = DefaultImageUrl,
                 ProfileId = profileId,
                 CreatedOn = DateTime.UtcNow
             };
@@ -53,7 +53,7 @@
                 return;
             }
 
-            if (currentImage.Caption != DEFAULT_IMAGE_CAPTION)
+            if (currentImage.Caption != DefaultImageCaption)
             {
                 await this._cloudStorageService.DeleteAsync(currentImage.Caption);
             }

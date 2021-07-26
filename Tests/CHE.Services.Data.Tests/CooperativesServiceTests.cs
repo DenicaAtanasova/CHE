@@ -2,6 +2,7 @@
 {
     using CHE.Data;
     using CHE.Data.Models;
+    using CHE.Services.Data.Models;
     using CHE.Services.Mapping;
     using CHE.Web.InputModels.Cooperatives;
     using CHE.Web.ViewModels.Cooperatives;
@@ -19,15 +20,17 @@
 
     public class CooperativesServiceTests
     {
-        private const string FIRST_GRADE = "First";
-        private readonly string FIRST_GRADE_ID = Guid.NewGuid().ToString();
+        private const string FirstGrade = "First";
+        private readonly string FirstGradeId = Guid.NewGuid().ToString();
 
-        private readonly CooperativeAddressInputModel  ADDRESS = new CooperativeAddressInputModel
-        {
-            City = "Sofia",
-            Neighbourhood = "Dianabad"
-        };
-        private readonly string ADDRESS_ID = Guid.NewGuid().ToString();
+        private readonly CooperativeAddressInputModel  Address = 
+            new CooperativeAddressInputModel
+            {
+                City = "Sofia",
+                Neighbourhood = "Dianabad"
+            };
+
+        private readonly string AddressId = Guid.NewGuid().ToString();
 
         private readonly CheDbContext _dbContext;
         private readonly ICooperativesService _cooperativesService;
@@ -40,12 +43,12 @@
             this._dbContext = new CheDbContext(options);
 
             var gradesService = new Mock<IGradesService>();
-            gradesService.Setup(x => x.GetGardeIdAsync(FIRST_GRADE))
-                .ReturnsAsync(FIRST_GRADE_ID);
+            gradesService.Setup(x => x.GetGardeIdAsync(FirstGrade))
+                .ReturnsAsync(FirstGradeId);
 
             var addressesService = new Mock<IAddressesService>();
-            addressesService.Setup(x => x.GetAddressIdAsync(ADDRESS.City, ADDRESS.Neighbourhood))
-                .ReturnsAsync(ADDRESS_ID);
+            addressesService.Setup(x => x.GetAddressIdAsync(Address.City, Address.Neighbourhood))
+                .ReturnsAsync(AddressId);
 
             this._cooperativesService = new CooperativesService(this._dbContext, gradesService.Object, addressesService.Object);
 
@@ -57,26 +60,21 @@
         [Fact]
         public async Task CreateAsync_ShouldCreateNewCooperative()
         {
-            var creatorId = Guid.NewGuid().ToString();
+            var adminId = Guid.NewGuid().ToString();
+            var name = "CoopName";
+            var info = "CoopInfo";
 
-            var cooperative = new CooperativeCreateInputModel
-            {
-                Name = "CoopName",
-                Info = "CoopInfo",
-                Grade = FIRST_GRADE,
-                Address = ADDRESS
-            };
-
-            var cooperativeId = await this._cooperativesService.CreateAsync(creatorId, cooperative);
+            var cooperativeId = await this._cooperativesService.CreateAsync(
+                adminId, name, info, FirstGrade, Address.City, Address.Neighbourhood);
             var cooperativeFromDb = await this._dbContext.Cooperatives.SingleOrDefaultAsync();
             var expectedCreatedOnDate = DateTime.UtcNow;
 
             Assert.Equal(cooperativeId, cooperativeFromDb.Id);
-            Assert.Equal(creatorId, cooperativeFromDb.AdminId);
-            Assert.Equal(cooperative.Name, cooperativeFromDb.Name);
-            Assert.Equal(cooperative.Info, cooperativeFromDb.Info);
-            Assert.Equal(FIRST_GRADE_ID, cooperativeFromDb.GradeId);
-            Assert.Equal(ADDRESS_ID, cooperativeFromDb.AddressId);
+            Assert.Equal(adminId, cooperativeFromDb.AdminId);
+            Assert.Equal(name, cooperativeFromDb.Name);
+            Assert.Equal(info, cooperativeFromDb.Info);
+            Assert.Equal(FirstGradeId, cooperativeFromDb.GradeId);
+            Assert.Equal(AddressId, cooperativeFromDb.AddressId);
             Assert.NotNull(cooperativeFromDb.Schedule);
             Assert.Equal(expectedCreatedOnDate, 
                 cooperativeFromDb.CreatedOn,
@@ -86,8 +84,6 @@
         [Fact]
         public async Task UpdateAsync_ShouldUpdateCooperative()
         {
-            var creatorId = Guid.NewGuid().ToString();
-
             var cooperative = new Cooperative
             {
                 Name = "CoopName",
@@ -109,26 +105,20 @@
             await this._dbContext.SaveChangesAsync();
             this._dbContext.Entry(cooperative).State = EntityState.Detached;
 
-            var cooperativeUpdateModel = new CooperativeUpdateInputModel
-            {
-                Id = cooperative.Id,
-                Name = "updatedName",
-                Info = "updatedInfo",
-                Grade = FIRST_GRADE,
-                Address = ADDRESS
-            };
+            var name = "updatedName";
+            var info = "updatedInfo";
 
             await this._cooperativesService
-                .UpdateAsync(cooperativeUpdateModel);
+                .UpdateAsync(cooperative.Id, name, info, FirstGrade, Address.City, Address.Neighbourhood);
             var expectedModifiedOnDate = DateTime.UtcNow;
 
             var updatedCooperative = await this._dbContext.Cooperatives
                 .SingleOrDefaultAsync(x => x.Id == cooperative.Id);
 
-            Assert.Equal(cooperativeUpdateModel.Name, updatedCooperative.Name);
-            Assert.Equal(cooperativeUpdateModel.Info, updatedCooperative.Info);
-            Assert.Equal(FIRST_GRADE_ID, updatedCooperative.GradeId);
-            Assert.Equal(ADDRESS_ID, updatedCooperative.AddressId);
+            Assert.Equal(name, updatedCooperative.Name);
+            Assert.Equal(info, updatedCooperative.Info);
+            Assert.Equal(FirstGradeId, updatedCooperative.GradeId);
+            Assert.Equal(AddressId, updatedCooperative.AddressId);
             Assert.Equal(expectedModifiedOnDate, 
                 updatedCooperative.ModifiedOn.Value, 
                 new TimeSpan(days: 0, hours: 0, minutes: 0, seconds: 0, milliseconds: 1000));
@@ -159,17 +149,12 @@
             this._dbContext.Cooperatives.Add(cooperative);
             await this._dbContext.SaveChangesAsync();
 
-            var cooperativeUpdateModel = new CooperativeUpdateInputModel
-            {
-                Id = Guid.NewGuid().ToString(),
-                Name = "updatedName",
-                Info = "updatedInfo",
-                Grade = FIRST_GRADE,
-                Address = ADDRESS
-            };
+            var id = Guid.NewGuid().ToString();
+            var name = "updatedName";
+            var info = "updatedInfo";
 
             await this._cooperativesService
-                .UpdateAsync(cooperativeUpdateModel);
+                .UpdateAsync(id, name, info, FirstGrade, Address.City, Address.Neighbourhood);
 
             var cooperativeFromDb = await this._dbContext.Cooperatives
                 .SingleOrDefaultAsync(x => x.Id == cooperative.Id);

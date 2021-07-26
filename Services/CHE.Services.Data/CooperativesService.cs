@@ -2,8 +2,8 @@
 {
     using CHE.Data;
     using CHE.Data.Models;
+    using CHE.Services.Data.Models;
     using CHE.Services.Mapping;
-    using CHE.Web.InputModels.Cooperatives;
 
     using Microsoft.EntityFrameworkCore;
 
@@ -30,18 +30,22 @@
 
         public async Task<string> CreateAsync(
             string adminId,
-            CooperativeCreateInputModel inputModel)
+            string name,
+            string info,
+            string grade,
+            string city,
+            string neighbourhood)
         {
             var cooperative = new Cooperative
             {
                 AdminId = adminId,
-                Name = inputModel.Name,
-                Info = inputModel.Info,
-                CreatedOn = DateTime.UtcNow,
-                GradeId = await this._gradesService.GetGardeIdAsync(inputModel.Grade),
+                Name = name,
+                Info = info,
+                GradeId = await this._gradesService.GetGardeIdAsync(grade),
                 Schedule = new Schedule { CreatedOn = DateTime.UtcNow },
                 AddressId = await this._addressesService
-                    .GetAddressIdAsync(inputModel.Address.City, inputModel.Address.Neighbourhood)
+                    .GetAddressIdAsync(city, neighbourhood),
+                CreatedOn = DateTime.UtcNow,
             };
 
             this._dbContext.Add(cooperative);
@@ -51,22 +55,27 @@
         }
 
         public async Task UpdateAsync(
-            CooperativeUpdateInputModel inputModel)
+            string id,
+            string name,
+            string info,
+            string grade,
+            string city,
+            string neighbourhood)
         {
             var cooperativeToUpdate = await this._dbContext.Cooperatives
-                .SingleOrDefaultAsync(x => x.Id == inputModel.Id);
+                .SingleOrDefaultAsync(x => x.Id == id);
 
             if (cooperativeToUpdate == null)
             {
                 return;
             }
 
-            cooperativeToUpdate.Name = inputModel.Name;
-            cooperativeToUpdate.Info = inputModel.Info;
-            cooperativeToUpdate.GradeId = await this._gradesService.GetGardeIdAsync(inputModel.Grade);
-            cooperativeToUpdate.ModifiedOn = DateTime.UtcNow;
+            cooperativeToUpdate.Name = name;
+            cooperativeToUpdate.Info = info;
+            cooperativeToUpdate.GradeId = await this._gradesService.GetGardeIdAsync(grade);
             cooperativeToUpdate.AddressId = await this._addressesService
-                .GetAddressIdAsync(inputModel.Address.City, inputModel.Address.Neighbourhood);
+                .GetAddressIdAsync(city, neighbourhood);
+            cooperativeToUpdate.ModifiedOn = DateTime.UtcNow;
 
             this._dbContext.Cooperatives.Update(cooperativeToUpdate);
             await this._dbContext.SaveChangesAsync();
@@ -102,7 +111,7 @@
         {
             var filteredCooperatives = this.GetFilteredCollection(gradeFilter, cityFilter, neighbourhoodFilter);
 
-            var count = await this.GetCollectionCountAsync(this._dbContext.Cooperatives, endIndex);
+            var count = await this.GetCollectionCountAsync(filteredCooperatives, endIndex);
 
             return await this.GetCollectionPerPageAsync<TEntity>(filteredCooperatives, startIndex, count);
         }
@@ -113,11 +122,11 @@
             int startIndex = 1,
             int endIndex = 0)
         {
-            var cooperatives = this.GetCollectionByUser(userId, userType);
+            var userCoperatives = this.GetCollectionByUser(userId, userType);
 
-            var count = await this.GetCollectionCountAsync(cooperatives, endIndex);
+            var count = await this.GetCollectionCountAsync(userCoperatives, endIndex);
 
-            return await this.GetCollectionPerPageAsync<TEntity>(cooperatives, startIndex, count);
+            return await this.GetCollectionPerPageAsync<TEntity>(userCoperatives, startIndex, count);
         }
 
         public async Task AddMemberAsync(string userId, string cooperativeId)

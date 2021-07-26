@@ -3,7 +3,6 @@
     using CHE.Data;
     using CHE.Data.Models;
     using CHE.Services.Mapping;
-    using CHE.Web.InputModels.Reviews;
 
     using Microsoft.EntityFrameworkCore;
 
@@ -22,29 +21,39 @@
             this._dbContext = dbContext;
         }
 
-        public async Task<string> CreateAsync(string senderId, ReviewCreateInputModel inputModel)
+        public async Task<string> CreateAsync(
+            string senderId, 
+            string receiverId,
+            string comment,
+            int rating)
         {
-            var review = inputModel.Map<ReviewCreateInputModel, Review>();
-            review.CreatedOn = DateTime.UtcNow;
-            review.SenderId = senderId;
+            var review = new Review
+            {
+                SenderId = senderId,
+                ReceiverId = receiverId,
+                Comment = comment,
+                Rating = rating,
+                CreatedOn = DateTime.UtcNow
+            };
 
             this._dbContext.Reviews.Add(review);
             await this._dbContext.SaveChangesAsync();
 
             return review.Id;
         }
-        public async Task UpdateAsync(ReviewUpdateInputModel inputModel)
+
+        public async Task UpdateAsync(string id, string comment, int rating)
         {
             var reviewToUpdate = await this._dbContext.Reviews
-                .SingleOrDefaultAsync(x => x.Id == inputModel.Id);
+                .SingleOrDefaultAsync(x => x.Id == id);
 
             if (reviewToUpdate == null)
             {
                 return;
             }
 
-            reviewToUpdate.Comment = inputModel.Comment;
-            reviewToUpdate.Rating = inputModel.Rating;
+            reviewToUpdate.Comment = comment;
+            reviewToUpdate.Rating = rating;
             reviewToUpdate.ModifiedOn = DateTime.UtcNow;
 
             this._dbContext.Reviews.Update(reviewToUpdate);

@@ -35,7 +35,11 @@
             }
 
             var senderId = this.User.GetId();
-            await _cheUsersService.SendReviewAsync(senderId, inputModel);
+            await _cheUsersService.SendReviewAsync(
+                senderId, 
+                inputModel.ReceiverId, 
+                inputModel.Comment, 
+                inputModel.Rating);
 
             return this.RedirectToAction("All", "Teachers", new { area = "" });
         }
@@ -61,8 +65,8 @@
                 return this.View(inputModel.Id);
             }
 
-            await this._reviewsService.UpdateAsync(inputModel);
-
+            await this._reviewsService.UpdateAsync(inputModel.Id, inputModel.Comment, inputModel.Rating);
+            
             return RedirectToAction("Details", "Teachers", new { area = "", id = inputModel.ReceiverId });
         }
 

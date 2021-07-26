@@ -3,13 +3,11 @@
     using CHE.Data;
     using CHE.Data.Models;
     using CHE.Services.Mapping;
-    using CHE.Web.InputModels.Profiles;
 
     using Microsoft.EntityFrameworkCore;
     using Microsoft.AspNetCore.Http;
 
     using System;
-    using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
 
@@ -36,7 +34,6 @@
                 .To<TEntity>()
                 .SingleOrDefaultAsync();
 
-        //TODO: Add tests
         public async Task<string> CreateAsync(string userId)
         {
             var portfolio = new Profile
@@ -53,7 +50,17 @@
             return portfolio.Id;
         }
 
-        public async Task UpdateAsync(string userId, ProfileInputModel inputModel, IFormFile imageFile)
+        public async Task UpdateAsync(string userId, 
+            string firstName, 
+            string lastName,
+            string education,
+            string experience,
+            string skills,
+            string interests,
+            string schoolLevel,
+            string city,
+            string neighbourhood,
+            IFormFile imageFile)
         {
             var profileToUpdate = await this._dbContext.Profiles
                 .SingleOrDefaultAsync(x => x.OwnerId == userId);
@@ -63,17 +70,17 @@
                 return;
             }
 
-            profileToUpdate.FirstName = inputModel.FirstName;
-            profileToUpdate.LastName = inputModel.LastName;
-            profileToUpdate.Education = inputModel.Education;
-            profileToUpdate.Experience = inputModel.Experience;
-            profileToUpdate.Skills = inputModel.Skills;
-            profileToUpdate.Interests = inputModel.Interests;
-            profileToUpdate.Skills = inputModel.Skills;
-            profileToUpdate.SchoolLevel = Enum.Parse<SchoolLevel>(inputModel.SchoolLevel);
-            profileToUpdate.ModifiedOn = DateTime.UtcNow;
+            profileToUpdate.FirstName = firstName;
+            profileToUpdate.LastName = lastName;
+            profileToUpdate.Education = education;
+            profileToUpdate.Experience = experience;
+            profileToUpdate.Skills = skills;
+            profileToUpdate.Interests = interests;
+            profileToUpdate.Skills = skills;
+            profileToUpdate.SchoolLevel = Enum.Parse<SchoolLevel>(schoolLevel);
             profileToUpdate.AddressId = await this._addressesService
-                .GetAddressIdAsync(inputModel.Address.City, inputModel.Address.Neighbourhood);
+                .GetAddressIdAsync(city, neighbourhood);
+            profileToUpdate.ModifiedOn = DateTime.UtcNow;
 
             this._dbContext.Update(profileToUpdate);
 

@@ -54,7 +54,18 @@ namespace CHE.Web.Areas.Identity.Pages.Account.Manage
             }
 
             var userId = this._userManager.GetUserId(this.User);
-            await this._profilesService.UpdateAsync(userId, Input, Input.Image);
+            await this._profilesService.UpdateAsync(
+                userId, 
+                Input.FirstName,
+                Input.LastName,
+                Input.Education,
+                Input.Experience,
+                Input.Skills,
+                Input.Interests,
+                Input.SchoolLevel,
+                Input.Address.City,
+                Input.Address.Neighbourhood,
+                Input.Image);
 
             return RedirectToPage("./Index");            
         }

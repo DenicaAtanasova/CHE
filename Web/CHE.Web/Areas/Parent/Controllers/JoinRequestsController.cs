@@ -51,7 +51,7 @@
             var senderId = this.User.GetId();
 
             await this._usersService
-                .SendRequestAsync(senderId, inputModel);
+                .SendRequestAsync(senderId, inputModel.Content, inputModel.CooperativeId, inputModel.ReceiverId);
 
             return RedirectToAction("Details", "Cooperatives", new { area = "", id = inputModel.CooperativeId});
         }
@@ -77,7 +77,7 @@
                 return this.View(inputModel.Id);
             }
 
-            await this._joinRequestsService.UpdateAsync(inputModel);
+            await this._joinRequestsService.UpdateAsync(inputModel.Id, inputModel.Content);
 
             return this.RedirectToAction("Details", "Cooperatives", new { area = "", id = inputModel.CooperativeId });
         }

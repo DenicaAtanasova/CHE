@@ -7,10 +7,10 @@
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
 
-    using System.Linq;
-    using System.Threading.Tasks;
     using System;
     using System.Globalization;
+    using System.Linq;
+    using System.Threading.Tasks;
 
     [Authorize]
     [Route("Schedule/[controller]/[action]")]
@@ -56,12 +56,17 @@
         [HttpPost("{id}")]
         public async Task<IActionResult> Update(string id, EventUpdateInputModel inputModel)
         {
-            await this._eventsService.UpdateAsync(id, inputModel);
-
             if (!ModelState.IsValid)
             {
                 return this.BadRequest();
             }
+
+            await this._eventsService.UpdateAsync(
+                id, 
+                inputModel.Title,
+                inputModel.Description,
+                inputModel.StartDate,
+                inputModel.EndDate);
 
             return this.RedirectToAction("Details", "Schedules", new { id = inputModel.ScheduleId});
         }
@@ -89,7 +94,12 @@
                 return this.BadRequest();
             }
 
-            await this._eventsService.CreateAsync(inputModel);
+            await this._eventsService.CreateAsync(
+                inputModel.Title, 
+                inputModel.Description, 
+                inputModel.StartDate, 
+                inputModel.EndDate, 
+                inputModel.ScheduleId);
 
             return this.RedirectToAction("Details", "Schedules", new { id = inputModel.ScheduleId});
         }

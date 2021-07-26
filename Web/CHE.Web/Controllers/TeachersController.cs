@@ -33,14 +33,14 @@
         public async Task<IActionResult> All(FilterViewModel filter, int pageIndex = 1)
         {
             var teachers = await this._cheUsersService
-                    .GetAllAsync<TeacherAllViewModel>(pageIndex, DEFAULT_PAGE_SIZE, filter.Level);
+                    .GetAllAsync<TeacherAllViewModel>(pageIndex, DEFAULT_PAGE_SIZE, filter.Level, filter.City, filter.Neighbourhood);
 
-            var count = await this._cheUsersService.CountAsync(filter.Level);
+            var count = await this._cheUsersService.CountAsync(filter.Level, filter.City, filter.Neighbourhood);
 
             filter.LevelDisplayName = "school level";
             filter.Levels = Enum.GetValues(typeof(SchoolLevel))
                 .Cast<SchoolLevel>()
-                //.Where(x => x.ToString() != "Unknown")
+                .Where(x => x.ToString() != "Unknown")
                 .Select(x => x.ToString());
             filter.Cities = await this._addressesService.GetAllCitiesAsync();
             filter.Neighbourhoods = await this._addressesService.GetAllNeighbourhoodsAsync();

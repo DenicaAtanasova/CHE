@@ -1,7 +1,5 @@
 ﻿namespace CHE.Web.InputModels.Events
 {
-    using CHE.Data.Models;
-    using CHE.Services.Mapping;
     using CHE.Web.InputModels.Attributes.Validation;
 
     using System;
@@ -10,7 +8,7 @@
     using static DataConstants.Event;
     using static DataErrorMessages;
 
-    public class EventCreateInputModel : IMapTo<Event>
+    public class EventCreateInputModel
     {
         [Required]
         [StringLength(

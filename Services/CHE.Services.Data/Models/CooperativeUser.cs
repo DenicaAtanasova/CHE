@@ -1,4 +1,4 @@
-﻿namespace CHE.Web.InputModels.Cooperatives
+﻿namespace CHE.Services.Data.Models
 {
     using System;
 

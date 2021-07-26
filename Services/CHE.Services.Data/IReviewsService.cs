@@ -1,15 +1,17 @@
 ﻿namespace CHE.Services.Data
 {
-    using CHE.Web.InputModels.Reviews;
-
     using System.Collections.Generic;
     using System.Threading.Tasks;
 
     public interface IReviewsService
     {
-        Task<string> CreateAsync(string senderId, ReviewCreateInputModel inputModel);
+        Task<string> CreateAsync(
+            string senderId,
+            string receiverId,
+            string comment,
+            int rating);
 
-        Task UpdateAsync(ReviewUpdateInputModel inputModel);
+        Task UpdateAsync(string id, string comment, int rating);
 
         Task DeleteAsync(string id);
 

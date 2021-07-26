@@ -4,8 +4,6 @@
     using CHE.Data;
     using CHE.Data.Models;
     using CHE.Services.Mapping;
-    using CHE.Web.InputModels.JoinRequests;
-    using CHE.Web.InputModels.Reviews;
 
     using Microsoft.EntityFrameworkCore;
 
@@ -43,28 +41,29 @@
         public async Task<IEnumerable<TEntity>> GetAllAsync<TEntity>(
             int startIndex = 1,
             int endIndex = 0,
-            string schoolLevelFilter = null)
+            string schoolLevelFilter = null,
+            string cityFilter = null,
+            string neighbourhoodFilter = null)
         {
+            var filteredTeachers = this.GetFilteredCollection(schoolLevelFilter, cityFilter, neighbourhoodFilter);
+
             var count = endIndex == 0
-                ? await this._dbContext.Users
-                    .Where(x => x.RoleName == GlobalConstants.TEACHER_ROLE)
-                    .CountAsync()
+                ? await filteredTeachers.CountAsync()
                 : endIndex;
 
-            var filteredTeachers = this.FilterCollection(schoolLevelFilter);
-
-            var teachers = await filteredTeachers
+            return await filteredTeachers
                 .Skip((startIndex - 1) * count)
                 .Take(count)
                 .To<TEntity>()
                 .ToListAsync();
-
-            return teachers;
         }
 
-        public async Task<int> CountAsync(string schoolLevelFilter)
+        public async Task<int> CountAsync(
+            string schoolLevelFilter = null,
+            string cityFilter = null,
+            string neighbourhoodFilter = null)
         {
-            var filteredTachers = this.FilterCollection(schoolLevelFilter);
+            var filteredTachers = this.GetFilteredCollection(schoolLevelFilter, cityFilter, neighbourhoodFilter);
 
             return await filteredTachers.CountAsync();
         }
@@ -100,10 +99,14 @@
             await this._dbContext.SaveChangesAsync();
         }
 
-        public async Task SendRequestAsync(string senderId, JoinRequestCreateInputModel inputModel)
+        public async Task SendRequestAsync(
+            string senderId, 
+            string content, 
+            string cooperativeId, 
+            string receiverId)
         {
             var cooperativeExists = await this._dbContext.Cooperatives
-                .AnyAsync(x => x.Id == inputModel.CooperativeId);
+                .AnyAsync(x => x.Id == cooperativeId);
 
             if (!cooperativeExists)
             {
@@ -111,28 +114,36 @@
             }
 
             var requestExists = await this._dbContext.JoinRequests
-                .AnyAsync(x => x.CooperativeId == inputModel.CooperativeId &&
-                               x.ReceiverId == inputModel.ReceiverId &&
+                .AnyAsync(x => x.CooperativeId == cooperativeId &&
+                               x.ReceiverId == receiverId &&
                                x.SenderId == senderId);
 
             if (!requestExists)
             {
-                await this._joinRequestsService.CreateAsync(senderId, inputModel);
+                await this._joinRequestsService.CreateAsync(senderId, content, cooperativeId, receiverId);
             }
         }
 
-        public async Task SendReviewAsync(string senderId, ReviewCreateInputModel inputModel)
+        public async Task SendReviewAsync(
+            string senderId, 
+            string receiverId, 
+            string comment, 
+            int rating)
         {
             var reviewExists = await this._dbContext.Reviews
-                .AnyAsync(x => x.SenderId == senderId && x.ReceiverId == inputModel.ReceiverId);
+                .AnyAsync(x => x.SenderId == senderId && x.ReceiverId ==receiverId);
 
             if (!reviewExists)
             {
-                await this._reviewsService.CreateAsync(senderId, inputModel);
+                await this._reviewsService
+                    .CreateAsync(senderId, receiverId, comment, rating);
             }
         }
 
-        private IQueryable<CheUser> FilterCollection(string schoolLevelFilter = null)
+        private IQueryable<CheUser> GetFilteredCollection(
+            string schoolLevelFilter = null,
+            string cityFilter = null,
+            string neighbourhoodFilter = null)
         {
             var teachers = this._dbContext.Users
                 .AsNoTracking()
@@ -142,6 +153,16 @@
             {
                 var schoolLevel = (SchoolLevel)Enum.Parse(typeof(SchoolLevel), schoolLevelFilter);
                 return teachers.Where(x => x.Profile.SchoolLevel == schoolLevel);
+            }
+
+            if (cityFilter != null)
+            {
+                teachers = teachers.Where(x => x.Profile.Address.City == cityFilter);
+            }
+
+            if (neighbourhoodFilter != null)
+            {
+                teachers = teachers.Where(x => x.Profile.Address.Neighbourhood == neighbourhoodFilter);
             }
 
             return teachers;

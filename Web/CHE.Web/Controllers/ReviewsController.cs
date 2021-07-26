@@ -34,6 +34,8 @@
                 this.ViewData["layout"] = TEACHER_LAYOUT;
             }
 
+            ViewData["id"] = id;
+
             return View(new ReviewAllListViewModel
             {
                 Reviews = await this._reviewsService.GetAllByReceiverAsync<ReviewAllViewModel>(id)

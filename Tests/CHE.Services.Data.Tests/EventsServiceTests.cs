@@ -38,37 +38,35 @@
         [Fact]
         public async Task CreateAsync_ShouldWorkCorrectly()
         {
-            var newEvent = new EventCreateInputModel
-            {
-                Title = "Do Sth",
-                StartDate = DateTime.UtcNow,
-                EndDate = DateTime.UtcNow.AddMinutes(30),
-                ScheduleId = Guid.NewGuid().ToString()
-            };
+            var title = "Do Sth";
+            var description = "Description";
+            var startDate = DateTime.UtcNow;
+            var endDate = DateTime.UtcNow.AddMinutes(30);
+            var scheduleId = Guid.NewGuid().ToString();
 
-            var eventId = await this._eventsService.CreateAsync(newEvent);
+            var eventId = await this._eventsService.CreateAsync(title, description, startDate, endDate, scheduleId);
             var eventFromDb = await this._dbContext.Events.SingleOrDefaultAsync();
             var ecpectedCreatedOn = DateTime.UtcNow;
 
             Assert.Equal(eventId, eventFromDb.Id);
-            Assert.Equal(newEvent.Title, eventFromDb.Title);
-            Assert.Equal(newEvent.StartDate, eventFromDb.StartDate);
-            Assert.Equal(newEvent.EndDate, eventFromDb.EndDate);
-            Assert.Equal(newEvent.ScheduleId, eventFromDb.ScheduleId);
+            Assert.Equal(title, eventFromDb.Title);
+            Assert.Equal(startDate, eventFromDb.StartDate);
+            Assert.Equal(endDate, eventFromDb.EndDate);
+            Assert.Equal(scheduleId, eventFromDb.ScheduleId);
             Assert.Equal(ecpectedCreatedOn, eventFromDb.CreatedOn, new TimeSpan(days: 0, hours: 0, minutes: 0, seconds: 0, milliseconds: 1000));
         }
 
         [Fact]
         public async Task UpdateAsync_ShouldWorkCorrectly()
         {
-            var schduleId = Guid.NewGuid().ToString();
+            var scheduleId = Guid.NewGuid().ToString();
 
             var newEvent = new Event
             {
                 Title = "Do Sth",
                 StartDate = DateTime.UtcNow.AddMinutes(30),
                 EndDate = DateTime.UtcNow.AddHours(1),
-                ScheduleId = schduleId,
+                ScheduleId = scheduleId,
                 CreatedOn = DateTime.UtcNow
             };
 
@@ -76,24 +74,21 @@
             await this._dbContext.SaveChangesAsync();
             this._dbContext.Entry(newEvent).State = EntityState.Detached;
 
-            var eventUpdateModel = new EventUpdateInputModel
-            {
-                Id = newEvent.Id,
-                Title = "Updated title",
-                StartDate = DateTime.UtcNow,
-                EndDate = DateTime.UtcNow.AddMinutes(30),
-                ScheduleId = schduleId
-            };
+            var title = "Updated title";
+            var description = "Updated description";
+            var startDate = DateTime.UtcNow;
+            var endDate = DateTime.UtcNow.AddMinutes(30);
 
-            await this._eventsService.UpdateAsync(newEvent.Id, eventUpdateModel);
+            await this._eventsService
+                .UpdateAsync(newEvent.Id, title, description, startDate, endDate);
+
             var expectedModifiedOnDate = DateTime.UtcNow;
             var updatedEvent = await this._dbContext.Events
                 .SingleOrDefaultAsync(x => x.Id == newEvent.Id);
 
-            Assert.Equal(eventUpdateModel.Title, updatedEvent.Title);
-            Assert.Equal(eventUpdateModel.StartDate, updatedEvent.StartDate);
-            Assert.Equal(eventUpdateModel.EndDate, updatedEvent.EndDate);
-            Assert.Equal(eventUpdateModel.ScheduleId, updatedEvent.ScheduleId);
+            Assert.Equal(title, updatedEvent.Title);
+            Assert.Equal(startDate, updatedEvent.StartDate);
+            Assert.Equal(endDate, updatedEvent.EndDate);
             Assert.Equal(expectedModifiedOnDate,
                 updatedEvent.ModifiedOn.Value,
                 new TimeSpan(days: 0, hours: 0, minutes: 0, seconds: 0, milliseconds: 1000));
@@ -200,7 +195,7 @@
                 .Where(x => x.ScheduleId == scheduleId &&
                             x.StartDate.Year == searchedDate.Year &&
                             x.StartDate.Month > searchedDate.Month - 2 &&
-                            x.StartDate.Month < searchedDate.Month +2)
+                            x.StartDate.Month < searchedDate.Month + 2)
                 .ToList();
 
             Assert.Equal(expectedEvents.Count, threeMonthEvents.Count());

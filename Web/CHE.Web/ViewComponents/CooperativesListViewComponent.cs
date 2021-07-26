@@ -1,7 +1,7 @@
 ﻿namespace CHE.Web.ViewComponents
 {
     using CHE.Services.Data;
-    using CHE.Web.InputModels.Cooperatives;
+    using CHE.Services.Data.Models;
     using CHE.Web.ViewModels.JoinRequests;
 
     using Microsoft.AspNetCore.Mvc;

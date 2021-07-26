@@ -3,7 +3,6 @@
     using CHE.Data;
     using CHE.Data.Models;
     using CHE.Services.Mapping;
-    using CHE.Web.InputModels.JoinRequests;
 
     using Microsoft.EntityFrameworkCore;
 
@@ -50,11 +49,20 @@
                 .To<TEntity>()
                 .ToListAsync();
 
-        public async Task<string> CreateAsync(string senderId, JoinRequestCreateInputModel inputModel)
+        public async Task<string> CreateAsync(
+            string senderId,
+            string content,
+            string cooperativeId,
+            string receiverId)
         {
-            var request = inputModel.Map<JoinRequestCreateInputModel, JoinRequest>();
-            request.CreatedOn = DateTime.UtcNow;
-            request.SenderId = senderId;
+            var request = new JoinRequest
+            {
+                SenderId = senderId,
+                ReceiverId = receiverId,
+                Content = content,
+                CooperativeId = cooperativeId,
+                CreatedOn = DateTime.UtcNow
+            };
 
             this._dbContext.JoinRequests.Add(request);
             await this._dbContext.SaveChangesAsync();
@@ -62,17 +70,17 @@
             return request.Id;
         }
 
-        public async Task UpdateAsync(JoinRequestUpdateInputModel inputModel)
+        public async Task UpdateAsync(string id, string content)
         {
             var joinRequestToUpdate = await this._dbContext.JoinRequests
-                .SingleOrDefaultAsync(x => x.Id == inputModel.Id);
+                .SingleOrDefaultAsync(x => x.Id == id);
 
             if (joinRequestToUpdate == null)
             {
                 return;
             }
 
-            joinRequestToUpdate.Content = inputModel.Content;
+            joinRequestToUpdate.Content = content;
             joinRequestToUpdate.ModifiedOn = DateTime.UtcNow;
 
             this._dbContext.JoinRequests.Update(joinRequestToUpdate);

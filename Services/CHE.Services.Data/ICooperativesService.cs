@@ -1,6 +1,6 @@
 ﻿namespace CHE.Services.Data
 {
-    using CHE.Web.InputModels.Cooperatives;
+    using CHE.Services.Data.Models;
 
     using System.Collections.Generic;
     using System.Threading.Tasks;
@@ -9,9 +9,19 @@
     {
         Task<string> CreateAsync(
             string adminId,
-            CooperativeCreateInputModel inputModel);
+            string name,
+            string info,
+            string grade,
+            string city,
+            string neighbourhood);
 
-        Task UpdateAsync(CooperativeUpdateInputModel inputModel);
+        Task UpdateAsync(
+            string id,
+            string name,
+            string info,
+            string grade,
+            string city,
+            string neighbourhood);
 
         Task DeleteAsync(string id);
 
