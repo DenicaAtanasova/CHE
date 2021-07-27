@@ -12,7 +12,7 @@ namespace CHE.Web.Areas.Identity.Pages.Account.Manage
 
     using System.Threading.Tasks;
 
-    [Authorize(Roles = GlobalConstants.TEACHER_ROLE)]
+    [Authorize(Roles = GlobalConstants.TeacherRole)]
     public class ProfileModel : PageModel
     {
         private readonly UserManager<CheUser> _userManager;

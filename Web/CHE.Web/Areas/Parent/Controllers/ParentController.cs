@@ -4,8 +4,8 @@
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
 
-    [Area(GlobalConstants.PARENT_ROLE)]
-    [Authorize(Roles = GlobalConstants.PARENT_ROLE)]
+    [Area(GlobalConstants.ParentRole)]
+    [Authorize(Roles = GlobalConstants.ParentRole)]
     public abstract class ParentController : Controller
     {
     }

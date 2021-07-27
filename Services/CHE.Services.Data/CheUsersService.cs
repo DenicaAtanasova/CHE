@@ -39,19 +39,21 @@
                 .SingleOrDefaultAsync();
 
         public async Task<IEnumerable<TEntity>> GetAllAsync<TEntity>(
+            string role,
             int startIndex = 1,
             int endIndex = 0,
             string schoolLevelFilter = null,
             string cityFilter = null,
             string neighbourhoodFilter = null)
         {
-            var filteredTeachers = this.GetFilteredCollection(schoolLevelFilter, cityFilter, neighbourhoodFilter);
+            var filteredUsers = this.GetFilteredCollection(
+                role, schoolLevelFilter, cityFilter, neighbourhoodFilter);
 
             var count = endIndex == 0
-                ? await filteredTeachers.CountAsync()
+                ? await filteredUsers.CountAsync()
                 : endIndex;
 
-            return await filteredTeachers
+            return await filteredUsers
                 .Skip((startIndex - 1) * count)
                 .Take(count)
                 .To<TEntity>()
@@ -59,13 +61,14 @@
         }
 
         public async Task<int> CountAsync(
+            string role,
             string schoolLevelFilter = null,
             string cityFilter = null,
             string neighbourhoodFilter = null)
         {
-            var filteredTachers = this.GetFilteredCollection(schoolLevelFilter, cityFilter, neighbourhoodFilter);
+            var filteredUsers = this.GetFilteredCollection(role, schoolLevelFilter, cityFilter, neighbourhoodFilter);
 
-            return await filteredTachers.CountAsync();
+            return await filteredUsers.CountAsync();
         }
 
         public async Task AcceptRequestAsync(string requestId)
@@ -100,9 +103,9 @@
         }
 
         public async Task SendRequestAsync(
-            string senderId, 
-            string content, 
-            string cooperativeId, 
+            string senderId,
+            string content,
+            string cooperativeId,
             string receiverId)
         {
             var cooperativeExists = await this._dbContext.Cooperatives
@@ -125,13 +128,13 @@
         }
 
         public async Task SendReviewAsync(
-            string senderId, 
-            string receiverId, 
-            string comment, 
+            string senderId,
+            string receiverId,
+            string comment,
             int rating)
         {
             var reviewExists = await this._dbContext.Reviews
-                .AnyAsync(x => x.SenderId == senderId && x.ReceiverId ==receiverId);
+                .AnyAsync(x => x.SenderId == senderId && x.ReceiverId == receiverId);
 
             if (!reviewExists)
             {
@@ -141,31 +144,51 @@
         }
 
         private IQueryable<CheUser> GetFilteredCollection(
+            string role,
             string schoolLevelFilter = null,
             string cityFilter = null,
             string neighbourhoodFilter = null)
         {
-            var teachers = this._dbContext.Users
-                .AsNoTracking()
-                .Where(x => x.RoleName == GlobalConstants.TEACHER_ROLE);
+            var users = GetUsersInRole(role);
 
             if (schoolLevelFilter != null)
             {
                 var schoolLevel = (SchoolLevel)Enum.Parse(typeof(SchoolLevel), schoolLevelFilter);
-                return teachers.Where(x => x.Profile.SchoolLevel == schoolLevel);
+                return users.Where(x => x.Profile.SchoolLevel == schoolLevel);
             }
 
             if (cityFilter != null)
             {
-                teachers = teachers.Where(x => x.Profile.Address.City == cityFilter);
+                users = users.Where(x => x.Profile.Address.City == cityFilter);
             }
 
             if (neighbourhoodFilter != null)
             {
-                teachers = teachers.Where(x => x.Profile.Address.Neighbourhood == neighbourhoodFilter);
+                users = users.Where(x => x.Profile.Address.Neighbourhood == neighbourhoodFilter);
             }
 
-            return teachers;
+            return users;
         }
+
+        private IQueryable<CheUser> GetUsersInRole(string roleName) =>
+            this._dbContext.Users
+                .Join(this._dbContext.UserRoles,
+                    u => u.Id,
+                    ur => ur.UserId,
+                    (u, ur) => new
+                    {
+                        User = u,
+                        UserRole = ur
+                    })
+                .Join(this._dbContext.Roles,
+                    u => u.UserRole.RoleId,
+                    r => r.Id,
+                    (u, r) => new
+                    {
+                        User = u.User,
+                        Role = r
+                    })
+                .Where(u => u.Role.Name == roleName)
+                .Select(u => u.User);
     }
 }

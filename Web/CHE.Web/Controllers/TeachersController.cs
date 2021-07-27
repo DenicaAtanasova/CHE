@@ -1,5 +1,6 @@
 ﻿namespace CHE.Web.Controllers
 {
+    using CHE.Common;
     using CHE.Data.Models;
     using CHE.Services.Data;
     using CHE.Web.Infrastructure;
@@ -32,10 +33,19 @@
 
         public async Task<IActionResult> All(FilterViewModel filter, int pageIndex = 1)
         {
-            var teachers = await this._cheUsersService
-                    .GetAllAsync<TeacherAllViewModel>(pageIndex, DEFAULT_PAGE_SIZE, filter.Level, filter.City, filter.Neighbourhood);
+            var teachers = await this._cheUsersService.GetAllAsync<TeacherAllViewModel>(
+                GlobalConstants.TeacherRole, 
+                pageIndex, 
+                DEFAULT_PAGE_SIZE, 
+                filter.Level, 
+                filter.City, 
+                filter.Neighbourhood);
 
-            var count = await this._cheUsersService.CountAsync(filter.Level, filter.City, filter.Neighbourhood);
+            var count = await this._cheUsersService.CountAsync(
+                GlobalConstants.TeacherRole, 
+                filter.Level, 
+                filter.City, 
+                filter.Neighbourhood);
 
             filter.LevelDisplayName = "school level";
             filter.Levels = Enum.GetValues(typeof(SchoolLevel))

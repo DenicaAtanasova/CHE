@@ -14,8 +14,6 @@
             this.ReviewsReceived = new HashSet<Review>();
         }
 
-        public string RoleName { get; init; }
-
         public Profile Profile { get; init; }
 
         public ICollection<CheUserCooperative> Cooperatives { get; set; }

@@ -25,7 +25,7 @@
         <hr class="my-4">
         <div class="d-flex justify-content-lg-between">
             <div>
-                @if (this.User.IsInRole(GlobalConstants.PARENT_ROLE))
+                @if (this.User.IsInRole(GlobalConstants.ParentRole))
                 {
                     <a class="btn btn-che" asp-area="Parent" asp-controller="JoinRequests" asp-action="Send" asp-route-receiverId="@Model.Id">Ask to join</a>
                     @if (Model.SentReviewId == null)

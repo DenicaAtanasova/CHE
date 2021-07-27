@@ -93,7 +93,7 @@
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             if (ModelState.IsValid)
             {
-                var user = new CheUser { UserName = Input.Username, Email = Input.Email, RoleName = Input.Role };
+                var user = new CheUser { UserName = Input.Username, Email = Input.Email};
                 var result = await _userManager.CreateAsync(user, Input.Password);
 
                 if (result.Succeeded)
@@ -104,7 +104,7 @@
                         return Page();
                     }
 
-                    if (await _userManager.IsInRoleAsync(user, GlobalConstants.TEACHER_ROLE))
+                    if (await _userManager.IsInRoleAsync(user, GlobalConstants.TeacherRole))
                     {
                         await this._profilesService.CreateAsync(user.Id);
                         await this._schedulesService.CreateAsync(user.Id);
@@ -131,7 +131,7 @@
                     {
                         await _signInManager.SignInAsync(user, isPersistent: false);
 
-                        if (Input.Role == GlobalConstants.TEACHER_ROLE)
+                        if (Input.Role == GlobalConstants.TeacherRole)
                         {
                             return LocalRedirect("~/Identity/Account/Manage/Profile");
                         }

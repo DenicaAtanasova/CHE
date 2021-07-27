@@ -10,7 +10,6 @@
         <tr>
             <th scope="col">#</th>
             <th scope="col">Username</th>
-            <th scope="col">Role</th>
             <th scope="col" colspan="2">Handle</th>
         </tr>
     </thead>
@@ -20,7 +19,6 @@
             <tr>
                 <th scope="row">@(membersCount++)</th>
                 <td scope="row">@member.UserName</td>
-                <td scope="row">@member.Role</td>
                 @if (Model.AdminUserName == this.User.Identity.Name)
                 {
                     <td>
