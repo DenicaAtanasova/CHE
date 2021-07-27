@@ -3,23 +3,21 @@
     using System;
     using System.ComponentModel.DataAnnotations;
 
-    [AttributeUsage(AttributeTargets.Property, AllowMultiple = false)]
+    using static DataErrorMessages;
+
+    [AttributeUsage(AttributeTargets.Property)]
     public class DateAfterAttribute : ValidationAttribute
     {
-        private const string ERROR_MESSAGE = "Date must be after {0}.";
-
-        private readonly string _previousDate;
+        private readonly string previousDate;
 
         public DateAfterAttribute(string previousDate)
         {
-            this._previousDate = previousDate;
+            this.previousDate = previousDate;
         }
-
-        public string GetErrorMessage() => string.Format(ERROR_MESSAGE, this._previousDate);
 
         protected override ValidationResult IsValid(object value, ValidationContext validationContext)
         {
-            var property = validationContext.ObjectType.GetProperty(this._previousDate);
+            var property = validationContext.ObjectType.GetProperty(this.previousDate);
             var comparisonValue = (DateTime)property.GetValue(validationContext.ObjectInstance);
             var currentValue = (DateTime)value;
             if (comparisonValue < currentValue)
@@ -27,7 +25,7 @@
                 return ValidationResult.Success;
             }
 
-            return new ValidationResult(GetErrorMessage());
+            return new ValidationResult(string.Format(DateAfterErrorMessage, previousDate));
         }
     }
 }

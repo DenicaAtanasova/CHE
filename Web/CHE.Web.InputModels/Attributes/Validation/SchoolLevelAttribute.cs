@@ -7,6 +7,7 @@
 
     using static DataErrorMessages;
 
+    [AttributeUsage(AttributeTargets.Property)]
     public class SchoolLevelAttribute : ValidationAttribute
     {
         protected override ValidationResult IsValid(object value, ValidationContext validationContext)

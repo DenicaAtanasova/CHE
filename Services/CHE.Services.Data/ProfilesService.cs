@@ -78,9 +78,13 @@
             profileToUpdate.Interests = interests;
             profileToUpdate.Skills = skills;
             profileToUpdate.SchoolLevel = Enum.Parse<SchoolLevel>(schoolLevel);
-            profileToUpdate.AddressId = await this._addressesService
-                .GetAddressIdAsync(city, neighbourhood);
             profileToUpdate.ModifiedOn = DateTime.UtcNow;
+
+            if (city != null)
+            {
+                profileToUpdate.AddressId = await this._addressesService
+                    .GetAddressIdAsync(city, neighbourhood);
+            }
 
             this._dbContext.Update(profileToUpdate);
 

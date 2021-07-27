@@ -6,7 +6,7 @@
 
     using static DataErrorMessages;
 
-    [AttributeUsage(AttributeTargets.Field | AttributeTargets.Property, AllowMultiple = true, Inherited = true)]
+    [AttributeUsage(AttributeTargets.Property)]
     public class GradeAttribute : ValidationAttribute
     {
         private readonly string[] VALID_GRADES = 
