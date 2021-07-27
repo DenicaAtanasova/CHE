@@ -2,7 +2,7 @@
 {
     using CHE.Data;
     using CHE.Data.Models;
-    using CHE.Services.Data.Models;
+    using CHE.Services.Data.Enums;
     using CHE.Services.Mapping;
 
     using Microsoft.EntityFrameworkCore;
@@ -118,7 +118,7 @@
 
         public async Task<IEnumerable<TEntity>> GetAllByUserAsync<TEntity>(
             string userId,
-            CooperativeUser userType,
+            CooperativeUserType userType,
             int startIndex = 1,
             int endIndex = 0)
         {
@@ -249,18 +249,18 @@
                 .To<TEntity>()
                 .ToListAsync();
 
-        private IQueryable<Cooperative> GetCollectionByUser(string userId, CooperativeUser participant) =>
+        private IQueryable<Cooperative> GetCollectionByUser(string userId, CooperativeUserType participant) =>
             participant switch
             {
-                CooperativeUser.Admin => 
+                CooperativeUserType.Admin => 
                     _dbContext.Cooperatives
                         .AsNoTracking()
                         .Where(x => x.AdminId == userId),
-                CooperativeUser.Member | CooperativeUser.Admin => 
+                CooperativeUserType.Member | CooperativeUserType.Admin => 
                     _dbContext.Cooperatives
                         .AsNoTracking()
                         .Where(x => x.AdminId == userId || x.Members.Any(x => x.CheUserId == userId)),
-                CooperativeUser.Other => _dbContext.Cooperatives.AsNoTracking(),
+                CooperativeUserType.Other => _dbContext.Cooperatives.AsNoTracking(),
                 _ => null
             };
     }

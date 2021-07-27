@@ -3,7 +3,6 @@
     using CHE.Data;
     using CHE.Data.Models;
     using CHE.Services.Mapping;
-    using CHE.Web.InputModels.Events;
     using CHE.Web.ViewModels.Events;
 
     using Microsoft.EntityFrameworkCore;
@@ -30,13 +29,11 @@
 
             this._eventsService = new EventsService(this._dbContext);
 
-            AutoMapperConfig.RegisterMappings(
-                typeof(EventCreateInputModel).Assembly,
-                typeof(EventViewModel).Assembly);
+            AutoMapperConfig.RegisterMappings(typeof(EventViewModel).Assembly);
         }
 
         [Fact]
-        public async Task CreateAsync_ShouldWorkCorrectly()
+        public async Task CreateAsync_ShouldCreateNewEvent()
         {
             var title = "Do Sth";
             var description = "Description";
@@ -44,7 +41,9 @@
             var endDate = DateTime.UtcNow.AddMinutes(30);
             var scheduleId = Guid.NewGuid().ToString();
 
-            var eventId = await this._eventsService.CreateAsync(title, description, startDate, endDate, scheduleId);
+            var eventId = await this._eventsService
+                .CreateAsync(title, description, startDate, endDate, scheduleId);
+
             var eventFromDb = await this._dbContext.Events.SingleOrDefaultAsync();
             var ecpectedCreatedOn = DateTime.UtcNow;
 
@@ -53,11 +52,13 @@
             Assert.Equal(startDate, eventFromDb.StartDate);
             Assert.Equal(endDate, eventFromDb.EndDate);
             Assert.Equal(scheduleId, eventFromDb.ScheduleId);
-            Assert.Equal(ecpectedCreatedOn, eventFromDb.CreatedOn, new TimeSpan(days: 0, hours: 0, minutes: 0, seconds: 0, milliseconds: 1000));
+            Assert.Equal(ecpectedCreatedOn, 
+                eventFromDb.CreatedOn, 
+                new TimeSpan(days: 0, hours: 0, minutes: 0, seconds: 0, milliseconds: 1000));
         }
 
         [Fact]
-        public async Task UpdateAsync_ShouldWorkCorrectly()
+        public async Task UpdateAsync_ShouldUpdateEvent()
         {
             var scheduleId = Guid.NewGuid().ToString();
 
@@ -72,7 +73,6 @@
 
             this._dbContext.Events.Add(newEvent);
             await this._dbContext.SaveChangesAsync();
-            this._dbContext.Entry(newEvent).State = EntityState.Detached;
 
             var title = "Updated title";
             var description = "Updated description";
@@ -95,7 +95,7 @@
         }
 
         [Fact]
-        public async Task DeleteAsync_ShouldWorkCorrectly()
+        public async Task DeleteAsync_ShouldDeleteEvent()
         {
             var newEvent = new Event
             {
@@ -106,7 +106,6 @@
 
             this._dbContext.Events.Add(newEvent);
             await this._dbContext.SaveChangesAsync();
-            this._dbContext.Entry(newEvent).State = EntityState.Detached;
 
             await this._eventsService.DeleteAsync(newEvent.Id);
 
@@ -114,7 +113,7 @@
         }
 
         [Fact]
-        public async Task GetByIdAsync_ShouldWorkCorrectly()
+        public async Task GetByIdAsync_ShouldReturnCorrectEvent()
         {
             var newEvent = new Event
             {
@@ -133,7 +132,7 @@
         }
 
         [Fact]
-        public async Task GetThreeMonthsEventsAsync_ShouldWorkCorrectly()
+        public async Task GetThreeMonthsEventsAsync_ShouldReturnCorrectCollection()
         {
             var scheduleId = Guid.NewGuid().ToString();
 

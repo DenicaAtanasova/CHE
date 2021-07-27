@@ -1,7 +1,7 @@
 ﻿namespace CHE.Web.Areas.Parent.Controllers
 {
     using CHE.Services.Data;
-    using CHE.Services.Data.Models;
+    using CHE.Services.Data.Enums;
     using CHE.Web.Infrastructure;
     using CHE.Web.InputModels.Cooperatives;
     using CHE.Web.ViewModels;
@@ -120,7 +120,7 @@
         {
             var userId = this.User.GetId();
             var cooperatives = await this._cooperativesService
-                .GetAllByUserAsync<CooperativeAllViewModel>(userId, CooperativeUser.Admin | CooperativeUser.Member, pageIndex, DEFAULT_PAGE_SIZE);
+                .GetAllByUserAsync<CooperativeAllViewModel>(userId, CooperativeUserType.Admin | CooperativeUserType.Member, pageIndex, DEFAULT_PAGE_SIZE);
 
             var count = await this._cooperativesService.CountByUserAsync(userId);
 

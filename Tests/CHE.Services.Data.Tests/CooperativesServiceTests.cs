@@ -2,7 +2,7 @@
 {
     using CHE.Data;
     using CHE.Data.Models;
-    using CHE.Services.Data.Models;
+    using CHE.Services.Data.Enums;
     using CHE.Services.Mapping;
     using CHE.Web.InputModels.Cooperatives;
     using CHE.Web.ViewModels.Cooperatives;
@@ -23,8 +23,8 @@
         private const string FirstGrade = "First";
         private readonly string FirstGradeId = Guid.NewGuid().ToString();
 
-        private readonly CooperativeAddressInputModel  Address = 
-            new CooperativeAddressInputModel
+        private readonly Address  Address = 
+            new Address
             {
                 City = "Sofia",
                 Neighbourhood = "Dianabad"
@@ -166,7 +166,7 @@
         }
 
         [Fact]
-        public async Task DeleteAsync_ShouldDeleteTheCooperative()
+        public async Task DeleteAsync_ShouldDeleteCooperative()
         {
             var cooperative = new Cooperative
             {
@@ -187,7 +187,6 @@
 
             this._dbContext.Cooperatives.Add(cooperative);
             await this._dbContext.SaveChangesAsync();
-            this._dbContext.Entry(cooperative).State = EntityState.Detached;
 
             await this._cooperativesService.DeleteAsync(cooperative.Id);
 
@@ -462,7 +461,7 @@
             await this._dbContext.SaveChangesAsync();
 
             var cooperatives = await this._cooperativesService
-                .GetAllByUserAsync<CooperativeAllViewModel>(creatorId, CooperativeUser.Admin, startIndex, endIndex);
+                .GetAllByUserAsync<CooperativeAllViewModel>(creatorId, CooperativeUserType.Admin, startIndex, endIndex);
 
             var count = endIndex == 0
                 ? await this._dbContext.Cooperatives.CountAsync()
@@ -538,7 +537,7 @@
             await this._dbContext.SaveChangesAsync();
 
             var cooperatives = await this._cooperativesService
-                .GetAllByUserAsync<CooperativeAllViewModel>(userId, CooperativeUser.Admin | CooperativeUser.Member, startIndex, endIndex);
+                .GetAllByUserAsync<CooperativeAllViewModel>(userId, CooperativeUserType.Admin | CooperativeUserType.Member, startIndex, endIndex);
 
             var count = endIndex == 0
                 ? await this._dbContext.Cooperatives.CountAsync()

@@ -72,7 +72,15 @@
 
         public async Task DeleteAsync(string id)
         {
-            this._dbContext.Remove(new Event { Id = id});
+            var eventToDelete = await this._dbContext.Events
+                .SingleOrDefaultAsync(x => x.Id == id);
+
+            if (eventToDelete == null)
+            {
+                return;
+            }
+
+            this._dbContext.Remove(eventToDelete);
             await this._dbContext.SaveChangesAsync();
         }
 

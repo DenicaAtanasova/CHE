@@ -1,9 +1,9 @@
-﻿namespace CHE.Services.Data.Models
+﻿namespace CHE.Services.Data.Enums
 {
     using System;
 
     [Flags]
-    public enum CooperativeUser
+    public enum CooperativeUserType
     {
         Admin = 0,
         Member = 1,

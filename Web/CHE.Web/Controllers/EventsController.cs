@@ -30,7 +30,8 @@
         [HttpGet("{date}")]
         public async Task<IActionResult> GetThreeMonthsEvents(string date, string scheduleId)
         {
-            var threeMonthsEvents = await this._eventsService.GetThreeMonthsEventsAsync<EventViewModel>(scheduleId, date);
+            var threeMonthsEvents = await this._eventsService
+                .GetThreeMonthsEventsAsync<EventViewModel>(scheduleId, date);
 
             var groupedEvents = threeMonthsEvents
                 .GroupBy(x => x.StartDate.Date)
@@ -49,7 +50,8 @@
         [HttpGet("{id}")]
         public async Task<IActionResult> Update(string id)
         {
-            var currentEvent = await this._eventsService.GetByIdAsync<EventUpdateInputModel>(id);
+            var currentEvent = await this._eventsService
+                .GetByIdAsync<EventUpdateInputModel>(id);
             return this.View(currentEvent);
         }
 
@@ -101,7 +103,8 @@
                 inputModel.EndDate, 
                 inputModel.ScheduleId);
 
-            return this.RedirectToAction("Details", "Schedules", new { id = inputModel.ScheduleId});
+            return this.RedirectToAction(
+                "Details", "Schedules", new { id = inputModel.ScheduleId});
         }
     }
 }

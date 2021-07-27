@@ -1,6 +1,6 @@
 ﻿namespace CHE.Services.Data
 {
-    using CHE.Services.Data.Models;
+    using CHE.Services.Data.Enums;
 
     using System.Collections.Generic;
     using System.Threading.Tasks;
@@ -36,7 +36,7 @@
 
         Task<IEnumerable<TEntity>> GetAllByUserAsync<TEntity>(
             string userId,
-            CooperativeUser userType,
+            CooperativeUserType userType,
             int startIndex = 1,
             int endIndex = 0);
 
