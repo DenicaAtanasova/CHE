@@ -8,13 +8,12 @@
     using Microsoft.EntityFrameworkCore;
 
     using System;
-    using System.Linq;
     using System.Threading.Tasks;
 
     public class ImagesService : IImagesService
     {
-        private const string DefaultImageCaption = "Teacher_Avatar.png";
-        private const string DefaultImageUrl = @"https://chestorage.blob.core.windows.net/uploads/Teacher_Avatar.png";
+        private const string AvatarImageCaption = "Teacher_Avatar.png";
+        private const string AvatarImageUrl = @"https://chestorage.blob.core.windows.net/uploads/Teacher_Avatar.png";
 
         private readonly IFileStorage _cloudStorageService;
         private readonly CheDbContext _dbContext;
@@ -31,8 +30,8 @@
         {
             var image = new Image
             {
-                Caption = DefaultImageCaption,
-                Url = DefaultImageUrl,
+                Caption = AvatarImageCaption,
+                Url = AvatarImageUrl,
                 ProfileId = profileId,
                 CreatedOn = DateTime.UtcNow
             };
@@ -53,7 +52,7 @@
                 return;
             }
 
-            if (currentImage.Caption != DefaultImageCaption)
+            if (!this.IsAvater(currentImage.Caption))
             {
                 await this._cloudStorageService.DeleteAsync(currentImage.Caption);
             }
@@ -64,5 +63,8 @@
             this._dbContext.Images.Update(currentImage);
             await this._dbContext.SaveChangesAsync();
         }
+
+        private bool IsAvater(string caption) =>
+            caption == AvatarImageCaption;
     }
 }
