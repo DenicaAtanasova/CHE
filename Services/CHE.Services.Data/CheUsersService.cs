@@ -1,6 +1,5 @@
 ﻿namespace CHE.Services.Data
 {
-    using CHE.Common;
     using CHE.Data;
     using CHE.Data.Models;
     using CHE.Services.Mapping;
@@ -71,35 +70,45 @@
             return await filteredUsers.CountAsync();
         }
 
-        public async Task AcceptRequestAsync(string requestId)
+        public async Task AcceptRequestAsync(
+            string requestId, 
+            string cooperativeId, 
+            string senderId,
+            string receiverId)
         {
-            var request = await this._dbContext.JoinRequests
-                .SingleOrDefaultAsync(x => x.Id == requestId);
+            if (!await this._joinRequestsService
+                .ExistsAsync(cooperativeId, senderId, receiverId))
+            {
+                return;
+            }
 
             // request is send from parent to cooperative
-            if (request.ReceiverId == null)
+            if (receiverId == null)
             {
-                await this._cooperativesService.AddMemberAsync(request.SenderId, request.CooperativeId);
+                await this._cooperativesService.AddMemberAsync(senderId, cooperativeId);
             }
             // request is send from parent to teacher 
             else
             {
-                await this._cooperativesService.AddMemberAsync(request.ReceiverId, request.CooperativeId);
+                await this._cooperativesService.AddMemberAsync(receiverId, cooperativeId);
             }
 
-            this._dbContext.Remove(request);
-
-            await this._dbContext.SaveChangesAsync();
+            await this._joinRequestsService.DeleteAsync(requestId);
         }
 
-        public async Task RejectRequestAsync(string requestId)
+        public async Task RejectRequestAsync(
+            string requestId,
+            string cooperativeId,
+            string senderId,
+            string receiverId)
         {
-            var requestToDelete = await this._dbContext.JoinRequests
-                .SingleOrDefaultAsync(x => x.Id == requestId);
+            if (!await this._joinRequestsService
+                .ExistsAsync(cooperativeId, senderId, receiverId))
+            {
+                return;
+            }
 
-            this._dbContext.Remove(requestToDelete);
-
-            await this._dbContext.SaveChangesAsync();
+            await this._joinRequestsService.DeleteAsync(requestId);
         }
 
         public async Task SendRequestAsync(
@@ -116,15 +125,14 @@
                 return;
             }
 
-            var requestExists = await this._dbContext.JoinRequests
-                .AnyAsync(x => x.CooperativeId == cooperativeId &&
-                               x.ReceiverId == receiverId &&
-                               x.SenderId == senderId);
-
-            if (!requestExists)
+            if (!await this._joinRequestsService
+                .ExistsAsync(cooperativeId, senderId, receiverId))
             {
-                await this._joinRequestsService.CreateAsync(senderId, content, cooperativeId, receiverId);
+                return;
             }
+
+            await this._joinRequestsService
+                    .CreateAsync(senderId, content, cooperativeId, receiverId);
         }
 
         public async Task SendReviewAsync(
@@ -133,10 +141,7 @@
             string comment,
             int rating)
         {
-            var reviewExists = await this._dbContext.Reviews
-                .AnyAsync(x => x.SenderId == senderId && x.ReceiverId == receiverId);
-
-            if (!reviewExists)
+            if (!await this._reviewsService.ExistsAsync(senderId, receiverId))
             {
                 await this._reviewsService
                     .CreateAsync(senderId, receiverId, comment, rating);

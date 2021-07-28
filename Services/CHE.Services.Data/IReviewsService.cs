@@ -20,5 +20,7 @@
         Task<IEnumerable<TEntity>> GetAllByReceiverAsync<TEntity>(string receiverId);
 
         Task<string> GetSentReviewIdAsync(string receiverId, string senderId);
+
+        Task<bool> ExistsAsync(string senderId, string receiverId);
     }
 }

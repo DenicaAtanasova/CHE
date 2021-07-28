@@ -125,7 +125,7 @@
         }
 
         [Fact]
-        public async Task UpdateAsync_ShouldDoNothingWithIncorrectId()
+        public async Task UpdateAsync_WithIncorrectId_ShouldDoNothing()
         {
             var creatorId = Guid.NewGuid().ToString();
 
@@ -194,7 +194,7 @@
         }
 
         [Fact]
-        public async Task DeleteAsync_ShouldDoNothingWithIncorrectId()
+        public async Task DeleteAsync_WithIncorrectId_ShouldDoNothing()
         {
             var cooperative = new Cooperative
             {
@@ -251,7 +251,7 @@
         }
 
         [Fact]
-        public async Task GetByIdAsync_ShouldReturnNullWithIncorrectId()
+        public async Task GetByIdAsync_WithIncorrectCooperativeId_ShouldReturnNull()
         {
             this._dbContext.Cooperatives.Add(
                 new Cooperative
@@ -261,14 +261,12 @@
                 });
             await this._dbContext.SaveChangesAsync();
 
-            var actualRequest = await this._cooperativesService
-                .GetByIdAsync<CooperativeUpdateInputModel>(Guid.NewGuid().ToString());
-
-            Assert.Null(actualRequest);
+            Assert.Null(await this._cooperativesService
+                .GetByIdAsync<CooperativeUpdateInputModel>(Guid.NewGuid().ToString()));
         }
 
         [Fact]
-        public async Task GetAllAsync_ShouldReturnCorrectCollectionWithoutArgs()
+        public async Task GetAllAsync_WithoutArgs_ShouldReturnCorrectCooperatives()
         {
             var cooperatives = new List<Cooperative>
             {
@@ -319,7 +317,7 @@
         [InlineData(1, 6, null, null, "Levski")]
         [InlineData(0, 6, "First", "Sofia", null)]
         [InlineData(1, 6, "First", "Sofia", "Levski")]
-        public async Task GetAllAsync_ShouldReturnCorrectCollectionWithArgs(
+        public async Task GetAllAsync_WithArgs_ShouldReturnCorrectCooperatives(
             int startIndex,
             int endIndex,
             string grade,
@@ -392,22 +390,23 @@
             await this._dbContext.AddRangeAsync(cooperativesList);
             await this._dbContext.SaveChangesAsync();
 
-            var cooperatives = await this._cooperativesService
-                .GetAllAsync<CooperativeAllViewModel>(startIndex, endIndex, grade, city, neighbourhood);
-
+            var filteredCooperatives = this.GetFilteredCollection(cooperativesList, grade, city, neighbourhood);
             var count = endIndex == 0
-                ? await this._dbContext.Cooperatives.CountAsync()
+                ? filteredCooperatives.Count()
                 : endIndex;
 
-            var expectedCooperatives = this.GetFilteredCollection(cooperativesList, grade, city, neighbourhood)
+            var expectedCooperatives = filteredCooperatives
                 .Skip((startIndex - 1) * count)
                 .Take(count)
                 .ToList();
 
+            var cooperatives = await this._cooperativesService
+                .GetAllAsync<CooperativeAllViewModel>(startIndex, endIndex, grade, city, neighbourhood);
+
             Assert.Equal(expectedCooperatives.Count, cooperatives.Count());
 
             var index = 0;
-            foreach (var cooperative in cooperatives)
+            foreach (var cooperative in cooperatives.OrderBy(x => x.Name))
             {
                 Assert.Equal(expectedCooperatives[index++].Id, cooperative.Id);
             }
@@ -419,7 +418,7 @@
         [InlineData(0, -1)]
         [InlineData(0, 6)]
         [InlineData(6, 6)]
-        public async Task GetAllByUserAsync_ShouldReturnCorrectCollectionWhenUserIsAdmin(int startIndex, int endIndex)
+        public async Task GetAllByUserAsync_WhenUserIsAdmin_ShouldReturnCorrectCooperatives(int startIndex, int endIndex)
         {
             var creatorId = Guid.NewGuid().ToString();
 
@@ -476,7 +475,7 @@
             Assert.Equal(expectedCooperatives.Count, cooperatives.Count());
 
             var index = 0;
-            foreach (var cooperative in cooperatives)
+            foreach (var cooperative in cooperatives.OrderBy(x => x.Name))
             {
                 Assert.Equal(expectedCooperatives[index++].Id, cooperative.Id);
             }
@@ -488,7 +487,7 @@
         [InlineData(0, -1)]
         [InlineData(0, 6)]
         [InlineData(6, 6)]
-        public async Task GetAllByUserAsync_ShouldReturnCorrectCollectionWhenUserIsAdminOrMember(int startIndex, int endIndex)
+        public async Task GetAllByUserAsync_WhenUserIsAdminOrMember_ShouldReturnCorrectCooperatives(int startIndex, int endIndex)
         {
             var userId = Guid.NewGuid().ToString();
 
@@ -552,7 +551,7 @@
             Assert.Equal(expectedCooperatives.Count, cooperatives.Count());
 
             var index = 0;
-            foreach (var cooperative in cooperatives)
+            foreach (var cooperative in cooperatives.OrderBy(x => x.Name))
             {
                 Assert.Equal(expectedCooperatives[index++].Id, cooperative.Id);
             }
@@ -664,7 +663,7 @@
         }
 
         [Fact]
-        public async Task CountAsync_ShouldReturnCorrectCountWithoutArgs()
+        public async Task CountAsync_WithoutArgs_ShouldReturnCorrectCount()
         {
             var cooperatives = new List<Cooperative>
             {
@@ -704,7 +703,7 @@
         [InlineData(null, null, "Levski")]
         [InlineData("First", "Sofia", null)]
         [InlineData("First", "Sofia", "Levski")]
-        public async Task CountAsync_ShouldReturnCorrectCountWithArgs(
+        public async Task CountAsync_WithArgs_ShouldReturnCorrectCount(
             string gradeFilter,
             string cityFilter,
             string neighbourhoodFilter)
@@ -782,7 +781,7 @@
         }
 
         [Fact]
-        public async Task CountByUserAsync_ShouldWorkCorrectlyWithUserId()
+        public async Task CountByUserAsync_WithUserId_ShouldWorkCorrectly()
         {
             var userId = Guid.NewGuid().ToString();
 

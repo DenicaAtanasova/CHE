@@ -94,5 +94,9 @@
                 .Where(x => x.SenderId == senderId && x.ReceiverId == receiverId)
                 .Select(x => x.Id)
                 .FirstOrDefaultAsync();
+
+        public async Task<bool> ExistsAsync(string senderId, string receiverId) =>
+            await this._dbContext.Reviews
+                .AnyAsync(x => x.SenderId == senderId && x.ReceiverId == receiverId);
     }
 }

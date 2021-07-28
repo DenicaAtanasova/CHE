@@ -36,18 +36,18 @@
 
         public async Task<string> CreateAsync(string userId)
         {
-            var portfolio = new Profile
+            var profile = new Profile
             {
                 OwnerId = userId,
                 CreatedOn = DateTime.UtcNow
             };
 
-            this._dbContext.Profiles.Add(portfolio);
+            this._dbContext.Profiles.Add(profile);
             await this._dbContext.SaveChangesAsync();
 
-            await this._imagesService.CreateAvatarAsync(portfolio.Id);
+            await this._imagesService.CreateAvatarAsync(profile.Id);
 
-            return portfolio.Id;
+            return profile.Id;
         }
 
         public async Task UpdateAsync(string userId, 

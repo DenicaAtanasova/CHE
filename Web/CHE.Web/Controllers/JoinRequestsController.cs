@@ -46,18 +46,22 @@
             return this.View(request);
         }
 
-        public async Task<IActionResult> Reject(string cooperativeId, string requestId)
+        public async Task<IActionResult> Reject(string requestId, string cooperativeId, string senderId, string receiverId)
         {
-            await this._cheUsersService.RejectRequestAsync(requestId);
+            await this._cheUsersService
+                .RejectRequestAsync(requestId, cooperativeId, senderId, receiverId);
 
-            return this.RedirectToAction("Details", "Cooperatives", new { id = cooperativeId });
+            return this.RedirectToAction(
+                "Details", "Cooperatives", new { id = cooperativeId });
         }
 
-        public async Task<IActionResult> Accept(string cooperativeId, string requestId)
+        public async Task<IActionResult> Accept(string requestId, string cooperativeId, string senderId, string receiverId)
         {
-            await this._cheUsersService.AcceptRequestAsync(requestId);
+            await this._cheUsersService
+                .AcceptRequestAsync(requestId, cooperativeId, senderId, receiverId);
 
-            return this.RedirectToAction("Details", "Cooperatives", new { id = cooperativeId });
+            return this.RedirectToAction(
+                "Details", "Cooperatives", new { id = cooperativeId });
         }
     }
 }

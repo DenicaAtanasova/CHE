@@ -9,10 +9,14 @@
 
         public string Content { get; init; }
 
+        public string SenderId { get; init; }
+
         public string SenderUserName { get; init; }
 
         public string CooperativeId { get; init; }
 
         public string CooperativeName { get; init; }
+
+        public string ReceiverId { get; set; }
     }
 }

@@ -100,5 +100,10 @@
             this._dbContext.JoinRequests.Remove(request);
             await this._dbContext.SaveChangesAsync();
         }
+
+        public async Task<bool> ExistsAsync(string cooperativeId, string senderId, string receiverId) =>
+            await this._dbContext.JoinRequests.AnyAsync(x => x.CooperativeId == cooperativeId &&
+                                                             x.SenderId == senderId &&
+                                                             x.ReceiverId == receiverId);
     }
 }

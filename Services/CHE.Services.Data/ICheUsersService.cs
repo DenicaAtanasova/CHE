@@ -1,7 +1,5 @@
 ﻿namespace CHE.Services.Data
 {
-    using CHE.Services.Data.Enums;
-
     using System.Collections.Generic;
     using System.Threading.Tasks;
 
@@ -9,7 +7,6 @@
     {
         Task<TEntity> GetByIdAsync<TEntity>(string id);
 
-        //TODO: Rename if used only for teachers
         Task<IEnumerable<TEntity>> GetAllAsync<TEntity>(
             string role,
             int startIndex = 1,
@@ -24,9 +21,17 @@
             string cityFilter = null,
             string neighbourhoodFilter = null);
 
-        Task AcceptRequestAsync(string requestId);
+        Task AcceptRequestAsync(
+            string requestId,
+            string cooperativeId,
+            string senderId,
+            string receiverId);
 
-        Task RejectRequestAsync(string requestId);
+        Task RejectRequestAsync(
+            string requestId,
+            string cooperativeId,
+            string senderId,
+            string receiverId);
 
         Task SendRequestAsync(
             string senderId,

@@ -19,6 +19,7 @@
     <ProjectReference Include="..\..\Data\CHE.Data.Models\CHE.Data.Models.csproj" />
     <ProjectReference Include="..\..\Data\CHE.Data\CHE.Data.csproj" />
     <ProjectReference Include="..\..\Services\CHE.Services.Data\CHE.Services.Data.csproj" />
+    <ProjectReference Include="..\..\Services\CHE.Services.Storage\CHE.Services.Storage.csproj" />
     <ProjectReference Include="..\..\Web\CHE.Web.InputModels\CHE.Web.InputModels.csproj" />
     <ProjectReference Include="..\..\Web\CHE.Web.ViewModels\CHE.Web.ViewModels.csproj" />
   </ItemGroup>

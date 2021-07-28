@@ -132,7 +132,7 @@
         }
 
         [Fact]
-        public async Task GetThreeMonthsEventsAsync_ShouldReturnCorrectCollection()
+        public async Task GetThreeMonthsEventsAsync_ShouldReturnCorrectEvents()
         {
             var scheduleId = Guid.NewGuid().ToString();
 

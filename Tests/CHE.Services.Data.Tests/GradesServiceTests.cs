@@ -29,7 +29,7 @@
         [Theory]
         [InlineData("First")]
         [InlineData("Second")]
-        public async Task GetGardeIdAsync_ShouldWorkCorrectly(string gradeValue)
+        public async Task GetGardeIdAsync_ShouldReturnCorrectId(string gradeValue)
         {
             var gradesList = new string[]
             {
@@ -61,7 +61,7 @@
         }
 
         [Fact]
-        public async Task GetAllValuesAsync_ShouldWorkCorrectlyWithCurrentGradeNull()
+        public async Task GetAllValuesAsync_WithCurrentGradeNull_ShouldReturnCorrectGradeValues()
         {
             var gradesList = new string[]
             {
@@ -93,7 +93,7 @@
         [Theory]
         [InlineData("First")]
         [InlineData("Second")]
-        public async Task GetAllValuesAsync_ShouldWorkCorrectlyWithCurrentGradeNotNull(string currentGrade)
+        public async Task GetAllValuesAsync_WithCurrentGradeNotNull_ShouldReturnCorrectGradeValues(string currentGrade)
         {
             var gradesList = new string[]
             {

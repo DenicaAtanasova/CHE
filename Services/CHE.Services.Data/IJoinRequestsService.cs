@@ -22,5 +22,7 @@
         Task UpdateAsync(string id, string content);
 
         Task DeleteAsync(string id);
+
+        Task<bool> ExistsAsync(string cooperativeId, string senderId, string receiverId);
     }
 }

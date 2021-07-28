@@ -2,8 +2,10 @@
 @{
     var data = new Dictionary<string, string>
     {
+        { "requestId", Model.Id },
         { "cooperativeId", Model.CooperativeId },
-        { "requestId", Model.Id }
+        { "senderId", Model.SenderId},
+        { "receiverId", Model.ReceiverId}
     };
 }
 
