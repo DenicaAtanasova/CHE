@@ -50,7 +50,8 @@
             return profile.Id;
         }
 
-        public async Task UpdateAsync(string userId, 
+        public async Task UpdateAsync(
+            string userId, 
             string firstName, 
             string lastName,
             string education,

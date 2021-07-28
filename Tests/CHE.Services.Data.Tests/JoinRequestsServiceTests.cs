@@ -53,7 +53,7 @@
         }
 
         [Fact]
-        public async Task GetByIdAsync_ShouldReturnNullWithIncorrectId()
+        public async Task GetByIdAsync_WithIncorrectJoinRequestId_ShouldReturnNull()
         {
             this._dbContext.JoinRequests.Add(
                 new JoinRequest
@@ -70,7 +70,7 @@
         }
 
         [Fact]
-        public async Task GetAllByTeacherAsync_ShouldWorkCorrectly()
+        public async Task GetAllByTeacherAsync_ShouldReturnCorrectTeachersRequests()
         {
             var serchedTeacher = new CheUser
             {
@@ -126,7 +126,7 @@
         }
 
         [Fact]
-        public async Task GetAllByCooperativeAsync_ShouldWorkCorrectly()
+        public async Task GetAllByCooperativeAsync_ShouldReturnCorrectCooperativesRequests()
         {
             var serchedCooperative = new Cooperative
             {
@@ -182,7 +182,7 @@
         }
 
         [Fact]
-        public async Task CreateAsync_ShouldWorkCorrectly()
+        public async Task CreateAsync_ShouldCreateNewJoinRequest()
         {
             var senderId = Guid.NewGuid().ToString();
             var content = "Content";
@@ -206,7 +206,7 @@
         }
 
         [Fact]
-        public async Task UpdateAsync_ShouldWorkCorrectly()
+        public async Task UpdateAsync_ShouldUpdateJoinRequest()
         {
             var cooperativeId = Guid.NewGuid().ToString();
             var senderId = Guid.NewGuid().ToString();
@@ -238,7 +238,7 @@
         }
 
         [Fact]
-        public async Task DeleteAsync_ShouldWorkCorrectly()
+        public async Task DeleteAsync_ShouldDeleteJoinRequest()
         {
             var cooperativeId = Guid.NewGuid().ToString();
             var senderId = Guid.NewGuid().ToString();
@@ -261,7 +261,7 @@
         }
 
         [Fact]
-        public async Task GetPendindRequestIdAsync_ShouldWorkCorrectly()
+        public async Task GetPendindRequestIdAsync_WhenRequestExists_ShouldReturnPendingRequest()
         {
             var cooperativeId = Guid.NewGuid().ToString();
             var senderId = Guid.NewGuid().ToString();
@@ -278,6 +278,80 @@
                 .GetPendindRequestIdAsync(cooperativeId, senderId);
 
             Assert.Equal(request.Id, pendingRequestId);
+        }
+
+        [Fact]
+        public async Task GetPendindRequestIdAsync_WhenRequestDoesNotExists_ShouldReturnNull()
+        {
+            var cooperativeId = Guid.NewGuid().ToString();
+            var senderId = Guid.NewGuid().ToString();
+            var request = new JoinRequest
+            {
+                CooperativeId = cooperativeId,
+                SenderId = senderId
+            };
+
+            this._dbContext.JoinRequests.Add(request);
+            await this._dbContext.SaveChangesAsync();
+
+            Assert.Null(await this._joinRequestsService
+                .GetPendindRequestIdAsync(Guid.NewGuid().ToString(), senderId));
+            Assert.Null(await this._joinRequestsService
+                .GetPendindRequestIdAsync(cooperativeId, Guid.NewGuid().ToString()));
+            Assert.Null(await this._joinRequestsService
+                .GetPendindRequestIdAsync(Guid.NewGuid().ToString(), Guid.NewGuid().ToString()));
+        }
+
+        [Fact]
+        public async Task ExistsAsync_WhenRequestExists_ShouldReturnTrue()
+        {
+            var cooperativeId = Guid.NewGuid().ToString();
+            var senderId = Guid.NewGuid().ToString();
+            var receiverId = Guid.NewGuid().ToString();
+            var request = new JoinRequest
+            {
+                CooperativeId = cooperativeId,
+                SenderId = senderId, 
+                ReceiverId = receiverId
+            };
+
+            this._dbContext.JoinRequests.Add(request);
+            await this._dbContext.SaveChangesAsync();
+
+            Assert.True(await this._joinRequestsService
+                .ExistsAsync(cooperativeId, senderId, receiverId));
+        }
+
+        [Fact]
+        public async Task ExistsAsync_WhenRequestDoesNotExists_ShouldReturnFalse()
+        {
+            var cooperativeId = Guid.NewGuid().ToString();
+            var senderId = Guid.NewGuid().ToString();
+            var receiverId = Guid.NewGuid().ToString();
+            var request = new JoinRequest
+            {
+                CooperativeId = cooperativeId,
+                SenderId = senderId,
+                ReceiverId = receiverId
+            };
+
+            this._dbContext.JoinRequests.Add(request);
+            await this._dbContext.SaveChangesAsync();
+
+            Assert.False(await this._joinRequestsService
+                .ExistsAsync(Guid.NewGuid().ToString(), senderId, receiverId));
+            Assert.False(await this._joinRequestsService
+                .ExistsAsync(cooperativeId, Guid.NewGuid().ToString(), receiverId));
+            Assert.False(await this._joinRequestsService
+                .ExistsAsync(cooperativeId, senderId, Guid.NewGuid().ToString()));
+            Assert.False(await this._joinRequestsService
+                .ExistsAsync(Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), receiverId));
+            Assert.False(await this._joinRequestsService
+                .ExistsAsync(Guid.NewGuid().ToString(), senderId, Guid.NewGuid().ToString()));
+            Assert.False(await this._joinRequestsService
+                .ExistsAsync(cooperativeId, Guid.NewGuid().ToString(), Guid.NewGuid().ToString()));
+            Assert.False(await this._joinRequestsService
+                .ExistsAsync(Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString()));
         }
     }
 }

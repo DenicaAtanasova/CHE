@@ -25,7 +25,7 @@
         private readonly string profileId = Guid.NewGuid().ToString();
 
         private readonly CheDbContext _dbContext;
-        private IImagesService _imagesService;
+        private readonly IImagesService _imagesService;
 
         public ImagesServiceTests()
         {
