@@ -13,7 +13,7 @@
 
     public class CooperativesController : ParentController
     {
-        private const int DEFAULT_PAGE_SIZE = 6;
+        private const int DefaultPageSize = 6;
 
         private readonly ICooperativesService _cooperativesService;
 
@@ -120,12 +120,12 @@
         {
             var userId = this.User.GetId();
             var cooperatives = await this._cooperativesService
-                .GetAllByUserAsync<CooperativeAllViewModel>(userId, CooperativeUserType.Admin | CooperativeUserType.Member, pageIndex, DEFAULT_PAGE_SIZE);
+                .GetAllByUserAsync<CooperativeAllViewModel>(userId, CooperativeUserType.Admin | CooperativeUserType.Member, pageIndex, DefaultPageSize);
 
             var count = await this._cooperativesService.CountByUserAsync(userId);
 
             var cooperativesList = PaginatedList<CooperativeAllViewModel>
-                .Create(cooperatives, count, pageIndex, DEFAULT_PAGE_SIZE);
+                .Create(cooperatives, count, pageIndex, DefaultPageSize);
 
             return this.View(cooperativesList);
         }

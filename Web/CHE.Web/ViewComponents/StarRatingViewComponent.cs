@@ -6,13 +6,13 @@
 
     public class StarRatingViewComponent : ViewComponent
     {
-        private const int TOTAL_STAR_COUNT = 5;
+        private const int TotalStarCount = 5;
 
         public IViewComponentResult Invoke(double rating)
         {
             var fullStarCount = (int)rating;
             var halfStarCount = rating % 1 != 0 ? 1 : 0;
-            var emptyStarCount = TOTAL_STAR_COUNT - (fullStarCount + halfStarCount);
+            var emptyStarCount = TotalStarCount - (fullStarCount + halfStarCount);
 
             var starRatingModel = new StarRatingViewModel
             {

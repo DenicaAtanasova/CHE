@@ -15,7 +15,7 @@
 
     public class TeachersController : Controller
     {
-        private const int DEFAULT_PAGE_SIZE = 6;
+        private const int DefaultPageSize = 6;
 
         private readonly ICheUsersService _cheUsersService;
         private readonly IReviewsService _reviewsService;
@@ -36,7 +36,7 @@
             var teachers = await this._cheUsersService.GetAllAsync<TeacherAllViewModel>(
                 GlobalConstants.TeacherRole, 
                 pageIndex, 
-                DEFAULT_PAGE_SIZE, 
+                DefaultPageSize, 
                 filter.Level, 
                 filter.City, 
                 filter.Neighbourhood);
@@ -58,7 +58,7 @@
             var teachersList = new TeacherAllListViewModel
             {
                 Teachers = PaginatedList<TeacherAllViewModel>
-                 .Create(teachers, count, pageIndex, DEFAULT_PAGE_SIZE),
+                 .Create(teachers, count, pageIndex, DefaultPageSize),
                 Filter = filter
             };
 

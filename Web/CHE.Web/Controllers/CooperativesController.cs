@@ -12,7 +12,7 @@
 
     public class CooperativesController : Controller
     {
-        private const int DEFAULT_PAGE_SIZE = 6;
+        private const int DefaultPageSize = 6;
 
         private readonly ICooperativesService _cooperativesService;
         private readonly IGradesService _gradesService;
@@ -60,7 +60,7 @@
         public async Task<IActionResult> All(FilterViewModel filter, int pageIndex = 1)
         {
             var cooperatives = await this._cooperativesService
-                    .GetAllAsync<CooperativeAllViewModel>(pageIndex, DEFAULT_PAGE_SIZE, filter.Level, filter.City, filter.Neighbourhood);
+                    .GetAllAsync<CooperativeAllViewModel>(pageIndex, DefaultPageSize, filter.Level, filter.City, filter.Neighbourhood);
 
             var count = await this._cooperativesService.CountAsync(filter.Level, filter.City, filter.Neighbourhood);
 
@@ -72,7 +72,7 @@
             var cooperativesList = new CooperativesAllListViewModel
             {
                 Cooperatives = PaginatedList<CooperativeAllViewModel>
-                    .Create(cooperatives, count, pageIndex, DEFAULT_PAGE_SIZE),
+                    .Create(cooperatives, count, pageIndex, DefaultPageSize),
                 Filter = filter
             };
 
