@@ -34,7 +34,7 @@
         }
 
         [Fact]
-        public async Task CreateAsync_ShouldWorkCorrectly()
+        public async Task CreateAsync_ShouldCreateNewReview()
         {
             var senderId = Guid.NewGuid().ToString();
             var receiverId = Guid.NewGuid().ToString();
@@ -55,7 +55,59 @@
         }
 
         [Fact]
-        public async Task GetAllByReceiverAsync_ShouldWorkCorrectly()
+        public async Task UpdateAsync_ShouldUpdateReview()
+        {
+            var senderId = Guid.NewGuid().ToString();
+            var receiverId = Guid.NewGuid().ToString();
+
+            var review = new Review
+            {
+                Comment = "Comment",
+                Rating = 2,
+                SenderId = senderId, 
+                ReceiverId = receiverId
+            };
+
+            this._dbContext.Reviews.Add(review);
+            await this._dbContext.SaveChangesAsync();
+
+            var comment = "Updated Comment";
+            var rating = 5;
+
+            await this._ReviewsService.UpdateAsync(review.Id, comment, rating);
+            var reviewFromDb = await this._dbContext.Reviews.SingleOrDefaultAsync();
+            var ModifiedOn = DateTime.UtcNow;
+
+            Assert.Equal(comment, reviewFromDb.Comment);
+            Assert.Equal(rating, reviewFromDb.Rating);
+
+            Assert.Equal(ModifiedOn, reviewFromDb.ModifiedOn.Value, 
+                new TimeSpan(days: 0, hours: 0, minutes: 0, seconds: 0, milliseconds: 1000));
+        }
+
+        [Fact]
+        public async Task DeleteAsync_ShouldDeleteReview()
+        {
+            var review = new Review
+            {
+                Comment = "Comment",
+                Rating = 2,
+                SenderId = Guid.NewGuid().ToString(),
+                ReceiverId = Guid.NewGuid().ToString()
+        };
+
+            this._dbContext.Reviews.Add(review);
+            await this._dbContext.SaveChangesAsync();
+
+            await this._ReviewsService.DeleteAsync(review.Id);
+
+            var reviewFromDb = await this._dbContext.Reviews.SingleOrDefaultAsync();
+
+            Assert.Null( reviewFromDb);
+        }
+
+        [Fact]
+        public async Task GetAllByReceiverAsync_ShouldReturnAllReviewsByReceiver()
         {
             var searchedReceiver = new CheUser
             {
@@ -100,6 +152,107 @@
             {
                 Assert.Equal(expectedReviewsList[index++].Comment, review.Comment);
             }
+        }
+
+        [Fact]
+        public async Task GetByIdAsync_Review_ShouldReturnCorrectReview()
+        {
+            var senderId = Guid.NewGuid().ToString();
+            var receiverId = Guid.NewGuid().ToString();
+
+            var review = new Review
+            {
+                Comment = "Comment",
+                Rating = 2,
+                SenderId = Guid.NewGuid().ToString(),
+                ReceiverId = Guid.NewGuid().ToString()
+            };
+
+            this._dbContext.Reviews.Add(review);
+            await this._dbContext.SaveChangesAsync();
+
+            var reviewFromDb = await this._ReviewsService
+                .GetByIdAsync<ReviewUpdateInputModel>(review.Id);
+
+            Assert.Equal(review.Id, reviewFromDb.Id);
+        }
+
+        [Fact]
+        public async Task GetSentReviewIdAsync_ShouldReturnCorrectReview()
+        {
+            var review = new Review
+            {
+                Comment = "Comment",
+                Rating = 2,
+                Sender = new CheUser 
+                { 
+                    UserName = "Sender"
+                },
+                Receiver = new CheUser
+                {
+                    UserName = "Receiver"
+                }
+            };
+
+            this._dbContext.Reviews.Add(review);
+            await this._dbContext.SaveChangesAsync();
+
+            var reviewId = await this._ReviewsService
+                .GetSentReviewIdAsync(review.SenderId, review.ReceiverId);
+
+            Assert.Equal(review.Id, reviewId);
+        }
+
+        [Fact]
+        public async Task ExistsAsync_WhenReviewExists_ShouldReturnTrue()
+        {
+            var review = new Review
+            {
+                Comment = "Comment",
+                Rating = 2,
+                Sender = new CheUser
+                {
+                    UserName = "Sender"
+                },
+                Receiver = new CheUser
+                {
+                    UserName = "Receiver"
+                }
+            };
+
+            this._dbContext.Reviews.Add(review);
+            await this._dbContext.SaveChangesAsync();
+
+            Assert.True(await this._ReviewsService
+                .ExistsAsync(review.SenderId, review.ReceiverId));
+        }
+
+        [Fact]
+        public async Task ExistsAsync_WhenReviewDoesNotExists_ShouldReturnFalse()
+        {
+            var review = new Review
+            {
+                Comment = "Comment",
+                Rating = 2,
+                Sender = new CheUser
+                {
+                    UserName = "Sender"
+                },
+                Receiver = new CheUser
+                {
+                    UserName = "Receiver"
+                }
+            };
+
+            this._dbContext.Reviews.Add(review);
+            await this._dbContext.SaveChangesAsync();
+
+            Assert.False(await this._ReviewsService
+                .ExistsAsync(Guid.NewGuid().ToString(), review.ReceiverId));
+            Assert.False(await this._ReviewsService
+                .ExistsAsync(review.SenderId, Guid.NewGuid().ToString()));
+            Assert.False(await this._ReviewsService
+                .ExistsAsync(Guid.NewGuid().ToString(), Guid.NewGuid().ToString()));
         }
     }
 }

@@ -79,7 +79,7 @@
             {
                 var userId = this.User.GetId();
                 currentTeacher.SentReviewId = await this._reviewsService
-                    .GetSentReviewIdAsync(id, userId);
+                    .GetSentReviewIdAsync(userId, id);
             }
             
             this.ViewData["id"] = currentTeacher.Id;

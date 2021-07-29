@@ -222,7 +222,7 @@
         }
 
         [Fact]
-        public async Task GetByIdAsync_ShouldReturnCorrectCooperative()
+        public async Task GetByIdAsync_Cooperative_ShouldReturnCorrectCooperative()
         {
             var cooperative = new Cooperative
             {

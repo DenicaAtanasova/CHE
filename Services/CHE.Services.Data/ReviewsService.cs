@@ -88,7 +88,7 @@
                 .To<TEntity>()
                 .ToListAsync();
 
-        public async Task<string> GetSentReviewIdAsync(string receiverId, string senderId) =>
+        public async Task<string> GetSentReviewIdAsync(string senderId, string receiverId) =>
             await this._dbContext.Reviews
                 .AsNoTracking()
                 .Where(x => x.SenderId == senderId && x.ReceiverId == receiverId)

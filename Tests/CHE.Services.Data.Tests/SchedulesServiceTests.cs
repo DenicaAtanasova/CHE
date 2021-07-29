@@ -65,19 +65,19 @@
         }
 
         [Fact]
-        public async Task GetIdByUserAsync_ShouldWorkCorrectly()
+        public async Task GetIdByCooperative_ShouldWorkCorrectly()
         {
-            var teacherId = Guid.NewGuid().ToString();
+            var CooperativeId = Guid.NewGuid().ToString();
             var schedule = new Schedule
             {
-                CooperativeId = Guid.NewGuid().ToString(),
-                TeacherId = teacherId
+                CooperativeId = CooperativeId,
+                TeacherId = Guid.NewGuid().ToString()
             };
 
             this._dbContext.Schedules.Add(schedule);
             await this._dbContext.SaveChangesAsync();
 
-            var scheduleId = await this._schedulesService.GetIdByUserAsync(teacherId);
+            var scheduleId = await this._schedulesService.GetIdByCooperativeAsync(CooperativeId);
 
             Assert.Equal(schedule.Id, scheduleId);
         }
