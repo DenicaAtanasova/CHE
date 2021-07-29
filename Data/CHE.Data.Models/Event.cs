@@ -13,8 +13,6 @@
 
         public DateTime EndDate { get; set; }
 
-        public bool IsFullDay { get; set; }
-
         public string ScheduleId { get; init; }
 
         public Schedule Schedule { get; init; }
