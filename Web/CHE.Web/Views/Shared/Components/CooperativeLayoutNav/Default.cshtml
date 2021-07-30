@@ -8,9 +8,10 @@
             <div class="sidebar-item categories">
                 <nav class="nav-coop">
                     <ul>
-                        <li class ="active" id="info"><a asp-area="" asp-controller="Cooperatives" asp-action="Details" asp-route-id="@Model.CooperativeId">Info</a></li>
+                        <li class="active" id="info"><a asp-area="" asp-controller="Cooperatives" asp-action="Details" asp-route-id="@Model.CooperativeId">Info</a></li>
                         <li><a asp-area="Parent" asp-controller="Cooperatives" asp-action="Members" asp-route-id="@Model.CooperativeId">Memebers</a></li>
                         <li><a asp-area="Parent" asp-controller="JoinRequests" asp-action="All" asp-route-cooperativeId="@Model.CooperativeId">Join requests</a></li>
+                        <li><a asp-area="" asp-controller="Schedules" asp-action="Details" asp-route-id="@Model.ScheduleId">Messages</a></li>
                         <li><a asp-area="" asp-controller="Schedules" asp-action="Details" asp-route-id="@Model.ScheduleId">Schedule</a></li>
                     </ul>
                 </nav>

@@ -49,7 +49,7 @@
                 currentCooperative.IsMember = await this._cooperativesService
                     .CheckIfMemberAsync(userId, currentCooperative.Id);
                 currentCooperative.PendingRequestId = await this._joinRequestsService
-                    .GetPendindRequestIdAsync(id, userId);
+                    .GetPendindRequestIdAsync(userId, id);
             }          
 
             this.ViewData["id"] = currentCooperative.Id;

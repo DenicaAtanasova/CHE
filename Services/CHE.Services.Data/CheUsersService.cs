@@ -73,25 +73,15 @@
         public async Task AcceptRequestAsync(
             string requestId, 
             string cooperativeId, 
-            string senderId,
-            string receiverId)
+            string senderId)
         {
             if (!await this._joinRequestsService
-                .ExistsAsync(cooperativeId, senderId, receiverId))
+                .ExistsAsync(senderId, cooperativeId))
             {
                 return;
             }
 
-            // request is send from parent to cooperative
-            if (receiverId == null)
-            {
-                await this._cooperativesService.AddMemberAsync(senderId, cooperativeId);
-            }
-            // request is send from parent to teacher 
-            else
-            {
-                await this._cooperativesService.AddMemberAsync(receiverId, cooperativeId);
-            }
+            await this._cooperativesService.AddMemberAsync(senderId, cooperativeId);
 
             await this._joinRequestsService.DeleteAsync(requestId);
         }
@@ -99,11 +89,10 @@
         public async Task RejectRequestAsync(
             string requestId,
             string cooperativeId,
-            string senderId,
-            string receiverId)
+            string senderId)
         {
             if (!await this._joinRequestsService
-                .ExistsAsync(cooperativeId, senderId, receiverId))
+                .ExistsAsync(senderId, cooperativeId))
             {
                 return;
             }
@@ -114,8 +103,7 @@
         public async Task SendRequestAsync(
             string senderId,
             string content,
-            string cooperativeId,
-            string receiverId)
+            string cooperativeId)
         {
             var cooperativeExists = await this._dbContext.Cooperatives
                 .AnyAsync(x => x.Id == cooperativeId);
@@ -126,13 +114,13 @@
             }
 
             if (!await this._joinRequestsService
-                .ExistsAsync(cooperativeId, senderId, receiverId))
+                .ExistsAsync(senderId, cooperativeId))
             {
                 return;
             }
 
             await this._joinRequestsService
-                    .CreateAsync(senderId, content, cooperativeId, receiverId);
+                    .CreateAsync(senderId, cooperativeId, content);
         }
 
         public async Task SendReviewAsync(
@@ -159,7 +147,7 @@
             if (schoolLevelFilter != null)
             {
                 var schoolLevel = (SchoolLevel)Enum.Parse(typeof(SchoolLevel), schoolLevelFilter);
-                return users.Where(x => x.Profile.SchoolLevel == schoolLevel);
+                users = users.Where(x => x.Profile.SchoolLevel == schoolLevel);
             }
 
             if (cityFilter != null)

@@ -14,8 +14,6 @@
             ErrorMessage = StringLengthErroMessage)]
         public string Content { get; init; }
 
-        public string ReceiverId { get; init; }
-
         [Required]
         public string CooperativeId { get; init; }
     }

@@ -28,21 +28,14 @@
                 .To<TEntity>()
                 .SingleOrDefaultAsync();
 
-        public async Task<string> GetPendindRequestIdAsync(string cooperativeId, string senderId) =>
+        public async Task<string> GetPendindRequestIdAsync(string senderId, string cooperativeId) =>
             await this._dbContext.JoinRequests
                 .AsNoTracking()
                 .Where(x => x.SenderId == senderId && x.CooperativeId == cooperativeId)
                 .Select(x => x.Id)
                 .FirstOrDefaultAsync();
 
-        public async Task<IEnumerable<TEntity>> GetAllByTeacherAsync<TEntity>(string teacherId) =>
-            await this._dbContext.JoinRequests
-                .AsNoTracking()
-                .Where(x => x.ReceiverId == teacherId)
-                .To<TEntity>()
-                .ToListAsync();
-
-        public async Task<IEnumerable<TEntity>> GetAllByCooperativeAsync<TEntity>(string cooperativeId) =>
+        public async Task<IEnumerable<TEntity>> GetAllAsync<TEntity>(string cooperativeId) =>
             await this._dbContext.JoinRequests
                 .AsNoTracking()
                 .Where(x => x.CooperativeId == cooperativeId && x.ReceiverId == null)
@@ -51,14 +44,12 @@
 
         public async Task<string> CreateAsync(
             string senderId,
-            string content,
             string cooperativeId,
-            string receiverId)
+            string content)
         {
             var request = new JoinRequest
             {
                 SenderId = senderId,
-                ReceiverId = receiverId,
                 Content = content,
                 CooperativeId = cooperativeId,
                 CreatedOn = DateTime.UtcNow
@@ -101,9 +92,8 @@
             await this._dbContext.SaveChangesAsync();
         }
 
-        public async Task<bool> ExistsAsync(string cooperativeId, string senderId, string receiverId) =>
+        public async Task<bool> ExistsAsync(string senderId, string cooperativeId) =>
             await this._dbContext.JoinRequests.AnyAsync(x => x.CooperativeId == cooperativeId &&
-                                                             x.SenderId == senderId &&
-                                                             x.ReceiverId == receiverId);
+                                                             x.SenderId == senderId);
     }
 }

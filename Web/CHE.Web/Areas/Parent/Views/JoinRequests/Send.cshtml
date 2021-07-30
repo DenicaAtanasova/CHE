@@ -4,16 +4,8 @@
     <div class="container">
         <ol>
             <li><a asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
-            @if (Model.CooperativeId == null)
-            {
-                <li><a asp-area="" asp-controller="Teachers" asp-action="All">Teachers</a></li>
-                <li><a asp-area="" asp-controller="Teachers" asp-action="Details" asp-route-id="@Model.ReceiverId">Details</a></li>
-            }
-            else
-            {
-                <li><a asp-area="" asp-controller="Cooperatives" asp-action="All">Cooperatives</a></li>
-                <li><a asp-area="" asp-controller="Cooperatives" asp-action="Details" asp-route-id="@Model.CooperativeId">Details</a></li>
-            }
+            <li><a asp-area="" asp-controller="Cooperatives" asp-action="All">Cooperatives</a></li>
+            <li><a asp-area="" asp-controller="Cooperatives" asp-action="Details" asp-route-id="@Model.CooperativeId">Details</a></li>
             <li>Join Request</li>
         </ol>
         <h2>Join Request </h2>
@@ -34,7 +26,6 @@
                     </div>
                     @if (Model.CooperativeId == null)
                     {
-                        <input asp-for="ReceiverId" type="hidden" />
                         <div class="form-group">
                             <select asp-for="CooperativeId" class="form-control">
                                 <option selected disabled>-- Choose cooperative --</option>
