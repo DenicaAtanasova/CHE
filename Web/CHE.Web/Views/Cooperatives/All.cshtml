@@ -1,5 +1,4 @@
-﻿@using System.Linq;
-@model CHE.Web.ViewModels.Cooperatives.CooperativesAllListViewModel
+﻿@model CHE.Web.ViewModels.Cooperatives.CooperativesAllListViewModel
 <!-- ======= Breadcrumbs ======= -->
 <section id="breadcrumbs" class="breadcrumbs">
     <div class="container">
@@ -13,15 +12,18 @@
 <!-- ======= Services Section ======= -->
 <section id="services" class="services">
     <div class="container">
-        <div class="row">
-            <div class="col-md-12">
-                <a asp-area="Parent" asp-controller="Cooperatives" asp-action="Create" class="btn btn-che">Create new</a>
-                <a asp-area="Parent" asp-controller="Cooperatives" asp-action="All" class="btn btn-che">See Yours</a>
+        @if (this.User.IsInRole(GlobalConstants.ParentRole))
+        {
+            <div class="row">
+                <div class="col-md-12">
+                    <a asp-area="Parent" asp-controller="Cooperatives" asp-action="Create" class="btn btn-che">Create new</a>
+                    <a asp-area="Parent" asp-controller="Cooperatives" asp-action="All" class="btn btn-che">See Yours</a>
+                </div>
             </div>
-        </div>
+        }
         <hr class="my-4">
-        <form method="get" asp-controller="Cooperatives" asp-action="All">           
-            <partial name="_FilterPartial" model="@Model.Filter"/>
+        <form method="get" asp-controller="Cooperatives" asp-action="All">
+            <partial name="_FilterPartial" model="@Model.Filter" />
             <div class="row">
                 <div class="col-md-12">
                     <button type="submit" class="btn btn-che">Filter</button>
@@ -38,29 +40,13 @@
         }
         else
         {
-        <div class="row">
-            @foreach (var cooperative in Model.Cooperatives)
-            {
-                <div class="card col-xl-3 col-lg-4 col-sm-6 d-flex align-items-stretch mt-4">
-                    <a asp-controller="Cooperatives" asp-action="Details" asp-route-id="@cooperative.Id">
-                        <div class="icon-box">
-                            <div class="icon"><i class="icofont-users-alt-5"></i></div>
-                            <h4>@cooperative.Name</h4>
-                            <p>@cooperative.Info</p>
-                        </div>
-                    </a>
-                    <div class="card-footer d-flex justify-content-between">
-                        <div><strong>Grade: </strong>@cooperative.Grade</div>
-                    </div>
-                </div>
-            }
-        </div>
-        <vc:pagination controller="Cooperatives"
-                       page-index="@Model.Cooperatives.PageIndex"
-                       has-previous-page="@Model.Cooperatives.HasPreviousPage"
-                       has-next-page="@Model.Cooperatives.HasNextPage"
-                       filter="@Model.Filter">
-        </vc:pagination>
+            <partial name="_CooperativesListPartial" model="Model.Cooperatives" />
+            <vc:pagination controller="Cooperatives"
+                           page-index="@Model.Cooperatives.PageIndex"
+                           has-previous-page="@Model.Cooperatives.HasPreviousPage"
+                           has-next-page="@Model.Cooperatives.HasNextPage"
+                           filter="@Model.Filter">
+            </vc:pagination>
         }
     </div>
 </section><!-- End Services Section -->

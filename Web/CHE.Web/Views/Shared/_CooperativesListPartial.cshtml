@@ -1,0 +1,20 @@
+﻿@using CHE.Web.ViewModels.Cooperatives;
+@model CHE.Web.ViewModels.PaginatedList<CooperativeAllViewModel>
+
+<div class="row">
+    @foreach (var cooperative in Model)
+    {
+        <div class="card col-lg-4 col-md-6 d-flex align-items-stretch mt-4">
+            <a asp-area="" asp-controller="Cooperatives" asp-action="Details" asp-route-id="@cooperative.Id">
+                <div class="icon-box">
+                    <div class="icon"><i class="icofont-users-alt-5"></i></div>
+                    <h4>@cooperative.Name</h4>
+                    <p>@cooperative.Info</p>
+                </div>
+            </a>
+            <div class="card-footer d-flex justify-content-between">
+                <div><strong>Grade: </strong>@cooperative.Grade</div>
+            </div>
+        </div>
+    }
+</div>
