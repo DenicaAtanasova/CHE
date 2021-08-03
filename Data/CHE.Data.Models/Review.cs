@@ -10,10 +10,10 @@
 
         public string SenderId { get; set; }
 
-        public CheUser Sender { get; set; }
+        public Parent Sender { get; set; }
 
         public string ReceiverId { get; init; }
 
-        public CheUser Receiver { get; init; }
+        public Teacher Receiver { get; init; }
     }
 }

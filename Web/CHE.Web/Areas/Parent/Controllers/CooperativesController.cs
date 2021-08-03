@@ -116,6 +116,15 @@
             return this.View(cooperative);
         }
 
+        public async Task<IActionResult> Leave(string cooperativeId)
+        {
+            var userId = this.User.GetId();
+            await this._cooperativesService
+                .RemoveMemberAsync(userId, cooperativeId);
+
+            return this.RedirectToAction("Details", "Cooperatives", new { area="", id = cooperativeId });
+        }
+
         public async Task<IActionResult> All(int pageIndex = 1)
         {
             var userId = this.User.GetId();

@@ -10,14 +10,14 @@
 
     public class ReviewsController : ParentController
     {
-        private readonly ICheUsersService _cheUsersService;
+        private readonly IParentsService _parentsService;
         private readonly IReviewsService _reviewsService;
 
         public ReviewsController(
-            ICheUsersService cheUsersService,
+            IParentsService parentsService,
             IReviewsService reviewsService)
         {
-            this._cheUsersService = cheUsersService;
+            this._parentsService = parentsService;
             this._reviewsService = reviewsService;
         }
 
@@ -34,9 +34,9 @@
                 return this.RedirectToAction(nameof(Send), new { id = inputModel.ReceiverId });
             }
 
-            var senderId = this.User.GetId();
-            await _cheUsersService.SendReviewAsync(
-                senderId, 
+            var userId = this.User.GetId();
+            await this._parentsService.SendReviewAsync(
+                userId, 
                 inputModel.ReceiverId, 
                 inputModel.Comment, 
                 inputModel.Rating);

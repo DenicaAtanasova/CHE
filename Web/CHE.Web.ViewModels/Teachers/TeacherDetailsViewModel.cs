@@ -3,7 +3,7 @@
     using CHE.Data.Models;
     using CHE.Services.Mapping;
 
-    public class TeacherDetailsViewModel : IMapFrom<CheUser>
+    public class TeacherDetailsViewModel : IMapFrom<Teacher>
     {
         public string Id { get; init; }
 

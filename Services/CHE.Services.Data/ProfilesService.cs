@@ -30,7 +30,7 @@
         public async Task<TEntity> GetByUserIdAsync<TEntity>(string userId) =>
             await this._dbContext.Profiles
                 .AsNoTracking()
-                .Where(x => x.Owner.Id == userId)
+                .Where(x => x.Owner.UserId == userId)
                 .To<TEntity>()
                 .SingleOrDefaultAsync();
 
@@ -51,7 +51,7 @@
         }
 
         public async Task UpdateAsync(
-            string userId, 
+            string id, 
             string firstName, 
             string lastName,
             string education,
@@ -64,7 +64,7 @@
             IFormFile imageFile)
         {
             var profileToUpdate = await this._dbContext.Profiles
-                .SingleOrDefaultAsync(x => x.OwnerId == userId);
+                .SingleOrDefaultAsync(x => x.Id == id);
 
             if (profileToUpdate == null)
             {

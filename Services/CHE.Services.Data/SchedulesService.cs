@@ -29,7 +29,7 @@
         public async Task<string> GetIdByUserAsync(string userId) =>
             await this._dbContext.Schedules
                 .AsNoTracking()
-                .Where(x => x.TeacherId == userId)
+                .Where(x => x.OwnerId == userId)
                 .Select(x => x.Id)
                 .SingleOrDefaultAsync();
 
@@ -39,19 +39,5 @@
                 .Where(x => x.CooperativeId == cooperativeId)
                 .Select(x => x.Id)
                 .SingleOrDefaultAsync();
-
-        public async Task<string> CreateAsync(string userId)
-        {
-            var schedule = new Schedule
-            {
-                TeacherId = userId,
-                CreatedOn = DateTime.UtcNow
-            };
-
-            this._dbContext.Schedules.Add(schedule);
-            await this._dbContext.SaveChangesAsync();
-
-            return schedule.Id;
-        }
     }
 }

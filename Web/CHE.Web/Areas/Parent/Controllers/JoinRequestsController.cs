@@ -11,14 +11,14 @@
 
     public class JoinRequestsController : ParentController
     {
-        private readonly ICheUsersService _usersService;
+        private readonly IParentsService _parentsService;
         private readonly IJoinRequestsService _joinRequestsService;
 
         public JoinRequestsController(
-            ICheUsersService usersService,
+            IParentsService parentsService,
             IJoinRequestsService joinRequestsService)
         {
-            this._usersService = usersService;
+            this._parentsService = parentsService;
             this._joinRequestsService = joinRequestsService;
         }
 
@@ -57,33 +57,33 @@
         {
             if (!this.ModelState.IsValid)
             {
-                return this.View();
+                return this.View(inputModel.CooperativeId);
             }
 
-            var senderId = this.User.GetId();
+            var userId = this.User.GetId();
 
-            await this._usersService
-                .SendRequestAsync(senderId, inputModel.Content, inputModel.CooperativeId);
+            await this._parentsService
+                .SendRequestAsync(userId, inputModel.CooperativeId, inputModel.Content);
 
             return RedirectToAction("Details", "Cooperatives", new { area = "", id = inputModel.CooperativeId});
         }
 
         public async Task<IActionResult> Reject(string requestId, string cooperativeId, string senderId)
         {
-            await this._usersService
-                .RejectRequestAsync(requestId, cooperativeId, senderId);
+            await this._parentsService
+                .RejectRequestAsync(senderId, cooperativeId, requestId);
 
             return this.RedirectToAction(
-                "Details", "Cooperatives", new { id = cooperativeId });
+                "Details", "Cooperatives", new { area = "", id = cooperativeId });
         }
 
         public async Task<IActionResult> Accept(string requestId, string cooperativeId, string senderId)
         {
-            await this._usersService
-                .AcceptRequestAsync(requestId, cooperativeId, senderId);
+            await this._parentsService
+                .AcceptRequestAsync(senderId, cooperativeId, requestId);
 
             return this.RedirectToAction(
-                "Details", "Cooperatives", new { id = cooperativeId });
+                "Details", "Cooperatives", new { area = "", id = cooperativeId });
         }
 
         public async Task<IActionResult> Update(string id)

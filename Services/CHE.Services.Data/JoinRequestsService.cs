@@ -28,17 +28,17 @@
                 .To<TEntity>()
                 .SingleOrDefaultAsync();
 
-        public async Task<string> GetPendindRequestIdAsync(string senderId, string cooperativeId) =>
+        public async Task<string> GetPendindRequestIdAsync(string userId, string cooperativeId) =>
             await this._dbContext.JoinRequests
                 .AsNoTracking()
-                .Where(x => x.SenderId == senderId && x.CooperativeId == cooperativeId)
+                .Where(x => x.Sender.UserId == userId && x.CooperativeId == cooperativeId)
                 .Select(x => x.Id)
                 .FirstOrDefaultAsync();
 
         public async Task<IEnumerable<TEntity>> GetAllAsync<TEntity>(string cooperativeId) =>
             await this._dbContext.JoinRequests
                 .AsNoTracking()
-                .Where(x => x.CooperativeId == cooperativeId && x.ReceiverId == null)
+                .Where(x => x.CooperativeId == cooperativeId)
                 .To<TEntity>()
                 .ToListAsync();
 

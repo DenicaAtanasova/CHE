@@ -12,11 +12,15 @@
         {
         }
 
+        public DbSet<Parent> Parents { get; set; }
+
+        public DbSet<Teacher> Teachers { get; set; }
+
         public DbSet<Address> Addresses { get; set; }
 
         public DbSet<Cooperative> Cooperatives { get; set; }
 
-        public DbSet<CheUserCooperative> UserCooperatives { get; set; }
+        public DbSet<ParentCooperative> ParentsCooperatives { get; set; }
 
         public DbSet<Grade> Grades { get; set; }
 
@@ -34,8 +38,8 @@
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
-            builder.Entity<CheUserCooperative>()
-                .HasKey(uc => new { uc.CheUserId, uc.CooperativeId });
+            builder.Entity<ParentCooperative>()
+                .HasKey(uc => new { uc.ParentId, uc.CooperativeId });
 
             builder.Entity<Review>()
                 .HasOne(r => r.Receiver)
@@ -50,16 +54,10 @@
                 .OnDelete(DeleteBehavior.Restrict);
 
             builder.Entity<JoinRequest>()
-                .HasOne(jr => jr.Receiver)
-                .WithMany(r => r.JoinRequestsReceived)
-                .HasForeignKey(jr => jr.ReceiverId)
-                .OnDelete(DeleteBehavior.Cascade);
-
-            builder.Entity<JoinRequest>()
                 .HasOne(jr => jr.Sender)
                 .WithMany(s => s.JoinRequestsSent)
                 .HasForeignKey(jr => jr.SenderId)
-                .OnDelete(DeleteBehavior.Restrict);
+                .OnDelete(DeleteBehavior.Cascade);
 
             builder.Entity<JoinRequest>()
                 .HasOne(jr => jr.Cooperative)
@@ -74,9 +72,9 @@
                 .OnDelete(DeleteBehavior.Cascade);
 
             builder.Entity<Schedule>()
-                .HasOne(s => s.Teacher)
+                .HasOne(s => s.Owner)
                 .WithOne(t => t.Schedule)
-                .HasForeignKey<Schedule>(s => s.TeacherId)
+                .HasForeignKey<Schedule>(s => s.OwnerId)
                 .OnDelete(DeleteBehavior.Cascade);
 
             builder.Entity<Profile>()

@@ -109,10 +109,7 @@
         [Fact]
         public async Task GetAllByReceiverAsync_ShouldReturnAllReviewsByReceiver()
         {
-            var searchedReceiver = new CheUser
-            {
-                UserName = "Maria"
-            };
+            var searchedReceiver = new Teacher();
 
             var reviewsList = new List<Review>
             {
@@ -184,14 +181,8 @@
             {
                 Comment = "Comment",
                 Rating = 2,
-                Sender = new CheUser 
-                { 
-                    UserName = "Sender"
-                },
-                Receiver = new CheUser
-                {
-                    UserName = "Receiver"
-                }
+                Sender = new Parent(),
+                Receiver = new Teacher()
             };
 
             this._dbContext.Reviews.Add(review);
@@ -210,14 +201,8 @@
             {
                 Comment = "Comment",
                 Rating = 2,
-                Sender = new CheUser
-                {
-                    UserName = "Sender"
-                },
-                Receiver = new CheUser
-                {
-                    UserName = "Receiver"
-                }
+                Sender = new Parent(),
+                Receiver = new Teacher()
             };
 
             this._dbContext.Reviews.Add(review);
@@ -234,14 +219,8 @@
             {
                 Comment = "Comment",
                 Rating = 2,
-                Sender = new CheUser
-                {
-                    UserName = "Sender"
-                },
-                Receiver = new CheUser
-                {
-                    UserName = "Receiver"
-                }
+                Sender = new Parent(),
+                Receiver = new Teacher()
             };
 
             this._dbContext.Reviews.Add(review);

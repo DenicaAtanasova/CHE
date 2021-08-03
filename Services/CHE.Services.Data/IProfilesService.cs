@@ -11,7 +11,7 @@
         Task<string> CreateAsync(string userId);
 
         Task UpdateAsync(
-            string userId,
+            string id,
             string firstName,
             string lastName,
             string education,

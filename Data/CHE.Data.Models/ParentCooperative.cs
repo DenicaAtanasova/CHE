@@ -1,10 +1,10 @@
 ﻿namespace CHE.Data.Models
 {
-    public class CheUserCooperative
+    public class ParentCooperative
     {
-        public string CheUserId { get; init; }
+        public string ParentId { get; init; }
 
-        public CheUser CheUser { get; init; }
+        public Parent Parent { get; init; }
 
         public string CooperativeId { get; init; }
 

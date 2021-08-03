@@ -14,6 +14,8 @@
 
     public class ProfileInputModel : IMapExplicitly
     {
+        public string Id { get; set; }
+
         [Display(Name = "First name")]
         [StringLength(
             FirstNameMaxLength,

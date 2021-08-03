@@ -7,7 +7,7 @@
     {
         Task<TEntity> GetByIdAsync<TEntity>(string id);
 
-        Task<string> GetPendindRequestIdAsync(string senderId, string cooperativeId);
+        Task<string> GetPendindRequestIdAsync(string userId, string cooperativeId);
 
         Task<IEnumerable<TEntity>> GetAllAsync<TEntity>(string cooperativeId);
 

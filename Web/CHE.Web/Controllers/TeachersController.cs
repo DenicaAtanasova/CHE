@@ -1,6 +1,5 @@
 ﻿namespace CHE.Web.Controllers
 {
-    using CHE.Common;
     using CHE.Data.Models;
     using CHE.Services.Data;
     using CHE.Web.Infrastructure;
@@ -17,32 +16,30 @@
     {
         private const int DefaultPageSize = 6;
 
-        private readonly ICheUsersService _cheUsersService;
+        private readonly ITeachersService _teachersService;
         private readonly IReviewsService _reviewsService;
         private readonly IAddressesService _addressesService;
 
         public TeachersController(
-            ICheUsersService cheUsersService,
+            ITeachersService teachersService,
             IReviewsService reviewsService,
             IAddressesService addressesService)
         {
-            this._cheUsersService = cheUsersService;
+            this._teachersService = teachersService;
             this._reviewsService = reviewsService;
             this._addressesService = addressesService;
         }
 
         public async Task<IActionResult> All(FilterViewModel filter, int pageIndex = 1)
         {
-            var teachers = await this._cheUsersService.GetAllAsync<TeacherAllViewModel>(
-                GlobalConstants.TeacherRole, 
+            var teachers = await this._teachersService.GetAllAsync<TeacherAllViewModel>(
                 pageIndex, 
                 DefaultPageSize, 
                 filter.Level, 
                 filter.City, 
                 filter.Neighbourhood);
 
-            var count = await this._cheUsersService.CountAsync(
-                GlobalConstants.TeacherRole, 
+            var count = await this._teachersService.CountAsync(
                 filter.Level, 
                 filter.City, 
                 filter.Neighbourhood);
@@ -67,7 +64,7 @@
 
         public async Task<IActionResult> Details(string id)
         {
-            var currentTeacher = await this._cheUsersService
+            var currentTeacher = await this._teachersService
                 .GetByIdAsync<TeacherDetailsViewModel>(id);
 
             if (currentTeacher == null)

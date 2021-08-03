@@ -19,7 +19,7 @@
             <th scope="row">@(reviewsCount++)</th>
             <td scope="row">@review.Rating / 5</td>
             <td scope="row">@review.Comment</td>
-            @if (this.User.Identity.Name == review.SenderUserName)
+            @if (this.User.Identity.Name == review.Sender)
             {
                 <td>
                     <a class="btn btn-che btn-sm"

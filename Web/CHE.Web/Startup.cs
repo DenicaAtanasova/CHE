@@ -59,6 +59,8 @@ namespace CHE.Web
             services.AddSingleton(this.configuration);
 
             // Application services
+            services.AddTransient<IParentsService, ParentsService>();
+            services.AddTransient<ITeachersService, TeachersService>();
             services.AddTransient<ICooperativesService, CooperativesService>();
             services.AddTransient<IGradesService, GradesService>();
             services.AddTransient<IJoinRequestsService, JoinRequestsService>();

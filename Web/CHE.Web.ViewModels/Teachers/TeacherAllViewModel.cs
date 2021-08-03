@@ -12,7 +12,7 @@
     {
         public string Id { get; init; }
 
-        public string UserName { get; init; }
+        public string UserUserName { get; init; }
 
         public double Rating { get; init; }
 
@@ -24,7 +24,7 @@
 
         public void CreateMappings(IProfileExpression configuration)
         {
-            configuration.CreateMap<CheUser, TeacherAllViewModel>()
+            configuration.CreateMap<Teacher, TeacherAllViewModel>()
                 .ForMember(dest => dest.Rating, opt => opt.MapFrom(
                     src => src.ReviewsReceived.Count == 0 ?
                                                         0:

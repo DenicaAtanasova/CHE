@@ -11,7 +11,7 @@
 
         public string SenderId { get; init; }
 
-        public string SenderUserName { get; init; }
+        public string SenderUserUserName { get; init; }
 
         public string CooperativeId { get; init; }
 

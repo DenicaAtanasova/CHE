@@ -23,7 +23,6 @@
         [Required]
         public string CooperativeId { get; init; }
 
-        [Required]
         public string CooperativeName { get; init; }
     }
 }

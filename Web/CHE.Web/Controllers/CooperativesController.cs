@@ -78,15 +78,5 @@
 
             return this.View(cooperativesList);
         }
-
-        [Authorize]
-        public async Task<IActionResult> Leave(string cooperativeId)
-        {
-            var userId = this.User.GetId();
-            await this._cooperativesService
-                .RemoveMemberAsync(userId, cooperativeId);
-
-            return this.RedirectToAction(nameof(Details), new { id = cooperativeId });
-        }
     }
 }

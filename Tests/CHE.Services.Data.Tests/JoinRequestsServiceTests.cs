@@ -82,29 +82,17 @@
                 new JoinRequest
                 {
                     Content = "JR1",
-                    Cooperative = serchedCooperative,
-                    Sender = new CheUser
-                    {
-                        UserName = "Sender"
-                    }
+                    Cooperative = serchedCooperative
                 },
                 new JoinRequest
                 {
                     Content = "JR2",
-                    Cooperative = serchedCooperative,
-                    Sender = new CheUser
-                    {
-                        UserName = "Sender"
-                    }
+                    Cooperative = serchedCooperative
                 },
                 new JoinRequest
                 {
                     Content = "JR3",
-                    CooperativeId = Guid.NewGuid().ToString(),
-                    Sender = new CheUser
-                    {
-                        UserName = "Sender"
-                    }
+                    CooperativeId = Guid.NewGuid().ToString()
                 }
             };
 

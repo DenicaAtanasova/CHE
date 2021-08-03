@@ -8,11 +8,7 @@
 
         public string SenderId { get; set; }
 
-        public CheUser Sender { get; set; }
-
-        public string ReceiverId { get; init; }
-
-        public CheUser Receiver { get; init; }
+        public Parent Sender { get; set; }
 
         public string CooperativeId { get; init; }
 

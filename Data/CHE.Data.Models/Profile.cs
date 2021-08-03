@@ -20,7 +20,7 @@
 
         public string OwnerId { get; init; }
 
-        public CheUser Owner { get; init; }
+        public Teacher Owner { get; init; }
 
         public Image Image { get; init; }
 

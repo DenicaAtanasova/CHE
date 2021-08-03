@@ -15,9 +15,9 @@
 
         public void CreateMappings(IProfileExpression configuration)
         {
-            configuration.CreateMap<CheUserCooperative, CooperativeUserDetailsViewModel>()
-                .ForMember(dest => dest.UserName, opt => opt.MapFrom(src => src.CheUser.UserName))
-                .ForMember(dest => dest.UserId, opt => opt.MapFrom(src => src.CheUserId));
+            configuration.CreateMap<ParentCooperative, CooperativeUserDetailsViewModel>()
+                .ForMember(dest => dest.UserName, opt => opt.MapFrom(src => src.Parent.User.UserName))
+                .ForMember(dest => dest.UserId, opt => opt.MapFrom(src => src.ParentId));
         }
     }
 }

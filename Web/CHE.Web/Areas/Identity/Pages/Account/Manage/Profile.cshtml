@@ -9,6 +9,7 @@
     <form id="portfolio-form" method="post" enctype="multipart/form-data">
         <div class="row">
             <div class="col-lg-6">
+                <input asp-for="Input.Id" hidden class="form-control" />
                 <div class="form-group">
                     <label asp-for="Input.FirstName"></label>
                     <input asp-for="Input.FirstName" class="form-control" />

@@ -54,10 +54,7 @@
         {
             var profile = new Profile
             {
-                Owner = new CheUser
-                {
-                    UserName = "Me"
-                }
+                Owner = new Teacher()
             };
 
             this._dbContext.Profiles.Add(profile);
@@ -101,8 +98,6 @@
         [Fact]
         public async Task UpdateAsync_ShouldUpdateProfile()
         {
-            var ownerId = Guid.NewGuid().ToString();          
-
             var profile = new Profile
             {
                 Address = new Address
@@ -116,9 +111,9 @@
                 FirstName = "Maria",
                 LastName = "Moneva",
                 Interests = "Interests",
-                OwnerId = ownerId,
+                OwnerId = Guid.NewGuid().ToString(),
                 Skills = "Skills",
-                SchoolLevel = SchoolLevel.Primary,
+                SchoolLevel = SchoolLevel.Primary
             };
 
             this._dbContext.Profiles.Add(profile);
@@ -134,7 +129,7 @@
             var imageFile = new Mock<IFormFile>().Object;
 
             await this._profilesService.UpdateAsync(
-                ownerId,
+                profile.Id,
                 firstName,
                 lastName,
                 education,
@@ -147,7 +142,7 @@
                 null);
 
             var profileFromDb = await this._dbContext.Profiles
-                .SingleOrDefaultAsync(x => x.OwnerId == ownerId);
+                .SingleOrDefaultAsync(x => x.Id == profile.Id);
 
             Assert.Equal(firstName, profileFromDb.FirstName);
             Assert.Equal(lastName, profileFromDb.LastName);

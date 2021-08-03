@@ -71,7 +71,7 @@
             var schedule = new Schedule
             {
                 CooperativeId = CooperativeId,
-                TeacherId = Guid.NewGuid().ToString()
+                OwnerId = Guid.NewGuid().ToString()
             };
 
             this._dbContext.Schedules.Add(schedule);

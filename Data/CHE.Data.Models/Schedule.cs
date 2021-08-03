@@ -1,6 +1,7 @@
 ﻿namespace CHE.Data.Models
 {
     using CHE.Data.Common.Models;
+
     using System.Collections.Generic;
 
     public class Schedule : BaseModel<string>
@@ -16,8 +17,8 @@
 
         public Cooperative Cooperative { get; init; }
 
-        public string TeacherId { get; init; }
+        public string OwnerId { get; init; }
 
-        public CheUser Teacher { get; init; }
+        public Teacher Owner { get; init; }
     }
 }

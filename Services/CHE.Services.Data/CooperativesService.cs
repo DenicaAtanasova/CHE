@@ -29,13 +29,18 @@
         }
 
         public async Task<string> CreateAsync(
-            string adminId,
+            string userId,
             string name,
             string info,
             string grade,
             string city,
             string neighbourhood)
         {
+            var adminId = await this._dbContext.Parents
+                .Where(x => x.UserId == userId)
+                .Select(x => x.Id)
+                .FirstOrDefaultAsync();
+
             var cooperative = new Cooperative
             {
                 AdminId = adminId,
@@ -129,13 +134,13 @@
             return await this.GetCollectionPerPageAsync<TEntity>(userCoperatives, startIndex, count);
         }
 
-        public async Task AddMemberAsync(string userId, string cooperativeId)
+        public async Task AddMemberAsync(string parentId, string cooperativeId)
         {
-            this._dbContext.UserCooperatives.Add(
-                new CheUserCooperative
+            this._dbContext.ParentsCooperatives.Add(
+                new ParentCooperative
                 {
                     CooperativeId = cooperativeId,
-                    CheUserId = userId
+                    ParentId = parentId
                 });
 
             await this._dbContext.SaveChangesAsync();
@@ -143,19 +148,20 @@
 
         public async Task RemoveMemberAsync(string memberId, string cooperativeId)
         {
-            var member = await this._dbContext.UserCooperatives
-                .SingleOrDefaultAsync(x => x.CheUserId == memberId && x.CooperativeId == cooperativeId);
+            var member = await this._dbContext.ParentsCooperatives
+                .SingleOrDefaultAsync(x => (x.ParentId == memberId || x.Parent.UserId == memberId) && 
+                                            x.CooperativeId == cooperativeId);
 
             if (member == null)
             {
                 return;
             }
 
-            this._dbContext.UserCooperatives.Remove(member);
+            this._dbContext.ParentsCooperatives.Remove(member);
             await this._dbContext.SaveChangesAsync();
         }
 
-        public async Task ChangeAdminAsync(string userId, string cooperativeId)
+        public async Task ChangeAdminAsync(string parentId, string cooperativeId)
         {
             var cooperative = await this._dbContext.Cooperatives
                 .SingleOrDefaultAsync(x => x.Id == cooperativeId);
@@ -166,23 +172,23 @@
             }
 
             var newAdmin = cooperative.Members
-                .SingleOrDefault(x => x.CheUserId == userId);
+                .SingleOrDefault(x => x.ParentId == parentId);
 
             if (newAdmin == null)
             {
                 return;
             }
 
-            this._dbContext.UserCooperatives.Remove(newAdmin);
+            this._dbContext.ParentsCooperatives.Remove(newAdmin);
 
-            this._dbContext.UserCooperatives.Add(
-                new CheUserCooperative
+            this._dbContext.ParentsCooperatives.Add(
+                new ParentCooperative
                 {
                     CooperativeId = cooperativeId,
-                    CheUserId = cooperative.AdminId
+                    ParentId = cooperative.AdminId
                 });
 
-            cooperative.AdminId = userId;
+            cooperative.AdminId = parentId;
 
             this._dbContext.Cooperatives.Update(cooperative);
             await this._dbContext.SaveChangesAsync();
@@ -190,16 +196,18 @@
 
         public async Task<bool> CheckIfAdminAsync(string userId, string cooperativeId) =>
             await this._dbContext.Cooperatives
-                .AnyAsync(x => x.AdminId == userId && x.Id == cooperativeId);
+                .AnyAsync(x => x.Admin.UserId == userId &&
+                               x.Id == cooperativeId);
 
         public async Task<bool> CheckIfMemberAsync(string userId, string cooperativeId) =>
-            await this._dbContext.UserCooperatives
-                .AnyAsync(x => x.CheUserId == userId && x.CooperativeId == cooperativeId);
+            await this._dbContext.ParentsCooperatives
+                .AnyAsync(x => x.Parent.UserId == userId && x.CooperativeId == cooperativeId);
 
         public async Task<int> CountByUserAsync(string userId) =>
             await this._dbContext.Cooperatives
                 .AsNoTracking()
-                .Where(x => x.AdminId == userId || x.Members.Any(x => x.CheUserId == userId))
+                .Where(x => x.Admin.UserId == userId ||
+                            x.Members.Any(x => x.Parent.UserId == userId))
                 .CountAsync();
 
         public async Task<int> CountAsync(
@@ -255,11 +263,11 @@
                 CooperativeUserType.Admin => 
                     _dbContext.Cooperatives
                         .AsNoTracking()
-                        .Where(x => x.AdminId == userId),
+                        .Where(x => x.Admin.UserId == userId),
                 CooperativeUserType.Member | CooperativeUserType.Admin => 
                     _dbContext.Cooperatives
                         .AsNoTracking()
-                        .Where(x => x.AdminId == userId || x.Members.Any(x => x.CheUserId == userId)),
+                        .Where(x => x.Admin.UserId == userId || x.Members.Any(x => x.Parent.UserId == userId)),
                 CooperativeUserType.Other => _dbContext.Cooperatives.AsNoTracking(),
                 _ => null
             };

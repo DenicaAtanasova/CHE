@@ -19,7 +19,7 @@
             <tr>
                 <th scope="row">@(membersCount++)</th>
                 <td scope="row">@member.UserName</td>
-                @if (Model.AdminUserName == this.User.Identity.Name)
+                @if (Model.Admin == this.User.Identity.Name)
                 {
                     <td>
                         <a class="btn btn-che btn-sm"

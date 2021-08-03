@@ -8,7 +8,7 @@
         public Cooperative()
         {
             this.JoinRequestsReceived = new HashSet<JoinRequest>();
-            this.Members = new HashSet<CheUserCooperative>();
+            this.Members = new HashSet<ParentCooperative>();
         }
 
         public string Name { get; set; }
@@ -25,11 +25,11 @@
 
         public string AdminId { get; set; }
 
-        public CheUser Admin { get; set; }
+        public Parent Admin { get; set; }
 
         public Schedule Schedule { get; init; }
 
-        public ICollection<CheUserCooperative> Members { get; set; }
+        public ICollection<ParentCooperative> Members { get; set; }
 
         public ICollection<JoinRequest> JoinRequestsReceived { get; set; }
     }

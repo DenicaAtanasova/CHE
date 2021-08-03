@@ -20,12 +20,12 @@
         {
             <tr>
                 <th scope="row">@(requestsCount++)</th>
-                <td colspan="2">@request.SenderUserName</td>
-                @if (request.CooperativeAdminUserName == User.Identity.Name)
+                <td colspan="2">@request.Sender</td>
+                @if (request.Admin == User.Identity.Name)
                 {
                     <td>
                         <a class="btn btn-che btn-sm"
-                           asp-area=""
+                           asp-area="Parent"
                            asp-controller="JoinRequests"
                            asp-action="Details"
                            asp-route-id="@request.Id">Details</a>

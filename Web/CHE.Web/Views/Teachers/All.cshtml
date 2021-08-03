@@ -24,31 +24,41 @@
                 </div>
             </div>
         </form>
-        <div class="row">
-            @foreach (var teacher in Model.Teachers)
-            {
-                <div class="card col-xl-3 col-lg-4 col-sm-6 d-flex align-items-stretch mt-4">
-                    <a asp-controller="Teachers" asp-action="Details" asp-route-id="@teacher.Id">
-                        <div class="icon-box">
-                            <div class="icon">
-                                <img class="card-img-top" src="@teacher.ImageUrl" alt="">
-                            </div>
-                            <h4>@teacher.UserName</h4>
-                            <div class="rating-star">
-                                <vc:star-rating rating="@teacher.Rating"></vc:star-rating>
-                                <div class="d-flex justify-content-between">
-                                    <div class="card-text"><h6>Rating: @teacher.Rating / 5</h6></div>
-                                    <div class="card-text"><h6>Reviews: @teacher.ReviewsCount</h6></div>
+        <hr class="my-4">
+        @if (@Model.Teachers.Count == 0)
+        {
+            <div class="row justify-content-center">
+                <h4>There are no teachers!</h4>
+            </div>
+        }
+        else
+        {
+            <div class="row">
+                @foreach (var teacher in Model.Teachers)
+                {
+                    <div class="card col-xl-3 col-lg-4 col-sm-6 d-flex align-items-stretch mt-4">
+                        <a asp-controller="Teachers" asp-action="Details" asp-route-id="@teacher.Id">
+                            <div class="icon-box">
+                                <div class="icon">
+                                    <img class="card-img-top" src="@teacher.ImageUrl" alt="">
+                                </div>
+                                <h4>@teacher.UserUserName</h4>
+                                <div class="rating-star">
+                                    <vc:star-rating rating="@teacher.Rating"></vc:star-rating>
+                                    <div class="d-flex justify-content-between">
+                                        <div class="card-text"><h6>Rating: @teacher.Rating / 5</h6></div>
+                                        <div class="card-text"><h6>Reviews: @teacher.ReviewsCount</h6></div>
+                                    </div>
                                 </div>
                             </div>
+                        </a>
+                        <div class="card-footer d-flex justify-content-between">
+                            <div><strong>School level: </strong>@teacher.SchoolLevel</div>
                         </div>
-                    </a>
-                    <div class="card-footer d-flex justify-content-between">
-                        <div><strong>School level: </strong>@teacher.SchoolLevel</div>
                     </div>
-                </div>
-            }
-        </div>
+                }
+            </div>
+        }
         <vc:pagination controller="Teachers"
                        page-index="@Model.Teachers.PageIndex"
                        has-previous-page="@Model.Teachers.HasPreviousPage"

@@ -84,14 +84,14 @@
         public async Task<IEnumerable<TEntity>> GetAllByReceiverAsync<TEntity>(string receiverId)
             => await this._dbContext.Reviews
                 .AsNoTracking()
-                .Where(x => x.ReceiverId == receiverId)
+                .Where(x => x.ReceiverId == receiverId || x.Receiver.UserId == receiverId)
                 .To<TEntity>()
                 .ToListAsync();
 
-        public async Task<string> GetSentReviewIdAsync(string senderId, string receiverId) =>
+        public async Task<string> GetSentReviewIdAsync(string userId, string receiverId) =>
             await this._dbContext.Reviews
                 .AsNoTracking()
-                .Where(x => x.SenderId == senderId && x.ReceiverId == receiverId)
+                .Where(x => x.Sender.UserId == userId && x.ReceiverId == receiverId)
                 .Select(x => x.Id)
                 .FirstOrDefaultAsync();
 

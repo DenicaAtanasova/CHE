@@ -13,7 +13,6 @@
     using Microsoft.AspNetCore.WebUtilities;
     using Microsoft.Extensions.Logging;
 
-    using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
     using System.Linq;
@@ -28,23 +27,23 @@
         private readonly UserManager<CheUser> _userManager;
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
-        private readonly IProfilesService _profilesService;
-        private readonly ISchedulesService _schedulesService;
+        private readonly ITeachersService _teachersService;
+        private readonly IParentsService _parentsService;
 
         public RegisterModel(
             UserManager<CheUser> userManager,
             SignInManager<CheUser> signInManager,
             ILogger<RegisterModel> logger,
             IEmailSender emailSender,
-            IProfilesService profilesService,
-            ISchedulesService schedulesService)
+            ITeachersService teachersService,
+            IParentsService parentsService)
         {
-            _userManager = userManager;
-            _signInManager = signInManager;
-            _logger = logger;
-            _emailSender = emailSender;
-            this._profilesService = profilesService;
-            this._schedulesService = schedulesService;
+            this._userManager = userManager;
+            this._signInManager = signInManager;
+            this._logger = logger;
+            this._emailSender = emailSender;
+            this._teachersService = teachersService;
+            this._parentsService = parentsService;
         }
 
         [BindProperty]
@@ -106,8 +105,11 @@
 
                     if (await _userManager.IsInRoleAsync(user, GlobalConstants.TeacherRole))
                     {
-                        await this._profilesService.CreateAsync(user.Id);
-                        await this._schedulesService.CreateAsync(user.Id);
+                        await this._teachersService.CreateAsync(user.Id);
+                    }
+                    else if(await _userManager.IsInRoleAsync(user, GlobalConstants.ParentRole))
+                    {
+                        await this._parentsService.CreateAsync(user.Id);
                     }
 
                     _logger.LogInformation("User created a new account with password.");

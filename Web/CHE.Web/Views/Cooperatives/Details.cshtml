@@ -12,7 +12,7 @@
     <div class="p-2 flex-fill">
         <h5>Info</h5>
         <hr />
-        <div><strong>Administrator: </strong>@Model.AdminUserName</div>
+        <div><strong>Administrator: </strong>@Model.Admin</div>
         <div><strong>Grade: </strong>@Model.Grade</div>
         <div><strong>Members count: </strong>@Model.MembersCount</div>
     </div>
@@ -36,7 +36,7 @@ else
     <div class="col-lg-9">
         @if (Model.IsMember)
         {
-            <a class="btn btn-che" asp-area="" asp-controller="Cooperatives" asp-action="Leave" asp-route-CooperativeId="@Model.Id">Leave</a>
+            <a class="btn btn-che" asp-area="Parent" asp-controller="Cooperatives" asp-action="Leave" asp-route-CooperativeId="@Model.Id">Leave</a>
         }
         else if (Model.PendingRequestId != null)
         {
