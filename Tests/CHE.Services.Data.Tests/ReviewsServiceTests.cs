@@ -152,11 +152,8 @@
         }
 
         [Fact]
-        public async Task GetByIdAsync_Review_ShouldReturnCorrectReview()
+        public async Task GetByIdAsync_ShouldReturnCorrectReview()
         {
-            var senderId = Guid.NewGuid().ToString();
-            var receiverId = Guid.NewGuid().ToString();
-
             var review = new Review
             {
                 Comment = "Comment",
@@ -177,11 +174,16 @@
         [Fact]
         public async Task GetSentReviewIdAsync_ShouldReturnCorrectReview()
         {
+            var user = new CheUser();
+
             var review = new Review
             {
                 Comment = "Comment",
                 Rating = 2,
-                Sender = new Parent(),
+                Sender = new Parent 
+                {
+                    User = user
+                },
                 Receiver = new Teacher()
             };
 
@@ -189,7 +191,7 @@
             await this._dbContext.SaveChangesAsync();
 
             var reviewId = await this._ReviewsService
-                .GetSentReviewIdAsync(review.SenderId, review.ReceiverId);
+                .GetSentReviewIdAsync(user.Id, review.ReceiverId);
 
             Assert.Equal(review.Id, reviewId);
         }

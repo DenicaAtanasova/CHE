@@ -52,16 +52,20 @@
         [Fact]
         public async Task GetByUserIdAsync_ShouldReturnCorrectProfile()
         {
+            var user = new CheUser();
             var profile = new Profile
             {
-                Owner = new Teacher()
+                Owner = new Teacher
+                {
+                    User = user
+                }
             };
 
             this._dbContext.Profiles.Add(profile);
             await this._dbContext.SaveChangesAsync();
 
             var profileFromDb = await this._profilesService
-                .GetByUserIdAsync<ProfileInputModel>(profile.OwnerId);
+                .GetByUserIdAsync<ProfileInputModel>(user.Id);
 
             Assert.NotNull(profileFromDb);
         }
@@ -69,10 +73,13 @@
         [Fact]
         public async Task GetByUserIdAsync_WithIncorrectId_ShouldReturnNull()
         {
-            var ownerId = Guid.NewGuid().ToString();
+            var user = new CheUser();
             var profile = new Profile
             {
-                OwnerId = ownerId
+                Owner = new Teacher
+                {
+                    User = user
+                }
             };
 
             this._dbContext.Profiles.Add(profile);

@@ -196,18 +196,21 @@
         public async Task GetPendindRequestIdAsync_WhenRequestExists_ShouldReturnPendingRequest()
         {
             var cooperativeId = Guid.NewGuid().ToString();
-            var senderId = Guid.NewGuid().ToString();
+            var user = new CheUser();
             var request = new JoinRequest
             {
                 CooperativeId = cooperativeId,
-                SenderId = senderId
+                Sender = new Parent
+                {
+                    User = user
+                }
             };
 
             this._dbContext.JoinRequests.Add(request);
             await this._dbContext.SaveChangesAsync();
 
             var pendingRequestId = await this._joinRequestsService
-                .GetPendindRequestIdAsync(senderId, cooperativeId);
+                .GetPendindRequestIdAsync(user.Id, cooperativeId);
 
             Assert.Equal(request.Id, pendingRequestId);
         }
