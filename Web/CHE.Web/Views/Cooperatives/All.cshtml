@@ -1,4 +1,7 @@
 ﻿@model CHE.Web.ViewModels.Cooperatives.CooperativesAllListViewModel
+@{
+    ViewData["Title"] = "Cooperatives";
+}
 <!-- ======= Breadcrumbs ======= -->
 <section id="breadcrumbs" class="breadcrumbs">
     <div class="container">
@@ -50,3 +53,9 @@
         }
     </div>
 </section><!-- End Services Section -->
+@section Scripts{ 
+    <script>
+        $('#header li').removeClass('active');
+        $('#header li:nth-child(2)').addClass('active');
+    </script>
+}

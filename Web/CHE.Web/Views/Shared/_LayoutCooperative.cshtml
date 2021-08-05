@@ -30,8 +30,10 @@
             <div class="col-xl-9 col-lg-12 col-sm-12">
                 @RenderBody()
             </div>
-            <vc:cooperative-layout-nav cooperative-id="@cooperativeId" user-id="@User.GetId()"/>
+            <vc:cooperative-layout-nav cooperative-id="@cooperativeId" user-id="@User.GetId()" />
         </div>
     </div>
 </section>
+
+<script src="~/lib/jquery/dist/jquery.js"></script>
 @RenderSection("Scripts", required: false)

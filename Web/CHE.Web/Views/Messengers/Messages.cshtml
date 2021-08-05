@@ -1,0 +1,53 @@
+﻿@model IEnumerable<CHE.Web.ViewModels.Messengers.MessengerUserViewModel>
+@{
+    Layout = "/Areas/Identity/Pages/Account/Manage/_Layout.cshtml";
+    ViewData["currentPage"] = "Messages";
+}
+
+<div class="chat-container clearfix">
+    <div class="people-list" id="people-list">
+        <div class="search">
+            <input type="text" placeholder="search" />
+            <i class="fa fa-search"></i>
+        </div>
+        <ul class="list">
+            @foreach (var user in Model.Where(x => x.UserId != this.User.GetId()))
+            {
+                <li class="clearfix">
+                    <div class="about">
+                        <a class="private-chat" id="@user.UserId">
+                            <div class="name">@user.UserUserName</div>
+                            <div class="status">
+                                <i class="fa fa-circle status-icon offline"></i>
+                                <span class="status-text">offline</span>
+                            </div>
+                        </a>
+                    </div>
+                </li>
+            }
+        </ul>
+    </div>
+    <div class="chat">
+        <div class="chat-header clearfix">
+            <div class="chat-about">
+                <div id="current-msg-receiver" class="chat-with">Start chat</div>
+                <div id="msg-count" class="chat-num-messages"></div>
+            </div>
+        </div> <!-- end chat-header -->
+        <div id="history" class="chat-history">
+            <ul id="messages-list">
+                <!-- render messages here -->
+            </ul>
+        </div> <!-- end chat-history -->
+        <div class="chat-message clearfix">
+            <textarea name="message-to-send" id="message-to-send" placeholder="Type your message" rows="3" disabled></textarea>
+            <span class="text-danger"></span>
+            <button id="send-button" disabled>Send</button>
+        </div> <!-- end chat-message -->
+    </div> <!-- end chat -->
+</div>
+
+@section Scripts{
+    <script src="~/lib/signalr/dist/browser/signalr.js"></script>
+    <script src="~/js/messenger.js"></script>
+}

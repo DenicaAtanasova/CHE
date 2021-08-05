@@ -29,7 +29,7 @@
                 <i class="icofont-university"></i>Education As You See It !!!
             </div>
             <div class="social-links">
-                
+
             </div>
         </div>
     </section><!-- End top bar -->
@@ -50,7 +50,7 @@
             </nav><!-- .nav-menu -->
         </div>
     </header><!-- End Header -->
-              
+
     <main id="main">
         @RenderBody()
     </main>
@@ -60,13 +60,11 @@
             &copy; @DateTime.UtcNow.Year - CHE.Web
         </div>
     </footer>
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/jquery/dist/jquery.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/lib/jquery-sticky/jquery.sticky.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
-    <script>
-        //$('#header > div > nav > ul > li').on('click', () => $(this).toggleClass('active'));
-    </script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/list.js/2.3.1/list.min.js"></script>
     @RenderSection("Scripts", required: false)
 </body>
 </html>

@@ -6,6 +6,8 @@ namespace CHE.Web
     using CHE.Services.Data;
     using CHE.Services.Mapping;
     using CHE.Services.Storage;
+    using CHE.Web.AuthorizationPolicies;
+    using CHE.Web.Hubs;
     using CHE.Web.InputModels.Cooperatives;
     using CHE.Web.ViewModels;
 
@@ -17,7 +19,7 @@ namespace CHE.Web
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
-
+    using System;
     using System.Reflection;
 
     public class Startup
@@ -48,6 +50,8 @@ namespace CHE.Web
                 .AddDefaultTokenProviders()
                 .AddDefaultUI();
 
+            services.AddSignalR();
+
             services.AddControllersWithViews(options =>
             {
                 options.Filters.Add<AutoValidateAntiforgeryTokenAttribute>();
@@ -73,6 +77,13 @@ namespace CHE.Web
             services.AddTransient<IAddressesService, AddressesService>();
             services.AddTransient<IFileStorage>(provider => 
                 new CloudStorageService(this.configuration.GetConnectionString("BlobConnection")));
+            services.AddTransient<IMessengersService, MessengersService>();
+            services.AddTransient<IMessagesService, MessagesService>();
+
+            services.AddAuthorization(options =>
+                options.AddPolicy("CooperativeMembersRestricted", policy =>
+                    policy.Requirements.Add(new CooperativeMembersRestrictedRequirement(services)))
+                );
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -115,6 +126,8 @@ namespace CHE.Web
 
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapHub<MessengerHub>("/messenger");
+
                 endpoints.MapControllerRoute(
                     name: "parentarea",
                     pattern: "{area:exists}/{controller=home}/{action=index}/{id?}");

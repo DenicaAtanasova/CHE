@@ -50,7 +50,10 @@
             addressesService.Setup(x => x.GetAddressIdAsync(Address.City, Address.Neighbourhood))
                 .ReturnsAsync(AddressId);
 
-            this._cooperativesService = new CooperativesService(this._dbContext, gradesService.Object, addressesService.Object);
+            this._cooperativesService = new CooperativesService(
+                this._dbContext, 
+                gradesService.Object, 
+                addressesService.Object);
 
             AutoMapperConfig.RegisterMappings(
                 typeof(CooperativeCreateInputModel).Assembly,

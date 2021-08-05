@@ -36,6 +36,12 @@
 
         public DbSet<Event> Events { get; set; }
 
+        public DbSet<Messenger> Messengers { get; set; }
+
+        public DbSet<Message> Messages { get; set; }
+
+        public DbSet<MessengerUser> MessengersUsers { get; set; }
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
             builder.Entity<ParentCooperative>()
@@ -93,6 +99,21 @@
                 .HasOne(e => e.Schedule)
                 .WithMany(s => s.Events)
                 .HasForeignKey(e => e.ScheduleId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            builder.Entity<MessengerUser>()
+                .HasKey(mu => new { mu.MessengerId, mu.UserId });
+
+            builder.Entity<Messenger>()
+                .HasOne(m => m.Cooperative)
+                .WithOne(c => c.Messenger)
+                .HasForeignKey<Messenger>(m => m.CooperativeId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            builder.Entity<Message>()
+                .HasOne(m => m.Messenger)
+                .WithMany(msg => msg.Messages)
+                .HasForeignKey(m => m.MessengerId)
                 .OnDelete(DeleteBehavior.Cascade);
 
             base.OnModelCreating(builder);

@@ -1,5 +1,4 @@
 ﻿@model CHE.Web.ViewModels.Teachers.TeacherAllListViewModel
-
 <!-- ======= Breadcrumbs ======= -->
 <section id="breadcrumbs" class="breadcrumbs">
     <div class="container">
@@ -67,3 +66,9 @@
         </vc:pagination>
     </div>
 </section><!-- End Services Section -->
+@section Scripts{
+    <script>
+        $('#header li').removeClass('active');
+        $('#header li:nth-child(3)').addClass('active');
+    </script>
+}

@@ -29,6 +29,8 @@
 
         public Schedule Schedule { get; init; }
 
+        public Messenger Messenger { get; set; }
+
         public ICollection<ParentCooperative> Members { get; set; }
 
         public ICollection<JoinRequest> JoinRequestsReceived { get; set; }

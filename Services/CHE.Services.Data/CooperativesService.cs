@@ -48,6 +48,17 @@
                 Info = info,
                 GradeId = await this._gradesService.GetGardeIdAsync(grade),
                 Schedule = new Schedule { CreatedOn = DateTime.UtcNow },
+                Messenger = new Messenger 
+                { 
+                    CreatedOn = DateTime.UtcNow,
+                    Users = new List<MessengerUser>
+                    {
+                        new MessengerUser 
+                        {
+                            UserId = userId 
+                        }
+                    }
+                },
                 AddressId = await this._addressesService
                     .GetAddressIdAsync(city, neighbourhood),
                 CreatedOn = DateTime.UtcNow,
@@ -143,6 +154,24 @@
                     ParentId = parentId
                 });
 
+            //TODO: Move to messengerService
+            var messengerId = await this._dbContext.Messengers
+                .Where(x => x.CooperativeId == cooperativeId)
+                .Select(x => x.Id)
+                .SingleOrDefaultAsync();
+
+            var userId = await this._dbContext.Parents
+                .Where(x => x.Id == parentId)
+                .Select(x => x.UserId)
+                .SingleOrDefaultAsync();
+
+            this._dbContext.MessengersUsers.Add(
+                new MessengerUser
+                {
+                    MessengerId = messengerId,
+                    UserId = userId
+                });
+
             await this._dbContext.SaveChangesAsync();
         }
 
@@ -158,6 +187,21 @@
             }
 
             this._dbContext.ParentsCooperatives.Remove(member);
+
+            var messengerId = await this._dbContext.Messengers
+                .Where(x => x.CooperativeId == cooperativeId)
+                .Select(x => x.Id)
+                .SingleOrDefaultAsync();
+
+            var userId = await this._dbContext.Parents
+                .Where(x => x.Id == memberId)
+                .Select(x => x.UserId)
+                .SingleOrDefaultAsync();
+
+            var messingerUser = await this._dbContext.MessengersUsers
+                .SingleOrDefaultAsync(x => x.MessengerId == messengerId && x.UserId == userId);
+
+            this._dbContext.MessengersUsers.Remove(messingerUser);
             await this._dbContext.SaveChangesAsync();
         }
 
