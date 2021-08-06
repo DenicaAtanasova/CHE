@@ -1,4 +1,4 @@
-﻿@model IEnumerable<CHE.Web.ViewModels.Messengers.MessengerUserViewModel>
+﻿@model CHE.Web.ViewModels.Messengers.MessengerPrivateUsersViewModel;
 @{
     Layout = "/Areas/Identity/Pages/Account/Manage/_Layout.cshtml";
     ViewData["currentPage"] = "Messages";
@@ -11,7 +11,7 @@
             <i class="fa fa-search"></i>
         </div>
         <ul class="list">
-            @foreach (var user in Model.Where(x => x.UserId != this.User.GetId()))
+            @foreach (var user in Model.Users.Where(x => x.UserId != this.User.GetId()))
             {
                 <li class="clearfix">
                     <div class="about">
@@ -27,24 +27,80 @@
             }
         </ul>
     </div>
-    <div class="chat">
-        <div class="chat-header clearfix">
-            <div class="chat-about">
-                <div id="current-msg-receiver" class="chat-with">Start chat</div>
-                <div id="msg-count" class="chat-num-messages"></div>
-            </div>
-        </div> <!-- end chat-header -->
-        <div id="history" class="chat-history">
-            <ul id="messages-list">
-                <!-- render messages here -->
-            </ul>
-        </div> <!-- end chat-history -->
-        <div class="chat-message clearfix">
-            <textarea name="message-to-send" id="message-to-send" placeholder="Type your message" rows="3" disabled></textarea>
-            <span class="text-danger"></span>
-            <button id="send-button" disabled>Send</button>
-        </div> <!-- end chat-message -->
-    </div> <!-- end chat -->
+    @if (Model.CurrentMessenger != null)
+    {
+        var receiverName = Model.Users
+            .FirstOrDefault(x => x.UserId == Model.CurrentMessenger.CurrentUser).UserUserName;
+
+        <div class="chat">
+            <div class="chat-header clearfix">
+                <div class="chat-about">
+                    <div id="current-msg-receiver" class="chat-with">Chat with: @receiverName</div>
+                    <div id="msg-count" class="chat-num-messages">already @Model.CurrentMessenger.Messages.Count() messages</div>
+                </div>
+            </div> <!-- end chat-header -->
+            <div id="history" class="chat-history">
+                <ul id="messages-list">
+                    @foreach (var message in Model.CurrentMessenger.Messages)
+                    {
+                        if (message.Sender == receiverName)
+                        {
+                            <li>
+                                <div class="message-data">
+                                    <span class="message-data-name">@message.Sender</span>
+                                    <span class="message-data-time">@message.CreatedOn</span>
+                                </div>
+                                <div class="message my-message">
+                                    <span>@message.Text</span>
+                                </div>
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="clearfix">
+                                <div class="message-data align-right">
+                                    <span class="message-data-time">@message.CreatedOn</span> &nbsp; &nbsp;
+                                    <span class="message-data-name">@message.Sender</span>
+
+                                </div>
+                                <div class="message other-message float-right">
+                                    <span>@message.Text</span>
+                                </div>
+                            </li>
+
+                        }
+                    }
+                </ul>
+            </div> <!-- end chat-history -->
+            <div class="chat-message clearfix">
+                <textarea name="message-to-send" id="message-to-send" placeholder="Type your message" rows="3"></textarea>
+                <span class="text-danger"></span>
+                <button id="send-current-button" messengerId="@Model.CurrentMessenger.Id" receiverId ="@Model.CurrentMessenger.CurrentUser">Send</button>
+            </div> <!-- end chat-message -->
+        </div> <!-- end chat -->
+    }
+    else
+    {
+        <div class="chat">
+            <div class="chat-header clearfix">
+                <div class="chat-about">
+                    <div id="current-msg-receiver" class="chat-with">Start chat</div>
+                    <div id="msg-count" class="chat-num-messages"></div>
+                </div>
+            </div> <!-- end chat-header -->
+            <div id="history" class="chat-history">
+                <ul id="messages-list">
+                    <!-- render messages here -->
+                </ul>
+            </div> <!-- end chat-history -->
+            <div class="chat-message clearfix">
+                <textarea name="message-to-send" id="message-to-send" placeholder="Type your message" rows="3" disabled></textarea>
+                <span class="text-danger"></span>
+                <button id="send-button" disabled>Send</button>
+            </div> <!-- end chat-message -->
+        </div> <!-- end chat -->
+    }
+
 </div>
 
 @section Scripts{

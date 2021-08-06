@@ -1,6 +1,7 @@
 ﻿namespace CHE.Web.Areas.Parent.Controllers
 {
     using CHE.Services.Data;
+    using CHE.Web.Infrastructure;
     using CHE.Web.ViewModels.Messengers;
 
     using Microsoft.AspNetCore.Mvc;
@@ -26,7 +27,7 @@
             return View(messenger);
         }
 
-        public async Task<IActionResult> Cooperative(string cooperativeId)
+        public async Task<IActionResult> GetCooperative(string cooperativeId)
         {
             var messenger = await this._messengersService
                 .GetCooperativeMessengerWithMessagesAsync<MessengerCooperativeViewModel>(cooperativeId);
@@ -34,5 +35,25 @@
 
             return Json(messenger);
         }
+
+        public async Task<IActionResult> SendMessenger(string receiverId)
+        {
+            var userId = this.User.GetId();
+
+            var messengerId = await this._messengersService
+                .GetPrivateMessengerIdAsync(userId, receiverId);
+
+            return this.RedirectToAction(
+                "Messages", 
+                "Messengers", 
+                new { area = "", cuurentMessengerId = messengerId, receiverId = receiverId });
+        }
+    }
+
+    public class MessengerMessageInputModel
+    {
+        public string Id { get; set; }
+
+        public string text { get; set; }
     }
 }

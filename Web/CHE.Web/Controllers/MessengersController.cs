@@ -2,6 +2,7 @@
 {
     using CHE.Services.Data;
     using CHE.Web.Infrastructure;
+    using CHE.Web.ViewModels.Messages;
     using CHE.Web.ViewModels.Messengers;
 
     using Microsoft.AspNetCore.Mvc;
@@ -12,26 +13,40 @@
     {
         private readonly IMessengersService _messengersService;
 
-        public MessengersController(IMessengersService messengerssService)
+        public MessengersController(
+            IMessengersService messengerssService)
         {
             this._messengersService = messengerssService;
         }
 
-        public async Task<IActionResult> Messages()
+        public async Task<IActionResult> Messages(
+            string cuurentMessengerId = null,
+            string receiverId = null)
         {
             var userId = this.User.GetId();
-            var messengers = await this._messengersService
-                .GetAllPrivateMessengersByUserAsync<MessengerUserViewModel>(userId);
 
-            return View(messengers);
+            var messenger = new MessengerPrivateUsersViewModel
+            {
+                Users = await this._messengersService
+                .GetAllPrivateMessengersByUserAsync<MessengerUserViewModel>(userId),
+            };
+
+            if (cuurentMessengerId != null)
+            {
+                messenger.CurrentMessenger = await this._messengersService
+                    .GetPrivateMessengerAsync<MessengerPrivateViewModel>(userId, receiverId);
+                messenger.CurrentMessenger.CurrentUser = receiverId;
+            }
+
+            return View(messenger);
         }
 
-        public async Task<IActionResult> Private(string receiverId)
+        public async Task<IActionResult> GetPrivate(string receiverId)
         {
             var userId = this.User.GetId();
 
             var messenger = await this._messengersService
-                .GetPrivateMessengerWithMessagesAsync<MessengerPrivateViewModel>(userId, receiverId);
+                .GetPrivateMessengerAsync<MessengerPrivateViewModel>(userId, receiverId);
             messenger.CurrentUser = this.User.Identity.Name;
 
             return Json(messenger);

@@ -19,7 +19,10 @@
             this._dbContext = dbContext;
         }
 
-        public async Task<string> CreateAsync(string messengerId, string senderName, string message)
+        public async Task<string> CreateAsync(
+            string messengerId, 
+            string senderName, 
+            string message)
         {
             var currentMessage = new Message
             {

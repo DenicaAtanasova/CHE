@@ -19,6 +19,8 @@
 
         public string Admin { get; init; }
 
+        public string AdminId { get; init; }
+
         public bool IsAdmin { get; set; }
 
         public bool IsMember { get; set; }
@@ -31,7 +33,8 @@
         {
             configuration.CreateMap<Cooperative, CooperativeDetailsViewModel>()
                 .ForMember(dest => dest.Grade, opt => opt.MapFrom(src => src.Grade.Value))
-                .ForMember(dest => dest.Admin, opt => opt.MapFrom(src => src.Admin.User.UserName));
+                .ForMember(dest => dest.Admin, opt => opt.MapFrom(src => src.Admin.User.UserName))
+                .ForMember(dest => dest.AdminId, opt => opt.MapFrom(src => src.Admin.User.Id));
         }
     }
 }

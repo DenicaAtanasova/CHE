@@ -9,6 +9,8 @@
 
         public string SentReviewId { get; set; }
 
+        public string UserId { get; set; }
+
         public TeacherProfileDetailsViewModel Profile { get; init; }
     }
 }

@@ -46,7 +46,7 @@ $(".private-chat").each(function () {
 
         const receiverId = event.currentTarget.id;
 
-        const uri = `/messengers/private?receiverId=${receiverId}`;
+        const uri = `/messengers/getprivate?receiverId=${receiverId}`;
         fetch(uri)
             .then(response => response.json())
             .then(data => {
@@ -78,7 +78,7 @@ $("a.group-chat").on('click', function (event) {
     prepareChat();
 
     const cooperativeId = event.currentTarget.id;
-    const uri = `/parent/messengers/cooperative?cooperativeId=${cooperativeId}`;
+    const uri = `/parent/messengers/getcooperative?cooperativeId=${cooperativeId}`;
 
     fetch(uri)
         .then(response => response.json())
@@ -104,6 +104,13 @@ $("a.group-chat").on('click', function (event) {
     $('#current-msg-receiver').text(`Chat with: ${cooperativeName}`);
 
     updateScroll();
+});
+
+$('#send-current-button').on('click', function () {
+    const messengerId = $(this).attr('messengerId');
+    const receiverId = $(this).attr('receiverId');
+
+    sendMessage("SendPrivate", messengerId, receiverId);
 });
 
 connection.start()
