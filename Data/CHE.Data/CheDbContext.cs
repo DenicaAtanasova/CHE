@@ -116,6 +116,18 @@
                 .HasForeignKey(m => m.MessengerId)
                 .OnDelete(DeleteBehavior.Cascade);
 
+            builder.Entity<Parent>()
+                .HasOne(p => p.User)
+                .WithOne(u => u.Parent)
+                .HasForeignKey<Parent>(p => p.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            builder.Entity<Teacher>()
+                .HasOne(t => t.User)
+                .WithOne(u => u.Teacher)
+                .HasForeignKey<Teacher>(t => t.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
+
             base.OnModelCreating(builder);
         }
     }
