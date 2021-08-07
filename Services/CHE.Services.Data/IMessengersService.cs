@@ -14,5 +14,9 @@
         Task<IEnumerable<TEntity>> GetAllPrivateMessengersByUserAsync<TEntity>(string userId);
 
         Task<TEntity> GetPrivateMessengerAsync<TEntity>(string senderId, string receiverId);
+
+        Task AddMemberAsync(string messengerId, string userId);
+
+        Task RemoveMemberAsync(string messengerId , string userId);
     }
 }

@@ -17,15 +17,18 @@
         private readonly CheDbContext _dbContext;
         private readonly IGradesService _gradesService;
         private readonly IAddressesService _addressesService;
+        private readonly IMessengersService _messengersService;
 
         public CooperativesService(
             CheDbContext dbContext,
             IGradesService gradesService,
-            IAddressesService addressesService)
+            IAddressesService addressesService,
+            IMessengersService messengersService)
         {
             this._dbContext = dbContext;
             this._gradesService = gradesService;
             this._addressesService = addressesService;
+            this._messengersService = messengersService;
         }
 
         public async Task<string> CreateAsync(
@@ -154,7 +157,6 @@
                     ParentId = parentId
                 });
 
-            //TODO: Move to messengerService
             var messengerId = await this._dbContext.Messengers
                 .Where(x => x.CooperativeId == cooperativeId)
                 .Select(x => x.Id)
@@ -165,12 +167,7 @@
                 .Select(x => x.UserId)
                 .SingleOrDefaultAsync();
 
-            this._dbContext.MessengersUsers.Add(
-                new MessengerUser
-                {
-                    MessengerId = messengerId,
-                    UserId = userId
-                });
+            await this._messengersService.AddMemberAsync(messengerId, userId);
 
             await this._dbContext.SaveChangesAsync();
         }
@@ -194,14 +191,12 @@
                 .SingleOrDefaultAsync();
 
             var userId = await this._dbContext.Parents
-                .Where(x => x.Id == memberId)
+                .Where(x => x.Id == member.ParentId)
                 .Select(x => x.UserId)
                 .SingleOrDefaultAsync();
 
-            var messingerUser = await this._dbContext.MessengersUsers
-                .SingleOrDefaultAsync(x => x.MessengerId == messengerId && x.UserId == userId);
+            await this._messengersService.RemoveMemberAsync(messengerId, userId);
 
-            this._dbContext.MessengersUsers.Remove(messingerUser);
             await this._dbContext.SaveChangesAsync();
         }
 

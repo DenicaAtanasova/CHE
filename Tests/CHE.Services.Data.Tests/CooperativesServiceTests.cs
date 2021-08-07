@@ -50,10 +50,13 @@
             addressesService.Setup(x => x.GetAddressIdAsync(Address.City, Address.Neighbourhood))
                 .ReturnsAsync(AddressId);
 
+            var messengersService = new Mock<IMessengersService>();
+
             this._cooperativesService = new CooperativesService(
                 this._dbContext, 
                 gradesService.Object, 
-                addressesService.Object);
+                addressesService.Object,
+                messengersService.Object);
 
             AutoMapperConfig.RegisterMappings(
                 typeof(CooperativeCreateInputModel).Assembly,
@@ -575,12 +578,24 @@
         [Fact]
         public async Task AddMemberAsync_ShouldAddMemberToCooperative()
         {
-            var memberId = Guid.NewGuid().ToString();
-            var cooperativeId = Guid.NewGuid().ToString();
-            await this._cooperativesService.AddMemberAsync(memberId, cooperativeId);
+            var member = new Parent
+            {
+                User = new CheUser()
+            };
+            this._dbContext.Parents.Add(member);
+
+            var cooperative = new Cooperative
+            {
+                Messenger = new Messenger()
+            };
+            this._dbContext.Cooperatives.Add(cooperative);
+
+            await this._dbContext.SaveChangesAsync();
+
+            await this._cooperativesService.AddMemberAsync(member.Id, cooperative.Id);
 
             var memberFromDb = await this._dbContext.ParentsCooperatives
-                .SingleOrDefaultAsync(x => x.ParentId == memberId && x.CooperativeId == cooperativeId);
+                .SingleOrDefaultAsync(x => x.ParentId == member.Id && x.CooperativeId == cooperative.Id);
 
             var expectedMembersCount = 1;
             Assert.Equal(expectedMembersCount, this._dbContext.ParentsCooperatives.Count());
@@ -589,7 +604,10 @@
         [Fact]
         public async Task RemoveMemberAsync_WithGivenParentId_ShouldRemoveMember()
         {
-            var cooperativeId = Guid.NewGuid().ToString();
+            var cooperative = new Cooperative
+            {
+                Messenger = new Messenger()
+            };
 
             var parent = new Parent
             {
@@ -600,13 +618,19 @@
             {
                 new ParentCooperative
                 {
-                    CooperativeId = cooperativeId,
+                    Cooperative = cooperative,
                     Parent = parent
                 },
                 new ParentCooperative
                 {
-                    CooperativeId = Guid.NewGuid().ToString(),
-                    ParentId = Guid.NewGuid().ToString()
+                    Cooperative = new Cooperative
+                    { 
+                        Messenger = new Messenger()
+                    },
+                    Parent = new Parent
+                    {
+                        User = new CheUser()
+                    }
                 },
             };
 
@@ -614,10 +638,10 @@
 
             await this._dbContext.SaveChangesAsync();
 
-            await this._cooperativesService.RemoveMemberAsync(parent.Id, cooperativeId);
+            await this._cooperativesService.RemoveMemberAsync(parent.Id, cooperative.Id);
 
             var memberFromDb = await this._dbContext.ParentsCooperatives
-                .SingleOrDefaultAsync(x => x.CooperativeId == cooperativeId && x.ParentId == parent.Id);
+                .SingleOrDefaultAsync(x => x.CooperativeId == cooperative.Id && x.ParentId == parent.Id);
 
             Assert.NotEmpty(this._dbContext.ParentsCooperatives);
             Assert.Null(memberFromDb);

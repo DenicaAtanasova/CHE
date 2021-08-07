@@ -26,6 +26,6 @@
 
         public string ReceiverId { get; init; }
 
-        public string ReceiverUserName { get; init; }
+        public string ReceiverUserUserName { get; init; }
     }
 }

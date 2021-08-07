@@ -64,7 +64,7 @@
             IFormFile imageFile)
         {
             var profileToUpdate = await this._dbContext.Profiles
-                .SingleOrDefaultAsync(x => x.Owner.UserId == id);
+                .SingleOrDefaultAsync(x => x.Id == id);
 
             if (profileToUpdate == null)
             {

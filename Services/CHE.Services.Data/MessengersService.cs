@@ -72,6 +72,32 @@
 
             return messengerId;
         }
+        
+        public async Task AddMemberAsync(string messengerId, string userId)
+        {
+            this._dbContext.MessengersUsers.Add(
+                new MessengerUser
+                {
+                    MessengerId = messengerId,
+                    UserId = userId
+                });
+
+            await this._dbContext.SaveChangesAsync();
+        }
+
+        public async Task RemoveMemberAsync(string messengerId, string userId) 
+        {
+            var messingerUser = await this._dbContext.MessengersUsers
+                .SingleOrDefaultAsync(x => x.MessengerId == messengerId && x.UserId == userId);
+
+            if (messingerUser == null)
+            {
+                return;
+            }
+
+            this._dbContext.MessengersUsers.Remove(messingerUser);
+            await this._dbContext.SaveChangesAsync();
+        }
 
         private async Task<Messenger> CreateAndGetPrivateMessengerAsync(string senderId, string receiverId)
         {

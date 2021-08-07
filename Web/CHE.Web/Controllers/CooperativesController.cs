@@ -60,9 +60,15 @@
         public async Task<IActionResult> All(FilterViewModel filter, int pageIndex = 1)
         {
             var cooperatives = await this._cooperativesService
-                    .GetAllAsync<CooperativeAllViewModel>(pageIndex, DefaultPageSize, filter.Level, filter.City, filter.Neighbourhood);
+                    .GetAllAsync<CooperativeAllViewModel>(
+                pageIndex, 
+                DefaultPageSize, 
+                filter.Level, 
+                filter.City, 
+                filter.Neighbourhood);
 
-            var count = await this._cooperativesService.CountAsync(filter.Level, filter.City, filter.Neighbourhood);
+            var count = await this._cooperativesService
+                .CountAsync(filter.Level, filter.City, filter.Neighbourhood);
 
             filter.LevelDisplayName = "grade";
             filter.Levels = await this._gradesService.GetAllAsync();

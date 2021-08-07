@@ -49,11 +49,4 @@
                 new { area = "", cuurentMessengerId = messengerId, receiverId = receiverId });
         }
     }
-
-    public class MessengerMessageInputModel
-    {
-        public string Id { get; set; }
-
-        public string text { get; set; }
-    }
 }

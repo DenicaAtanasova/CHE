@@ -152,7 +152,7 @@
         }
 
         [Fact]
-        public async Task GetByIdAsync_ShouldReturnCorrectReview()
+        public async Task GetByIdAsyncShouldReturnCorrectReview()
         {
             var review = new Review
             {
@@ -234,6 +234,60 @@
                 .ExistsAsync(review.SenderId, Guid.NewGuid().ToString()));
             Assert.False(await this._ReviewsService
                 .ExistsAsync(Guid.NewGuid().ToString(), Guid.NewGuid().ToString()));
+        }
+
+        [Fact]
+        public async Task SetAllSenderIdToNullByUserAsync() 
+        {
+            var user = new CheUser();
+
+            var reviewsList = new List<Review>
+            {
+                new Review
+                {
+                    Comment = "Comment1",
+                    Sender = new Parent
+                    {
+                        User = new CheUser()
+                    }
+                },
+                new Review
+                {
+                    Comment = "Comment2",
+                    Sender = new Parent
+                    {
+                        User = new CheUser()
+                    }
+                },
+                new Review
+                {
+                    Comment = "Comment3",
+                    Sender = new Parent
+                    {
+                        User = user
+                    }
+                },
+                new Review
+                {
+                    Comment = "Comment4",
+                    Sender = new Parent
+                    {
+                        User = new CheUser()
+                    }
+                }
+            };
+
+            this._dbContext.Reviews.AddRange(reviewsList);
+            await this._dbContext.SaveChangesAsync();
+
+            await this._ReviewsService.SetAllSenderIdToNullByUserAsync(user.Id);
+
+            var reviewFromDb = await this._dbContext.Reviews
+                .SingleOrDefaultAsync(x => x.SenderId == null);
+
+            var expectedReview = reviewsList.FirstOrDefault(x => x.Sender == null) ;
+
+            Assert.Equal(expectedReview.Id, reviewFromDb.Id);
         }
     }
 }
