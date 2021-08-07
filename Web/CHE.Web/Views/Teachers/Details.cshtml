@@ -25,7 +25,7 @@
         <hr class="my-4">
         <div class="d-flex justify-content-lg-between">
             <div>
-                @if (this.User.IsInRole(GlobalConstants.ParentRole))
+                @if (this.User.IsParent())
                 {
                     if (Model.SentReviewId == null)
                     {

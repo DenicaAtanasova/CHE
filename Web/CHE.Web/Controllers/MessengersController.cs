@@ -4,11 +4,12 @@
     using CHE.Web.Infrastructure;
     using CHE.Web.ViewModels.Messages;
     using CHE.Web.ViewModels.Messengers;
-
+    using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
 
     using System.Threading.Tasks;
 
+    [Authorize]
     public class MessengersController : Controller
     {
         private readonly IMessengersService _messengersService;

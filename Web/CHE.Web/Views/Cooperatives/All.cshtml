@@ -15,7 +15,7 @@
 <!-- ======= Services Section ======= -->
 <section id="services" class="services">
     <div class="container">
-        @if (this.User.IsInRole(GlobalConstants.ParentRole))
+        @if (this.User.IsParent())
         {
             <div class="row">
                 <div class="col-md-12">
