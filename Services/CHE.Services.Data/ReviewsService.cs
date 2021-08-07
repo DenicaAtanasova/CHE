@@ -98,5 +98,15 @@
         public async Task<bool> ExistsAsync(string senderId, string receiverId) =>
             await this._dbContext.Reviews
                 .AnyAsync(x => x.SenderId == senderId && x.ReceiverId == receiverId);
+
+        public async Task SetAllSenderIdToNullByUserAsync(string userId)
+        {
+            var userReviews = this._dbContext.Reviews
+                .Where(x => x.Sender.UserId == userId);
+
+            await userReviews.ForEachAsync(x => x.SenderId = null);
+
+            await this._dbContext.SaveChangesAsync();
+        }
     }
 }

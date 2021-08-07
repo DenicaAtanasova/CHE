@@ -22,5 +22,7 @@
         Task<string> GetSentReviewIdAsync(string userId, string receiverId);
 
         Task<bool> ExistsAsync(string senderId, string receiverId);
+
+        Task SetAllSenderIdToNullByUserAsync(string userId);
     }
 }

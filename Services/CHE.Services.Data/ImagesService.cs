@@ -8,6 +8,7 @@
     using Microsoft.EntityFrameworkCore;
 
     using System;
+    using System.Linq;
     using System.Threading.Tasks;
 
     public class ImagesService : IImagesService
@@ -59,9 +60,23 @@
 
             currentImage.Url = await this._cloudStorageService
                 .UploadAsync(profileId, imageFile.OpenReadStream());
+            currentImage.Caption = profileId;
 
             this._dbContext.Images.Update(currentImage);
             await this._dbContext.SaveChangesAsync();
+        }
+
+        public async Task DeleteAsync(string userId)
+        {
+            var imageFileName = await this._dbContext.Images
+                .Where(x => x.Profile.Owner.UserId == userId)
+                .Select(x => x.Caption)
+                .SingleOrDefaultAsync();
+
+            if (imageFileName != AvatarImageCaption)
+            {
+                await this._cloudStorageService.DeleteAsync(imageFileName);
+            }
         }
 
         private bool IsAvater(string caption) =>

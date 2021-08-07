@@ -8,5 +8,7 @@
         Task UpdateAsync(IFormFile imageFile, string portfolioId);
 
         Task<string> CreateAvatarAsync(string portfolioId);
+
+        Task DeleteAsync(string userId);
     }
 }
