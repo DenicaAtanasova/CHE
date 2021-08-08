@@ -7,7 +7,7 @@ Web application which enables parents and teachers to collaborate united by the 
 
 ### :mortar_board: Cooperatives
 Organized by a group of families with similar philosophies. 
-Cooperatives have their custom features like: information, grade and address, which makes enables parents to search for the most appropriete one to join in.
+Cooperatives have their custom features like: information, grade and address, which enables parents to search for the most appropriete one to join.
 
 ### :information_desk_person: Teachers
 Registered professionalists with the required education, skills, motivation and attitude, who can be contacted and hired.
@@ -30,6 +30,3 @@ Enables cooperatives and teachers to manage and keep track on their engagements.
 * [SignalR](https://github.com/SignalR/SignalR)
 * [LibraryManager](https://github.com/aspnet/LibraryManager)
 * [Azure Storage Blobs](https://github.com/Azure/azure-sdk-for-net/tree/Azure.Storage.Blobs_12.8.0/sdk/storage/Azure.Storage.Blobs)
-
-## License
-This project is licensed under the MIT License - see the [LICENSE.md](LICENSE) file for details.
