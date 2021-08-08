@@ -6,7 +6,7 @@ Web application which enables parents and teachers to collaborate united by the 
 ## Main Features
 
 ### :mortar_board: Cooperatives
-Organized by a group of families with similar philosophies. 
+Organized by a group of families with similar philosophies. It is administered and maintained by the parents.
 Cooperatives have their custom features like: information, grade and address, which enables parents to search for the most appropriete one to join.
 
 ### :information_desk_person: Teachers
