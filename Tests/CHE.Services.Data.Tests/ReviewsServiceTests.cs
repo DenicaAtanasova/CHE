@@ -2,6 +2,7 @@
 {
     using CHE.Data;
     using CHE.Data.Models;
+    using CHE.Services.Data.Tests.Mocks;
     using CHE.Services.Mapping;
     using CHE.Web.InputModels.Reviews;
     using CHE.Web.ViewModels.Reviews;
@@ -21,10 +22,7 @@
 
         public ReviewsServiceTests()
         {
-            var options = new DbContextOptionsBuilder<CheDbContext>()
-                .UseInMemoryDatabase(Guid.NewGuid().ToString())
-                .Options;
-            this._dbContext = new CheDbContext(options);
+            this._dbContext = DatabaseMock.Instance;
 
             this._ReviewsService = new ReviewsService(this._dbContext);
 
@@ -41,7 +39,9 @@
             var comment = "Comment";
             var rating = 5;
 
-            var reviewId = await this._ReviewsService.CreateAsync(senderId, receiverId, comment, rating);
+            var reviewId = await this._ReviewsService
+                .CreateAsync(senderId, receiverId, comment, rating);
+
             var reviewFromDb = await this._dbContext.Reviews.SingleOrDefaultAsync();
 
             Assert.Equal(reviewId, reviewFromDb.Id);
@@ -51,7 +51,10 @@
             Assert.Equal(rating, reviewFromDb.Rating);
 
             var expectedCreatedOn = DateTime.UtcNow;
-            Assert.Equal(expectedCreatedOn, reviewFromDb.CreatedOn, new TimeSpan(days: 0, hours: 0, minutes: 0, seconds: 0, milliseconds: 1000));
+            Assert.Equal(
+                expectedCreatedOn, 
+                reviewFromDb.CreatedOn, 
+                new TimeSpan(days: 0, hours: 0, minutes: 0, seconds: 0, milliseconds: 1000));
         }
 
         [Fact]
@@ -81,7 +84,9 @@
             Assert.Equal(comment, reviewFromDb.Comment);
             Assert.Equal(rating, reviewFromDb.Rating);
 
-            Assert.Equal(ModifiedOn, reviewFromDb.ModifiedOn.Value, 
+            Assert.Equal(
+                ModifiedOn, 
+                reviewFromDb.ModifiedOn.Value, 
                 new TimeSpan(days: 0, hours: 0, minutes: 0, seconds: 0, milliseconds: 1000));
         }
 

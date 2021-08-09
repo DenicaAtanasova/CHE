@@ -1,34 +1,31 @@
-﻿using System.Threading.Tasks;
-using CHE.Data.Models;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.Extensions.Logging;
-
-namespace CHE.Web.Areas.Identity.Pages.Account.Manage
+﻿namespace CHE.Web.Areas.Identity.Pages.Account.Manage
 {
+    using System.Threading.Tasks;
+
+    using CHE.Data.Models;
+
+    using Microsoft.AspNetCore.Identity;
+    using Microsoft.AspNetCore.Mvc;
+    using Microsoft.AspNetCore.Mvc.RazorPages;
+
     public class PersonalDataModel : PageModel
     {
         private readonly UserManager<CheUser> _userManager;
-        private readonly ILogger<PersonalDataModel> _logger;
 
-        public PersonalDataModel(
-            UserManager<CheUser> userManager,
-            ILogger<PersonalDataModel> logger)
+        public PersonalDataModel(UserManager<CheUser> userManager)
         {
-            _userManager = userManager;
-            _logger = logger;
+            this._userManager = userManager;
         }
 
         public async Task<IActionResult> OnGet()
         {
-            var user = await _userManager.GetUserAsync(User);
+            var user = await this._userManager.GetUserAsync(User);
             if (user == null)
             {
-                return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+                return this.NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
             }
 
-            return Page();
+            return this.Page();
         }
     }
 }

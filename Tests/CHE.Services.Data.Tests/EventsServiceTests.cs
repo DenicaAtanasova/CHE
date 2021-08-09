@@ -2,6 +2,7 @@
 {
     using CHE.Data;
     using CHE.Data.Models;
+    using CHE.Services.Data.Tests.Mocks;
     using CHE.Services.Mapping;
     using CHE.Web.ViewModels.Events;
 
@@ -22,10 +23,7 @@
 
         public EventsServiceTests()
         {
-            var options = new DbContextOptionsBuilder<CheDbContext>()
-                    .UseInMemoryDatabase(Guid.NewGuid().ToString())
-                    .Options;
-            this._dbContext = new CheDbContext(options);
+            this._dbContext = DatabaseMock.Instance;
 
             this._eventsService = new EventsService(this._dbContext);
 

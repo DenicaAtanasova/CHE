@@ -2,10 +2,9 @@
 {
     using CHE.Data;
     using CHE.Data.Models;
+    using CHE.Services.Data.Tests.Mocks;
     using CHE.Services.Mapping;
     using CHE.Web.ViewModels.Schedules;
-
-    using Microsoft.EntityFrameworkCore;
 
     using System;
     using System.Threading.Tasks;
@@ -19,10 +18,7 @@
 
         public SchedulesServiceTests()
         {
-            var options = new DbContextOptionsBuilder<CheDbContext>()
-                .UseInMemoryDatabase(Guid.NewGuid().ToString())
-                .Options;
-            this._dbContext = new CheDbContext(options);
+            this._dbContext = DatabaseMock.Instance;
 
             this._schedulesService = new SchedulesService(this._dbContext);
 
@@ -30,7 +26,7 @@
         }
 
         [Fact]
-        public async Task GetByIdAsync_ShouldReturnCorrectJoinRequest()
+        public async Task GetByIdAsync_ShouldReturnCorrectSchedule()
         {
             var expectedSchedule = new Schedule
             { 
@@ -65,7 +61,7 @@
         }
 
         [Fact]
-        public async Task GetIdByCooperative_ShouldWorkCorrectly()
+        public async Task GetIdByCooperativeAsync_ShouldReturnCorrectSchedule()
         {
             var CooperativeId = Guid.NewGuid().ToString();
             var schedule = new Schedule
@@ -78,6 +74,23 @@
             await this._dbContext.SaveChangesAsync();
 
             var scheduleId = await this._schedulesService.GetIdByCooperativeAsync(CooperativeId);
+
+            Assert.Equal(schedule.Id, scheduleId);
+        }
+
+        [Fact]
+        public async Task GetIdByUserAsync_ShouldReturnCorrectSchedule()
+        {
+            var teacher = new Teacher { User = new CheUser()};
+            var schedule = new Schedule
+            {
+                Owner = teacher
+            };
+
+            this._dbContext.Schedules.Add(schedule);
+            await this._dbContext.SaveChangesAsync();
+
+            var scheduleId = await this._schedulesService.GetIdByUserAsync(teacher.UserId);
 
             Assert.Equal(schedule.Id, scheduleId);
         }

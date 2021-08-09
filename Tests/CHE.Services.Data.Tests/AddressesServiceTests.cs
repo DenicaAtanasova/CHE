@@ -2,10 +2,10 @@
 {
     using CHE.Data;
     using CHE.Data.Models;
+    using CHE.Services.Data.Tests.Mocks;
 
     using Microsoft.EntityFrameworkCore;
 
-    using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
@@ -19,10 +19,7 @@
 
         public AddressesServiceTests()
         {
-            var options = new DbContextOptionsBuilder<CheDbContext>()
-                .UseInMemoryDatabase(Guid.NewGuid().ToString())
-                .Options;
-            this._dbContext = new CheDbContext(options);
+            this._dbContext = DatabaseMock.Instance;
 
             this._addressesService = new AddressesService(this._dbContext);
         }

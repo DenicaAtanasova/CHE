@@ -2,6 +2,7 @@
 {
     using CHE.Data;
     using CHE.Data.Models;
+    using CHE.Services.Data.Tests.Mocks;
     using Microsoft.EntityFrameworkCore;
 
     using Moq;
@@ -16,16 +17,12 @@
         private readonly CheDbContext _dbContext;
         private readonly IParentsService _parentsService;
 
-        private readonly string CooperativeId = Guid.NewGuid().ToString();
         private readonly CheUser User;
         private readonly Parent Sender;
 
         public ParentsServiceTests()
         {
-            var options = new DbContextOptionsBuilder<CheDbContext>()
-                .UseInMemoryDatabase(Guid.NewGuid().ToString())
-                .Options;
-            this._dbContext = new CheDbContext(options);
+            this._dbContext = DatabaseMock.Instance;
 
             User = new CheUser();
             Sender = new Parent
@@ -36,20 +33,11 @@
             this._dbContext.Parents.Add(Sender);
             this._dbContext.SaveChanges();
 
-            var joinRequestsService = new Mock<IJoinRequestsService>();
-            joinRequestsService.Setup(x => x.ExistsAsync(Sender.Id, CooperativeId))
-            .ReturnsAsync(true);
-
-            var cooperativesService = new Mock<ICooperativesService>();
-            var reviewsService = new Mock<IReviewsService>();
-            reviewsService.Setup(x => x.ExistsAsync(Sender.Id, It.IsAny<string>()))
-                .ReturnsAsync(true);
-
             this._parentsService = new ParentsService(
                 this._dbContext,
-                joinRequestsService.Object,
-                cooperativesService.Object,
-                reviewsService.Object);
+                JoinRequestsServiceMock.Instance,
+                CooperativesServiceMock.Instance,
+                ReviewsServiceMock.Instance);
         }
 
         [Fact]
@@ -111,7 +99,7 @@
         [Fact]
         public async Task SendRequestAsync_WithExistingJoinRequest_ShouldDoNothing()
         {
-            var cooperative = new Cooperative { Id = CooperativeId};
+            var cooperative = new Cooperative ();
             this._dbContext.Cooperatives.Add(cooperative);
 
             var content = "Content";
@@ -119,7 +107,7 @@
             var joinRequest = new JoinRequest
             {
                 Sender = this.Sender,
-                CooperativeId = CooperativeId,
+                CooperativeId = cooperative.Id,
                 Content = content
             };
             this._dbContext.JoinRequests.Add(joinRequest);
@@ -136,7 +124,7 @@
         [Fact]
         public async Task AcceptRequestAsync_WithNotExistingJoinRequest_ShouldDoNothing()
         {
-            var cooperative = new Cooperative { Id = CooperativeId };
+            var cooperative = new Cooperative ();
             this._dbContext.Cooperatives.Add(cooperative);
             await this._dbContext.SaveChangesAsync();
 

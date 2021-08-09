@@ -29,7 +29,7 @@
         public async Task<string> GetIdByUserAsync(string userId) =>
             await this._dbContext.Schedules
                 .AsNoTracking()
-                .Where(x => x.OwnerId == userId)
+                .Where(x => x.Owner.UserId == userId)
                 .Select(x => x.Id)
                 .SingleOrDefaultAsync();
 

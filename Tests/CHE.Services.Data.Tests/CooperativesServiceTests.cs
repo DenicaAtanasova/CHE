@@ -3,6 +3,7 @@
     using CHE.Data;
     using CHE.Data.Models;
     using CHE.Services.Data.Enums;
+    using CHE.Services.Data.Tests.Mocks;
     using CHE.Services.Mapping;
     using CHE.Web.InputModels.Cooperatives;
     using CHE.Web.ViewModels.Cooperatives;
@@ -18,44 +19,23 @@
 
     using Xunit;
 
+    using static Mocks.MockConstants;
+
     public class CooperativesServiceTests
     {
-        private const string FirstGrade = "First";
-        private readonly string FirstGradeId = Guid.NewGuid().ToString();
-
-        private readonly Address  Address = 
-            new Address
-            {
-                City = "Sofia",
-                Neighbourhood = "Dianabad"
-            };
-
-        private readonly string AddressId = Guid.NewGuid().ToString();
-
         private readonly CheDbContext _dbContext;
         private readonly ICooperativesService _cooperativesService;
 
         public CooperativesServiceTests()
         {
-            var options = new DbContextOptionsBuilder<CheDbContext>()
-                .UseInMemoryDatabase(Guid.NewGuid().ToString())
-                .Options;
-            this._dbContext = new CheDbContext(options);
-
-            var gradesService = new Mock<IGradesService>();
-            gradesService.Setup(x => x.GetGardeIdAsync(FirstGrade))
-                .ReturnsAsync(FirstGradeId);
-
-            var addressesService = new Mock<IAddressesService>();
-            addressesService.Setup(x => x.GetAddressIdAsync(Address.City, Address.Neighbourhood))
-                .ReturnsAsync(AddressId);
+            this._dbContext = DatabaseMock.Instance;
 
             var messengersService = new Mock<IMessengersService>();
 
             this._cooperativesService = new CooperativesService(
                 this._dbContext, 
-                gradesService.Object, 
-                addressesService.Object,
+                GradesServiceMock.Instance,
+                AddressesServiceMock.Instance,
                 messengersService.Object);
 
             AutoMapperConfig.RegisterMappings(
@@ -77,7 +57,8 @@
             var info = "CoopInfo";
 
             var cooperativeId = await this._cooperativesService.CreateAsync(
-                parent.UserId, name, info, FirstGrade, Address.City, Address.Neighbourhood);
+                parent.UserId, name, info, "First", "Sofia", "Vitosha");
+
             var cooperativeFromDb = await this._dbContext.Cooperatives.SingleOrDefaultAsync();
             var expectedCreatedOnDate = DateTime.UtcNow;
 
@@ -85,8 +66,8 @@
             Assert.Equal(parent.Id, cooperativeFromDb.AdminId);
             Assert.Equal(name, cooperativeFromDb.Name);
             Assert.Equal(info, cooperativeFromDb.Info);
-            Assert.Equal(FirstGradeId, cooperativeFromDb.GradeId);
-            Assert.Equal(AddressId, cooperativeFromDb.AddressId);
+            Assert.Equal(GradeMock.Id, cooperativeFromDb.GradeId);
+            Assert.Equal(AddressMock.Id, cooperativeFromDb.AddressId);
             Assert.NotNull(cooperativeFromDb.Schedule);
             Assert.Equal(expectedCreatedOnDate, 
                 cooperativeFromDb.CreatedOn,
@@ -121,7 +102,7 @@
             var info = "updatedInfo";
 
             await this._cooperativesService
-                .UpdateAsync(cooperative.Id, name, info, FirstGrade, Address.City, Address.Neighbourhood);
+                .UpdateAsync(cooperative.Id, name, info, "First", "Sofia", "Vitosha");
             var expectedModifiedOnDate = DateTime.UtcNow;
 
             var updatedCooperative = await this._dbContext.Cooperatives
@@ -129,8 +110,8 @@
 
             Assert.Equal(name, updatedCooperative.Name);
             Assert.Equal(info, updatedCooperative.Info);
-            Assert.Equal(FirstGradeId, updatedCooperative.GradeId);
-            Assert.Equal(AddressId, updatedCooperative.AddressId);
+            Assert.Equal(GradeMock.Id, updatedCooperative.GradeId);
+            Assert.Equal(AddressMock.Id, updatedCooperative.AddressId);
             Assert.Equal(expectedModifiedOnDate, 
                 updatedCooperative.ModifiedOn.Value, 
                 new TimeSpan(days: 0, hours: 0, minutes: 0, seconds: 0, milliseconds: 1000));
@@ -166,7 +147,7 @@
             var info = "updatedInfo";
 
             await this._cooperativesService
-                .UpdateAsync(id, name, info, FirstGrade, Address.City, Address.Neighbourhood);
+                .UpdateAsync(id, name, info, "First", "Sofia", "Vitosha");
 
             var cooperativeFromDb = await this._dbContext.Cooperatives
                 .SingleOrDefaultAsync(x => x.Id == cooperative.Id);
@@ -234,7 +215,7 @@
         }
 
         [Fact]
-        public async Task GetByIdAsync_Cooperative_ShouldReturnCorrectCooperative()
+        public async Task GetByIdAsyncCooperative_ShouldReturnCorrectCooperative()
         {
             var cooperative = new Cooperative
             {
@@ -263,7 +244,7 @@
         }
 
         [Fact]
-        public async Task GetByIdAsync_WithIncorrectCooperativeId_ShouldReturnNull()
+        public async Task GetByIdAsyncWithIncorrectCooperativeId_ShouldReturnNull()
         {
             this._dbContext.Cooperatives.Add(
                 new Cooperative

@@ -1,7 +1,6 @@
 ﻿namespace CHE.Web.Areas.Identity.Pages.Account.Manage
 {
     using CHE.Data.Models;
-    using CHE.Services.Data;
 
     using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;

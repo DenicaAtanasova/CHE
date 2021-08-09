@@ -19,7 +19,7 @@ namespace CHE.Web
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
-    using System;
+
     using System.Reflection;
 
     public class Startup

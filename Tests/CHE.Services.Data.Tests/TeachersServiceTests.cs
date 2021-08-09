@@ -2,6 +2,7 @@
 {
     using CHE.Data;
     using CHE.Data.Models;
+    using CHE.Services.Data.Tests.Mocks;
     using CHE.Services.Mapping;
     using CHE.Web.ViewModels.Teachers;
 
@@ -23,14 +24,9 @@
 
         public TeachersServiceTests()
         {
-            var options = new DbContextOptionsBuilder<CheDbContext>()
-                .UseInMemoryDatabase(Guid.NewGuid().ToString())
-                .Options;
-            this._dbContext = new CheDbContext(options);
+            this._dbContext = DatabaseMock.Instance;
 
-            var profilesService = new Mock<IProfilesService>();
-
-            this._teachersService = new TeachersService(this._dbContext, profilesService.Object);
+            this._teachersService = new TeachersService(this._dbContext, ProfilesServiceMock.Instance);
 
             AutoMapperConfig.RegisterMappings(
                 typeof(TeacherDetailsViewModel).Assembly);
