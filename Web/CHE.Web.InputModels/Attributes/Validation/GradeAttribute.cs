@@ -1,30 +1,20 @@
 ﻿namespace CHE.Web.InputModels.Attributes.Validation
 {
+    using CHE.Data.Models;
+
     using System;
     using System.ComponentModel.DataAnnotations;
-    using System.Linq;
 
     using static DataErrorMessages;
 
     [AttributeUsage(AttributeTargets.Property)]
     public class GradeAttribute : ValidationAttribute
     {
-        private readonly string[] VALID_GRADES = 
-        {
-            "First",
-            "Second",
-            "Third",
-            "Forth",
-            "Fifth",
-            "Sixth",
-            "Seventh",
-            "Eighth"
-        };
-
         protected override ValidationResult IsValid(object value, ValidationContext validationContext)
         {
             var gradeValue = value as string;
-            if (VALID_GRADES.Any(x => x == gradeValue))
+            ;
+            if (Enum.TryParse<Grade>(gradeValue, out var _))
             {
                 return ValidationResult.Success;
             }

@@ -7,11 +7,6 @@
             public const string Id = "MockedAddressId";
         }
 
-        public record GradeMock
-        {
-            public const string Id = "MockedGradeId";
-        }
-
         public record CloudStorageMock
         {
             public const string Url = "MockedCloudStorageUrl";

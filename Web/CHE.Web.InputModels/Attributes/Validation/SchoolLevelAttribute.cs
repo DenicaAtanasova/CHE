@@ -14,7 +14,7 @@
         {
             var schoolLevelValue = value as string;
             ;
-            if (Enum.TryParse<SchoolLevel>(schoolLevelValue, out var schoolLevel))
+            if (Enum.TryParse<SchoolLevel>(schoolLevelValue, out var _))
             {
                 return ValidationResult.Success;
             }

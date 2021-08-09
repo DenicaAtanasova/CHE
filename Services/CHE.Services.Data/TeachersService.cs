@@ -86,7 +86,7 @@
 
             if (schoolLevelFilter != null)
             {
-                var schoolLevel = (SchoolLevel)Enum.Parse(typeof(SchoolLevel), schoolLevelFilter);
+                var schoolLevel = Enum.Parse<SchoolLevel>(schoolLevelFilter);
                 users = users.Where(x => x.Profile.SchoolLevel == schoolLevel);
             }
 

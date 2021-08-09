@@ -32,7 +32,7 @@
         public void CreateMappings(IProfileExpression configuration)
         {
             configuration.CreateMap<Cooperative, CooperativeDetailsViewModel>()
-                .ForMember(dest => dest.Grade, opt => opt.MapFrom(src => src.Grade.Value))
+                .ForMember(dest => dest.Grade, opt => opt.MapFrom(src => src.Grade.ToString()))
                 .ForMember(dest => dest.Admin, opt => opt.MapFrom(src => src.Admin.User.UserName))
                 .ForMember(dest => dest.AdminId, opt => opt.MapFrom(src => src.Admin.User.Id));
         }

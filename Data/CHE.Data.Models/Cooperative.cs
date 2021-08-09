@@ -19,8 +19,6 @@
 
         public Address Address { get; set; }
 
-        public string GradeId { get; set; }
-
         public Grade Grade { get; set; }
 
         public string AdminId { get; set; }

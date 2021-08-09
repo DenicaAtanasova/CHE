@@ -1,22 +1,14 @@
 ﻿namespace CHE.Data.Models
 {
-    using System.Collections.Generic;
-    using System.ComponentModel.DataAnnotations.Schema;
-
-    public class Grade
+    public enum Grade
     {
-        public Grade()
-        {
-            this.Cooperatives = new HashSet<Cooperative>();
-        }
-
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public string Id { get; init; }
-
-        public string Value { get; set; }
-
-        public int NumValue { get; set; }
-
-        public ICollection<Cooperative> Cooperatives { get; set; }
+        First = 0,
+        Second = 1, 
+        Third = 2, 
+        Forth = 4, 
+        Fifth = 8, 
+        Sixth = 6, 
+        Seventh = 32, 
+        Eighth = 64
     }
 }

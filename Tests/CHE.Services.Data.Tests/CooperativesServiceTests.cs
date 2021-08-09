@@ -33,8 +33,7 @@
             var messengersService = new Mock<IMessengersService>();
 
             this._cooperativesService = new CooperativesService(
-                this._dbContext, 
-                GradesServiceMock.Instance,
+                this._dbContext,
                 AddressesServiceMock.Instance,
                 messengersService.Object);
 
@@ -57,7 +56,7 @@
             var info = "CoopInfo";
 
             var cooperativeId = await this._cooperativesService.CreateAsync(
-                parent.UserId, name, info, "First", "Sofia", "Vitosha");
+                parent.UserId, name, info, Grade.First.ToString(), "Sofia", "Vitosha");
 
             var cooperativeFromDb = await this._dbContext.Cooperatives.SingleOrDefaultAsync();
             var expectedCreatedOnDate = DateTime.UtcNow;
@@ -66,7 +65,7 @@
             Assert.Equal(parent.Id, cooperativeFromDb.AdminId);
             Assert.Equal(name, cooperativeFromDb.Name);
             Assert.Equal(info, cooperativeFromDb.Info);
-            Assert.Equal(GradeMock.Id, cooperativeFromDb.GradeId);
+            Assert.Equal(Grade.First, cooperativeFromDb.Grade);
             Assert.Equal(AddressMock.Id, cooperativeFromDb.AddressId);
             Assert.NotNull(cooperativeFromDb.Schedule);
             Assert.Equal(expectedCreatedOnDate, 
@@ -81,11 +80,7 @@
             {
                 Name = "CoopName",
                 Info = "CoopInfo",
-                Grade = new Grade
-                {
-                    NumValue = 2,
-                    Value = "Second"
-                },
+                Grade = Grade.First,
                 Address = new Address
                 {
                     City = "Varna",
@@ -102,7 +97,7 @@
             var info = "updatedInfo";
 
             await this._cooperativesService
-                .UpdateAsync(cooperative.Id, name, info, "First", "Sofia", "Vitosha");
+                .UpdateAsync(cooperative.Id, name, info, Grade.Second.ToString(), "Sofia", "Vitosha");
             var expectedModifiedOnDate = DateTime.UtcNow;
 
             var updatedCooperative = await this._dbContext.Cooperatives
@@ -110,7 +105,7 @@
 
             Assert.Equal(name, updatedCooperative.Name);
             Assert.Equal(info, updatedCooperative.Info);
-            Assert.Equal(GradeMock.Id, updatedCooperative.GradeId);
+            Assert.Equal(Grade.Second, updatedCooperative.Grade);
             Assert.Equal(AddressMock.Id, updatedCooperative.AddressId);
             Assert.Equal(expectedModifiedOnDate, 
                 updatedCooperative.ModifiedOn.Value, 
@@ -126,11 +121,7 @@
             {
                 Name = "CoopName",
                 Info = "CoopInfo",
-                Grade = new Grade
-                {
-                    NumValue = 2,
-                    Value = "Second"
-                },
+                Grade = Grade.First,
                 Address = new Address
                 {
                     City = "Varna",
@@ -147,14 +138,14 @@
             var info = "updatedInfo";
 
             await this._cooperativesService
-                .UpdateAsync(id, name, info, "First", "Sofia", "Vitosha");
+                .UpdateAsync(id, name, info, Grade.Second.ToString(), "Sofia", "Vitosha");
 
             var cooperativeFromDb = await this._dbContext.Cooperatives
                 .SingleOrDefaultAsync(x => x.Id == cooperative.Id);
 
             Assert.Equal(cooperative.Name, cooperativeFromDb.Name);
             Assert.Equal(cooperative.Info, cooperativeFromDb.Info);
-            Assert.Equal(cooperative.GradeId, cooperativeFromDb.GradeId);
+            Assert.Equal(cooperative.Grade, cooperativeFromDb.Grade);
             Assert.Equal(cooperative.AddressId, cooperativeFromDb.AddressId);
         }
 
@@ -165,11 +156,6 @@
             {
                 Name = "CoopName",
                 Info = "CoopInfo",
-                Grade = new Grade
-                {
-                    NumValue = 2,
-                    Value = "Second"
-                },
                 Address = new Address
                 {
                     City = "Varna",
@@ -193,11 +179,6 @@
             {
                 Name = "CoopName",
                 Info = "CoopInfo",
-                Grade = new Grade
-                {
-                    NumValue = 2,
-                    Value = "Second"
-                },
                 Address = new Address
                 {
                     City = "Varna",
@@ -221,11 +202,6 @@
             {
                 Name = "CoopName",
                 Info = "CoopInfo",
-                Grade = new Grade
-                {
-                    NumValue = 2,
-                    Value = "Second"
-                },
                 Address = new Address
                 {
                     City = "Varna",
@@ -323,11 +299,7 @@
                 {
                     Name = "Name1",
                     Info = "Info1",
-                    Grade = new Grade
-                    {
-                        NumValue = 1,
-                        Value = "First"
-                    },
+                    Grade = Grade.First,
                     Address = new Address
                     {
                         City = "Sofia",
@@ -338,11 +310,7 @@
                 {
                     Name = "Name2",
                     Info = "Info2",
-                    Grade = new Grade
-                    {
-                        NumValue = 1,
-                        Value = "First"
-                    },
+                    Grade = Grade.First,
                     Address = new Address
                     {
                         City = "Sofia",
@@ -353,11 +321,7 @@
                 {
                     Name = "Name3",
                     Info = "Info3",
-                    Grade = new Grade
-                    {
-                        NumValue = 2,
-                        Value = "Second"
-                    },
+                    Grade = Grade.Second,
                     Address = new Address
                     {
                         City = "Sofia",
@@ -368,11 +332,7 @@
                 {
                     Name = "Name4",
                     Info = "Info4",
-                    Grade = new Grade
-                    {
-                        NumValue = 3,
-                        Value = "Third"
-                    },
+                    Grade = Grade.Third,
                     Address = new Address
                     {
                         City = "Varna",
@@ -782,11 +742,7 @@
                 {
                     Name = "Name1",
                     Info = "Info1",
-                    Grade = new Grade
-                    {
-                        NumValue = 1,
-                        Value = "First"
-                    },
+                    Grade = Grade.First,
                     Address = new Address
                     {
                         City = "Sofia",
@@ -797,11 +753,7 @@
                 {
                     Name = "Name2",
                     Info = "Info2",
-                    Grade = new Grade
-                    {
-                        NumValue = 1,
-                        Value = "First"
-                    },
+                    Grade = Grade.First,
                     Address = new Address
                     {
                         City = "Sofia",
@@ -812,11 +764,7 @@
                 {
                     Name = "Name3",
                     Info = "Info3",
-                    Grade = new Grade
-                    {
-                        NumValue = 2,
-                        Value = "Second"
-                    },
+                    Grade = Grade.Second,
                     Address = new Address
                     {
                         City = "Sofia",
@@ -827,11 +775,7 @@
                 {
                     Name = "Name4",
                     Info = "Info4",
-                    Grade = new Grade
-                    {
-                        NumValue = 3,
-                        Value = "Third"
-                    },
+                    Grade = Grade.Third,
                     Address = new Address
                     {
                         City = "Varna",
@@ -972,7 +916,7 @@
         {
             if (grade != null)
             {
-                cooperatives = cooperatives.Where(x => x.Grade.Value == grade).ToList();
+                cooperatives = cooperatives.Where(x => x.Grade.ToString() == grade).ToList();
             }
 
             if (city != null)

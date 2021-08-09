@@ -1,7 +1,5 @@
 ﻿namespace CHE.Web.ViewModels
 {
-    using System.Collections.Generic;
-
     public class FilterViewModel
     {
         public string LevelDisplayName { get; set; }

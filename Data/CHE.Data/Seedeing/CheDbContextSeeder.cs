@@ -20,8 +20,7 @@
 
             var seeders = new List<ISeeder>
             {
-                new RolesSeeder(),
-                new GradesSeeder()
+                new RolesSeeder()
             };
 
             foreach (var seeder in seeders)

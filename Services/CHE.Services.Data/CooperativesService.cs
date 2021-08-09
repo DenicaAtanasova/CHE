@@ -15,18 +15,15 @@
     public class CooperativesService : ICooperativesService
     {
         private readonly CheDbContext _dbContext;
-        private readonly IGradesService _gradesService;
         private readonly IAddressesService _addressesService;
         private readonly IMessengersService _messengersService;
 
         public CooperativesService(
             CheDbContext dbContext,
-            IGradesService gradesService,
             IAddressesService addressesService,
             IMessengersService messengersService)
         {
             this._dbContext = dbContext;
-            this._gradesService = gradesService;
             this._addressesService = addressesService;
             this._messengersService = messengersService;
         }
@@ -49,7 +46,7 @@
                 AdminId = adminId,
                 Name = name,
                 Info = info,
-                GradeId = await this._gradesService.GetGardeIdAsync(grade),
+                Grade = Enum.Parse<Grade>(grade),
                 Schedule = new Schedule { CreatedOn = DateTime.UtcNow },
                 Messenger = new Messenger 
                 { 
@@ -91,7 +88,7 @@
 
             cooperativeToUpdate.Name = name;
             cooperativeToUpdate.Info = info;
-            cooperativeToUpdate.GradeId = await this._gradesService.GetGardeIdAsync(grade);
+            cooperativeToUpdate.Grade = Enum.Parse<Grade>(grade);
             cooperativeToUpdate.AddressId = await this._addressesService
                 .GetAddressIdAsync(city, neighbourhood);
             cooperativeToUpdate.ModifiedOn = DateTime.UtcNow;
@@ -265,7 +262,8 @@
 
             if (gradeFilter != null)
             {
-                cooperatives = cooperatives.Where(x => x.Grade.Value == gradeFilter);
+                var grade = Enum.Parse<Grade>(gradeFilter);
+                cooperatives = cooperatives.Where(x => x.Grade == grade);
             }
 
             if (cityFilter != null)

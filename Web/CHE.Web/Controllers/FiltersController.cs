@@ -4,6 +4,7 @@
     using CHE.Services.Data;
 
     using Microsoft.AspNetCore.Mvc;
+
     using System;
     using System.Collections.Generic;
     using System.Linq;
@@ -14,12 +15,10 @@
     public class FiltersController : ControllerBase
     {
         private readonly IAddressesService _addressesService;
-        private readonly IGradesService _gradesService;
 
-        public FiltersController(IAddressesService addressesService, IGradesService gradesService)
+        public FiltersController(IAddressesService addressesService)
         {
             this._addressesService = addressesService;
-            this._gradesService = gradesService;
         }
 
         [HttpGet("cities")]
@@ -31,13 +30,13 @@
             await this._addressesService.GetAllNeighbourhoodsAsync();
 
         [HttpGet("grades")]
-        public async Task<IEnumerable<string>> Grades() =>
-            await this._gradesService.GetAllAsync();
+        public IEnumerable<string> Grades() =>
+            Enum.GetValues<Grade>()
+                .Select(x => x.ToString());
 
         [HttpGet("schoolLevels")]
         public IEnumerable<string> SchoolLevels() =>
-            Enum.GetValues(typeof(SchoolLevel))
-                .Cast<SchoolLevel>()
+            Enum.GetValues<SchoolLevel>()
                 .Where(x => x.ToString() != "Unknown")
                 .Select(x => x.ToString());
     }

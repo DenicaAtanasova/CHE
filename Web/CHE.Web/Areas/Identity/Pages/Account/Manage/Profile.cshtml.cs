@@ -1,12 +1,11 @@
 namespace CHE.Web.Areas.Identity.Pages.Account.Manage
 {
     using CHE.Common;
-    using CHE.Data.Models;
     using CHE.Services.Data;
+    using CHE.Web.Infrastructure;
     using CHE.Web.InputModels.Profiles;
 
     using Microsoft.AspNetCore.Authorization;
-    using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Mvc.RazorPages;
 
@@ -15,14 +14,10 @@ namespace CHE.Web.Areas.Identity.Pages.Account.Manage
     [Authorize(Roles = GlobalConstants.TeacherRole)]
     public class ProfileModel : PageModel
     {
-        private readonly UserManager<CheUser> _userManager;
         private readonly IProfilesService _profilesService;
 
-        public ProfileModel(
-            UserManager<CheUser> userManager,
-            IProfilesService profilesService)
+        public ProfileModel(IProfilesService profilesService)
         {
-            this._userManager = userManager;
             this._profilesService = profilesService;
         }
 
@@ -34,7 +29,7 @@ namespace CHE.Web.Areas.Identity.Pages.Account.Manage
 
         public async Task<IActionResult> OnGetAsync()
         {
-            var userId = this._userManager.GetUserId(this.User);
+            var userId = this.User.GetId();
             this.Input = await this._profilesService
                 .GetByUserIdAsync<ProfileInputModel>(userId);
 
@@ -53,9 +48,8 @@ namespace CHE.Web.Areas.Identity.Pages.Account.Manage
                 return this.Page();
             }
 
-            var userId = this._userManager.GetUserId(this.User);
             await this._profilesService.UpdateAsync(
-                userId, 
+                Input.Id, 
                 Input.FirstName,
                 Input.LastName,
                 Input.Education,

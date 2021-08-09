@@ -18,7 +18,7 @@
         public void CreateMappings(IProfileExpression configuration)
         {
             configuration.CreateMap<Cooperative, CooperativeAllViewModel>()
-                .ForMember(dest => dest.Grade, opt => opt.MapFrom(src => src.Grade.Value));
+                .ForMember(dest => dest.Grade, opt => opt.MapFrom(src => src.Grade.ToString()));
         }
     }
 }

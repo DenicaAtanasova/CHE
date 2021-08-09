@@ -1,21 +1,20 @@
 ﻿namespace CHE.Web.ViewComponents
 {
+    using CHE.Data.Models;
+
     using Microsoft.AspNetCore.Mvc;
-    using System.Threading.Tasks;
-    using CHE.Services.Data;
+
+    using System;
+    using System.Linq;
 
     public class GradesListViewComponent : ViewComponent
     {
-        private readonly IGradesService _gradesService;
-
-        public GradesListViewComponent(IGradesService gradesService)
+        public IViewComponentResult Invoke(string currentGrade = null)
         {
-            _gradesService = gradesService;
-        }
-
-        public async Task<IViewComponentResult> InvokeAsync(string currentGrade = null)
-        {
-            var gradesList = await _gradesService.GetAllAsync(currentGrade);
+            var gradesList = Enum.GetValues<Grade>()
+                .Cast<Grade>()
+                .Where(x => x.ToString() != currentGrade)
+                .Select(x => x.ToString());
 
             return this.View(gradesList);
         }
