@@ -2,58 +2,60 @@
     ViewData["Title"] = "Home Page";
 }
 
-<section id="hero">
-    <div class="hero-container">
-        <div id="heroCarousel" class="carousel slide carousel-fade" data-ride="carousel">
+<cache expires-after="@TimeSpan.FromDays(30)">
+    <section id="hero">
+        <div class="hero-container">
+            <div id="heroCarousel" class="carousel slide carousel-fade" data-ride="carousel">
 
-            <ol class="carousel-indicators" id="hero-carousel-indicators"></ol>
+                <ol class="carousel-indicators" id="hero-carousel-indicators"></ol>
 
-            <div class="carousel-inner" role="listbox">
+                <div class="carousel-inner" role="listbox">
 
-                <!-- Slide 1 -->
-                <div class="carousel-item active" style="background: url(/img/slide/slide-1.jpg)">
-                    <div class="carousel-container">
-                        <div class="carousel-content">
-                            <h2 class="animated fadeInDown">Welcome to <span>CHE</span></h2>
-                            <p class="animated fadeInUp">This is the place where parents and teachers can collaborate united by the idea of better kids education quality.</p>
+                    <!-- Slide 1 -->
+                    <div class="carousel-item active" style="background: url(/img/slide/slide-1.jpg)">
+                        <div class="carousel-container">
+                            <div class="carousel-content">
+                                <h2 class="animated fadeInDown">Welcome to <span>CHE</span></h2>
+                                <p class="animated fadeInUp">This is the place where parents and teachers can collaborate united by the idea of better kids education quality.</p>
+                            </div>
                         </div>
                     </div>
-                </div>
 
-                <!-- Slide 2 -->
-                <div class="carousel-item" style="background: url(/img/slide/slide-2.jpg)">
-                    <div class="carousel-container">
-                        <div class="carousel-content">
-                            <h2 class="animated fadeInDown">Our <span>cooperatives</span></h2>
-                            <p class="animated fadeInUp">A parent cooperative is organized by a group of families with similar philosophies who hire a trained teacher to provide their children with a quality experience. The cooperative is administered and maintained by the parents. The parents assist the professional teachers on a rotating basis and participate in the educational program of all the children. Parents, children and their teachers all learn together.</p>
-                            <a asp-controller="Cooperatives" asp-action="All" class="btn-get-started animated fadeInUp">See our cooperatives</a>
+                    <!-- Slide 2 -->
+                    <div class="carousel-item" style="background: url(/img/slide/slide-2.jpg)">
+                        <div class="carousel-container">
+                            <div class="carousel-content">
+                                <h2 class="animated fadeInDown">Our <span>cooperatives</span></h2>
+                                <p class="animated fadeInUp">A parent cooperative is organized by a group of families with similar philosophies who hire a trained teacher to provide their children with a quality experience. The cooperative is administered and maintained by the parents. The parents assist the professional teachers on a rotating basis and participate in the educational program of all the children. Parents, children and their teachers all learn together.</p>
+                                <a asp-controller="Cooperatives" asp-action="All" class="btn-get-started animated fadeInUp">See our cooperatives</a>
+                            </div>
                         </div>
                     </div>
-                </div>
 
-                <!-- Slide 3 -->
-                <div class="carousel-item" style="background: url(/img/slide/slide-3.jpg)">
-                    <div class="carousel-container">
-                        <div class="carousel-content">
-                            <h2 class="animated fadeInDown">Our <span>teachers</span></h2>
-                            <p class="animated fadeInUp">Trained professionalists with the required education, skills, motivation and attitude</p>
-                            <a asp-controller="Teachers" asp-action="All" class="btn-get-started animated fadeInUp">See our teachers</a>
+                    <!-- Slide 3 -->
+                    <div class="carousel-item" style="background: url(/img/slide/slide-3.jpg)">
+                        <div class="carousel-container">
+                            <div class="carousel-content">
+                                <h2 class="animated fadeInDown">Our <span>teachers</span></h2>
+                                <p class="animated fadeInUp">Trained professionalists with the required education, skills, motivation and attitude</p>
+                                <a asp-controller="Teachers" asp-action="All" class="btn-get-started animated fadeInUp">See our teachers</a>
+                            </div>
                         </div>
                     </div>
+
                 </div>
+
+                <a class="carousel-control-prev" href="#heroCarousel" role="button" data-slide="prev">
+                    <span class="carousel-control-prev-icon icofont-rounded-left" aria-hidden="true"></span>
+                    <span class="sr-only">Previous</span>
+                </a>
+
+                <a class="carousel-control-next" href="#heroCarousel" role="button" data-slide="next">
+                    <span class="carousel-control-next-icon icofont-rounded-right" aria-hidden="true"></span>
+                    <span class="sr-only">Next</span>
+                </a>
 
             </div>
-
-            <a class="carousel-control-prev" href="#heroCarousel" role="button" data-slide="prev">
-                <span class="carousel-control-prev-icon icofont-rounded-left" aria-hidden="true"></span>
-                <span class="sr-only">Previous</span>
-            </a>
-
-            <a class="carousel-control-next" href="#heroCarousel" role="button" data-slide="next">
-                <span class="carousel-control-next-icon icofont-rounded-right" aria-hidden="true"></span>
-                <span class="sr-only">Next</span>
-            </a>
-
         </div>
-    </div>
-</section><!-- End Hero -->
+    </section><!-- End Hero -->
+</cache>

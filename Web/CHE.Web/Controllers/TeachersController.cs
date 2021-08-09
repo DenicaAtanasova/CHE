@@ -1,6 +1,5 @@
 ﻿namespace CHE.Web.Controllers
 {
-    using CHE.Data.Models;
     using CHE.Services.Data;
     using CHE.Web.Infrastructure;
     using CHE.Web.ViewModels;
@@ -8,8 +7,6 @@
 
     using Microsoft.AspNetCore.Mvc;
 
-    using System;
-    using System.Linq;
     using System.Threading.Tasks;
 
     public class TeachersController : Controller
@@ -18,16 +15,13 @@
 
         private readonly ITeachersService _teachersService;
         private readonly IReviewsService _reviewsService;
-        private readonly IAddressesService _addressesService;
 
         public TeachersController(
             ITeachersService teachersService,
-            IReviewsService reviewsService,
-            IAddressesService addressesService)
+            IReviewsService reviewsService)
         {
             this._teachersService = teachersService;
             this._reviewsService = reviewsService;
-            this._addressesService = addressesService;
         }
 
         public async Task<IActionResult> All(FilterViewModel filter, int pageIndex = 1)
@@ -45,12 +39,6 @@
                 filter.Neighbourhood);
 
             filter.LevelDisplayName = "school level";
-            filter.Levels = Enum.GetValues(typeof(SchoolLevel))
-                .Cast<SchoolLevel>()
-                .Where(x => x.ToString() != "Unknown")
-                .Select(x => x.ToString());
-            filter.Cities = await this._addressesService.GetAllCitiesAsync();
-            filter.Neighbourhoods = await this._addressesService.GetAllNeighbourhoodsAsync();
 
             var teachersList = new TeacherAllListViewModel
             {

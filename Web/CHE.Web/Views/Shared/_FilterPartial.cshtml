@@ -4,17 +4,13 @@
         <div class="form-group">
             <label asp-for="@Model.Level">Filter by @Model.LevelDisplayName</label>
             <select asp-for="@Model.Level" class="form-control">
-                @if (Model.Level== null)
+                @if (Model.Level == null)
                 {
                     <option selected disabled>-- Choose @Model.LevelDisplayName --</option>
                 }
                 else
                 {
                     <option selected>@Model.Level</option>
-                }
-                @foreach (var grade in Model.Levels.Where(x => x != Model.Level))
-                {
-                    <option>@grade</option>
                 }
             </select>
         </div>
@@ -31,10 +27,6 @@
                 {
                     <option selected>@Model.City</option>
                 }
-                @foreach (var city in Model.Cities.Where(x => x != Model.City))
-                {
-                    <option>@city</option>
-                }
             </select>
         </div>
     </div>
@@ -49,10 +41,6 @@
                 else
                 {
                     <option selected>@Model.Neighbourhood</option>
-                }
-                @foreach (var neighbourhood in Model.Neighbourhoods.Where(x => x != Model.Neighbourhood))
-                {
-                    <option>@neighbourhood</option>
                 }
             </select>
         </div>

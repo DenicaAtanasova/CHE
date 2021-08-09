@@ -53,9 +53,35 @@
         }
     </div>
 </section><!-- End Services Section -->
-@section Scripts{ 
+@section Scripts{
     <script>
         $('#header li').removeClass('active');
         $('#header li:nth-child(2)').addClass('active');
+
+        const citiesUri = '/api/filters/cities';
+        const cityElementId = 'City';
+        renderOptions(citiesUri, cityElementId);
+
+        const neighbourhoodsUri = '/api/filters/neighbourhoods';
+        const neighbourhoodsElementId = 'Neighbourhood';
+        renderOptions(neighbourhoodsUri, neighbourhoodsElementId);
+
+        const gradesUri = '/api/filters/grades';
+        const gradesElementId = 'Level';
+        renderOptions(gradesUri, gradesElementId);
+
+        function renderOptions(uri, elementId) {
+            const currentSelection = $(`#${elementId} > option[selected]`).text();
+            fetch(uri)
+                .then(response => response.json())
+                .then(data => {
+                    data
+                        .filter(x => x != currentSelection)
+                        .forEach((item, index) => {
+                            $(`#${elementId} > option:nth-child(${index + 1})`).after(`<option>${item}</option>`);
+                        });
+                })
+                .catch(err => console.log(err));
+        }
     </script>
 }

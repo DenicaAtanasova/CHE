@@ -11,11 +11,5 @@
         public string City { get; set; }
 
         public string Neighbourhood { get; set; }
-
-        public IEnumerable<string> Levels { get; set; }
-
-        public IEnumerable<string> Cities { get; set; }
-
-        public IEnumerable<string> Neighbourhoods { get; set; }
     }
 }

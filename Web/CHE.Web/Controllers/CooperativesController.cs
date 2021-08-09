@@ -5,7 +5,6 @@
     using CHE.Web.ViewModels;
     using CHE.Web.ViewModels.Cooperatives;
 
-    using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
 
     using System.Threading.Tasks;
@@ -15,19 +14,13 @@
         private const int DefaultPageSize = 6;
 
         private readonly ICooperativesService _cooperativesService;
-        private readonly IGradesService _gradesService;
-        private readonly IAddressesService _addressesService;
         private readonly IJoinRequestsService _joinRequestsService;
 
         public CooperativesController(
             ICooperativesService cooperativesService,
-            IGradesService gradesService,
-            IAddressesService addressesService,
             IJoinRequestsService joinRequestsService)
         {
             this._cooperativesService = cooperativesService;
-            this._gradesService = gradesService;
-            this._addressesService = addressesService;
             this._joinRequestsService = joinRequestsService;
         }
 
@@ -71,9 +64,6 @@
                 .CountAsync(filter.Level, filter.City, filter.Neighbourhood);
 
             filter.LevelDisplayName = "grade";
-            filter.Levels = await this._gradesService.GetAllAsync();
-            filter.Cities = await this._addressesService.GetAllCitiesAsync();
-            filter.Neighbourhoods = await this._addressesService.GetAllNeighbourhoodsAsync();
 
             var cooperativesList = new CooperativesAllListViewModel
             {
