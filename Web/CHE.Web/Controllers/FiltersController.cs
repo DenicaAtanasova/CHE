@@ -1,7 +1,7 @@
 ﻿namespace CHE.Web.Controllers
 {
     using CHE.Data.Models;
-    using CHE.Services.Data;
+    using CHE.Web.Cache;
 
     using Microsoft.AspNetCore.Mvc;
 
@@ -14,20 +14,21 @@
     [ApiController]
     public class FiltersController : ControllerBase
     {
-        private readonly IAddressesService _addressesService;
+        private readonly IAddressCache _addressCache;
 
-        public FiltersController(IAddressesService addressesService)
+        public FiltersController(IAddressCache addressCache)
         {
-            this._addressesService = addressesService;
+            _addressCache = addressCache;
         }
 
         [HttpGet("cities")]
         public async Task<IEnumerable<string>> Cities() =>
-            await this._addressesService.GetAllCitiesAsync();
+            await _addressCache.GetAsync(CacheType.City);
+
 
         [HttpGet("neighbourhoods")]
         public async Task<IEnumerable<string>> Neighbourhoods() =>
-            await this._addressesService.GetAllNeighbourhoodsAsync();
+            await _addressCache.GetAsync(CacheType.Neighbourhood);
 
         [HttpGet("grades")]
         public IEnumerable<string> Grades() =>

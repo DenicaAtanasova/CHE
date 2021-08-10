@@ -2,6 +2,7 @@ namespace CHE.Web.Areas.Identity.Pages.Account.Manage
 {
     using CHE.Common;
     using CHE.Services.Data;
+    using CHE.Web.Cache;
     using CHE.Web.Infrastructure;
     using CHE.Web.InputModels.Profiles;
 
@@ -15,10 +16,12 @@ namespace CHE.Web.Areas.Identity.Pages.Account.Manage
     public class ProfileModel : PageModel
     {
         private readonly IProfilesService _profilesService;
+        private readonly IAddressCache _addressCache;
 
-        public ProfileModel(IProfilesService profilesService)
+        public ProfileModel(IProfilesService profilesService, IAddressCache addressCache)
         {
             this._profilesService = profilesService;
+            _addressCache = addressCache;
         }
 
         [TempData]
@@ -60,6 +63,8 @@ namespace CHE.Web.Areas.Identity.Pages.Account.Manage
                 Input.Address.City,
                 Input.Address.Neighbourhood,
                 Input.Image?.OpenReadStream());
+
+            _addressCache.Set(Input.Address.City, Input.Address.Neighbourhood);
             return RedirectToPage("./Index");  
         }
     }

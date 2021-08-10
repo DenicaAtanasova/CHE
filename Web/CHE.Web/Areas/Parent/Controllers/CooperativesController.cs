@@ -2,6 +2,7 @@
 {
     using CHE.Services.Data;
     using CHE.Services.Data.Enums;
+    using CHE.Web.Cache;
     using CHE.Web.Infrastructure;
     using CHE.Web.InputModels.Cooperatives;
     using CHE.Web.ViewModels;
@@ -16,11 +17,14 @@
         private const int DefaultPageSize = 6;
 
         private readonly ICooperativesService _cooperativesService;
+        private readonly IAddressCache _addressCache;
 
         public CooperativesController(
-            ICooperativesService cooperativesService)
+            ICooperativesService cooperativesService,
+            IAddressCache addressCache)
         {
             this._cooperativesService = cooperativesService;
+            _addressCache = addressCache;
         }
 
         public IActionResult Create() => this.View();
@@ -42,6 +46,7 @@
                 model.Address.City, 
                 model.Address.Neighbourhood);
 
+            _addressCache.Set(model.Address.City, model.Address.Neighbourhood);
             return this.RedirectToAction("All", "Cooperatives", new { area = ""});
         }
 
@@ -74,6 +79,7 @@
                 model.Address.City, 
                 model.Address.Neighbourhood);
 
+            _addressCache.Set(model.Address.City, model.Address.Neighbourhood);
             return this.RedirectToAction(
                 "Details", "Cooperatives", new { area = "", id = model.Id });
         }

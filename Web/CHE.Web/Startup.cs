@@ -7,6 +7,7 @@ namespace CHE.Web
     using CHE.Services.Mapping;
     using CHE.Services.Storage;
     using CHE.Web.AuthorizationPolicies;
+    using CHE.Web.Cache;
     using CHE.Web.Hubs;
     using CHE.Web.InputModels.Cooperatives;
     using CHE.Web.ViewModels;
@@ -50,6 +51,11 @@ namespace CHE.Web
                 .AddDefaultTokenProviders()
                 .AddDefaultUI();
 
+            services.AddAuthorization(options =>
+                options.AddPolicy("CooperativeMembersRestricted", policy =>
+                    policy.Requirements.Add(new CooperativeMembersRestrictedRequirement(services)))
+                );
+
             services.AddSignalR();
 
             services.AddControllersWithViews(options =>
@@ -61,6 +67,8 @@ namespace CHE.Web
             services.AddRazorPages();
 
             services.AddSingleton(this.configuration);
+
+            services.AddMemoryCache();
 
             // Application services
             services.AddTransient<IParentsService, ParentsService>();
@@ -78,11 +86,7 @@ namespace CHE.Web
                 new CloudStorageService(this.configuration.GetConnectionString("BlobConnection")));
             services.AddTransient<IMessengersService, MessengersService>();
             services.AddTransient<IMessagesService, MessagesService>();
-
-            services.AddAuthorization(options =>
-                options.AddPolicy("CooperativeMembersRestricted", policy =>
-                    policy.Requirements.Add(new CooperativeMembersRestrictedRequirement(services)))
-                );
+            services.AddTransient<IAddressCache, AddressCache>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
