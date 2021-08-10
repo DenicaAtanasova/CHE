@@ -39,7 +39,6 @@ namespace CHE.Web
 
             services.AddIdentity<CheUser, CheRole>(options =>
             {
-                // Password settings.
                 options.Password.RequireDigit = false;
                 options.Password.RequireLowercase = false;
                 options.Password.RequireNonAlphanumeric = false;
@@ -70,7 +69,6 @@ namespace CHE.Web
 
             services.AddMemoryCache();
 
-            // Application services
             services.AddTransient<IParentsService, ParentsService>();
             services.AddTransient<ITeachersService, TeachersService>();
             services.AddTransient<ICooperativesService, CooperativesService>();
@@ -130,6 +128,26 @@ namespace CHE.Web
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapHub<MessengerHub>("/messenger");
+
+                endpoints.MapControllerRoute(
+                    name: "cooperative join requests",
+                    pattern: "Cooperatives/JoinRequests/{cooperativeId}",
+                    defaults: new { area = "Parent", controller = "JoinRequests", action = "All" });
+
+                endpoints.MapControllerRoute(
+                    name: "cooperative members",
+                    pattern: "Cooperatives/Members/{id}",
+                    defaults: new { area = "Parent", controller = "Cooperatives", action = "Members" });
+
+                endpoints.MapControllerRoute(
+                    name: "cooperative messenger",
+                    pattern: "Cooperatives/Messenger/{cooperativeId}",
+                    defaults: new { area = "Parent", controller = "Messengers", action = "Messages" });
+
+                endpoints.MapControllerRoute(
+                    name: "teacher reviews",
+                    pattern: "Teachers/Reviews/{id}",
+                    defaults: new {controller = "Reviews", action = "All" });
 
                 endpoints.MapControllerRoute(
                     name: "parentarea",
