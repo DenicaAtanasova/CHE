@@ -82,18 +82,10 @@
             return neighbourhoods;
         }
     }
-    public interface IAddressCache
-    {
-        void Set(string city, string neighbourhood);
-
-        Task<IEnumerable<string>> GetAsync(CacheType cacheType);
-
-    }
 
     public enum CacheType
     {
         City = 0,
         Neighbourhood = 1
     }
-
 }
