@@ -42,5 +42,10 @@
 </section>
 
 @section Scripts {
+    <script>
+        $('#header li').removeClass('active');
+        $('#header li:nth-child(4)').addClass('active');
+    </script>
+
     @RenderSection("Scripts", required: false)
 }
