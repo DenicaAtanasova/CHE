@@ -59,7 +59,7 @@ namespace CHE.Web.Areas.Identity.Pages.Account.Manage
                 Input.SchoolLevel,
                 Input.Address.City,
                 Input.Address.Neighbourhood,
-                Input.Image.OpenReadStream());
+                Input.Image?.OpenReadStream());
             return RedirectToPage("./Index");  
         }
     }
