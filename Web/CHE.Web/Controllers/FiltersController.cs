@@ -18,17 +18,17 @@
 
         public FiltersController(IAddressCache addressCache)
         {
-            _addressCache = addressCache;
+            this._addressCache = addressCache;
         }
 
         [HttpGet("cities")]
         public async Task<IEnumerable<string>> Cities() =>
-            await _addressCache.GetAsync(CacheType.City);
+            await this._addressCache.GetAsync(CacheType.City);
 
 
         [HttpGet("neighbourhoods")]
         public async Task<IEnumerable<string>> Neighbourhoods() =>
-            await _addressCache.GetAsync(CacheType.Neighbourhood);
+            await this._addressCache.GetAsync(CacheType.Neighbourhood);
 
         [HttpGet("grades")]
         public IEnumerable<string> Grades() =>

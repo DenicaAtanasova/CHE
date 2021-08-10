@@ -24,7 +24,7 @@
             IAddressCache addressCache)
         {
             this._cooperativesService = cooperativesService;
-            _addressCache = addressCache;
+            this._addressCache = addressCache;
         }
 
         public IActionResult Create() => this.View();
@@ -46,7 +46,7 @@
                 model.Address.City, 
                 model.Address.Neighbourhood);
 
-            _addressCache.Set(model.Address.City, model.Address.Neighbourhood);
+            this._addressCache.Set(model.Address.City, model.Address.Neighbourhood);
             return this.RedirectToAction("All", "Cooperatives", new { area = ""});
         }
 
@@ -79,7 +79,7 @@
                 model.Address.City, 
                 model.Address.Neighbourhood);
 
-            _addressCache.Set(model.Address.City, model.Address.Neighbourhood);
+            this._addressCache.Set(model.Address.City, model.Address.Neighbourhood);
             return this.RedirectToAction(
                 "Details", "Cooperatives", new { area = "", id = model.Id });
         }

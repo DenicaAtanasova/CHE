@@ -17,35 +17,35 @@
 
         public AddressCache(IMemoryCache cache, IAddressesService addressesService)
         {
-            _cache = cache;
-            _addressesService = addressesService;
+            this._cache = cache;
+            this._addressesService = addressesService;
         }
 
         public void Set(string city, string neighbourhood)
         {
-            SetCache(CitiesCacheKey, city);
-            SetCache(NeighbourhoodsCacheKey, neighbourhood);
+            this.SetCache(CitiesCacheKey, city);
+            this.SetCache(NeighbourhoodsCacheKey, neighbourhood);
         }
 
         public async Task<IEnumerable<string>> GetAsync(string cacheKey) =>
             cacheKey switch
             {
-                CitiesCacheKey => await GetCityCache(),
-                NeighbourhoodsCacheKey => await GetNeighbourhoodCache(),
+                CitiesCacheKey => await this.GetCityCache(),
+                NeighbourhoodsCacheKey => await this.GetNeighbourhoodCache(),
                 _ => null
             };
 
         public async Task<IEnumerable<string>> GetAsync(CacheType cacheType) =>
         cacheType switch
         {
-            CacheType.City => await GetCityCache(),
-            CacheType.Neighbourhood => await GetNeighbourhoodCache(),
+            CacheType.City => await this.GetCityCache(),
+            CacheType.Neighbourhood => await this.GetNeighbourhoodCache(),
             _ => null
         };
 
         private void SetCache(string cacheKey, string cacheItem)
         {
-            var cachValue = _cache.Get<IList<string>>(cacheKey);
+            var cachValue = this._cache.Get<IList<string>>(cacheKey);
 
             if (!cachValue.Contains(cacheItem))
             {

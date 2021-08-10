@@ -21,7 +21,7 @@ namespace CHE.Web.Areas.Identity.Pages.Account.Manage
         public ProfileModel(IProfilesService profilesService, IAddressCache addressCache)
         {
             this._profilesService = profilesService;
-            _addressCache = addressCache;
+            this._addressCache = addressCache;
         }
 
         [TempData]
@@ -64,7 +64,7 @@ namespace CHE.Web.Areas.Identity.Pages.Account.Manage
                 Input.Address.Neighbourhood,
                 Input.Image?.OpenReadStream());
 
-            _addressCache.Set(Input.Address.City, Input.Address.Neighbourhood);
+            this._addressCache.Set(Input.Address.City, Input.Address.Neighbourhood);
             return RedirectToPage("./Index");  
         }
     }
