@@ -1,7 +1,6 @@
 ﻿namespace CHE.Services.Data
 { 
-    using Microsoft.AspNetCore.Http;
-
+    using System.IO;
     using System.Threading.Tasks;
 
     public interface IProfilesService
@@ -21,6 +20,6 @@
             string schoolLevel,
             string city,
             string neighbourhood,
-            IFormFile imageFile);
+            Stream imageFile);
     }
 }

@@ -5,11 +5,11 @@
     using CHE.Services.Mapping;
 
     using Microsoft.EntityFrameworkCore;
-    using Microsoft.AspNetCore.Http;
 
     using System;
     using System.Linq;
     using System.Threading.Tasks;
+    using System.IO;
 
     public class ProfilesService : IProfilesService
     {
@@ -61,7 +61,7 @@
             string schoolLevel,
             string city,
             string neighbourhood,
-            IFormFile imageFile)
+            Stream imageFile)
         {
             var profileToUpdate = await this._dbContext.Profiles
                 .SingleOrDefaultAsync(x => x.Id == id);

@@ -4,10 +4,10 @@
     using CHE.Data.Models;
     using CHE.Services.Storage;
 
-    using Microsoft.AspNetCore.Http;
     using Microsoft.EntityFrameworkCore;
 
     using System;
+    using System.IO;
     using System.Linq;
     using System.Threading.Tasks;
 
@@ -43,7 +43,7 @@
             return image.Id;
         }
 
-        public async Task UpdateAsync(IFormFile imageFile, string profileId)
+        public async Task UpdateAsync(Stream imageFile, string profileId)
         {
             var currentImage = await this._dbContext.Images
                 .SingleOrDefaultAsync(x => x.ProfileId == profileId);
@@ -59,7 +59,7 @@
             }
 
             currentImage.Url = await this._cloudStorageService
-                .UploadAsync(profileId, imageFile.OpenReadStream());
+                .UploadAsync(profileId, imageFile);
             currentImage.Caption = profileId;
 
             this._dbContext.Images.Update(currentImage);

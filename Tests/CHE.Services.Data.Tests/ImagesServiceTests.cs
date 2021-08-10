@@ -64,11 +64,8 @@
             await this._dbContext.SaveChangesAsync();
 
             var spaceFileContent = new MemoryStream();
-            var spaceImageMock = new Mock<IFormFile>();
-            spaceImageMock.Setup(x => x.OpenReadStream())
-                .Returns(spaceFileContent);
 
-            await this._imagesService.UpdateAsync(spaceImageMock.Object, profileId);
+            await this._imagesService.UpdateAsync(spaceFileContent, profileId);
 
             var imageFromDb = await this._dbContext.Images
                 .SingleOrDefaultAsync(x => x.ProfileId == profileId);
