@@ -64,6 +64,8 @@
                 : endIndex;
 
             return await filteredTeachers
+                .OrderByDescending(x => x.ReviewsReceived
+                    .Sum(x => x.Rating) / (x.ReviewsReceived.Count  == 0 ? 1 : x.ReviewsReceived.Count))
                 .Skip((startIndex - 1) * count)
                 .Take(count)
                 .To<TEntity>()

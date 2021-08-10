@@ -187,6 +187,13 @@
                             City = "Varna",
                             Neighbourhood = "Levski"
                         }
+                    },
+                    ReviewsReceived = new List<Review>
+                    {
+                        new Review
+                        {
+                            Rating = 2
+                        }
                     }
                 },
                 new Teacher
@@ -198,6 +205,17 @@
                         {
                             City = "Sofia",
                             Neighbourhood = "Dianabad"
+                        }
+                    },
+                    ReviewsReceived = new List<Review>
+                    {
+                        new Review
+                        {
+                            Rating = 2
+                        },
+                        new Review
+                        {
+                            Rating = 1
                         }
                     }
                 },
@@ -230,7 +248,10 @@
             this._dbContext.Teachers.AddRange(teachersList);
             await this._dbContext.SaveChangesAsync();
 
-            return teachersList;
+            return teachersList
+                .OrderByDescending(x => x.ReviewsReceived
+                    .Sum(x => x.Rating) / (x.ReviewsReceived.Count == 0 ? 1 : x.ReviewsReceived.Count))
+                .ToList();
         }
 
         private IList<Teacher> GetFilteredCollection(
