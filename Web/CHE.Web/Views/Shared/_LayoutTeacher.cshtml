@@ -36,3 +36,9 @@
     </div>
 </section>
 <!-- End Details Section -->
+<script src="~/lib/jquery/dist/jquery.js"></script>
+<script>
+    $('#header li').removeClass('active');
+    $('#header li:nth-child(3)').addClass('active');
+</script>
+@RenderSection("Scripts", required: false)

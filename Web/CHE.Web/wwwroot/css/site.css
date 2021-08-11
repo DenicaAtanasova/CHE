@@ -333,9 +333,9 @@ div.image img {
     text-align: right;
 }
 
-    .mobile-nav-toggle i {
-        color: #e96b56;
-    }
+.mobile-nav-toggle i {
+    color: #e96b56;
+}
 
 .mobile-nav {
     position: fixed;
@@ -353,50 +353,50 @@ div.image img {
     padding: 10px 0;
 }
 
-    .mobile-nav * {
-        margin: 0;
-        padding: 0;
-        list-style: none;
-    }
+.mobile-nav * {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
 
-    .mobile-nav a {
-        display: block;
-        position: relative;
-        color: #545454;
-        padding: 10px 20px;
-        font-weight: 500;
-        outline: none;
-    }
+.mobile-nav a {
+    display: block;
+    position: relative;
+    color: #545454;
+    padding: 10px 20px;
+    font-weight: 500;
+    outline: none;
+}
 
-        .mobile-nav a:hover, .mobile-nav .active > a, .mobile-nav li:hover > a {
-            color: #e96b56;
-            text-decoration: none;
-        }
+.mobile-nav a:hover, .mobile-nav .active > a, .mobile-nav li:hover > a {
+    color: #e96b56;
+    text-decoration: none;
+}
 
-    .mobile-nav .drop-down > a:after {
-        content: "\ea99";
-        font-family: IcoFont;
-        padding-left: 10px;
-        position: absolute;
-        right: 15px;
-    }
+.mobile-nav .drop-down > a:after {
+    content: "\ea99";
+    font-family: IcoFont;
+    padding-left: 10px;
+    position: absolute;
+    right: 15px;
+}
 
-    .mobile-nav .active.drop-down > a:after {
-        content: "\eaa1";
-    }
+.mobile-nav .active.drop-down > a:after {
+    content: "\eaa1";
+}
 
-    .mobile-nav .drop-down > a {
-        padding-right: 35px;
-    }
+.mobile-nav .drop-down > a {
+    padding-right: 35px;
+}
 
-    .mobile-nav .drop-down ul {
-        display: none;
-        overflow: hidden;
-    }
+.mobile-nav .drop-down ul {
+    display: none;
+    overflow: hidden;
+}
 
-    .mobile-nav .drop-down li {
-        padding-left: 20px;
-    }
+.mobile-nav .drop-down li {
+    padding-left: 20px;
+}
 
 .mobile-nav-overly {
     width: 100%;
@@ -415,14 +415,14 @@ div.image img {
     overflow: hidden;
 }
 
-    .mobile-nav-active .mobile-nav {
-        opacity: 1;
-        visibility: visible;
-    }
+.mobile-nav-active .mobile-nav {
+    opacity: 1;
+    visibility: visible;
+}
 
-    .mobile-nav-active .mobile-nav-toggle i {
-        color: #fff;
-    }
+.mobile-nav-active .mobile-nav-toggle i {
+    color: #fff;
+}
 
 /*--------------------------------------------------------------
 # Hero Section
@@ -572,7 +572,8 @@ div.image img {
 
 @media (max-height: 768px), (max-width: 1199px) {
     .coop-layout,
-    .account-layout {
+    .account-layout,
+    .teacher-layout {
         display: flex;
         flex-direction: column-reverse;
         margin-bottom: 50px;
