@@ -184,5 +184,22 @@
                 .SingleOrDefaultAsync(x => x.SenderId == Sender.Id &&
                                            x.ReceiverId == receiver.Id);
         }
+
+        [Fact]
+        public async Task SendReviewAsync_WithNotExistingReceiver_ShouldDoNothing()
+        {
+            var receiverId = Guid.NewGuid().ToString();
+            var comment = "Comment";
+            var rating = 2;
+
+            await this._parentsService
+                .SendReviewAsync(Sender.Id, receiverId, comment, rating);
+
+            var reviewFromDb = await this._dbContext.Reviews
+                .SingleOrDefaultAsync(x => x.SenderId == Sender.Id &&
+                                           x.ReceiverId == receiverId);
+
+            Assert.Null(reviewFromDb);
+        }
     }
 }

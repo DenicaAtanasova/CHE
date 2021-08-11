@@ -1,5 +1,6 @@
 ﻿namespace CHE.Services.Data
 {
+    using CHE.Common.Extensions;
     using CHE.Data;
     using CHE.Data.Models;
 
@@ -101,12 +102,19 @@
                 .Select(x => x.Id)
                 .FirstOrDefaultAsync();
 
-            if (senderId == null || receiverId == null)
+            if (!senderId.IsValidString() || !receiverId.IsValidString())
             {
                 return;
             }
 
-            if (await this._reviewsService.ExistsAsync(senderId, receiverId))
+            if (await this._dbContext.Teachers
+                .AnyAsync(x => x.Id == receiverId))
+            {
+                return;
+            }
+
+            if (await this._reviewsService
+                .ExistsAsync(senderId, receiverId))
             {
                 return;
             }
