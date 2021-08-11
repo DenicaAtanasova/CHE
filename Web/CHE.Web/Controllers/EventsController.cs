@@ -27,7 +27,7 @@
             this._schedulesService = schedulesService;
         }
 
-        [HttpGet("{date}")]
+        [HttpGet("{date}/{scheduleId}")]
         public async Task<IActionResult> GetThreeMonthsEvents(string date, string scheduleId)
         {
             var threeMonthsEvents = await this._eventsService
@@ -73,7 +73,8 @@
             return this.RedirectToAction("Details", "Schedules", new { id = inputModel.ScheduleId});
         }
 
-        public async Task<IActionResult> Add(string currentDate, string scheduleId)
+        [HttpGet("{scheduleId}/{currentDate}")]
+        public async Task<IActionResult> Add(string scheduleId, string currentDate)
         {
             var schedule = await this._schedulesService
                 .GetByIdAsync<EventScheduleViewModel>(scheduleId);

@@ -11,6 +11,7 @@
     using static WebConstants;
 
     [Authorize]
+    [Route("/Schedule/[Action]")]
     public class SchedulesController : Controller
     {
         private readonly ISchedulesService _schedulesService;
@@ -21,7 +22,6 @@
             this._schedulesService = schedulesService;
         }
 
-        [Route("Schedule/{id}")]
         public async Task<IActionResult> Details(string id)
         {
             var schedule = await this._schedulesService
@@ -33,17 +33,24 @@
             }
 
             this.ViewData["id"] = schedule.CooperativeId;
-
-            if (schedule.CooperativeId == null)
-            {
-                this.ViewData["layout"] = AccountLayout;
-            }
-            else
-            {
-                this.ViewData["layout"] = CooperativeLayout;
-            }
+            this.ViewData["layout"] = CooperativeLayout;
 
             return View(schedule);
+        }
+
+        public async Task<IActionResult> MyDetails(string id)
+        {
+            var schedule = await this._schedulesService
+                .GetByIdAsync<ScheduleViewModel>(id);
+
+            if (schedule == null)
+            {
+                return this.NotFound();
+            }
+                
+            this.ViewData["layout"] = AccountLayout;
+
+            return View("Details", schedule);
         }
     }
 }

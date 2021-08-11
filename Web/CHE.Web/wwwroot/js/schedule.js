@@ -40,7 +40,7 @@ class CALENDAR {
         let date = calendar.active.formatted;
 
         let scheduleId = document.getElementById('schedule-id').value.trim();
-        let addUri = `/Schedule/Events/Add?currentDate=${date}&scheduleId=${scheduleId}`;
+        let addUri = `/Schedule/Events/Add/${scheduleId}/${date}`;
         let addBtn = document.getElementById('add-button');
         addBtn.setAttribute('href', addUri);
 
@@ -141,7 +141,7 @@ class CALENDAR {
 
         let scheduleId = document.getElementById('schedule-id').value.trim();
         let date = calendar.active.formatted;
-        const response = await fetch(`${uri}/GetThreeMonthsEvents/${date}?scheduleId=${scheduleId}`, {
+        const response = await fetch(`${uri}/GetThreeMonthsEvents/${date}/${scheduleId}`, {
             method: 'GET'
         });
         const events = await response.json();
