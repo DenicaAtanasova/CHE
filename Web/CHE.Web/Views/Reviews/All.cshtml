@@ -1,4 +1,4 @@
-﻿@model CHE.Web.ViewModels.Reviews.ReviewAllListViewModel
+﻿@model IEnumerable<CHE.Web.ViewModels.Reviews.ReviewAllViewModel>
 @{
     Layout = (string)this.ViewData["layout"];
     var reviewsCount = 1;
@@ -13,7 +13,7 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var review in Model.Reviews)
+        @foreach (var review in Model)
         {
         <tr>
             <th scope="row">@(reviewsCount++)</th>

@@ -101,7 +101,7 @@
                 .Select(x => x.Id)
                 .FirstOrDefaultAsync();
 
-            if (senderId == null)
+            if (senderId == null || receiverId == null)
             {
                 return;
             }

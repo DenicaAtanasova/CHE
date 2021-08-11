@@ -26,11 +26,8 @@
             ViewData["id"] = id;
             this.ViewData["layout"] = TeacherLayout;
 
-            return View(new ReviewAllListViewModel
-            {
-                Reviews = await this._reviewsService
-                .GetAllByReceiverAsync<ReviewAllViewModel>(id)
-            });
+            return View(await this._reviewsService
+                .GetAllByReceiverAsync<ReviewAllViewModel>(id));
         }
 
         [Authorize]
@@ -42,11 +39,8 @@
             ViewData["id"] = id;
             this.ViewData["layout"] = AccountLayout;
 
-            return View("All", new ReviewAllListViewModel
-            {
-                Reviews = await this._reviewsService
-                .GetAllByReceiverAsync<ReviewAllViewModel>(id)
-            });
+            return View("All", await this._reviewsService
+                .GetAllByReceiverAsync<ReviewAllViewModel>(id));
         }
     }
 }
