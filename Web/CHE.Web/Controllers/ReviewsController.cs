@@ -9,12 +9,10 @@
 
     using System.Threading.Tasks;
 
-    [Authorize]
+    using static WebConstants;
+
     public class ReviewsController : Controller
     {
-        private const string ACCOUNT_LAYOUT = "/Areas/Identity/Pages/Account/Manage/_Layout.cshtml";
-        private const string TEACHER_LAYOUT = "/Views/Shared/_LayoutTeacher.cshtml";
-
         private readonly IReviewsService _reviewsService;
 
         public ReviewsController(IReviewsService reviewsService)
@@ -22,23 +20,32 @@
             this._reviewsService = reviewsService;
         }
 
+        [HttpGet("Teachers/[Controller]/{id}")]
         public async Task<IActionResult> All(string id)
         {
-            if (id == null)
-            {
-                id = this.User.GetId();
-                this.ViewData["layout"] = ACCOUNT_LAYOUT;
-            }
-            else
-            {
-                this.ViewData["layout"] = TEACHER_LAYOUT;
-            }
-
             ViewData["id"] = id;
+            this.ViewData["layout"] = TeacherLayout;
 
             return View(new ReviewAllListViewModel
             {
-                Reviews = await this._reviewsService.GetAllByReceiverAsync<ReviewAllViewModel>(id)
+                Reviews = await this._reviewsService
+                .GetAllByReceiverAsync<ReviewAllViewModel>(id)
+            });
+        }
+
+        [Authorize]
+        [HttpGet("Identity/Account/Manage/[Controller]")]
+        public async Task<IActionResult> MyAll()
+        {
+            var id = this.User.GetId();
+
+            ViewData["id"] = id;
+            this.ViewData["layout"] = AccountLayout;
+
+            return View("All", new ReviewAllListViewModel
+            {
+                Reviews = await this._reviewsService
+                .GetAllByReceiverAsync<ReviewAllViewModel>(id)
             });
         }
     }

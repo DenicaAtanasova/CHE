@@ -8,7 +8,8 @@
 
     public class HomeController : Controller
     {
-        public IActionResult Index() => this.View();
+        public IActionResult Index() => 
+            this.View();
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error() =>

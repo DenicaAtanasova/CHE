@@ -8,12 +8,11 @@
 
     using System.Threading.Tasks;
 
+    using static WebConstants;
+
     [Authorize]
     public class SchedulesController : Controller
     {
-        private const string COOPERATIVE_LAYOUT = "/Views/Shared/_LayoutCooperative.cshtml";
-        private const string ACCOUNT_LAYOUT = "/Areas/Identity/Pages/Account/Manage/_Layout.cshtml";
-
         private readonly ISchedulesService _schedulesService;
 
         public SchedulesController(
@@ -37,11 +36,11 @@
 
             if (schedule.CooperativeId == null)
             {
-                this.ViewData["layout"] = ACCOUNT_LAYOUT;
+                this.ViewData["layout"] = AccountLayout;
             }
             else
             {
-                this.ViewData["layout"] = COOPERATIVE_LAYOUT;
+                this.ViewData["layout"] = CooperativeLayout;
             }
 
             return View(schedule);

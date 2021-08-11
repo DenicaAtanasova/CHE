@@ -145,11 +145,6 @@ namespace CHE.Web
                     defaults: new { area = "Parent", controller = "Messengers", action = "Messages" });
 
                 endpoints.MapControllerRoute(
-                    name: "teacher reviews",
-                    pattern: "Teachers/Reviews/{id}",
-                    defaults: new {controller = "Reviews", action = "All" });
-
-                endpoints.MapControllerRoute(
                     name: "parentarea",
                     pattern: "{area:exists}/{controller=home}/{action=index}/{id?}");
 
