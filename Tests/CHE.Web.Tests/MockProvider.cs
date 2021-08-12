@@ -3,6 +3,7 @@
     using CHE.Services.Data;
     using CHE.Services.Storage;
     using CHE.Web.InputModels.Reviews;
+    using CHE.Web.ViewModels.Messengers;
     using CHE.Web.ViewModels.Reviews;
     using CHE.Web.ViewModels.Teachers;
 
@@ -12,6 +13,7 @@
 
     using static CHE.Web.Tests.Data.Reviews;
     using static CHE.Web.Tests.Data.Teachers;
+    using static CHE.Web.Tests.Data.Messengers;
 
     public class MockProvider
     {
@@ -66,5 +68,20 @@
 
         public static IFileStorage CloudStorageService() =>
             new Mock<IFileStorage>().Object;
+
+        public static IMessengersService MessengersService()
+        {
+            var messengersService = new Mock<IMessengersService>();
+
+            messengersService
+                .Setup(x => x.GetAllPrivateMessengersByUserAsync<MessengerUserViewModel>(It.IsAny<string>()))
+                .ReturnsAsync(AllPrivateMessengers);
+
+            messengersService
+                .Setup(x => x.GetPrivateMessengerAsync<MessengerPrivateViewModel>(It.IsAny<string>(), "receiverId"))
+                .ReturnsAsync(CurrentMessenger);
+
+            return messengersService.Object;
+        }
     }
 }

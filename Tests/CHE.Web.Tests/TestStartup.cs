@@ -2,15 +2,11 @@
 {
     using CHE.Services.Data;
     using CHE.Services.Storage;
+
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
-    using MyTested.AspNetCore.Mvc;
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
 
+    using MyTested.AspNetCore.Mvc;
     public class TestStartup : Startup
     {
         public TestStartup(IConfiguration configuration)
@@ -26,6 +22,7 @@
             services.ReplaceTransient<IParentsService>(_ => MockProvider.ParentsService());
             services.ReplaceTransient<ITeachersService>(_ => MockProvider.TeachersService());
             services.ReplaceTransient<IFileStorage>(_ => MockProvider.CloudStorageService());
+            services.ReplaceTransient<IMessengersService>(_ => MockProvider.MessengersService());
         }
     }
 }

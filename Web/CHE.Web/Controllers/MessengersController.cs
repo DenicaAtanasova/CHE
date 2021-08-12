@@ -2,8 +2,8 @@
 {
     using CHE.Services.Data;
     using CHE.Web.Infrastructure;
-    using CHE.Web.ViewModels.Messages;
     using CHE.Web.ViewModels.Messengers;
+
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
 
@@ -21,7 +21,7 @@
         }
 
         public async Task<IActionResult> Messages(
-            string cuurentMessengerId = null,
+            string currentMessengerId = null,
             string receiverId = null)
         {
             var userId = this.User.GetId();
@@ -32,7 +32,7 @@
                 .GetAllPrivateMessengersByUserAsync<MessengerUserViewModel>(userId),
             };
 
-            if (cuurentMessengerId != null)
+            if (currentMessengerId != null)
             {
                 messenger.CurrentMessenger = await this._messengersService
                     .GetPrivateMessengerAsync<MessengerPrivateViewModel>(userId, receiverId);

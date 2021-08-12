@@ -220,7 +220,7 @@
         }
 
         [Fact]
-        public async Task CooperativesGetByIdAsyncWithIncorrectCooperativeId_ShouldReturnNull()
+        public async Task CooperativesGetByIdAsync_WithIncorrectCooperativeId_ShouldReturnNull()
         {
             this._dbContext.Cooperatives.Add(
                 new Cooperative
