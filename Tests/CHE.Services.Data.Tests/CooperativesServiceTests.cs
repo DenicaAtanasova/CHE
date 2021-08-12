@@ -196,7 +196,7 @@
         }
 
         [Fact]
-        public async Task GetByIdAsyncCooperative_ShouldReturnCorrectCooperative()
+        public async Task CooperativesGetByIdAsync_ShouldReturnCorrectCooperative()
         {
             var cooperative = new Cooperative
             {
@@ -220,7 +220,7 @@
         }
 
         [Fact]
-        public async Task GetByIdAsyncWithIncorrectCooperativeId_ShouldReturnNull()
+        public async Task CooperativesGetByIdAsyncWithIncorrectCooperativeId_ShouldReturnNull()
         {
             this._dbContext.Cooperatives.Add(
                 new Cooperative

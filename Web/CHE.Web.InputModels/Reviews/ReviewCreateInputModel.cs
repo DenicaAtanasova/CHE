@@ -18,6 +18,7 @@
         [Range(RatingMinValue, RatingMaxValue, ErrorMessage = RangeErroMessage)]
         public int Rating { get; init; }
 
+        [Required]
         public string ReceiverId { get; init; }
     }
 }

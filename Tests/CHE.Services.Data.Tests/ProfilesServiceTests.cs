@@ -36,7 +36,7 @@
         }
 
         [Fact]
-        public async Task GetByUserIdAsyncShouldReturnCorrectProfile()
+        public async Task ProfileGetByUserIdAsyncShouldReturnCorrectProfile()
         {
             var user = new CheUser();
             var profile = new Profile
@@ -57,7 +57,7 @@
         }
 
         [Fact]
-        public async Task GetByUserIdAsyncWithIncorrectId_ShouldReturnNull()
+        public async Task ProfileGetByUserIdAsyncWithIncorrectId_ShouldReturnNull()
         {
             var user = new CheUser();
             var profile = new Profile

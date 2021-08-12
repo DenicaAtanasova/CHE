@@ -28,7 +28,7 @@
                 {
                     if (Model.SentReviewId == null)
                     {
-                        <a class="btn btn-che" asp-area="Parent" asp-controller="Reviews" asp-action="Send" asp-route-teacherId="@Model.Id">Send review</a>
+                        <a class="btn btn-che" asp-area="Parent" asp-controller="Reviews" asp-action="Send" asp-route-id="@Model.Id">Send review</a>
                     }
                     <a class="btn btn-che" asp-area="Parent" asp-controller="Messengers" asp-action="SendMessenger" asp-route-receiverId="@Model.UserId">Send message</a>
                 }

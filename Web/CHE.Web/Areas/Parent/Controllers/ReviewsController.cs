@@ -1,5 +1,6 @@
 ﻿namespace CHE.Web.Areas.Parent.Controllers
 {
+    using CHE.Common.Extensions;
     using CHE.Services.Data;
     using CHE.Web.Infrastructure;
     using CHE.Web.InputModels.Reviews;
@@ -21,17 +22,22 @@
             this._reviewsService = reviewsService;
         }
 
-        public IActionResult Send(string teacherId) =>
-            this.View(new ReviewCreateInputModel { ReceiverId = teacherId });
+        public IActionResult Send(string id)
+        {
+            if (!id.IsValidString())
+            {
+                return this.NotFound();
+            }
+
+            return this.View(new ReviewCreateInputModel { ReceiverId = id});
+        }
 
         [HttpPost]
         public async Task<IActionResult> Send(ReviewCreateInputModel inputModel)
         {
             if (!this.ModelState.IsValid)
             {
-                //TODO: check why this is not working
-                //return this.View(inputModel.ReceiverId);
-                return this.RedirectToAction(nameof(Send), new { id = inputModel.ReceiverId });
+                return this.View(inputModel);
             }
 
             var userId = this.User.GetId();
@@ -41,7 +47,7 @@
                 inputModel.Comment, 
                 inputModel.Rating);
 
-            return this.RedirectToAction("All", "Teachers", new { area = "" });
+            return this.RedirectToAction("All", "Reviews", new { area = "", id = inputModel.ReceiverId });
         }
 
         public async Task<IActionResult> Update(string id)
@@ -62,12 +68,12 @@
         {
             if (!ModelState.IsValid)
             {
-                return this.View(inputModel.Id);
+                return this.View(inputModel);
             }
 
             await this._reviewsService.UpdateAsync(inputModel.Id, inputModel.Comment, inputModel.Rating);
             
-            return RedirectToAction("Details", "Teachers", new { area = "", id = inputModel.ReceiverId });
+            return RedirectToAction("All", "Reviews", new { area = "", id = inputModel.ReceiverId });
         }
 
         public async Task<IActionResult> Delete(string reviewId, string receiverId)

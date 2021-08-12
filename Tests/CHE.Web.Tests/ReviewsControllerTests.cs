@@ -26,8 +26,8 @@
 
         [Fact]
         public void AllShouldReturnViewWithCorrectReviews() =>
-            MyController<ReviewsController>
-                .Instance()
+            MyMvc
+                .Controller<ReviewsController>()
                 .WithDependencies(
                     MockProvider.ReviewsService())
                 .Calling(c => c.All("receiverId"))
@@ -42,8 +42,8 @@
                 .To<ReviewsController>(c => c.MyAll())
                 .Which()
                 .ShouldHave()
-                .ActionAttributes(attribute => attribute
-                    .RestrictingForAuthorizedRequests())
+                .ActionAttributes(attribute => 
+                    attribute.RestrictingForAuthorizedRequests())
                 .AndAlso()
                 .ShouldReturn()
                 .View(view => view
@@ -52,8 +52,8 @@
 
         [Fact]
         public void MyAllShouldReturnViewWithCorrectReviews() =>
-            MyController<ReviewsController>
-                .Instance()
+            MyMvc
+                .Controller<ReviewsController>()
                 .WithDependencies(
                     MockProvider.ReviewsService())
                 .Calling(c => c.MyAll())
