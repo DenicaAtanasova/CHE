@@ -4,10 +4,7 @@
     using CHE.Data.Models;
     using CHE.Services.Data.Tests.Mocks;
 
-    using Microsoft.AspNetCore.Http;
     using Microsoft.EntityFrameworkCore;
-
-    using Moq;
 
     using System;
     using System.IO;

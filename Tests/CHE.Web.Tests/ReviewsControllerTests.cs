@@ -28,8 +28,6 @@
         public void AllShouldReturnViewWithCorrectReviews() =>
             MyMvc
                 .Controller<ReviewsController>()
-                .WithDependencies(
-                    MockProvider.ReviewsService())
                 .Calling(c => c.All("receiverId"))
                 .ShouldReturn()
                 .View(view => view.WithModel(AllRceiverReviews));
@@ -54,8 +52,6 @@
         public void MyAllShouldReturnViewWithCorrectReviews() =>
             MyMvc
                 .Controller<ReviewsController>()
-                .WithDependencies(
-                    MockProvider.ReviewsService())
                 .Calling(c => c.MyAll())
                 .ShouldReturn()
                 .View(view => view

@@ -3,7 +3,6 @@
     using CHE.Web.InputModels.Reviews;
     using CHE.Web.ViewModels.Reviews;
 
-    using System;
     using System.Collections.Generic;
 
     public class Reviews
@@ -24,6 +23,5 @@
                 Rating = 4,
                 ReceiverId = "review id"
             };
-
     }
 }

@@ -1,12 +1,17 @@
 ﻿namespace CHE.Web.Tests
 {
     using CHE.Services.Data;
+    using CHE.Services.Storage;
     using CHE.Web.InputModels.Reviews;
     using CHE.Web.ViewModels.Reviews;
+    using CHE.Web.ViewModels.Teachers;
 
     using Moq;
 
+    using System.Linq;
+
     using static CHE.Web.Tests.Data.Reviews;
+    using static CHE.Web.Tests.Data.Teachers;
 
     public class MockProvider
     {
@@ -14,10 +19,12 @@
         {
             var reviewsService = new Mock<IReviewsService>();
 
-            reviewsService.Setup(x => x.GetAllByReceiverAsync<ReviewAllViewModel>(It.IsAny<string>()))
+            reviewsService
+                .Setup(x => x.GetAllByReceiverAsync<ReviewAllViewModel>(It.IsAny<string>()))
                 .ReturnsAsync(AllRceiverReviews);
 
-            reviewsService.Setup(x => x.GetByIdAsync<ReviewUpdateInputModel>(It.IsAny<string>()))
+            reviewsService
+                .Setup(x => x.GetByIdAsync<ReviewUpdateInputModel>("id"))
                 .ReturnsAsync(ReviewToUpdate);
 
             return reviewsService.Object;
@@ -29,5 +36,35 @@
 
             return parentsService.Object;
         }
+
+        public static ITeachersService TeachersService()
+        {
+            var teachersService = new Mock<ITeachersService>();
+
+            teachersService
+                .Setup(x => x.GetAllAsync<TeacherAllViewModel>(
+                    It.IsAny<int>(),
+                    It.IsAny<int>(), 
+                    It.IsAny<string>(),
+                    It.IsAny<string>(),
+                    It.IsAny<string>()))
+                .ReturnsAsync(AllTeachers);
+
+            teachersService
+                .Setup(x => x.CountAsync(
+                    It.IsAny<string>(),
+                    It.IsAny<string>(),
+                    It.IsAny<string>()))
+                .ReturnsAsync(AllTeachers.Count());
+
+            teachersService
+                .Setup(x => x.GetByIdAsync<TeacherDetailsViewModel>("id"))
+                .ReturnsAsync(DetailsTeacher);
+
+            return teachersService.Object;
+        }
+
+        public static IFileStorage CloudStorageService() =>
+            new Mock<IFileStorage>().Object;
     }
 }

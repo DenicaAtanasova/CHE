@@ -5,8 +5,6 @@
 
     using MyTested.AspNetCore.Mvc;
 
-    using System;
-
     using Xunit;
 
     using static CHE.Web.Tests.Data.Reviews;
@@ -67,8 +65,7 @@
         }
 
         [Fact]
-        public void SenMethodPostWithInvalidStateShouldReturnSameView()
-        {
+        public void SenMethodPostWithInvalidStateShouldReturnSameView() =>
             MyMvc
                 .Controller<ReviewsController>()
                 .Calling(c => c.Send(new ReviewCreateInputModel
@@ -82,7 +79,6 @@
                 .ShouldReturn()
                 .View(view =>
                     view.WithModelOfType<ReviewCreateInputModel>());
-        }
 
         [Fact]
         public void UpdateMethodGetShouldReturnViewWithCorrectViewModel() =>
@@ -93,9 +89,6 @@
                    .WithUser(user => user.InRole("Parent")))
                .To<ReviewsController>(c => c.Update("id"))
                .Which()
-               .WithDependencies(
-                   MockProvider.ParentsService(), 
-                   MockProvider.ReviewsService())
                .ShouldReturn()
                .View(view =>
                    view.WithModel(ReviewToUpdate));
@@ -141,8 +134,7 @@
         }
 
         [Fact]
-        public void UpdateMethodPostWithInvalidStateShouldReturnSameView()
-        {
+        public void UpdateMethodPostWithInvalidStateShouldReturnSameView() =>
             MyMvc
                 .Controller<ReviewsController>()
                 .Calling(c => c.Update(new ReviewUpdateInputModel
@@ -155,12 +147,12 @@
                 .ShouldReturn()
                 .View(view =>
                     view.WithModelOfType<ReviewUpdateInputModel>());
-        }
 
         [Fact]
         public void DeleteShouldRedirect()
         {
             var receiverId = "receiverId";
+
             MyMvc
                 .Controller<ReviewsController>()
                 .Calling(c => c.Delete("reviewId", receiverId))

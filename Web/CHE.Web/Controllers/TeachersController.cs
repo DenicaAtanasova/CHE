@@ -25,7 +25,11 @@
             this._reviewsService = reviewsService;
         }
 
-        public async Task<IActionResult> All(string level, string city, string neighbourhood, int pageIndex = 1)
+        public async Task<IActionResult> All(
+            string level, 
+            string city, 
+            string neighbourhood, 
+            int pageIndex = 1)
         {
             var teachers = await this._teachersService.GetAllAsync<TeacherAllViewModel>(
                 pageIndex, 
