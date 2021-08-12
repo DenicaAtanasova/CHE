@@ -36,7 +36,7 @@
                 .CreateAsync(messengerId, senderName, text);
 
             var message = await this._messagesService
-                .GetById<MessageViewModel>(messageId);
+                .GetByIdAsync<MessageViewModel>(messageId);
 
             await this.Clients.User(receiverId)
                 .SendAsync("NewMessage", message, receiverId);
@@ -60,7 +60,7 @@
                 .CreateAsync(messengerId, senderName, text);
             
             var message = await this._messagesService
-                .GetById<MessageViewModel>(messageId);
+                .GetByIdAsync<MessageViewModel>(messageId);
 
             var connectionId = this.Context.ConnectionId;
 

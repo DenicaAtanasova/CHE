@@ -38,7 +38,7 @@
             return currentMessage.Id;
         }
 
-        public async Task<TEntity> GetById<TEntity>(string id) =>
+        public async Task<TEntity> GetByIdAsync<TEntity>(string id) =>
             await this._dbContext.Messages
             .Where(x => x.Id == id)
             .To<TEntity>()

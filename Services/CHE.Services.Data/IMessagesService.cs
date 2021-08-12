@@ -6,6 +6,6 @@
     {
         Task<string> CreateAsync(string messengerId, string senderName, string message);
 
-        Task<TEntity> GetById<TEntity>(string id);
+        Task<TEntity> GetByIdAsync<TEntity>(string id);
     }
 }
