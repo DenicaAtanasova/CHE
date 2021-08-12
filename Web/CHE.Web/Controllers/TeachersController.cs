@@ -7,12 +7,13 @@
 
     using Microsoft.AspNetCore.Mvc;
 
+    using System.Linq;
     using System.Threading.Tasks;
+
+    using static WebConstants;
 
     public class TeachersController : Controller
     {
-        private const int DefaultPageSize = 6;
-
         private readonly ITeachersService _teachersService;
         private readonly IReviewsService _reviewsService;
 
@@ -24,20 +25,20 @@
             this._reviewsService = reviewsService;
         }
 
-        public async Task<IActionResult> All(FilterViewModel filter, int pageIndex = 1)
+        public async Task<IActionResult> All(string level, string city, string neighbourhood, int pageIndex = 1)
         {
             var teachers = await this._teachersService.GetAllAsync<TeacherAllViewModel>(
                 pageIndex, 
-                DefaultPageSize, 
-                filter.Level, 
-                filter.City, 
-                filter.Neighbourhood);
+                DefaultPageSize,
+                level,
+                city,
+                neighbourhood);
 
             var count = 0;
-            if (teachers != null)
+            if (teachers != null && teachers.Count() >= DefaultPageSize)
             {
                 count = await this._teachersService
-                    .CountAsync(filter.Level, filter.City, filter.Neighbourhood);
+                    .CountAsync(level, city, neighbourhood);
             }            
 
             TempData["levelDisplayName"] = "school level";
@@ -46,7 +47,12 @@
             {
                 Teachers = PaginatedList<TeacherAllViewModel>
                  .Create(teachers, count, pageIndex, DefaultPageSize),
-                Filter = filter
+                Filter = new FilterViewModel
+                {
+                    Level = level,
+                    City = city,
+                    Neighbourhood = neighbourhood
+                }
             };
 
             return View(teachersList);

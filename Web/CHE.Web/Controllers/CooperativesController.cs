@@ -7,12 +7,13 @@
 
     using Microsoft.AspNetCore.Mvc;
 
+    using System.Linq;
     using System.Threading.Tasks;
+
+    using static WebConstants;
 
     public class CooperativesController : Controller
     {
-        private const int DefaultPageSize = 6;
-
         private readonly ICooperativesService _cooperativesService;
         private readonly IJoinRequestsService _joinRequestsService;
 
@@ -50,21 +51,21 @@
             return this.View(currentCooperative);
         }
 
-        public async Task<IActionResult> All(FilterViewModel filter, int pageIndex = 1)
+        public async Task<IActionResult> All(string level, string city, string neighbourhood, int pageIndex = 1)
         {
             var cooperatives = await this._cooperativesService
                     .GetAllAsync<CooperativeAllViewModel>(
                 pageIndex, 
                 DefaultPageSize, 
-                filter.Level, 
-                filter.City, 
-                filter.Neighbourhood);
+                level, 
+                city,
+                neighbourhood);
 
             var count = 0;
-            if (cooperatives != null)
+            if (cooperatives != null && cooperatives.Count() >= DefaultPageSize)
             {
                 count = await this._cooperativesService
-                    .CountAsync(filter.Level, filter.City, filter.Neighbourhood);
+                    .CountAsync(level, city, neighbourhood);
             }
 
             TempData["levelDisplayName"] = "grade";
@@ -73,7 +74,12 @@
             {
                 Cooperatives = PaginatedList<CooperativeAllViewModel>
                     .Create(cooperatives, count, pageIndex, DefaultPageSize),
-                Filter = filter
+                Filter = new FilterViewModel
+                {
+                    Level = level,
+                    City = city,
+                    Neighbourhood = neighbourhood
+                }
             };
 
             return this.View(cooperativesList);

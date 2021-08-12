@@ -44,11 +44,12 @@
         else
         {
             <partial name="_CooperativesListPartial" model="Model.Cooperatives" />
+
             <vc:pagination controller="Cooperatives"
-                           page-index="@Model.Cooperatives.PageIndex"
-                           has-previous-page="@Model.Cooperatives.HasPreviousPage"
-                           has-next-page="@Model.Cooperatives.HasNextPage"
-                           filter="@Model.Filter">
+                page-index="@Model.Cooperatives.PageIndex"
+                has-previous-page="@Model.Cooperatives.HasPreviousPage"
+                has-next-page="@Model.Cooperatives.HasNextPage"
+                filter="@Model.Filter">
             </vc:pagination>
         }
     </div>
@@ -57,19 +58,15 @@
     <script>
         $('#header li').removeClass('active');
         $('#header li:nth-child(2)').addClass('active');
-
         const citiesUri = '/api/filters/cities';
         const cityElementId = 'City';
         renderOptions(citiesUri, cityElementId);
-
         const neighbourhoodsUri = '/api/filters/neighbourhoods';
         const neighbourhoodsElementId = 'Neighbourhood';
         renderOptions(neighbourhoodsUri, neighbourhoodsElementId);
-
         const gradesUri = '/api/filters/grades';
         const gradesElementId = 'Level';
         renderOptions(gradesUri, gradesElementId);
-
         function renderOptions(uri, elementId) {
             const currentSelection = $(`#${elementId} > option[selected]`).text();
             fetch(uri)

@@ -57,13 +57,13 @@
                     </div>
                 }
             </div>
+            <vc:pagination controller="Teachers"
+                           page-index="@Model.Teachers.PageIndex"
+                           has-previous-page="@Model.Teachers.HasPreviousPage"
+                           has-next-page="@Model.Teachers.HasNextPage"
+                           filter="@Model.Filter">
+            </vc:pagination>
         }
-        <vc:pagination controller="Teachers"
-                       page-index="@Model.Teachers.PageIndex"
-                       has-previous-page="@Model.Teachers.HasPreviousPage"
-                       has-next-page="@Model.Teachers.HasNextPage"
-                       filter="@Model.Filter">
-        </vc:pagination>
     </div>
 </section><!-- End Services Section -->
 @section Scripts{

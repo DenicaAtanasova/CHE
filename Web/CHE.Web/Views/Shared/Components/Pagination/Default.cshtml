@@ -1,16 +1,22 @@
 ﻿@model CHE.Web.ViewModels.PaginationViewModel
-@{ 
+@{
     var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
     var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+    var data = new Dictionary<string, string>
+    {
+        { "Level", Model.Filter.Level },
+        { "city", Model.Filter.City },
+        { "neighbourhood", Model.Filter.Neighbourhood}
+    };
 }
 <div class="row paging justify-content-center">
     <nav aria-label="Page navigation">
         <ul class="pagination">
             <li class="page-item">
                 <a class="btn btn-default @prevDisabled"
-                        asp-controller="@Model.Controller" asp-action="All"
-                        asp-route-filter="@Model.Filter"
-                        asp-route-pageIndex="@(Model.PageIndex - 1)">
+                   asp-controller="@Model.Controller" asp-action="All"
+                   asp-all-route-data="@data"
+                   asp-route-pageIndex="@(Model.PageIndex - 1)">
                     Previous
                 </a>
             </li>
@@ -18,9 +24,9 @@
             {
                 <li class="page-item">
                     <a class="btn page-link"
-                        asp-controller="@Model.Controller" asp-action="All"
-                        asp-route-filter="@Model.Filter"
-                        asp-route-pageIndex="@(Model.PageIndex - 1)">
+                       asp-controller="@Model.Controller" asp-action="All"
+                       asp-all-route-data="@data"
+                       asp-route-pageIndex="@(Model.PageIndex - 1)">
                         @(Model.PageIndex - 1)
                     </a>
                 </li>
@@ -32,20 +38,20 @@
             </li>
             @if (Model.HasNextPage)
             {
-            <li class="page-item">
-                <a class="btn page-link"
-                    asp-controller="@Model.Controller" asp-action="All"
-                    asp-route-filter="@Model.Filter"
-                    asp-route-pageIndex="@(Model.PageIndex + 1)">
-                    @(Model.PageIndex + 1)
-                </a>
-            </li>
+                <li class="page-item">
+                    <a class="btn page-link"
+                       asp-controller="@Model.Controller" asp-action="All"
+                       asp-all-route-data="@data"
+                       asp-route-pageIndex="@(Model.PageIndex + 1)">
+                        @(Model.PageIndex + 1)
+                    </a>
+                </li>
             }
             <li class="page-item">
                 <a class="btn btn-default @nextDisabled"
-                        asp-controller="@Model.Controller" asp-action="All"
-                        asp-route-filter="@Model.Filter"
-                        asp-route-pageIndex="@(Model.PageIndex + 1)">
+                   asp-controller="@Model.Controller" asp-action="All"
+                   asp-all-route-data="@data"
+                   asp-route-pageIndex="@(Model.PageIndex + 1)">
                     Next
                 </a>
             </li>
