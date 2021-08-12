@@ -33,12 +33,14 @@
                 filter.City, 
                 filter.Neighbourhood);
 
-            var count = await this._teachersService.CountAsync(
-                filter.Level, 
-                filter.City, 
-                filter.Neighbourhood);
+            var count = 0;
+            if (teachers != null)
+            {
+                count = await this._teachersService
+                    .CountAsync(filter.Level, filter.City, filter.Neighbourhood);
+            }            
 
-            filter.LevelDisplayName = "school level";
+            TempData["levelDisplayName"] = "school level";
 
             var teachersList = new TeacherAllListViewModel
             {

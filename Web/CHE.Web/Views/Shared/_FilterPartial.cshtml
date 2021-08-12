@@ -1,12 +1,15 @@
 ﻿@model CHE.Web.ViewModels.FilterViewModel
+@{ 
+    var levelDisplayName = (string)TempData["levelDisplayName"];
+}
 <div class="row">
     <div class="col-lg-4">
         <div class="form-group">
-            <label asp-for="@Model.Level">Filter by @Model.LevelDisplayName</label>
+            <label asp-for="@Model.Level">Filter by @levelDisplayName</label>
             <select asp-for="@Model.Level" class="form-control">
                 @if (Model.Level == null)
                 {
-                    <option selected disabled>-- Choose @Model.LevelDisplayName --</option>
+                    <option selected disabled>-- Choose @levelDisplayName --</option>
                 }
                 else
                 {

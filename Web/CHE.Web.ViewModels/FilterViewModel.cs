@@ -2,8 +2,6 @@
 {
     public class FilterViewModel
     {
-        public string LevelDisplayName { get; set; }
-
         public string Level { get; set; }
 
         public string City { get; set; }

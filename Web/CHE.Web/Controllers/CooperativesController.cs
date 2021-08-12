@@ -60,10 +60,14 @@
                 filter.City, 
                 filter.Neighbourhood);
 
-            var count = await this._cooperativesService
-                .CountAsync(filter.Level, filter.City, filter.Neighbourhood);
+            var count = 0;
+            if (cooperatives != null)
+            {
+                count = await this._cooperativesService
+                    .CountAsync(filter.Level, filter.City, filter.Neighbourhood);
+            }
 
-            filter.LevelDisplayName = "grade";
+            TempData["levelDisplayName"] = "grade";
 
             var cooperativesList = new CooperativesAllListViewModel
             {
