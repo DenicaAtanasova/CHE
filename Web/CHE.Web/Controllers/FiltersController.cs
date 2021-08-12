@@ -1,13 +1,11 @@
 ﻿namespace CHE.Web.Controllers
 {
-    using CHE.Data.Models;
+    using CHE.Services.Data;
     using CHE.Web.Cache;
 
     using Microsoft.AspNetCore.Mvc;
 
-    using System;
     using System.Collections.Generic;
-    using System.Linq;
     using System.Threading.Tasks;
 
     [Route("api/[controller]")]
@@ -15,10 +13,17 @@
     public class FiltersController : ControllerBase
     {
         private readonly IAddressCache _addressCache;
+        private readonly IGradesService _gradesService;
+        private readonly ISchoolLevelsService _schoolLevelsService;
 
-        public FiltersController(IAddressCache addressCache)
+        public FiltersController(
+            IAddressCache addressCache,
+            IGradesService gradesService,
+            ISchoolLevelsService schoolLevelsService)
         {
             this._addressCache = addressCache;
+            _gradesService = gradesService;
+            _schoolLevelsService = schoolLevelsService;
         }
 
         [HttpGet("cities")]
@@ -32,13 +37,10 @@
 
         [HttpGet("grades")]
         public IEnumerable<string> Grades() =>
-            Enum.GetValues<Grade>()
-                .Select(x => x.ToString());
+            this._gradesService.GetAll();
 
         [HttpGet("schoolLevels")]
         public IEnumerable<string> SchoolLevels() =>
-            Enum.GetValues<SchoolLevel>()
-                .Where(x => x.ToString() != "Unknown")
-                .Select(x => x.ToString());
+            this._schoolLevelsService.GetAll();            
     }
 }

@@ -84,6 +84,8 @@ namespace CHE.Web
                 new CloudStorageService(this.configuration.GetConnectionString("BlobConnection")));
             services.AddTransient<IMessengersService, MessengersService>();
             services.AddTransient<IMessagesService, MessagesService>();
+            services.AddTransient<IGradesService, GradesService>();
+            services.AddTransient<ISchoolLevelsService, SchoolLevelsService>();
             services.AddTransient<IAddressCache, AddressCache>();
         }
 
