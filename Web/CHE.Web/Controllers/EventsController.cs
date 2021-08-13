@@ -1,5 +1,6 @@
 ﻿namespace CHE.Web.Controllers
 {
+    using CHE.Common.Extensions;
     using CHE.Services.Data;
     using CHE.Web.ViewModels.Events;
     using CHE.Web.InputModels.Events;
@@ -37,13 +38,19 @@
                 .GroupBy(x => x.StartDate.Date)
                 .ToDictionary(x => x.Key.Date.ToString("d-M-yyyy"), x => x.ToArray());
 
-            return this.Ok(groupedEvents);
+            return this.Json(groupedEvents);
         }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(string id)
         {
+            if (!id.IsValidString())
+            {
+                return NotFound();
+            }
+
             await this._eventsService.DeleteAsync(id);
+
             return this.NoContent();
         }
 
@@ -53,6 +60,11 @@
             var currentEvent = await this._eventsService
                 .GetByIdAsync<EventUpdateInputModel>(id);
 
+            if (currentEvent == null)
+            {
+                return NotFound();
+            }
+
             return this.View(currentEvent);
         }
 
@@ -61,7 +73,7 @@
         {
             if (!ModelState.IsValid)
             {
-                return this.BadRequest();
+                return this.View(id, inputModel);
             }
 
             await this._eventsService.UpdateAsync(
@@ -80,6 +92,11 @@
             var schedule = await this._schedulesService
                 .GetByIdAsync<EventScheduleViewModel>(scheduleId);
 
+            if (schedule == null)
+            {
+                return NotFound();
+            }
+
             var date = DateTime.ParseExact(currentDate, "d-M-yyyy", CultureInfo.InvariantCulture);
             return this.View(new EventCreateInputModel
             {
@@ -93,9 +110,17 @@
         [HttpPost]
         public async Task<IActionResult> Add(EventCreateInputModel inputModel)
         {
+            var schedule = await this._schedulesService
+                .GetByIdAsync<EventScheduleViewModel>(inputModel.ScheduleId);
+
+            if (schedule == null)
+            {
+                return NotFound();
+            }
+
             if (!ModelState.IsValid)
             {
-                return this.BadRequest();
+                return this.View(inputModel);
             }
 
             await this._eventsService.CreateAsync(

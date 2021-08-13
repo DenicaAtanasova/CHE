@@ -2,12 +2,14 @@
 {
     using CHE.Services.Data;
     using CHE.Services.Storage;
+
     using CHE.Web.InputModels.Reviews;
     using CHE.Web.ViewModels.Messengers;
     using CHE.Web.ViewModels.Reviews;
     using CHE.Web.ViewModels.Teachers;
     using CHE.Web.ViewModels.Cooperatives;
     using CHE.Web.ViewModels.Schedules;
+    using CHE.Web.InputModels.Events;
 
     using Moq;
 
@@ -18,6 +20,8 @@
     using static CHE.Web.Tests.Data.Messengers;
     using static CHE.Web.Tests.Data.Cooperatives;
     using static CHE.Web.Tests.Data.Schedules;
+    using static CHE.Web.Tests.Data.Events;
+    using CHE.Web.ViewModels.Events;
 
     public class MockProvider
     {
@@ -142,7 +146,22 @@
                 .Setup(x => x.GetByIdAsync<ScheduleViewModel>("id"))
                 .ReturnsAsync(DetailsSchedule);
 
+            schedulesService
+               .Setup(x => x.GetByIdAsync<EventScheduleViewModel>("id"))
+               .ReturnsAsync(EventSchedule);
+
             return schedulesService.Object;
+        }
+
+        public static IEventsService EventsService()
+        {
+            var eventsService = new Mock<IEventsService>();
+
+            eventsService
+                .Setup(x => x.GetByIdAsync<EventUpdateInputModel>("id"))
+                .ReturnsAsync(UpdateEvent);
+
+            return eventsService.Object;
         }
     }
 }

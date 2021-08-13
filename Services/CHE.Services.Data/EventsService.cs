@@ -28,7 +28,9 @@
                 .To<TEntity>()
                 .SingleOrDefaultAsync();
 
-        public async Task<IEnumerable<TEntity>> GetThreeMonthsEventsAsync<TEntity>(string scheduleId, string date)
+        public async Task<IEnumerable<TEntity>> GetThreeMonthsEventsAsync<TEntity>(
+            string scheduleId, 
+            string date)
         {
             var currentDate = DateTime.ParseExact(date, "d-M-yyyy", CultureInfo.InvariantCulture);
             var prevMonth = currentDate.Month - 2;

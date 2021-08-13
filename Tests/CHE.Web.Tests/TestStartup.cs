@@ -26,6 +26,7 @@
             services.ReplaceTransient<IJoinRequestsService>(_ => MockProvider.JoinRequestsService());
             services.ReplaceTransient<ICooperativesService>(_ => MockProvider.CooperativesService());
             services.ReplaceTransient<ISchedulesService>(_ => MockProvider.SchedulesService());
+            services.ReplaceTransient<IEventsService>(_ => MockProvider.EventsService());
         }
     }
 }
