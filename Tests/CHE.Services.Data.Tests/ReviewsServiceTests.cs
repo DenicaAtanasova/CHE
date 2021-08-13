@@ -157,7 +157,7 @@
         }
 
         [Fact]
-        public async Task ReviewGetByIdAsyncShouldReturnCorrectReview()
+        public async Task GetByIdAsync_ShouldReturnCorrectReview()
         {
             var review = new Review
             {
