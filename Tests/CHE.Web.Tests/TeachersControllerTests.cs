@@ -14,9 +14,16 @@
         public void AllShouldReturnViewWithCorrectTeachers() =>
             MyMvc
                 .Pipeline()
-                .ShouldMap("/Teachers/All?pageIndex=1")
-                .To<TeachersController>(c => c.All(null, null, null, 1))
+                .ShouldMap(request => request
+                    .WithPath("/Teachers/All")
+                    .WithQueryString("?pageIndex=1&level=First&City=Sofia&Neighbourhood=Vitosha"))
+                .To<TeachersController>(c => 
+                    c.All(TeachersFilter.Level, TeachersFilter.City, TeachersFilter.Neighbourhood, 1))
                 .Which()
+                .ShouldHave()
+                .TempData(data => 
+                    data.ContainingEntry("levelDisplayName", "school level"))
+                .AndAlso()
                 .ShouldReturn()
                 .View(view => view
                     .WithModel(TeachersList));

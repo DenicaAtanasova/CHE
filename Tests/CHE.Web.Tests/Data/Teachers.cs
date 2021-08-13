@@ -23,7 +23,15 @@
             {
                 Teachers = PaginatedList<TeacherAllViewModel>
                     .Create(AllTeachers, AllTeachers.Count(), 1, DefaultPageSize),
-                Filter = new FilterViewModel()
+                Filter = TeachersFilter
+            };
+
+        public static FilterViewModel TeachersFilter =>
+            new FilterViewModel
+            {
+                Level = "First",
+                City = "Sofia",
+                Neighbourhood = "Vitosha"
             };
 
         public static TeacherDetailsViewModel DetailsTeacher =>

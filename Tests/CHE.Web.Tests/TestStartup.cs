@@ -23,6 +23,8 @@
             services.ReplaceTransient<ITeachersService>(_ => MockProvider.TeachersService());
             services.ReplaceTransient<IFileStorage>(_ => MockProvider.CloudStorageService());
             services.ReplaceTransient<IMessengersService>(_ => MockProvider.MessengersService());
+            services.ReplaceTransient<IJoinRequestsService>(_ => MockProvider.JoinRequestsService());
+            services.ReplaceTransient<ICooperativesService>(_ => MockProvider.CooperativesService());
         }
     }
 }

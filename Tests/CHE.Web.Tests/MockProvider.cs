@@ -6,6 +6,7 @@
     using CHE.Web.ViewModels.Messengers;
     using CHE.Web.ViewModels.Reviews;
     using CHE.Web.ViewModels.Teachers;
+    using CHE.Web.ViewModels.Cooperatives;
 
     using Moq;
 
@@ -14,6 +15,7 @@
     using static CHE.Web.Tests.Data.Reviews;
     using static CHE.Web.Tests.Data.Teachers;
     using static CHE.Web.Tests.Data.Messengers;
+    using static CHE.Web.Tests.Data.Cooperatives;
 
     public class MockProvider
     {
@@ -74,7 +76,7 @@
             var messengersService = new Mock<IMessengersService>();
 
             messengersService
-                .Setup(x => x.GetAllPrivateMessengersByUserAsync<MessengerUserViewModel>(It.IsAny<string>()))
+                .Setup(x => x.GetAllPrivateContactsByUserAsync<MessengerUserViewModel>(It.IsAny<string>()))
                 .ReturnsAsync(AllPrivateMessengers);
 
             messengersService
@@ -82,6 +84,52 @@
                 .ReturnsAsync(CurrentMessenger);
 
             return messengersService.Object;
+        }
+
+        public static IJoinRequestsService JoinRequestsService()
+        {
+            var joinRequestsService = new Mock<IJoinRequestsService>();
+
+            joinRequestsService
+                .Setup(x => x.GetPendindRequestIdAsync(It.IsAny<string>(), "id"))
+                .ReturnsAsync("requestId");
+
+            return joinRequestsService.Object;
+        }
+
+        public static ICooperativesService CooperativesService()
+        {
+            var cooperativesService = new Mock<ICooperativesService>();
+
+            cooperativesService
+                .Setup(x => x.GetByIdAsync<CooperativeDetailsViewModel>("id"))
+                .ReturnsAsync(DetailsCooperative);
+
+            cooperativesService
+                .Setup(x => x.CheckIfAdminAsync(It.IsAny<string>(), "id"))
+                .ReturnsAsync(false);
+
+            cooperativesService
+                .Setup(x => x.CheckIfMemberAsync(It.IsAny<string>(), "id"))
+                .ReturnsAsync(false);
+
+            cooperativesService
+                .Setup(x => x.GetAllAsync<CooperativeAllViewModel>(
+                    It.IsAny<int>(),
+                    It.IsAny<int>(),
+                    It.IsAny<string>(),
+                    It.IsAny<string>(),
+                    It.IsAny<string>()))
+                .ReturnsAsync(AllCooperatives);
+
+            cooperativesService
+                .Setup(x => x.CountAsync(
+                    It.IsAny<string>(),
+                    It.IsAny<string>(),
+                    It.IsAny<string>()))
+                .ReturnsAsync(AllCooperatives.Count());
+
+            return cooperativesService.Object;
         }
     }
 }

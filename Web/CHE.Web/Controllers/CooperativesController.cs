@@ -25,33 +25,11 @@
             this._joinRequestsService = joinRequestsService;
         }
 
-        public async Task<IActionResult> Details(string id)
-        {
-            var currentCooperative = await this._cooperativesService
-                .GetByIdAsync<CooperativeDetailsViewModel>(id);
-
-            if (currentCooperative == null)
-            {
-                return this.NotFound();
-            }
-
-            if (this.User.Identity.IsAuthenticated)
-            {
-                var userId = this.User.GetId();
-                currentCooperative.IsAdmin = await this._cooperativesService
-                    .CheckIfAdminAsync(userId, currentCooperative.Id);
-                currentCooperative.IsMember = await this._cooperativesService
-                    .CheckIfMemberAsync(userId, currentCooperative.Id);
-                currentCooperative.PendingRequestId = await this._joinRequestsService
-                    .GetPendindRequestIdAsync(userId, id);
-            }          
-
-            this.ViewData["id"] = currentCooperative.Id;
-
-            return this.View(currentCooperative);
-        }
-
-        public async Task<IActionResult> All(string level, string city, string neighbourhood, int pageIndex = 1)
+        public async Task<IActionResult> All(
+            string level, 
+            string city, 
+            string neighbourhood, 
+            int pageIndex = 1)
         {
             var cooperatives = await this._cooperativesService
                     .GetAllAsync<CooperativeAllViewModel>(
@@ -83,6 +61,32 @@
             };
 
             return this.View(cooperativesList);
+        }
+
+        public async Task<IActionResult> Details(string id)
+        {
+            var currentCooperative = await this._cooperativesService
+                .GetByIdAsync<CooperativeDetailsViewModel>(id);
+
+            if (currentCooperative == null)
+            {
+                return this.NotFound();
+            }
+
+            if (this.User.Identity.IsAuthenticated)
+            {
+                var userId = this.User.GetId();
+                currentCooperative.IsAdmin = await this._cooperativesService
+                    .CheckIfAdminAsync(userId, currentCooperative.Id);
+                currentCooperative.IsMember = await this._cooperativesService
+                    .CheckIfMemberAsync(userId, currentCooperative.Id);
+                currentCooperative.PendingRequestId = await this._joinRequestsService
+                    .GetPendindRequestIdAsync(userId, id);
+            }
+
+            this.ViewData["id"] = currentCooperative.Id;
+
+            return this.View(currentCooperative);
         }
     }
 }
