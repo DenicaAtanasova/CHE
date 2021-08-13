@@ -16,7 +16,7 @@
     public class EventsControllerTests
     {
         [Fact]
-        public void GetThreeMonthsEventsShouldReturnJsonWithCorrectViewModel() =>
+        public void GetThreeMonthsEvents_ShouldReturnJsonWithCorrectViewModel() =>
             MyMvc
                 .Pipeline()
                 .ShouldMap(request => request
@@ -29,7 +29,7 @@
                     result.WithModelOfType<Dictionary<string, EventViewModel[]>>());
 
         [Fact]
-        public void DeleteShouldReturnNoContent() =>
+        public void Delete_ShouldReturnNoContent() =>
             MyMvc
                 .Controller<EventsController>()
                 .Calling(x => x.Delete("id"))
@@ -37,7 +37,7 @@
                 .NoContent();
 
         [Fact]
-        public void DeleteShouldReturnNotFound() =>
+        public void Delete_ShouldReturnNotFound() =>
             MyMvc
                 .Controller<EventsController>()
                 .Calling(x => x.Delete(""))
@@ -45,7 +45,7 @@
                 .NotFound();
 
         [Fact]
-        public void DeleteShouldMapCorrectRoute() =>
+        public void Delete_ShouldMapCorrectRoute() =>
             MyMvc
                 .Routing()
                 .ShouldMap(request => request
@@ -55,7 +55,7 @@
                 .To<EventsController>(c => c.Delete("id"));
 
         [Fact]
-        public void UpdateMethodGetShouldReturnViewWithCorrectEvent() =>
+        public void Update_MethodGet_ShouldReturnViewWithCorrectEvent() =>
             MyMvc
                 .Pipeline()
                 .ShouldMap(request => request
@@ -68,7 +68,7 @@
                     result.WithModel(UpdateEvent));
 
         [Fact]
-        public void UpdateMethodGetShouldReturnNotFound() =>
+        public void Update_MethodGet_ShouldReturnNotFound() =>
             MyMvc
                 .Controller<EventsController>()
                 .Calling(c => c.Update(""))
@@ -76,7 +76,7 @@
                 .NotFound();
 
         [Fact]
-        public void UpdateMethodPostShouldMapCorrectRoute() =>
+        public void Update_MethodPost_ShouldMapCorrectRoute() =>
             MyMvc
                 .Routing()
                 .ShouldMap(request => request
@@ -86,7 +86,7 @@
                 .To<EventsController>(c => c.Update("id"));
 
         [Fact]
-        public void UpdateMethodPostWithValidModelStateShouldRedirect()
+        public void Update_MethodPost_WithValidModelState_ShouldRedirect()
         {
             var scheduleId = "scheduleId";
 
@@ -109,7 +109,7 @@
         }
 
         [Fact]
-        public void UpdateMethodPostWithInValidModelStateShouldReturnSameView() =>
+        public void Update_MethodPost_WithInValidModelState_ShouldReturnSameView() =>
             MyMvc
                 .Controller<EventsController>()
                 .Calling(c => c.Update("id", new EventUpdateInputModel()))
@@ -121,7 +121,7 @@
                     view.WithModelOfType<EventUpdateInputModel>());
 
         [Fact]
-        public void AddMethodGetShouldReturnViewWithCorrectEvent() =>
+        public void Add_MethodGet_ShouldReturnViewWithCorrectEvent() =>
            MyMvc
                .Pipeline()
                .ShouldMap(request => request
@@ -134,7 +134,7 @@
                    result.WithModel(AddEvent));
 
         [Fact]
-        public void AddMethodGetShouldReturnNotFound() =>
+        public void Add_MethodGet_ShouldReturnNotFound() =>
            MyMvc
                .Controller<EventsController>()
                .Calling(c => c.Add("", ""))
@@ -142,7 +142,7 @@
                .NotFound();
 
         [Fact]
-        public void AddMethodPostShouldMapCorrectRoute() =>
+        public void Add_MethodPost_ShouldMapCorrectRoute() =>
             MyMvc
                 .Routing()
                 .ShouldMap(request => request
@@ -152,7 +152,7 @@
                 .To<EventsController>(c => c.Add(new EventCreateInputModel()));
 
         [Fact]
-        public void AddMethodPostWithValidModelStateShouldRedirect()
+        public void Add_MethodPost_WithValidModelState_ShouldRedirect()
         {
             var scheduleId = "id";
 
@@ -175,7 +175,7 @@
         }
 
         [Fact]
-        public void AddMethodPostWithInValidModelStateShouldReturnSameView() =>
+        public void Add_MethodPost_WithInValidModelState_ShouldReturnSameView() =>
             MyMvc
                 .Controller<EventsController>()
                 .Calling(c => c.Add(new EventCreateInputModel

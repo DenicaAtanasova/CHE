@@ -12,7 +12,7 @@
     public class MessengersControllerTests
     {
         [Fact]
-        public void MessagesShouldReturnViewWithCorrectMessenger() =>
+        public void Messages_ShouldReturnViewWithCorrectMessenger() =>
             MyMvc
                 .Pipeline()
                 .ShouldMap(request => request
@@ -25,7 +25,7 @@
                 .View(view => view.WithModel(MessengerUsers));
 
         [Fact]
-        public void GetPrivateShouldReturnJsonWithCorrectModel() =>
+        public void GetPrivate_ShouldReturnJsonWithCorrectModel() =>
             MyMvc
                 .Pipeline()
                 .ShouldMap(request => request

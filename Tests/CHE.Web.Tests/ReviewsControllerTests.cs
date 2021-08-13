@@ -14,7 +14,7 @@
     public class ReviewsControllerTests
     {
         [Fact]
-        public void AllShouldReturnViewWithCorrectViewModel() =>
+        public void All_ShouldReturnViewWithCorrectViewModel() =>
             MyMvc
                 .Pipeline()
                 .ShouldMap("/Teachers/Reviews/someId")
@@ -25,7 +25,7 @@
                     .WithModelOfType<IEnumerable<ReviewAllViewModel>>());
 
         [Fact]
-        public void AllShouldReturnViewWithCorrectReviews() =>
+        public void All_ShouldReturnViewWithCorrectReviews() =>
             MyMvc
                 .Controller<ReviewsController>()
                 .Calling(c => c.All("receiverId"))
@@ -33,7 +33,7 @@
                 .View(view => view.WithModel(AllRceiverReviews));
 
         [Fact]
-        public void MyAllShouldReturnViewWithCorrectViewModel() =>
+        public void MyAll_ShouldReturnViewWithCorrectViewModel() =>
             MyMvc
                 .Pipeline()
                 .ShouldMap("/Identity/Account/Manage/Reviews")
@@ -49,7 +49,7 @@
                     .WithModelOfType<IEnumerable<ReviewAllViewModel>>());
 
         [Fact]
-        public void MyAllShouldReturnViewWithCorrectReviews() =>
+        public void MyAll_ShouldReturnViewWithCorrectReviews() =>
             MyMvc
                 .Controller<ReviewsController>()
                 .Calling(c => c.MyAll())

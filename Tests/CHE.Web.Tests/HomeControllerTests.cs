@@ -7,7 +7,7 @@
     public class HomeControllerTests
     {
         [Fact]
-        public void IndexShouldReturnCorrectView()
+        public void Index_ShouldReturnCorrectView()
             => MyMvc
                 .Pipeline()
                 .ShouldMap("/")
@@ -17,7 +17,7 @@
                 .View();
 
         [Fact]
-        public void ErrorShouldReturnCorrectView()
+        public void Error_ShouldReturnCorrectView()
             => MyMvc
                 .Pipeline()
                 .ShouldMap("/Home/Error")

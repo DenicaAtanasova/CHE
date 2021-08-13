@@ -12,7 +12,7 @@
     public class ParentReviewsControllerTests
     {
         [Fact]
-        public void SendMethodGetShouldReturnViewWithCorrectReview() =>
+        public void Send_MethodGet_ShouldReturnViewWithCorrectReview() =>
             MyMvc
                 .Pipeline()
                 .ShouldMap(request => request
@@ -26,7 +26,7 @@
                     .Passing(model => model.ReceiverId == "id"));
 
         [Fact]
-        public void SendMethodGetShouldReturnNotFoundWithInvalidStringId() =>
+        public void Send_MethodGet_WithInvalidStringId_ShouldReturnNotFound() =>
             MyMvc
                 .Controller<ReviewsController>()
                 .Calling(c => c.Send(""))
@@ -34,7 +34,7 @@
                 .NotFound();
 
         [Fact]
-        public void SendMethodPostShouldMapCorrectRoute() =>
+        public void Send_MethodPost_ShouldMapCorrectRoute() =>
             MyMvc
                 .Routing()
                 .ShouldMap(request => request
@@ -44,7 +44,7 @@
                 .To<ReviewsController>(c => c.Send(With.Any<ReviewCreateInputModel>()));
 
         [Fact]
-        public void SendMethodPostWithValidModelStateShouldRedirect()
+        public void Send_MethodPost_WithValidModelState_ShouldRedirect()
         {
             var receiverId = "id";
 
@@ -65,7 +65,7 @@
         }
 
         [Fact]
-        public void SenMethodPostWithInvalidStateShouldReturnSameView() =>
+        public void Send_MethodPost_WithInvalidState_ShouldReturnSameView() =>
             MyMvc
                 .Controller<ReviewsController>()
                 .Calling(c => c.Send(new ReviewCreateInputModel
@@ -81,7 +81,7 @@
                     view.WithModelOfType<ReviewCreateInputModel>());
 
         [Fact]
-        public void UpdateMethodGetShouldReturnViewWithCorrectViewModel() =>
+        public void Update_MethodGet_ShouldReturnViewWithCorrectViewModel() =>
            MyMvc
                .Pipeline()
                .ShouldMap(request => request
@@ -94,7 +94,7 @@
                    view.WithModel(ReviewToUpdate));
 
         [Fact]
-        public void UpdateMethodGetShouldReturnNotFoundWithInvalidStringId() =>
+        public void Update_MethodGet_WithInvalidStringId_ShouldReturnNotFound() =>
             MyMvc
                 .Controller<ReviewsController>()
                 .Calling(c => c.Update(""))
@@ -102,7 +102,7 @@
                 .NotFound();
 
         [Fact]
-        public void UpdateMethodPostShouldMapCorrectRoute() =>
+        public void Update_MethodPost_ShouldMapCorrectRoute() =>
             MyMvc
                 .Routing()
                 .ShouldMap(request => request
@@ -112,7 +112,7 @@
                 .To<ReviewsController>(c => c.Update(With.Any<ReviewUpdateInputModel>()));
 
         [Fact]
-        public void UpdateMethodPostWithValidModelStateShouldRedirect()
+        public void Update_MethodPost_WithValidModelState_ShouldRedirect()
         {
             var receiverId = "id";
 
@@ -134,7 +134,7 @@
         }
 
         [Fact]
-        public void UpdateMethodPostWithInvalidStateShouldReturnSameView() =>
+        public void Update_MethodPost_WithInvalidState_ShouldReturnSameView() =>
             MyMvc
                 .Controller<ReviewsController>()
                 .Calling(c => c.Update(new ReviewUpdateInputModel
@@ -149,7 +149,7 @@
                     view.WithModelOfType<ReviewUpdateInputModel>());
 
         [Fact]
-        public void DeleteShouldRedirect()
+        public void Delete_ShouldRedirect()
         {
             var receiverId = "receiverId";
 

@@ -11,7 +11,7 @@
     public class SchedulesControllerTests
     {
         [Fact]
-        public void DetailsShouldReturnCorrectSchedule() =>
+        public void Details_ShouldReturnCorrectSchedule() =>
             MyMvc
                 .Pipeline()
                 .ShouldMap(request => request
@@ -29,7 +29,7 @@
                     view.WithModel(DetailsSchedule));
 
         [Fact]
-        public void DetailsShouldReturnNotFound() =>
+        public void Details_ShouldReturnNotFound() =>
             MyMvc
                 .Controller<SchedulesController>()
                 .Calling(c => c.Details(""))
@@ -37,7 +37,7 @@
                 .NotFound();
 
         [Fact]
-        public void MyDetailsShouldReturnCorrectSchedule() =>
+        public void MyDetails_ShouldReturnCorrectSchedule() =>
             MyMvc
                 .Pipeline()
                 .ShouldMap(request => request
@@ -51,7 +51,7 @@
                     view.WithModel(DetailsSchedule));
 
         [Fact]
-        public void MyDetailsShouldReturnNotFound() =>
+        public void MyDetails_ShouldReturnNotFound() =>
            MyMvc
                .Controller<SchedulesController>()
                .Calling(c => c.MyDetails(""))

@@ -11,7 +11,7 @@
     public class TeachersControllerTests
     {
         [Fact]
-        public void AllShouldReturnViewWithCorrectTeachers() =>
+        public void All_ShouldReturnViewWithCorrectTeachers() =>
             MyMvc
                 .Pipeline()
                 .ShouldMap(request => request
@@ -29,7 +29,7 @@
                     .WithModel(TeachersList));
 
         [Fact]
-        public void DetailsShouldReturnViewWithTeacher() =>
+        public void Details_ShouldReturnViewWithTeacher() =>
             MyMvc
                 .Pipeline()
                 .ShouldMap("/Teachers/Details/id")
@@ -39,7 +39,7 @@
                 .View(view => view.WithModel(DetailsTeacher));
 
         [Fact]
-        public void DetailsShouldReturnNotFound() =>
+        public void Details_ShouldReturnNotFound() =>
             MyMvc
                 .Controller<TeachersController>()
                 .Calling(c => c.Details(""))

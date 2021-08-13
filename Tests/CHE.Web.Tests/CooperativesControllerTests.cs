@@ -11,7 +11,7 @@
     public class CooperativesControllerTests
     {
         [Fact]
-        public void AllShouldReturnViewWithCorrectCooperatves() =>
+        public void All_ShouldReturnViewWithCorrectCooperatves() =>
             MyMvc
                 .Pipeline()
                 .ShouldMap(request => request
@@ -29,7 +29,7 @@
                 view.WithModel(CooperativesList));
 
         [Fact]
-        public void DetailsShouldReturnCorrectCooperative() =>
+        public void Details_ShouldReturnCorrectCooperative() =>
             MyMvc
                 .Pipeline()
                 .ShouldMap("/Cooperatives/Details/id")
@@ -39,7 +39,7 @@
                 .View(view => view.WithModel(DetailsCooperative));
 
         [Fact]
-        public void DetailsShouldReturnCorrectNotFound() =>
+        public void Details_ShouldReturnNotFound() =>
             MyMvc
                 .Controller<CooperativesController>()
                 .Calling(c => c.Details(""))
