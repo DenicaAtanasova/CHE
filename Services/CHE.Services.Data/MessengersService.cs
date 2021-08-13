@@ -19,19 +19,13 @@
             this._dbContext = dbContext;
         }
 
-        public async Task<TEntity> GetCooperativeMessengerWithUsersAsync<TEntity>(string cooperativeId) =>
+        public async Task<TEntity> GetCooperativeMessengerAsync<TEntity>(string cooperativeId) =>
             await this._dbContext.Messengers
                 .Where(x => x.CooperativeId == cooperativeId)
                 .To<TEntity>()
                 .SingleOrDefaultAsync();
 
-        public async Task<TEntity> GetCooperativeMessengerWithMessagesAsync<TEntity>(string cooperativeId) =>
-            await this._dbContext.Messengers
-                .Where(x => x.CooperativeId == cooperativeId)
-                .To<TEntity>()
-                .SingleOrDefaultAsync();
-
-        public async Task<IEnumerable<TEntity>> GetAllPrivateMessengersByUserAsync<TEntity>(string userId) =>
+        public async Task<IEnumerable<TEntity>> GetAllPrivateContactsByUserAsync<TEntity>(string userId) =>
             await this._dbContext.MessengersUsers
                 .Where(x => x.Messenger.Users.Any(x => x.UserId == userId))
                 .To<TEntity>()

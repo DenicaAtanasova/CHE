@@ -9,7 +9,7 @@
 
     using static CHE.Web.Tests.Data.Messengers;
 
-    public class MessengersControllerTest
+    public class MessengersControllerTests
     {
         [Fact]
         public void MessagesShouldReturnViewWithCorrectMessenger() =>

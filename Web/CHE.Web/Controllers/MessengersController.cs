@@ -29,7 +29,7 @@
             var messenger = new MessengerPrivateUsersViewModel
             {
                 Users = await this._messengersService
-                .GetAllPrivateMessengersByUserAsync<MessengerUserViewModel>(userId),
+                .GetAllPrivateContactsByUserAsync<MessengerUserViewModel>(userId),
             };
 
             if (currentMessengerId != null)

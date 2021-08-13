@@ -5,15 +5,13 @@
 
     public interface IMessengersService
     {
+        Task<TEntity> GetCooperativeMessengerAsync<TEntity>(string cooperativeId);
+
         Task<string> GetPrivateMessengerIdAsync(string senderId, string receiverId);
 
-        Task<TEntity> GetCooperativeMessengerWithUsersAsync<TEntity>(string cooperativeId);
-
-        Task<TEntity> GetCooperativeMessengerWithMessagesAsync<TEntity>(string cooperativeId);
-
-        Task<IEnumerable<TEntity>> GetAllPrivateMessengersByUserAsync<TEntity>(string userId);
-
         Task<TEntity> GetPrivateMessengerAsync<TEntity>(string senderId, string receiverId);
+
+        Task<IEnumerable<TEntity>> GetAllPrivateContactsByUserAsync<TEntity>(string userId);
 
         Task AddMemberAsync(string messengerId, string userId);
 

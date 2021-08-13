@@ -20,7 +20,7 @@
         public async Task<IActionResult> Messages(string cooperativeId)
         {
             var messenger = await this._messengersService
-                .GetCooperativeMessengerWithUsersAsync<MessengerCooperativeUsersViewModel>(cooperativeId);
+                .GetCooperativeMessengerAsync<MessengerCooperativeUsersViewModel>(cooperativeId);
 
             this.ViewData["id"] = cooperativeId;
 
@@ -30,7 +30,7 @@
         public async Task<IActionResult> GetCooperative(string cooperativeId)
         {
             var messenger = await this._messengersService
-                .GetCooperativeMessengerWithMessagesAsync<MessengerCooperativeViewModel>(cooperativeId);
+                .GetCooperativeMessengerAsync<MessengerCooperativeViewModel>(cooperativeId);
             messenger.CurrentUser = this.User.Identity.Name;
 
             return Json(messenger);
