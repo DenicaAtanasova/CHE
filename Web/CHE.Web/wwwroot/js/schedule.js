@@ -141,7 +141,7 @@ class CALENDAR {
 
         let scheduleId = document.getElementById('schedule-id').value.trim();
         let date = calendar.active.formatted;
-        const response = await fetch(`${uri}/GetThreeMonthsEvents/${date}/${scheduleId}`, {
+        const response = await fetch(`${uri}/GetThreeMonthsEvents/${scheduleId}/${date}`, {
             method: 'GET'
         });
         const events = await response.json();

@@ -7,6 +7,7 @@
     using CHE.Web.ViewModels.Reviews;
     using CHE.Web.ViewModels.Teachers;
     using CHE.Web.ViewModels.Cooperatives;
+    using CHE.Web.ViewModels.Schedules;
 
     using Moq;
 
@@ -16,6 +17,7 @@
     using static CHE.Web.Tests.Data.Teachers;
     using static CHE.Web.Tests.Data.Messengers;
     using static CHE.Web.Tests.Data.Cooperatives;
+    using static CHE.Web.Tests.Data.Schedules;
 
     public class MockProvider
     {
@@ -130,6 +132,17 @@
                 .ReturnsAsync(AllCooperatives.Count());
 
             return cooperativesService.Object;
+        }
+
+        public static ISchedulesService SchedulesService()
+        {
+            var schedulesService = new Mock<ISchedulesService>();
+
+            schedulesService
+                .Setup(x => x.GetByIdAsync<ScheduleViewModel>("id"))
+                .ReturnsAsync(DetailsSchedule);
+
+            return schedulesService.Object;
         }
     }
 }
