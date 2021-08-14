@@ -1,5 +1,6 @@
 ﻿namespace CHE.Web.Areas.Parent.Controllers
 {
+    using CHE.Common.Extensions;
     using CHE.Services.Data;
     using CHE.Services.Data.Enums;
     using CHE.Web.Cache;
@@ -34,7 +35,7 @@
         {
             if (!this.ModelState.IsValid)
             {
-                return this.View();
+                return this.View(model);
             }
 
             var userId = this.User.GetId();
@@ -68,7 +69,7 @@
         {
             if (!this.ModelState.IsValid)
             {
-                return this.View(model.Id);
+                return this.View(model);
             }
 
             await this._cooperativesService.UpdateAsync(
@@ -86,6 +87,11 @@
 
         public async Task<IActionResult> Delete(string id)
         {
+            if (!id.IsValidString())
+            {
+                return NotFound();
+            }
+
             await this._cooperativesService.DeleteAsync(id);
 
             return this.RedirectToAction("All", "Cooperatives", new { area = "" });
@@ -131,7 +137,7 @@
             return this.RedirectToAction("Details", "Cooperatives", new { area="", id = cooperativeId });
         }
 
-        public async Task<IActionResult> All(int pageIndex = 1)
+        public async Task<IActionResult> MyAll(int pageIndex = 1)
         {
             var userId = this.User.GetId();
             var cooperatives = await this._cooperativesService

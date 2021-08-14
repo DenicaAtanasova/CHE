@@ -19,7 +19,7 @@
                 PageIndex = pageIndex,
                 HasPreviousPage = hasPreviousPage,
                 HasNextPage = hasNextPage,
-                Filter = filter
+                Filter = filter ?? new FilterViewModel()
             };
 
             return this.View(paginationModel);

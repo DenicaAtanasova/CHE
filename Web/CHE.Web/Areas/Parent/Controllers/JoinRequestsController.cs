@@ -1,5 +1,6 @@
 ﻿namespace CHE.Web.Areas.Parent.Controllers
 {
+    using CHE.Common.Extensions;
     using CHE.Services.Data;
     using CHE.Web.Infrastructure;
     using CHE.Web.InputModels.JoinRequests;
@@ -88,6 +89,11 @@
 
         public async Task<IActionResult> Update(string id)
         {
+            if (!id.IsValidString())
+            {
+                return NotFound();
+            }
+
             var request = await this._joinRequestsService
                 .GetByIdAsync<JoinRequestUpdateInputModel>(id);
 
@@ -114,6 +120,11 @@
 
         public async Task<IActionResult> Delete(string requestId, string cooperativeId)
         {
+            if (!requestId.IsValidString())
+            {
+                return NotFound();
+            }
+
             await this._joinRequestsService.DeleteAsync(requestId);
 
             return this.RedirectToAction("Details", "Cooperatives", new { area = "", id = cooperativeId });
