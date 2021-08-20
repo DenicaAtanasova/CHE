@@ -8,7 +8,7 @@
 
     using System.ComponentModel.DataAnnotations;
 
-    using static DataConstants.Cooperative;
+    using static CHE.Common.DataConstants.Cooperative;
     using static DataErrorMessages;
 
     public class CooperativeUpdateInputModel : IMapExplicitly

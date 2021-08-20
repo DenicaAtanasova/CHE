@@ -7,7 +7,7 @@
     using System;
     using System.ComponentModel.DataAnnotations;
 
-    using static DataConstants.Event;
+    using static CHE.Common.DataConstants.Event;
     using static DataErrorMessages;
 
     public class EventUpdateInputModel : IMapFrom<Event>

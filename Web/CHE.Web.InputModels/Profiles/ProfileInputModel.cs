@@ -9,7 +9,7 @@
 
     using System.ComponentModel.DataAnnotations;
 
-    using static DataConstants.Profile;
+    using static CHE.Common.DataConstants.Profile;
     using static DataErrorMessages;
 
     public class ProfileInputModel : IMapExplicitly

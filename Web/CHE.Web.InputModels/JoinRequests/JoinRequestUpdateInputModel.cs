@@ -5,7 +5,7 @@
 
     using System.ComponentModel.DataAnnotations;
 
-    using static DataConstants.JoinRequst;
+    using static CHE.Common.DataConstants.JoinRequst;
     using static DataErrorMessages;
 
     public class JoinRequestUpdateInputModel : IMapFrom<JoinRequest>

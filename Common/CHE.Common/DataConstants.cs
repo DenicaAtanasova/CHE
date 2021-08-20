@@ -1,4 +1,4 @@
-﻿namespace CHE.Web.InputModels
+﻿namespace CHE.Common
 {
     public record DataConstants
     {

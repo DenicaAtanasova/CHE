@@ -1,7 +1,9 @@
 ﻿namespace CHE.Data.Models
 {
     using CHE.Data.Common.Models;
+
     using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations;
 
     public class Parent : BaseModel<string>
     {
@@ -18,6 +20,7 @@
 
         public ICollection<Review> ReviewsSent { get; set; }
 
+        [Required]
         public string UserId { get; set; }
 
         public CheUser User { get; set; }

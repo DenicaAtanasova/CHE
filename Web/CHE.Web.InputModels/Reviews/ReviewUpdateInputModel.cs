@@ -5,7 +5,7 @@
 
     using System.ComponentModel.DataAnnotations;
 
-    using static DataConstants.Review;
+    using static CHE.Common.DataConstants.Review;
     using static DataErrorMessages;
 
     public class ReviewUpdateInputModel : IMapFrom<Review>

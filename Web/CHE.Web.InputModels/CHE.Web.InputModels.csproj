@@ -9,6 +9,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\Common\CHE.Common\CHE.Common.csproj" />
     <ProjectReference Include="..\..\Data\CHE.Data.Models\CHE.Data.Models.csproj" />
     <ProjectReference Include="..\..\Services\CHE.Services.Mapping\CHE.Services.Mapping.csproj" />
   </ItemGroup>

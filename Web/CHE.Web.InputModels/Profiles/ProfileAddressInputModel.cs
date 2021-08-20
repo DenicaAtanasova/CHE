@@ -6,7 +6,7 @@
 
     using System.ComponentModel.DataAnnotations;
 
-    using static DataConstants.Address;
+    using static CHE.Common.DataConstants.Address;
     using static DataErrorMessages;
 
     public class ProfileAddressInputModel : IMapFrom<Address>

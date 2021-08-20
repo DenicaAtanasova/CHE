@@ -1,7 +1,9 @@
 ﻿namespace CHE.Data.Models
 {
     using CHE.Data.Common.Models;
+
     using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations;
 
     public class Teacher : BaseModel<string>
     {
@@ -16,6 +18,7 @@
 
         public Schedule Schedule { get; init; }
 
+        [Required]
         public string UserId { get; set; }
 
         public CheUser User { get; set; }

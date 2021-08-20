@@ -1,7 +1,11 @@
 ﻿namespace CHE.Data.Models
 {
     using Common.Models;
+
     using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations;
+
+    using static CHE.Common.DataConstants.Cooperative;
 
     public class Cooperative : BaseModel<string>
     {
@@ -11,16 +15,24 @@
             this.Members = new HashSet<ParentCooperative>();
         }
 
+        [Required]
+        [MaxLength(NameMaxLength)]
         public string Name { get; set; }
 
+        [Required]
+        [MaxLength(InfoMaxLength)]
         public string Info { get; set; }
 
+        [Required]
         public string AddressId { get; set; }
 
         public Address Address { get; set; }
 
+        [Required]
+        [EnumDataType(typeof(Grade))]
         public Grade Grade { get; set; }
 
+        [Required]
         public string AdminId { get; set; }
 
         public Parent Admin { get; set; }
