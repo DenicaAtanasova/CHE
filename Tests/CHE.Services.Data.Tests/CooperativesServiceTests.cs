@@ -196,45 +196,6 @@
         }
 
         [Fact]
-        public async Task GetByIdAsync_ShouldReturnCorrectCooperative()
-        {
-            var cooperative = new Cooperative
-            {
-                Name = "CoopName",
-                Info = "CoopInfo",
-                Address = new Address
-                {
-                    City = "Varna",
-                    Neighbourhood = "Levski"
-                },
-                AdminId = Guid.NewGuid().ToString()
-            };
-
-            this._dbContext.Cooperatives.Add(cooperative);
-            await this._dbContext.SaveChangesAsync();
-
-            var cooperativeFromDb = await this._cooperativesService
-                .GetByIdAsync<CooperativeUpdateInputModel>(cooperative.Id);
-
-            Assert.Equal(cooperative.Id, cooperativeFromDb.Id);
-        }
-
-        [Fact]
-        public async Task GetByIdAsync_WithIncorrectCooperativeId_ShouldReturnNull()
-        {
-            this._dbContext.Cooperatives.Add(
-                new Cooperative
-                {
-                    Name = "CoopName",
-                    Info = "CoopInfo"
-                });
-            await this._dbContext.SaveChangesAsync();
-
-            Assert.Null(await this._cooperativesService
-                .GetByIdAsync<CooperativeUpdateInputModel>(Guid.NewGuid().ToString()));
-        }
-
-        [Fact]
         public async Task GetAllAsync_WithoutArgs_ShouldReturnCorrectCooperatives()
         {
             var cooperatives = new List<Cooperative>

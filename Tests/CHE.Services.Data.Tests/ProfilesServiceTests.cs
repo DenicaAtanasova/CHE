@@ -36,48 +36,6 @@
         }
 
         [Fact]
-        public async Task GetByUserIdAsync_ShouldReturnCorrectProfile()
-        {
-            var user = new CheUser();
-            var profile = new Profile
-            {
-                Owner = new Teacher
-                {
-                    User = user
-                }
-            };
-
-            this._dbContext.Profiles.Add(profile);
-            await this._dbContext.SaveChangesAsync();
-
-            var profileFromDb = await this._profilesService
-                .GetByUserIdAsync<ProfileInputModel>(user.Id);
-
-            Assert.NotNull(profileFromDb);
-        }
-
-        [Fact]
-        public async Task GetByUserIdAsync_WithIncorrectId_ShouldReturnNull()
-        {
-            var user = new CheUser();
-            var profile = new Profile
-            {
-                Owner = new Teacher
-                {
-                    User = user
-                }
-            };
-
-            this._dbContext.Profiles.Add(profile);
-            await this._dbContext.SaveChangesAsync();
-
-            var profileFromDb = await this._profilesService
-                .GetByUserIdAsync<ProfileInputModel>(Guid.NewGuid().ToString());
-
-            Assert.Null(profileFromDb);
-        }
-
-        [Fact]
         public async Task CreateAsync_ShouldCreateNewProfile()
         {
             var userId = Guid.NewGuid().ToString();

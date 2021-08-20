@@ -1,7 +1,9 @@
 ﻿namespace CHE.Web.Tests.Data
 {
+    using CHE.Web.InputModels.Cooperatives;
     using CHE.Web.ViewModels;
     using CHE.Web.ViewModels.Cooperatives;
+
     using System.Collections.Generic;
     using System.Linq;
 
@@ -37,6 +39,33 @@
             new CooperativeDetailsViewModel
             {
                 Id = "id"
+            };
+
+        public static CooperativeCreateInputModel CreateCooperative =>
+            new CooperativeCreateInputModel
+            {
+                Name = "Name",
+                Info = "Info",
+                Grade = "First",
+                Address = new CooperativeAddressInputModel
+                {
+                    City = "Sofia",
+                    Neighbourhood = "Vitosha"
+                }
+            };
+
+        public static CooperativeUpdateInputModel UpdateCooperative =>
+            new CooperativeUpdateInputModel
+            {
+                Id = "id",
+                Name = "Name",
+                Info = "Info",
+                Grade = "First",
+                Address = new CooperativeAddressInputModel
+                {
+                    City = "Sofia",
+                    Neighbourhood = "Vitosha"
+                }
             };
     }
 }

@@ -22,6 +22,8 @@
     using static CHE.Web.Tests.Data.Schedules;
     using static CHE.Web.Tests.Data.Events;
     using CHE.Web.ViewModels.Events;
+    using CHE.Web.Cache;
+    using CHE.Web.InputModels.Cooperatives;
 
     public class MockProvider
     {
@@ -135,6 +137,10 @@
                     It.IsAny<string>()))
                 .ReturnsAsync(AllCooperatives.Count());
 
+            cooperativesService
+                .Setup(x => x.GetByIdAsync<CooperativeUpdateInputModel>("id"))
+                .ReturnsAsync(UpdateCooperative);
+
             return cooperativesService.Object;
         }
 
@@ -162,6 +168,13 @@
                 .ReturnsAsync(UpdateEvent);
 
             return eventsService.Object;
+        }
+
+        public static IAddressCache AddressCache() 
+        {
+            var addressCache = new Mock<IAddressCache>();
+
+            return addressCache.Object;
         }
     }
 }

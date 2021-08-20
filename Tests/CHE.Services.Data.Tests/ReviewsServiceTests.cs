@@ -6,6 +6,7 @@
     using CHE.Services.Mapping;
     using CHE.Web.InputModels.Reviews;
     using CHE.Web.ViewModels.Reviews;
+
     using Microsoft.EntityFrameworkCore;
 
     using System;
@@ -154,26 +155,6 @@
             {
                 Assert.Equal(expectedReviewsList[index++].Comment, review.Comment);
             }
-        }
-
-        [Fact]
-        public async Task GetByIdAsync_ShouldReturnCorrectReview()
-        {
-            var review = new Review
-            {
-                Comment = "Comment",
-                Rating = 2,
-                SenderId = Guid.NewGuid().ToString(),
-                ReceiverId = Guid.NewGuid().ToString()
-            };
-
-            this._dbContext.Reviews.Add(review);
-            await this._dbContext.SaveChangesAsync();
-
-            var reviewFromDb = await this._ReviewsService
-                .GetByIdAsync<ReviewUpdateInputModel>(review.Id);
-
-            Assert.Equal(review.Id, reviewFromDb.Id);
         }
 
         [Fact]

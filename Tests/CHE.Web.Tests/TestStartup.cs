@@ -2,7 +2,7 @@
 {
     using CHE.Services.Data;
     using CHE.Services.Storage;
-
+    using CHE.Web.Cache;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
 
@@ -27,6 +27,7 @@
             services.ReplaceTransient<ICooperativesService>(_ => MockProvider.CooperativesService());
             services.ReplaceTransient<ISchedulesService>(_ => MockProvider.SchedulesService());
             services.ReplaceTransient<IEventsService>(_ => MockProvider.EventsService());
+            services.ReplaceTransient<IAddressCache>(_ => MockProvider.AddressCache());
         }
     }
 }

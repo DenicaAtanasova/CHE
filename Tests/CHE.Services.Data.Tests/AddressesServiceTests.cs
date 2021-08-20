@@ -93,14 +93,7 @@
         [Fact]
         public async Task GetAllCitiesAsync_ShouldReturnAllDistinctCities()
         {
-            var addressesList = new List<Address>
-            {
-                new Address{City = "Varna", Neighbourhood = "Levski"},
-                new Address{City = "Varna", Neighbourhood = "Asparuhovo"},
-                new Address{City = "Razgrad", Neighbourhood = "H2O"},
-                new Address{City = "Razgrad", Neighbourhood = "Levski"},
-                new Address{City = "Sofia", Neighbourhood = "Levski"},
-            };
+            var addressesList = this.GetAddressesList();
 
             this._dbContext.Addresses.AddRange(addressesList);
             await this._dbContext.SaveChangesAsync();
@@ -116,14 +109,7 @@
         [Fact]
         public async Task GetAllNeighbourhoodsAsync_ShouldReturnAllDistinctNeighbourhoods()
         {
-            var addressesList = new List<Address>
-            {
-                new Address{City = "Varna", Neighbourhood = "Levski"},
-                new Address{City = "Varna", Neighbourhood = "Asparuhovo"},
-                new Address{City = "Razgrad", Neighbourhood = "H2O"},
-                new Address{City = "Razgrad", Neighbourhood = "Levski"},
-                new Address{City = "Sofia", Neighbourhood = "Levski"},
-            };
+            var addressesList = this.GetAddressesList();
 
             this._dbContext.Addresses.AddRange(addressesList);
             await this._dbContext.SaveChangesAsync();
@@ -135,5 +121,15 @@
 
             Assert.Equal(expectedNeighbourhoodsList, neighbourhoods);
         }
+
+        private IEnumerable<Address> GetAddressesList() =>
+            new List<Address>
+            {
+                new Address{City = "Varna", Neighbourhood = "Levski"},
+                new Address{City = "Varna", Neighbourhood = "Asparuhovo"},
+                new Address{City = "Razgrad", Neighbourhood = "H2O"},
+                new Address{City = "Razgrad", Neighbourhood = "Levski"},
+                new Address{City = "Sofia", Neighbourhood = "Levski"},
+            };
     }
 }
