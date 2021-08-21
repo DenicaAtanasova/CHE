@@ -107,7 +107,7 @@
                 return;
             }
 
-            if (await this._dbContext.Teachers
+            if (!await this._dbContext.Teachers
                 .AnyAsync(x => x.Id == receiverId))
             {
                 return;

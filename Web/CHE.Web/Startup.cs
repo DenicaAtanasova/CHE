@@ -39,7 +39,7 @@ namespace CHE.Web
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<CheDbContext>(options =>
-                options.UseSqlServer(this.configuration.GetConnectionString("DbConnection")));
+                options.UseSqlServer(this.configuration.GetConnectionString("DefaultConnection")));
 
             services.AddIdentity<CheUser, CheRole>(options =>
             {
@@ -104,11 +104,7 @@ namespace CHE.Web
             {
                 var serviceProvider = serviceScope.ServiceProvider;
                 var dbContext = serviceProvider.GetRequiredService<CheDbContext>();
-
-                if (env.IsDevelopment())
-                {
-                    dbContext.Database.Migrate();
-                }
+                dbContext.Database.Migrate();
 
                 new CheDbContextSeeder().SeedAsync(dbContext, serviceProvider).GetAwaiter().GetResult();
             }
@@ -116,6 +112,7 @@ namespace CHE.Web
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+                app.UseMigrationsEndPoint();
             }
             else
             {
