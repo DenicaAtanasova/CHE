@@ -5,7 +5,7 @@
     using CHE.Services.Mapping;
 
     using Microsoft.EntityFrameworkCore;
-
+    using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
@@ -27,6 +27,7 @@
 
         public async Task<IEnumerable<TEntity>> GetAllPrivateContactsByUserAsync<TEntity>(string userId) =>
             await this._dbContext.MessengersUsers
+                .Where(x => x.Messenger.CooperativeId == null)
                 .Where(x => x.Messenger.Users.Any(x => x.UserId == userId))
                 .To<TEntity>()
                 .ToListAsync();
@@ -101,7 +102,8 @@
                 {
                     new MessengerUser { UserId = senderId },
                     new MessengerUser { UserId = receiverId }
-                }
+                },
+                CreatedOn = DateTime.UtcNow
             };
 
             await this._dbContext.Messengers.AddAsync(messenger);

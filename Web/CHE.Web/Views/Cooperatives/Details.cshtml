@@ -42,12 +42,12 @@ else
     {
         <h4>Pending request ...</h4>
         <a class="btn btn-che" asp-area="Parent" asp-controller="JoinRequests" asp-action="Update" asp-route-id="@Model.PendingRequestId">Edit</a>
-        <a class="btn btn-che" asp-area="Parent" asp-controller="Messengers" asp-action="SendMessenger" asp-route-receiverId="@Model.AdminId">Send messenger</a>
+        <a class="btn btn-che" asp-area="Parent" asp-controller="Messengers" asp-action="SendMessenger" asp-route-receiverId="@Model.AdminId">Send message</a>
     }
     else if (!this.User.IsTeacher())
     {
         <a class="btn btn-che" asp-area="Parent" asp-controller="JoinRequests" asp-action="Send" asp-route-CooperativeId="@Model.Id">Join</a>
-        <a class="btn btn-che" asp-area="Parent" asp-controller="Messengers" asp-action="SendMessenger" asp-route-receiverId="@Model.AdminId">Send messenger</a>
+        <a class="btn btn-che" asp-area="Parent" asp-controller="Messengers" asp-action="SendMessenger" asp-route-receiverId="@Model.AdminId">Send message</a>
     }
 </div>
 }

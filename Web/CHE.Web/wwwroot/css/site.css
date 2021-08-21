@@ -597,6 +597,11 @@ div.image img {
     #hero .carousel-item {
         height: 90vh;
     }
+
+    .people-list .fa-search {
+        bottom: 35px;
+        left: 72%;
+    }
 }
 
 @media (max-width: 990px){
@@ -677,31 +682,31 @@ section {
     /*margin-bottom: 40px;*/
 }
 
-    .breadcrumbs h2 {
-        font-size: 28px;
-        font-weight: 700;
-        color: #545454;
-    }
+.breadcrumbs h2 {
+    font-size: 28px;
+    font-weight: 700;
+    color: #545454;
+}
 
-    .breadcrumbs ol {
-        display: flex;
-        flex-wrap: wrap;
-        list-style: none;
-        padding: 0 0 5px 0;
-        margin: 0;
-        font-size: 14px;
-    }
+.breadcrumbs ol {
+    display: flex;
+    flex-wrap: wrap;
+    list-style: none;
+    padding: 0 0 5px 0;
+    margin: 0;
+    font-size: 14px;
+}
 
-        .breadcrumbs ol li + li {
-            padding-left: 10px;
-        }
+.breadcrumbs ol li + li {
+    padding-left: 10px;
+}
 
-            .breadcrumbs ol li + li::before {
-                display: inline-block;
-                padding-right: 10px;
-                color: #6e6e6e;
-                content: "/";
-            }
+.breadcrumbs ol li + li::before {
+    display: inline-block;
+    padding-right: 10px;
+    color: #6e6e6e;
+    content: "/";
+}
 
 /*--------------------------------------------------------------
 # Featured
@@ -2560,7 +2565,7 @@ a.schedule {
 
 .people-list {
     flex-grow: 1;
-    min-width: 280px;
+    min-width: 150px;
 }
 
 .people-list .search {
