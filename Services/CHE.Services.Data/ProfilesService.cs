@@ -10,6 +10,7 @@
     using System.Linq;
     using System.Threading.Tasks;
     using System.IO;
+    using CHE.Data.Models.Enums;
 
     public class ProfilesService : IProfilesService
     {

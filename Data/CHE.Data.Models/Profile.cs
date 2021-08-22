@@ -1,5 +1,6 @@
 ﻿namespace CHE.Data.Models
 {
+    using CHE.Data.Models.Enums;
     using Common.Models;
 
     using System.ComponentModel.DataAnnotations;
