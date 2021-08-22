@@ -1,10 +1,12 @@
 ﻿namespace CHE.Services.Data
 {
+    using CHE.Common.Extensions;
     using CHE.Data;
     using CHE.Data.Models;
 
     using Microsoft.EntityFrameworkCore;
 
+    using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
@@ -20,16 +22,19 @@
 
         public async Task<string> GetAddressIdAsync(string city, string neighbourhood)
         {
+            var cityTitledCase = city.ToTitleCase();
+            var neighbourhoodTitledCase = neighbourhood.ToTitleCase();
+
             var addressId = await this._dbContext.Addresses
                 .AsNoTracking()
-                .Where(x => x.City == city &&
-                            x.Neighbourhood == neighbourhood)
+                .Where(x => x.City == cityTitledCase &&
+                            x.Neighbourhood == neighbourhoodTitledCase)
                 .Select(x => x.Id)
                 .SingleOrDefaultAsync();
 
             if (addressId is null)
             {
-                return await this.CreateAsync(city, neighbourhood);
+                return await this.CreateAsync(cityTitledCase, neighbourhoodTitledCase);
             }
 
             return addressId;
@@ -53,7 +58,8 @@
             var address = new Address
             {
                 City = city,
-                Neighbourhood = neighbourhood
+                Neighbourhood = neighbourhood,
+                CreatedOn = DateTime.UtcNow
             };
 
             this._dbContext.Addresses.Add(address);
