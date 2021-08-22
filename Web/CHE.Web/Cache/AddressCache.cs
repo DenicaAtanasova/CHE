@@ -1,5 +1,6 @@
 ﻿namespace CHE.Web.Cache
 {
+    using CHE.Common.Extensions;
     using CHE.Services.Data;
 
     using Microsoft.Extensions.Caching.Memory;
@@ -27,14 +28,6 @@
             this.SetCache(NeighbourhoodsCacheKey, neighbourhood);
         }
 
-        public async Task<IEnumerable<string>> GetAsync(string cacheKey) =>
-            cacheKey switch
-            {
-                CitiesCacheKey => await this.GetCityCache(),
-                NeighbourhoodsCacheKey => await this.GetNeighbourhoodCache(),
-                _ => null
-            };
-
         public async Task<IEnumerable<string>> GetAsync(CacheType cacheType) =>
         cacheType switch
         {
@@ -46,10 +39,11 @@
         private void SetCache(string cacheKey, string cacheItem)
         {
             var cachValue = this._cache.Get<IList<string>>(cacheKey);
+            var cachItemTitleCase = cacheItem.ToTitleCase();
 
-            if (!cachValue.Contains(cacheItem))
+            if (!cachValue.Contains(cachItemTitleCase))
             {
-                cachValue.Add(cacheItem);
+                cachValue.Add(cachItemTitleCase);
                 _cache.Set(
                     cacheKey,
                     cachValue);
