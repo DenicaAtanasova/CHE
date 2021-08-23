@@ -67,5 +67,16 @@
                     Neighbourhood = "Vitosha"
                 }
             };
+
+        public static CooperativeMembersViewModel Members =>
+            new CooperativeMembersViewModel {
+                Members = new List<CooperativeUserDetailsViewModel> 
+                { 
+                    new CooperativeUserDetailsViewModel
+                    {
+                        CooperativeId = "id"
+                    }
+                }
+            };
     }
 }

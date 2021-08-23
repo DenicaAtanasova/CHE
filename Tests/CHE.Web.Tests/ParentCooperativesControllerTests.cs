@@ -116,5 +116,81 @@
                     result.To<Controllers.CooperativesController>(c =>
                         c.All(null, null, null, With.No<int>())));
 
+        [Fact]
+        public void Delete_ShouldReturnNotFound() =>
+            MyMvc
+                .Controller<CooperativesController>()
+                .WithUser(user => user.InRole("Parent"))
+                .Calling(c => c.Delete(""))
+                .ShouldReturn()
+                .NotFound();
+
+        [Fact]
+        public void MakeAdmin_ShoulRedirect() =>
+           MyMvc
+                .Controller<CooperativesController>()
+                .WithUser(user => user.InRole("Parent"))
+                .Calling(c => c.MakeAdmin("cooperativeId", "userId"))
+                .ShouldReturn()
+                .Redirect(result =>
+                    result.To<Controllers.CooperativesController>(c =>
+                        c.Details("cooperativeId")));
+
+        [Fact]
+        public void RemomveMember_ShoulRedirect() =>
+           MyMvc
+                .Controller<CooperativesController>()
+                .WithUser(user => user.InRole("Parent"))
+                .Calling(c => c.RemoveMember("cooperativeId", "memberId"))
+                .ShouldReturn()
+                .Redirect(result =>
+                    result.To<Controllers.CooperativesController>(c =>
+                        c.Details("cooperativeId")));
+
+        [Fact]
+        public void Members_ShouldReturnNotFound() =>
+            MyMvc
+                .Controller<CooperativesController>()
+                .WithUser(user => user.InRole("Parent"))
+                .Calling(c => c.Members(""))
+                .ShouldReturn()
+                .NotFound();
+
+        [Fact]
+        public void Member_ShouldReturnViewWithCorrectViewModel() =>
+           MyMvc
+               .Pipeline()
+               .ShouldMap(request => request
+                   .WithPath("/Parent/Cooperatives/Members/id")
+                   .WithUser(user => user.InRole("Parent")))
+               .To<CooperativesController>(c => c.Members("id"))
+               .Which()
+               .ShouldReturn()
+               .View(view =>
+                   view.WithModel(Members));
+
+        [Fact]
+        public void Leave_ShoulRedirect() =>
+           MyMvc
+                .Controller<CooperativesController>()
+                .WithUser(user => user.InRole("Parent"))
+                .Calling(c => c.Leave("cooperativeId"))
+                .ShouldReturn()
+                .Redirect(result =>
+                    result.To<Controllers.CooperativesController>(c =>
+                        c.Details("cooperativeId")));
+
+        [Fact]
+        public void MyAll_ShouldReturnViewWithCorrectViewModel() =>
+           MyMvc
+               .Pipeline()
+               .ShouldMap(request => request
+                   .WithPath("/Parent/Cooperatives/MyAll")
+                   .WithUser(user => user.InRole("Parent")))
+               .To<CooperativesController>(c => c.MyAll())
+               .Which()
+               .ShouldReturn()
+               .View(view =>
+                   view.WithModel(AllCooperatives));
     }
 }

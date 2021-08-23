@@ -21,9 +21,11 @@
     using static CHE.Web.Tests.Data.Cooperatives;
     using static CHE.Web.Tests.Data.Schedules;
     using static CHE.Web.Tests.Data.Events;
+
     using CHE.Web.ViewModels.Events;
     using CHE.Web.Cache;
     using CHE.Web.InputModels.Cooperatives;
+    using CHE.Services.Data.Enums;
 
     public class MockProvider
     {
@@ -140,6 +142,16 @@
             cooperativesService
                 .Setup(x => x.GetByIdAsync<CooperativeUpdateInputModel>("id"))
                 .ReturnsAsync(UpdateCooperative);
+
+            cooperativesService
+               .Setup(x => x.GetByIdAsync<CooperativeMembersViewModel>("id"))
+               .ReturnsAsync(Members);
+
+            cooperativesService
+                .Setup(x => x.GetAllByUserAsync<CooperativeAllViewModel>(
+                    It.IsAny<string>(),
+                    It.IsAny<CooperativeUserType>()))
+                .ReturnsAsync(AllCooperatives);
 
             return cooperativesService.Object;
         }
