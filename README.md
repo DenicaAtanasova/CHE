@@ -1,6 +1,6 @@
 # CHE - Cooperatives for home education
 
-## Link
+## :link: Link
 https://c-h-e.azurewebsites.net/
 
 ## :information_source: Project Description
