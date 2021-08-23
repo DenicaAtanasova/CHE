@@ -15,7 +15,7 @@
 
         public ICollection<MessageViewModel> Messages { get; set; }
 
-        public string CurrentUser { get; set; }
+        public string CurrentReceiver { get; set; }
 
         public void CreateMappings(IProfileExpression configuration)
         {

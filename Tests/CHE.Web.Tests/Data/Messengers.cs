@@ -16,7 +16,7 @@
         public static MessengerPrivateViewModel CurrentMessenger =>
             new MessengerPrivateViewModel
             {
-                CurrentUser = "receiverId"
+                CurrentReceiver = "receiverId"
             };
 
         public static MessengerPrivateUsersViewModel MessengerUsers =>

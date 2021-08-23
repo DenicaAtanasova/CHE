@@ -20,7 +20,7 @@
             this._messengersService = messengerssService;
         }
 
-        public async Task<IActionResult> Messages(
+        public async Task<IActionResult> Details(
             string currentMessengerId = null,
             string receiverId = null)
         {
@@ -36,7 +36,7 @@
             {
                 messenger.CurrentMessenger = await this._messengersService
                     .GetPrivateMessengerAsync<MessengerPrivateViewModel>(userId, receiverId);
-                messenger.CurrentMessenger.CurrentUser = receiverId;
+                messenger.CurrentMessenger.CurrentReceiver = receiverId;
             }
 
             return View(messenger);
@@ -48,7 +48,7 @@
 
             var messenger = await this._messengersService
                 .GetPrivateMessengerAsync<MessengerPrivateViewModel>(userId, receiverId);
-            messenger.CurrentUser = this.User.Identity.Name;
+            messenger.CurrentReceiver = this.User.Identity.Name;
 
             return Json(messenger);
         }

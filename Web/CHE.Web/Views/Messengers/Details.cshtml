@@ -1,4 +1,4 @@
-﻿@model CHE.Web.ViewModels.Messengers.MessengerPrivateUsersViewModel;
+﻿@model CHE.Web.ViewModels.Messengers.MessengerPrivateUsersViewModel
 @{
     Layout = WebConstants.AccountLayout;
     ViewData["currentPage"] = "Messages";
@@ -30,7 +30,7 @@
     @if (Model.CurrentMessenger != null)
     {
         var receiverName = Model.Users
-            .FirstOrDefault(x => x.UserId == Model.CurrentMessenger.CurrentUser).UserUserName;
+            .FirstOrDefault(x => x.UserId == Model.CurrentMessenger.CurrentReceiver).UserUserName;
 
         <div class="chat">
             <div class="chat-header clearfix">
@@ -75,7 +75,7 @@
             <div class="chat-message clearfix">
                 <textarea name="message-to-send" id="message-to-send" placeholder="Type your message" rows="3"></textarea>
                 <span class="text-danger"></span>
-                <button id="send-current-button" messengerId="@Model.CurrentMessenger.Id" receiverId ="@Model.CurrentMessenger.CurrentUser">Send</button>
+                <button id="send-current-button" messengerId="@Model.CurrentMessenger.Id" receiverId ="@Model.CurrentMessenger.CurrentReceiver">Send</button>
             </div> <!-- end chat-message -->
         </div> <!-- end chat -->
     }
