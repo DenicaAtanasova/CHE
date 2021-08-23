@@ -3,6 +3,7 @@
         .withUrl("/messenger")
         .build();
 
+
 connection.on("NewMessage",
     function (message, sender, connectionId) {
         const currentConnectionId = this.connection.connectionId;
