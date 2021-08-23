@@ -3,6 +3,7 @@
         .withUrl("/messenger")
         .build();
 
+
 connection.on("NewMessage",
     function (message, sender, connectionId) {
         const currentConnectionId = this.connection.connectionId;
@@ -52,7 +53,7 @@ $(".private-chat").each(function () {
             .then(data => {
                 const messages = data.messages;
                 messages.forEach(message => {
-                    renderMessage(message, data.currentUser);
+                    renderMessage(message, data.currentReceiver);
                 });
 
                 $('#msg-count').text(`already ${messages.length} messages`);
