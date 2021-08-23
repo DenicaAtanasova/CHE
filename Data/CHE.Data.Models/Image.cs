@@ -1,6 +1,7 @@
 ﻿namespace CHE.Data.Models
 {
     using CHE.Data.Common.Models;
+
     using System.ComponentModel.DataAnnotations;
 
     public class Image : BaseModel<string>

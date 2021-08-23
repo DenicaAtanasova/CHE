@@ -7,6 +7,8 @@
 
     public class CooperativeUserDetailsViewModel : IMapExplicitly
     {
+        public string ParentId { get; set; }
+
         public string UserId { get; init; }
 
         public string UserName { get; init; }
@@ -17,7 +19,7 @@
         {
             configuration.CreateMap<ParentCooperative, CooperativeUserDetailsViewModel>()
                 .ForMember(dest => dest.UserName, opt => opt.MapFrom(src => src.Parent.User.UserName))
-                .ForMember(dest => dest.UserId, opt => opt.MapFrom(src => src.ParentId));
+                .ForMember(dest => dest.UserId, opt => opt.MapFrom(src => src.Parent.UserId));
         }
     }
 }

@@ -326,13 +326,8 @@
             }
         }
 
-        [Theory]
-        [InlineData(0, 0)]
-        [InlineData(-1, 0)]
-        [InlineData(0, -1)]
-        [InlineData(0, 6)]
-        [InlineData(6, 6)]
-        public async Task GetAllByUserAsync_WhenUserIsAdmin_ShouldReturnCorrectCooperatives(int startIndex, int endIndex)
+        [Fact]
+        public async Task GetAllByUserAsync_ShouldReturnCorrectCooperatives()
         {
             var admin = new Parent
             {
@@ -377,95 +372,10 @@
             await this._dbContext.SaveChangesAsync();
 
             var cooperatives = await this._cooperativesService
-                .GetAllByUserAsync<CooperativeAllViewModel>(admin.UserId, CooperativeUserType.Admin, startIndex, endIndex);
-
-            var count = endIndex == 0
-                ? await this._dbContext.Cooperatives.CountAsync()
-                : endIndex;
+                .GetAllByUserAsync<CooperativeAllViewModel>(admin.UserId, CooperativeUserType.Admin);
 
             var expectedCooperatives = cooperativesList
                 .Where(x => x.AdminId == admin.Id)
-                .Skip((startIndex - 1) * count)
-                .Take(count)
-                .ToList();
-
-            Assert.Equal(expectedCooperatives.Count, cooperatives.Count());
-
-            var index = 0;
-            foreach (var cooperative in cooperatives.OrderBy(x => x.Name))
-            {
-                Assert.Equal(expectedCooperatives[index++].Id, cooperative.Id);
-            }
-        }
-
-        [Theory]
-        [InlineData(0, 0)]
-        [InlineData(-1, 0)]
-        [InlineData(0, -1)]
-        [InlineData(0, 6)]
-        [InlineData(6, 6)]
-        public async Task GetAllByUserAsync_WhenUserIsAdminOrMember_ShouldReturnCorrectCooperatives(int startIndex, int endIndex)
-        {
-            var parent = new Parent
-            {
-                User = new CheUser()
-            };
-
-            var cooperativesList = new List<Cooperative>
-            {
-                new Cooperative
-                {
-                    Name = "Name1",
-                    Info = "Info1",
-                    Admin = parent
-                },
-                new Cooperative
-                {
-                    Name = "Name2",
-                    Info = "Info2",
-                    Admin = parent
-                },
-                new Cooperative
-                {
-                    Name = "Name3",
-                    Info = "Info3",
-                    AdminId = Guid.NewGuid().ToString(),
-                    Members = new List<ParentCooperative>
-                    {
-                        new ParentCooperative
-                        {
-                            Parent = parent
-                        }
-                    }
-                },
-                new Cooperative
-                {
-                    Name = "Name4",
-                    Info = "Info4",
-                    AdminId = Guid.NewGuid().ToString()
-                },
-                new Cooperative
-                {
-                    Name = "Name5",
-                    Info = "Info5",
-                    AdminId = Guid.NewGuid().ToString()
-                }
-            };
-
-            this._dbContext.Cooperatives.AddRange(cooperativesList);
-            await this._dbContext.SaveChangesAsync();
-
-            var cooperatives = await this._cooperativesService
-                .GetAllByUserAsync<CooperativeAllViewModel>(parent.UserId, CooperativeUserType.Admin | CooperativeUserType.Member, startIndex, endIndex);
-
-            var count = endIndex == 0
-                ? await this._dbContext.Cooperatives.CountAsync()
-                : endIndex;
-
-            var expectedCooperatives = cooperativesList
-                .Where(x => x.AdminId == parent.Id || x.Members.Any(x => x.ParentId == parent.Id))
-                .Skip((startIndex - 1) * count)
-                .Take(count)
                 .ToList();
 
             Assert.Equal(expectedCooperatives.Count, cooperatives.Count());
@@ -750,66 +660,6 @@
 
             var expectedCount = this.GetFilteredCollection(cooperatives, gradeFilter, cityFilter, neighbourhoodFilter).Count();
             var count = await this._cooperativesService.CountAsync(gradeFilter, cityFilter, neighbourhoodFilter);
-            Assert.Equal(expectedCount, count);
-        }
-
-        [Fact]
-        public async Task CountByUserAsync_WithUserId_ShouldWorkCorrectly()
-        {
-            var parent = new Parent
-            {
-                User = new CheUser()
-            };
-
-            var cooperativesList = new List<Cooperative>
-            {
-                new Cooperative
-                {
-                    Name = "Name1",
-                    Info = "Info1",
-                    Admin = parent
-                },
-                new Cooperative
-                {
-                    Name = "Name2",
-                    Info = "Info2",
-                    Admin = parent
-                },
-                new Cooperative
-                {
-                    Name = "Name3",
-                    Info = "Info3",
-                    AdminId = Guid.NewGuid().ToString(),
-                    Members = new List<ParentCooperative>
-                    {
-                        new ParentCooperative
-                        {
-                            Parent = parent
-                        }
-                    }
-                },
-                new Cooperative
-                {
-                    Name = "Name4",
-                    Info = "Info4",
-                    AdminId = Guid.NewGuid().ToString()
-                },
-                new Cooperative
-                {
-                    Name = "Name5",
-                    Info = "Info5",
-                    AdminId = Guid.NewGuid().ToString()
-                }
-            };
-
-            this._dbContext.Cooperatives.AddRange(cooperativesList);
-            await this._dbContext.SaveChangesAsync();
-
-            var count = await this._cooperativesService.CountByUserAsync(parent.UserId);
-            var expectedCount = cooperativesList
-                .Where(x => x.AdminId == parent.Id || x.Members.Any(x => x.ParentId == parent.Id))
-                .Count();
-
             Assert.Equal(expectedCount, count);
         }
 

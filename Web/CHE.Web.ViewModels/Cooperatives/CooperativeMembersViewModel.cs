@@ -11,7 +11,6 @@
     {
         public string Id { get; init; }
 
-
         public string Admin { get; init; }
 
         public IEnumerable<CooperativeUserDetailsViewModel> Members { get; set; }

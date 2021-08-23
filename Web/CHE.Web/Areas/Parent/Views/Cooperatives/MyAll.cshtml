@@ -1,5 +1,4 @@
-﻿@using CHE.Web.ViewModels.Cooperatives;
-@model CHE.Web.ViewModels.PaginatedList<CooperativeAllViewModel>
+﻿@model IEnumerable<CHE.Web.ViewModels.Cooperatives.CooperativeAllViewModel>
 <!-- ======= Breadcrumbs ======= -->
 <section id="breadcrumbs" class="breadcrumbs">
     <div class="container">
@@ -20,21 +19,9 @@
             </div>
         </div>
         <hr class="my-4">
-        @if (@Model.Count == 0)
-        {
-            <div class="row justify-content-center">
-                <h4>There are no coopertives!</h4>
-            </div>
-        }
-        else
-        {
-            <partial name="_CooperativesListPartial" model="Model"/>
-            <vc:pagination controller="Cooperatives"
-                           page-index="@Model.PageIndex"
-                           has-previous-page="@Model.HasPreviousPage"
-                           has-next-page="@Model.HasNextPage"
-                           filter="null">
-            </vc:pagination>
-        }
+        <div class="row justify-content-center">
+            <h5>@User.Identity.Name's cooperatives</h5>
+        </div>
+        <partial name="_CooperativesListPartial" model="Model" />
     </div>
 </section><!-- End Services Section -->
