@@ -2,6 +2,7 @@
 {
     using CHE.Data;
     using CHE.Data.Models;
+    using CHE.Data.Models.Enums;
     using CHE.Services.Data.Tests.Mocks;
     using CHE.Services.Mapping;
     using CHE.Web.InputModels.Profiles;

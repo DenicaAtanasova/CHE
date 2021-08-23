@@ -1,7 +1,6 @@
 ﻿namespace CHE.Web.InputModels.Attributes.Validation
 {
-    using CHE.Data.Models;
-
+    using CHE.Data.Models.Enums;
     using System;
     using System.ComponentModel.DataAnnotations;
 

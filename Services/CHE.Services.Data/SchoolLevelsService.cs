@@ -1,7 +1,6 @@
 ﻿namespace CHE.Services.Data
 {
-    using CHE.Data.Models;
-
+    using CHE.Data.Models.Enums;
     using System;
     using System.Collections.Generic;
     using System.Linq;

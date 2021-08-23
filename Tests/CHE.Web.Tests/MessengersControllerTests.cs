@@ -12,14 +12,14 @@
     public class MessengersControllerTests
     {
         [Fact]
-        public void Messages_ShouldReturnViewWithCorrectMessenger() =>
+        public void Details_ShouldReturnViewWithCorrectMessenger() =>
             MyMvc
                 .Pipeline()
                 .ShouldMap(request => request
-                    .WithPath("/Messengers/Messages")
+                    .WithPath("/Messengers/Details")
                     .WithQueryString("?currentMessengerId=messengerId&receiverId=receiverId")
                     .WithUser())
-                .To<MessengersController>(c => c.Messages("messengerId", "receiverId"))
+                .To<MessengersController>(c => c.Details("messengerId", "receiverId"))
                 .Which()
                 .ShouldReturn()
                 .View(view => view.WithModel(MessengerUsers));

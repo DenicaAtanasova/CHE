@@ -2,6 +2,7 @@
 {
     using CHE.Data;
     using CHE.Data.Models;
+    using CHE.Data.Models.Enums;
     using CHE.Services.Data.Enums;
     using CHE.Services.Data.Tests.Mocks;
     using CHE.Services.Mapping;
@@ -450,7 +451,7 @@
 
             await this._dbContext.SaveChangesAsync();
 
-            await this._cooperativesService.RemoveMemberAsync(parent.Id, cooperative.Id);
+            await this._cooperativesService.RemoveMemberAsync(parent.UserId, cooperative.Id);
 
             var memberFromDb = await this._dbContext.ParentsCooperatives
                 .SingleOrDefaultAsync(x => x.CooperativeId == cooperative.Id && x.ParentId == parent.Id);
