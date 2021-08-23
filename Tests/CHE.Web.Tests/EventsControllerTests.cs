@@ -142,16 +142,6 @@
                .NotFound();
 
         [Fact]
-        public void Add_MethodPost_ShouldMapCorrectRoute() =>
-            MyMvc
-                .Routing()
-                .ShouldMap(request => request
-                    .WithPath("/Schedule/Events/Add")
-                    .WithMethod(HttpMethod.Post)
-                    .WithUser())
-                .To<EventsController>(c => c.Add(new EventCreateInputModel()));
-
-        [Fact]
         public void Add_MethodPost_WithValidModelState_ShouldRedirect()
         {
             var scheduleId = "id";

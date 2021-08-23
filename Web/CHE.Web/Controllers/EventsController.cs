@@ -107,8 +107,8 @@
             });
         }
 
-        [HttpPost]
-        public async Task<IActionResult> AddEvent(EventCreateInputModel inputModel)
+        [HttpPost("Add")]
+        public async Task<IActionResult> Add(EventCreateInputModel inputModel)
         {
             var schedule = await this._schedulesService
                 .GetByIdAsync<EventScheduleViewModel>(inputModel.ScheduleId);
