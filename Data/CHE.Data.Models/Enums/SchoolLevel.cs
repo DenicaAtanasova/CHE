@@ -1,4 +1,4 @@
-﻿namespace CHE.Data.Models
+﻿namespace CHE.Data.Models.Enums
 {
     public enum SchoolLevel
     {

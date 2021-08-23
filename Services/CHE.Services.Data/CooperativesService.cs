@@ -2,6 +2,7 @@
 {
     using CHE.Data;
     using CHE.Data.Models;
+    using CHE.Data.Models.Enums;
     using CHE.Services.Data.Enums;
     using CHE.Services.Mapping;
 
@@ -163,11 +164,11 @@
             await this._dbContext.SaveChangesAsync();
         }
 
-        public async Task RemoveMemberAsync(string memberId, string cooperativeId)
+        public async Task RemoveMemberAsync(string userId, string cooperativeId)
         {
             var member = await this._dbContext.ParentsCooperatives
-                .SingleOrDefaultAsync(x => (x.ParentId == memberId || x.Parent.UserId == memberId) && 
-                                            x.CooperativeId == cooperativeId);
+                .SingleOrDefaultAsync(x => x.Parent.UserId == userId && 
+                                           x.CooperativeId == cooperativeId);
 
             if (member == null)
             {
@@ -179,11 +180,6 @@
             var messengerId = await this._dbContext.Messengers
                 .Where(x => x.CooperativeId == cooperativeId)
                 .Select(x => x.Id)
-                .SingleOrDefaultAsync();
-
-            var userId = await this._dbContext.Parents
-                .Where(x => x.Id == member.ParentId)
-                .Select(x => x.UserId)
                 .SingleOrDefaultAsync();
 
             await this._messengersService.RemoveMemberAsync(messengerId, userId);

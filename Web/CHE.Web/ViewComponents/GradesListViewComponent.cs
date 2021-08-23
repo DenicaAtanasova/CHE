@@ -1,7 +1,6 @@
 ﻿namespace CHE.Web.ViewComponents
 {
-    using CHE.Data.Models;
-
+    using CHE.Data.Models.Enums;
     using Microsoft.AspNetCore.Mvc;
 
     using System;
