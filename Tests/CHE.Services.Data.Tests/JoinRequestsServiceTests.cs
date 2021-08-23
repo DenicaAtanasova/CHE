@@ -37,8 +37,17 @@
         {
             var expectedRequest = new JoinRequest
             {
-                CooperativeId = Guid.NewGuid().ToString(),
-                SenderId = Guid.NewGuid().ToString()
+                Cooperative = new Cooperative 
+                { 
+                    Name = "Cooperative"
+                },
+                Sender = new Parent
+                {
+                    User = new CheUser
+                    {
+                        UserName = "Sender"
+                    }
+                }
             };
 
             this._dbContext.JoinRequests.Add(expectedRequest);
@@ -70,9 +79,24 @@
         [Fact]
         public async Task GetAllByAsync_ShouldReturnCorrectCooperativesRequests()
         {
+            var sender = new Parent
+            {
+                User = new CheUser
+                {
+                    UserName = "sender"
+                }
+            };
+
             var serchedCooperative = new Cooperative
             {
-                Name = "coop"
+                Name = "coop",
+                Admin = new Parent
+                {
+                    User = new CheUser
+                    {
+                        UserName = "Admin"
+                    }
+                }
             };
 
             var requestsList = new List<JoinRequest>
@@ -80,17 +104,20 @@
                 new JoinRequest
                 {
                     Content = "JR1",
-                    Cooperative = serchedCooperative
+                    Cooperative = serchedCooperative,
+                    Sender = sender
                 },
                 new JoinRequest
                 {
                     Content = "JR2",
-                    Cooperative = serchedCooperative
+                    Cooperative = serchedCooperative,
+                    Sender = sender
                 },
                 new JoinRequest
                 {
                     Content = "JR3",
-                    CooperativeId = Guid.NewGuid().ToString()
+                    CooperativeId = Guid.NewGuid().ToString(),
+                    Sender = sender
                 }
             };
 

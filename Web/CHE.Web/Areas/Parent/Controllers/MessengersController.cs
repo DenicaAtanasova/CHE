@@ -17,7 +17,7 @@
             this._messengersService = messengersService;
         }
 
-        public async Task<IActionResult> Messages(string cooperativeId)
+        public async Task<IActionResult> Details(string cooperativeId)
         {
             var messenger = await this._messengersService
                 .GetCooperativeMessengerAsync<MessengerCooperativeUsersViewModel>(cooperativeId);
@@ -36,7 +36,7 @@
             return Json(messenger);
         }
 
-        public async Task<IActionResult> SendMessenger(string receiverId)
+        public async Task<IActionResult> SendToMessenger(string receiverId)
         {
             var userId = this.User.GetId();
 
@@ -44,9 +44,9 @@
                 .GetPrivateMessengerIdAsync(userId, receiverId);
 
             return this.RedirectToAction(
-                "Messages", 
+                "Details", 
                 "Messengers", 
-                new { area = "", cuurentMessengerId = messengerId, receiverId = receiverId });
+                new { area = "", currentMessengerId = messengerId, receiverId = receiverId });
         }
     }
 }
