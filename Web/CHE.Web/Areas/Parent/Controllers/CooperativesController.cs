@@ -13,10 +13,10 @@
 
     using System.Threading.Tasks;
 
+    using static WebConstants;
+
     public class CooperativesController : ParentController
     {
-        private const int DefaultPageSize = 6;
-
         private readonly ICooperativesService _cooperativesService;
         private readonly IAddressCache _addressCache;
 
@@ -28,7 +28,8 @@
             this._addressCache = addressCache;
         }
 
-        public IActionResult Create() => this.View();
+        public IActionResult Create() => 
+            this.View();
 
         [HttpPost]
         public async Task<IActionResult> Create(CooperativeCreateInputModel model)
@@ -48,6 +49,7 @@
                 model.Address.Neighbourhood);
 
             this._addressCache.Set(model.Address.City, model.Address.Neighbourhood);
+
             return this.RedirectToAction("All", "Cooperatives", new { area = ""});
         }
 
@@ -81,6 +83,7 @@
                 model.Address.Neighbourhood);
 
             this._addressCache.Set(model.Address.City, model.Address.Neighbourhood);
+
             return this.RedirectToAction(
                 "Details", "Cooperatives", new { area = "", id = model.Id });
         }
@@ -100,6 +103,7 @@
         public async Task<IActionResult> MakeAdmin(string cooperativeId, string userId)
         {
             await this._cooperativesService.ChangeAdminAsync(userId, cooperativeId);
+
             return this.RedirectToAction(
                 "Details", "Cooperatives", new { area = "", id = cooperativeId });
         }
@@ -134,21 +138,19 @@
             await this._cooperativesService
                 .RemoveMemberAsync(userId, cooperativeId);
 
-            return this.RedirectToAction("Details", "Cooperatives", new { area="", id = cooperativeId });
+            return this.RedirectToAction(
+                "Details", "Cooperatives", new { area="", id = cooperativeId });
         }
 
-        public async Task<IActionResult> MyAll(int pageIndex = 1)
+        public async Task<IActionResult> MyAll()
         {
             var userId = this.User.GetId();
             var cooperatives = await this._cooperativesService
-                .GetAllByUserAsync<CooperativeAllViewModel>(userId, CooperativeUserType.Admin | CooperativeUserType.Member, pageIndex, DefaultPageSize);
+                    .GetAllByUserAsync<CooperativeAllViewModel>(
+                        userId, 
+                        CooperativeUserType.Admin | CooperativeUserType.Member);
 
-            var count = await this._cooperativesService.CountByUserAsync(userId);
-
-            var cooperativesList = PaginatedList<CooperativeAllViewModel>
-                .Create(cooperatives, count, pageIndex, DefaultPageSize);
-
-            return this.View(cooperativesList);
+            return this.View(cooperatives);
         }
     }
 }

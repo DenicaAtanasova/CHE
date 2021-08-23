@@ -6,6 +6,6 @@
         public const string TeacherLayout = "/Views/Shared/_LayoutTeacher.cshtml";
         public const string CooperativeLayout = "/Views/Shared/_LayoutCooperative.cshtml";
 
-        public const int DefaultPageSize = 2;
+        public const int DefaultPageSize = 16;
     }
 }

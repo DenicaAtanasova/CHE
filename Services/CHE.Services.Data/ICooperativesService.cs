@@ -36,9 +36,7 @@
 
         Task<IEnumerable<TEntity>> GetAllByUserAsync<TEntity>(
             string userId,
-            CooperativeUserType userType,
-            int startIndex = 1,
-            int endIndex = 0);
+            CooperativeUserType userType);
 
         Task AddMemberAsync(string parentId, string cooperativeId);
 
@@ -49,8 +47,6 @@
         Task<bool> CheckIfAdminAsync(string userId, string cooperativeId);
 
         Task<bool> CheckIfMemberAsync(string userId, string cooperativeId);
-
-        Task<int> CountByUserAsync(string userId);
 
         Task<int> CountAsync(
             string gradeFilter = null,
