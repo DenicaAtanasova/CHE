@@ -44,9 +44,13 @@ class CALENDAR {
         let addBtn = document.getElementById('add-button');
         addBtn.setAttribute('href', addUri);
 
-        let events = data[date].sort(function (a, b) {
-            return new Date(a.startDate) - new Date(b.startDate)
-        });
+        console.log()
+        let events = data[date];
+        if (events) {
+            events.sort(function (a, b) {
+                return new Date(a.startDate) - new Date(b.startDate)
+            });
+        }
 
         const tBody = document.getElementById('events');
         tBody.innerHTML = '';
