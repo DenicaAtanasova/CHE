@@ -194,7 +194,8 @@
                         {
                             Rating = 2
                         }
-                    }
+                    },
+                    User = new CheUser()
                 },
                 new Teacher
                 {
@@ -217,7 +218,8 @@
                         {
                             Rating = 1
                         }
-                    }
+                    },
+                    User = new CheUser()
                 },
                 new Teacher
                 {
@@ -229,7 +231,8 @@
                             City = "Sofia",
                         Neighbourhood = "Vitosha"
                         }
-                    }
+                    },
+                    User = new CheUser()
                 },
                 new Teacher
                 {
@@ -241,7 +244,8 @@
                             City = "Sofia",
                             Neighbourhood = "Dianabad"
                         }
-                    }
+                    },
+                    User = new CheUser()
                 },
             };
 

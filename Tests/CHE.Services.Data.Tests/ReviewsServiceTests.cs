@@ -115,29 +115,47 @@
         [Fact]
         public async Task GetAllByReceiverAsync_ShouldReturnAllReviewsByReceiver()
         {
-            var searchedReceiver = new Teacher();
+            var searchedReceiver = new Teacher 
+            { 
+                User = new CheUser
+                {
+                    UserName = "Teacher"
+                }
+            };
+
+            var sender = new Parent
+            {
+                User = new CheUser
+                {
+                    UserName = "Parent"
+                }
+            };
 
             var reviewsList = new List<Review>
             {
                 new Review
                 {
                     Comment = "Comment1",
-                    Receiver = searchedReceiver
+                    Receiver = searchedReceiver,
+                    Sender = sender
                 },
                 new Review
                 {
                     Comment = "Comment2",
-                    Receiver = searchedReceiver
+                    Receiver = searchedReceiver,
+                    Sender = sender
                 },
                 new Review
                 {
                     Comment = "Comment3",
-                    ReceiverId = Guid.NewGuid().ToString()
+                    Receiver = new Teacher(),
+                    Sender = sender
                 },
                 new Review
                 {
                     Comment = "Comment4",
-                    ReceiverId = Guid.NewGuid().ToString()
+                    Receiver = new Teacher(),
+                    Sender = sender
                 }
             };
 
