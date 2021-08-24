@@ -3,7 +3,6 @@
         .withUrl("/messenger")
         .build();
 
-
 connection.on("NewMessage",
     function (message, sender, connectionId) {
         const currentConnectionId = this.connection.connectionId;
@@ -35,7 +34,9 @@ function sendMessage(method, messengerId, receiverId) {
 
     const text = $("#message-to-send").val();
 
-    if (!isMessageEmpty(text)) {
+    if (isMessageCorrect(text)) {
+        $('div.chat-message.clearfix > span').text("");
+
         connection.invoke(method, messengerId, receiverId, text);
         $("#message-to-send").val('');
     }
@@ -192,13 +193,21 @@ function updateScroll() {
     element.scrollTop = element.scrollHeight;
 }
 
-function isMessageEmpty(text) {
+function isMessageCorrect(text) {
+    const $spanElement = $('div.chat-message.clearfix > span');
+
     if (text == "") {
-        $('div.chat-message.clearfix > span').text("Meesage should not be empty");
-        return true;
+        $spanElement.text("Message should not be empty");
+        return false;
     }
 
-    return false;
+    const textMaxLength = 200;
+    if (text.length > textMaxLength) {
+        $spanElement.text(`Message length should be less than ${textMaxLength} symbols!`);
+        return false;
+    }
+
+    return true;
 }
 
 function prepareChat() {

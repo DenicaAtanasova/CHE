@@ -1,5 +1,6 @@
 ﻿namespace CHE.Web.Hubs
 {
+    using CHE.Common.Extensions;
     using CHE.Services.Data;
     using CHE.Web.ViewModels.Messages;
 
@@ -10,6 +11,8 @@
     using System.Collections.Concurrent;
     using System.Collections.Generic;
     using System.Threading.Tasks;
+
+    using static CHE.Common.DataConstants.Message;
 
     [Authorize]
     public class MessengerHub : Hub
@@ -26,7 +29,7 @@
 
         public async Task SendPrivate(string messengerId, string receiverId, string text)
         {
-            if (string.IsNullOrEmpty(text) || string.IsNullOrWhiteSpace(text))
+            if (!text.IsValidString() || text.Length > TextMaxLength)
             {
                 return;
             }

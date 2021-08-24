@@ -58,5 +58,10 @@
 
             public const int DescriptionMaxLength = 200;
         }
+
+        public record Message
+        {
+            public const int TextMaxLength = 200;
+        }
     }
 }
