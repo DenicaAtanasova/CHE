@@ -44,7 +44,7 @@ else
         <a class="btn btn-che" asp-area="Parent" asp-controller="JoinRequests" asp-action="Update" asp-route-id="@Model.PendingRequestId">Edit</a>
         <a class="btn btn-che" asp-area="Parent" asp-controller="Messengers" asp-action="SendToMessenger" asp-route-receiverId="@Model.AdminId">Send message</a>
     }
-    else if (!this.User.IsTeacher())
+    else if (this.User.IsParent())
     {
         <a class="btn btn-che" asp-area="Parent" asp-controller="JoinRequests" asp-action="Send" asp-route-CooperativeId="@Model.Id">Join</a>
         <a class="btn btn-che" asp-area="Parent" asp-controller="Messengers" asp-action="SendToMessenger" asp-route-receiverId="@Model.AdminId">Send message</a>
