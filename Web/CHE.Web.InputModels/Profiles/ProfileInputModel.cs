@@ -50,6 +50,7 @@
             ErrorMessage = StringLengthErroMessage)]
         public string Interests { get; init; }
 
+        [Required]
         [Display(Name = "School level")]
         [SchoolLevel]
         public string SchoolLevel { get; init; }

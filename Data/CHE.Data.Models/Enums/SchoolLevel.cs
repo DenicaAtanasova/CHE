@@ -2,8 +2,7 @@
 {
     public enum SchoolLevel
     {
-        Unknown = 0,
-        Primary = 1,
-        Secondary = 2
+        Primary = 0,
+        Secondary = 1
     }
 }
