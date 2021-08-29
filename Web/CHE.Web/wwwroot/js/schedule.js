@@ -58,20 +58,13 @@ class CALENDAR {
         const anchor = document.createElement('a');
         if (events != undefined) {
             events.forEach(event => {
-                const updateUri = `/Schedule/Events/Update/${event.id}`;
-                let updateButton = anchor.cloneNode(false);
-                updateButton.className = 'update-event-btn';
-                updateButton.setAttribute('data-toggle', 'tooltip');
-                updateButton.setAttribute('data-placement', 'top');
-                updateButton.setAttribute('title', 'update');
-                updateButton.setAttribute('href', updateUri);
-
-                let deleteButton = button.cloneNode(false);
-                deleteButton.className = 'delete-event-btn';
-                deleteButton.setAttribute('data-toggle', 'tooltip');
-                deleteButton.setAttribute('data-placement', 'top');
-                deleteButton.setAttribute('title', 'delete');
-                deleteButton.setAttribute('onclick', `deleteEvent(\"${event.id}\")`);
+                const updateUri = `/Schedule/Events/Details/${event.id}`;
+                let detailsButton = anchor.cloneNode(false);
+                detailsButton.className = 'update-event-btn';
+                detailsButton.setAttribute('data-toggle', 'tooltip');
+                detailsButton.setAttribute('data-placement', 'top');
+                detailsButton.setAttribute('title', 'view');
+                detailsButton.setAttribute('href', updateUri);
 
                 let tr = tBody.insertRow();
 
@@ -87,10 +80,7 @@ class CALENDAR {
                 tdTitle.setAttribute('title', `${event.description}`);
 
                 let tdEdit = tr.insertCell(1);
-                tdEdit.appendChild(updateButton);
-
-                let tdDelete = tr.insertCell(2);
-                tdDelete.appendChild(deleteButton);
+                tdEdit.appendChild(detailsButton);
             });
         }
         else {
@@ -303,13 +293,3 @@ function draw() {
 };
 
 export { draw };
-
-function deleteEvent(id) {
-    fetch(`${uri}/Delete/${id}`, {
-        method: 'DELETE'
-    })
-        .then(() => draw())
-        .catch(error => console.error('Unable to delete event.', error));
-}
-
-window.deleteEvent = deleteEvent;

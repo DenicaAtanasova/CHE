@@ -49,7 +49,12 @@
                         <span asp-validation-for="EndDate" class="text-danger"></span>
                     </div>
                     <div class="form-group">
-                        <button type="submit" class="btn btn-che">Save changes</button>
+                        <button type="submit" class="btn btn-che">Update</button>
+                        <a asp-controller="Events" 
+                           asp-action="Delete" 
+                           asp-route-id="@Model.Id" 
+                           asp-route-scheduleId="@Model.ScheduleId"
+                           class="btn btn-che">Delete</a>
                     </div>
                 </form>
             </div>

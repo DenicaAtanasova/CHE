@@ -61,7 +61,7 @@
                 .ShouldMap(request => request
                     .WithPath("/Schedule/Events/Update/id")
                     .WithUser())
-                .To<EventsController>(c => c.Update("id"))
+                .To<EventsController>(c => c.Details("id"))
                 .Which()
                 .ShouldReturn()
                 .View(result =>
@@ -71,7 +71,7 @@
         public void Update_MethodGet_ShouldReturnNotFound() =>
             MyMvc
                 .Controller<EventsController>()
-                .Calling(c => c.Update(""))
+                .Calling(c => c.Details(""))
                 .ShouldReturn()
                 .NotFound();
 
@@ -83,7 +83,7 @@
                     .WithPath("/Schedule/Events/Update/id")
                     .WithMethod(HttpMethod.Post)
                     .WithUser())
-                .To<EventsController>(c => c.Update("id"));
+                .To<EventsController>(c => c.Details("id"));
 
         [Fact]
         public void Update_MethodPost_WithValidModelState_ShouldRedirect()

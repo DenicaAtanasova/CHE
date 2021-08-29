@@ -12,6 +12,7 @@
     using System.Globalization;
     using System.Linq;
     using System.Threading.Tasks;
+    using CHE.Web.Infrastructure;
 
     [Authorize]
     [Route("Schedule/[controller]/[action]")]
@@ -41,8 +42,7 @@
             return this.Json(groupedEvents);
         }
 
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete(string id)
+        public async Task<IActionResult> Delete(string id, string scheduleId)
         {
             if (!id.IsValidString())
             {
@@ -51,11 +51,20 @@
 
             await this._eventsService.DeleteAsync(id);
 
-            return this.NoContent();
+            if (this.User.IsParent())
+            {
+                return this.RedirectToAction(
+                    "Details", "Schedules", new { id = scheduleId });
+            }
+            else
+            { 
+                return this.RedirectToAction(
+                    "MyDetails", "Schedules", new { id = scheduleId });
+            }
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> Update(string id)
+        public async Task<IActionResult> Details(string id)
         {
             var currentEvent = await this._eventsService
                 .GetByIdAsync<EventUpdateInputModel>(id);

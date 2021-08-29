@@ -2272,12 +2272,13 @@ div.image {
 
 .delete-event-btn::before {
     font-family: Icofont;
-    content: "\ec53";
+    content: "\ef21";
 }
 
 .update-event-btn::before {
     font-family: Icofont;
-    content: "\ef10";
+    content: "\ef24";
+    font-size: 25px;
 }
 
 .text-center {
