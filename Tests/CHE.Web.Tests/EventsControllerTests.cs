@@ -29,37 +29,28 @@
                     result.WithModelOfType<Dictionary<string, EventViewModel[]>>());
 
         [Fact]
-        public void Delete_ShouldReturnNoContent() =>
+        public void Delete_ShouldRedirect() =>
             MyMvc
                 .Controller<EventsController>()
-                .Calling(x => x.Delete("id"))
+                .Calling(x => x.Delete("id", "scheduleId"))
                 .ShouldReturn()
-                .NoContent();
+                .Redirect(result => result
+                    .To<SchedulesController>(c => c.MyDetails("scheduleId")));
 
         [Fact]
         public void Delete_ShouldReturnNotFound() =>
             MyMvc
                 .Controller<EventsController>()
-                .Calling(x => x.Delete(""))
+                .Calling(x => x.Delete("", "scheduleId"))
                 .ShouldReturn()
                 .NotFound();
 
         [Fact]
-        public void Delete_ShouldMapCorrectRoute() =>
-            MyMvc
-                .Routing()
-                .ShouldMap(request => request
-                    .WithPath("/Schedule/Events/Delete/id")
-                    .WithMethod(HttpMethod.Delete)
-                    .WithUser())
-                .To<EventsController>(c => c.Delete("id"));
-
-        [Fact]
-        public void Update_MethodGet_ShouldReturnViewWithCorrectEvent() =>
+        public void Details_ShouldReturnViewWithCorrectEvent() =>
             MyMvc
                 .Pipeline()
                 .ShouldMap(request => request
-                    .WithPath("/Schedule/Events/Update/id")
+                    .WithPath("/Schedule/Events/Details/id")
                     .WithUser())
                 .To<EventsController>(c => c.Details("id"))
                 .Which()
@@ -68,7 +59,7 @@
                     result.WithModel(UpdateEvent));
 
         [Fact]
-        public void Update_MethodGet_ShouldReturnNotFound() =>
+        public void Details_MethodGet_ShouldReturnNotFound() =>
             MyMvc
                 .Controller<EventsController>()
                 .Calling(c => c.Details(""))
@@ -83,7 +74,7 @@
                     .WithPath("/Schedule/Events/Update/id")
                     .WithMethod(HttpMethod.Post)
                     .WithUser())
-                .To<EventsController>(c => c.Details("id"));
+                .To<EventsController>(c => c.Update("id", null));
 
         [Fact]
         public void Update_MethodPost_WithValidModelState_ShouldRedirect()

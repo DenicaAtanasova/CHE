@@ -44,7 +44,7 @@
             Assert.Equal(AvatarImageUrl, imageFromDb.Url);
             Assert.Equal(expectedCreatedOnDate,
                 imageFromDb.CreatedOn,
-                new TimeSpan(days: 0, hours: 0, minutes: 0, seconds: 0, milliseconds: 1000));
+                new TimeSpan(days: 0, hours: 0, minutes: 0, seconds: 0, milliseconds: 1200));
         }
 
         [Fact]
