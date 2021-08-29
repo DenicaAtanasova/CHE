@@ -2,7 +2,6 @@
 {
     using CHE.Data.Models;
     using CHE.Services.Mapping;
-    using CHE.Web.InputModels.Attributes.Validation;
 
     using System.ComponentModel.DataAnnotations;
 
@@ -11,7 +10,7 @@
 
     public class ProfileAddressInputModel : IMapFrom<Address>
     {
-        [RequiredIfNotNull(nameof(Neighbourhood))]
+        [Required]
         [StringLength(
             CityMaxLength,
             MinimumLength = CityMinLength,

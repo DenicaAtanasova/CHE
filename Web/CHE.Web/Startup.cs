@@ -39,6 +39,8 @@ namespace CHE.Web
         
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddSingleton(this.configuration);
+
             services.AddDbContext<CheDbContext>(options =>
                 options.UseSqlServer(this.configuration.GetConnectionString("DefaultConnection")));
 
@@ -75,8 +77,6 @@ namespace CHE.Web
             });
 
             services.AddRazorPages();
-
-            services.AddSingleton(this.configuration);
 
             services.AddMemoryCache();
 

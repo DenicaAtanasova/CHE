@@ -6,7 +6,6 @@
     using CHE.Web.Cache;
     using CHE.Web.Infrastructure;
     using CHE.Web.InputModels.Cooperatives;
-    using CHE.Web.ViewModels;
     using CHE.Web.ViewModels.Cooperatives;
 
     using Microsoft.AspNetCore.Mvc;

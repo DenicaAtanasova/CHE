@@ -71,7 +71,8 @@
                 return this.View(inputModel);
             }
 
-            await this._reviewsService.UpdateAsync(inputModel.Id, inputModel.Comment, inputModel.Rating);
+            await this._reviewsService
+                .UpdateAsync(inputModel.Id, inputModel.Comment, inputModel.Rating);
             
             return RedirectToAction("All", "Reviews", new { area = "", id = inputModel.ReceiverId });
         }
@@ -79,6 +80,7 @@
         public async Task<IActionResult> Delete(string reviewId, string receiverId)
         {
             await this._reviewsService.DeleteAsync(reviewId);
+
             return RedirectToAction("Details", "Teachers", new { area = "", id = receiverId });
         }
     }

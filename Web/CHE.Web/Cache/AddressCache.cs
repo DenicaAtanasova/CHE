@@ -24,8 +24,15 @@
 
         public void Set(string city, string neighbourhood)
         {
-            this.SetCache(CitiesCacheKey, city);
-            this.SetCache(NeighbourhoodsCacheKey, neighbourhood);
+            if(city != null)
+            {
+                this.SetCache(CitiesCacheKey, city);
+            }
+
+            if (neighbourhood != null)
+            {
+                this.SetCache(NeighbourhoodsCacheKey, neighbourhood);
+            }
         }
 
         public async Task<IEnumerable<string>> GetAsync(CacheType cacheType) =>
