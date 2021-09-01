@@ -92,7 +92,7 @@ namespace CHE.Web
             services.AddTransient<IEventsService, EventsService>();
             services.AddTransient<IAddressesService, AddressesService>();
             services.AddTransient<IFileStorage>(provider => 
-                new CloudStorageService(this.configuration.GetConnectionString("BlobConnection")));
+                new CloudStorageService(this.configuration["BlobConnectionString"]));
             services.AddTransient<IMessengersService, MessengersService>();
             services.AddTransient<IMessagesService, MessagesService>();
             services.AddTransient<IGradesService, GradesService>();
